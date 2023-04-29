@@ -471,9 +471,9 @@ for i=1:c-1
         [~,ia,~]=unique(wf_global(1,:));
         wf_global = wf_global(:,ia);
 
-        wf_global = [wf_global, wf_local];
-        [~,ind] = sort(wf_global(1,:));
-        wf_global=wf_global(:,ind);
+        % wf_global = [wf_global, wf_local];
+        % [~,ind] = sort(wf_global(1,:));
+        % wf_global=wf_global(:,ind);
 
 
         % mov_num = mm_ratio*width(wf_local);
