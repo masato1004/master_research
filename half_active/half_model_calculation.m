@@ -49,12 +49,12 @@ control = ctrl_names(logi_ctrl)
 
 %% road profile
 
-sensing = true;
+sensing = false;
 paper = false;
 sin_wave = false;
 step = false;
 manhole = false;
-jari = false;
+jari = true;
 
 TL = 0:dt:T;                                                                  % time list ([s])
 dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
@@ -137,7 +137,7 @@ elseif jari
     disturbance_total_f = makima(jari_total,road_total,0:max_distance/(T/dt):max_distance-3);
     disturbance_total_r = makima(jari_total,road_total,0:max_distance/(T/dt):max_distance-3-(L_f+L_r));
     road_total_f = [zeros(1,int32(T*3/(dt*max_distance))), disturbance_total_f];  % converting front disturbance and buffer ([m])
-    road_total_r = [zeros(1,int32(T*(3+L_f+L_r)/(dt*max_distance))), disturbance_total_r];  % converting rear disturbance and buffer ([m])
+    road_total_r = [zeros(1,int32(T*(3+L_f+L_r)/(dt*max_distance))+1), disturbance_total_r];  % converting rear disturbance and buffer ([m])
     r_p_f = makima(dis_total,road_total_f,dis);                                   % front road profile
     r_p_r = makima(dis_total,road_total_r,dis);                                   % rear road profile
     frequency = 0; max_z0 = 0; ld = 0;
@@ -348,29 +348,34 @@ ang_acc =@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-(k_sf*(L_f*ang+zb-
 %% ========================simulation========================= %%
 
 % LOADING
-load_dir = "preview_datas";
-listing = dir(load_dir+"/*.mat");
-file = load(load_dir + "/" + listing(2).name);
-vertices = file.vertices;
-
 cc = 1;
 sc = 1;
-mm_ratio = 0.35;
-mm_range = 5*ts;
-
-filt_des = designfilt("lowpassiir",FilterOrder=6, HalfPowerFrequency=0.006,DesignMethod="butter",SampleRate=1);
-
 prev_start = 5.06;
 prev_end = 7;
 current_dis = r_p_prev(1,1);
-
-wf_local = previewing(vertices);
-data_end = wf_local(2,round(end/2));
-% wf_local = [
-%     prev_start:tc*V:prev_end;
-%     makima(r_p_prev(1,:),zeros(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end)
-%     ];
-wf_global = wf_local; last_minimum = 1.9;
+if sensing
+    load_dir = "preview_datas";
+    listing = dir(load_dir+"/*.mat");
+    file = load(load_dir + "/" + listing(2).name);
+    vertices = file.vertices;
+    
+    mm_ratio = 0.35;
+    mm_range = 5*ts;
+    
+    filt_des = designfilt("lowpassiir",FilterOrder=6, HalfPowerFrequency=0.006,DesignMethod="butter",SampleRate=1);
+    
+    
+    wf_local = previewing(vertices);
+    data_end = wf_local(2,round(end/2));
+    wf_global = wf_local; last_minimum = 1.9;
+else
+    listing = [];
+    wf_local = [
+        prev_start:tc*V:prev_end;
+        makima(r_p_prev(1,:),zeros(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end)
+        ];
+    wf_global = wf_local; last_minimum = wf_global(1,1);
+end
 wf_grad = [
     wf_global(1,:)./V;
     wf_global(2,:);
@@ -425,26 +430,32 @@ for i=1:c-1
 
     % make road preview profile
     if mod(i+(ts/dt-1), ts/dt) == 0
-
+        current_dis = r_p_prev(1,i);
         % load road profile
-        if sc <= height(listing)
-            file = load(load_dir + "/" + listing(sc).name);
-            vertices = file.vertices;
-            wf_local = previewing(vertices);
-            % wf_local(isnan(wf_local(2,:))) = data_end;
-            wf_local = rmmissing(wf_local,2);
-            data_end = wf_local(2,end);
-            % wf_local(2,:) = movmean(wf_local(2,:),width(wf_local(2,wf_local(1,:))));  % move mean with mm_ratio
-            % wf_local(2,:) = movmean(wf_local(2,:),round(mm_ratio*width(wf_local)));  % move mean with mm_ratio
-            % display("HERE"+sc);
+        if sensing
+            if sc <= height(listing)
+                file = load(load_dir + "/" + listing(sc).name);
+                vertices = file.vertices;
+                wf_local = previewing(vertices);
+                % wf_local(isnan(wf_local(2,:))) = data_end;
+                wf_local = rmmissing(wf_local,2);
+                data_end = wf_local(2,end);
+                % wf_local(2,:) = movmean(wf_local(2,:),width(wf_local(2,wf_local(1,:))));  % move mean with mm_ratio
+                % wf_local(2,:) = movmean(wf_local(2,:),round(mm_ratio*width(wf_local)));  % move mean with mm_ratio
+                % display("HERE"+sc);
+            else
+                wf_local = [
+                    prev_start:tc*V:prev_end;
+                    interp1(r_p_prev(1,:),data_end*ones(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end,'linear')
+                    ];
+                    
+                % display("HERE"+sc);
+            end
         else
-            current_dis = r_p_prev(1,i);
             wf_local = [
                 prev_start:tc*V:prev_end;
-                interp1(r_p_prev(1,:),data_end*ones(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end,'linear')
+                makima(r_p_prev(1,:),r_p_prev(2,:),current_dis+prev_start:tc*V:current_dis+prev_end)
                 ];
-                
-            % display("HERE"+sc);
         end
 
         % set(check_plot0, "XData", wf_local(1,:), "YData", wf_local(2,:));
@@ -459,87 +470,42 @@ for i=1:c-1
 
         [~,ia,~]=unique(wf_global(1,:));
         wf_global = wf_global(:,ia);
-        % wf_local(2,:) = wf_local(2,:) + ((interp1(wf_global(1,:), wf_global(2,:),wf_local(1,1),'linear')) - wf_local(2,1));  % fix the plane prediction error
-        % wf_local(2,:) = wf_local(2,:) + (mean(interp1(wf_global(1,:), wf_global(2,:),(wf_local(1,1)-ts*V):wf_local(1,1),'linear')) - wf_local(2,1));  % fix the plane prediction error
 
-        % WA
-        % wf_global = [
-        %     wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
-        %     wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
-        %     ];
-
-        wf_global = [wf_global, wf_local];
-        [~,ind] = sort(wf_global(1,:));
-        wf_global=wf_global(:,ind);
-        % [~,ia,~]=unique(wf_global(1,:));
-        % wf_global = wf_global(:,ia);
+        % wf_global = [wf_global, wf_local];
+        % [~,ind] = sort(wf_global(1,:));
+        % wf_global=wf_global(:,ind);
 
 
-        mov_num = mm_ratio*width(wf_local);
-        % wf_global = [
-        %     wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
-        %     wf_global(2, wf_global(1,:)<wf_local(1,1)-mm_range*V & wf_global(1,:)>-200), movmean(wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>=wf_local(1,1)-mm_range*V),[mov_num/3, 2*mov_num/3]), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
-        %     ];
+        % mov_num = mm_ratio*width(wf_local);
 
+        % notnan_wfg = rmmissing(wf_global,2);
+        % notnan_wfg(1,:) = notnan_wfg(1,:)./V;
 
-        notnan_wfg = rmmissing(wf_global,2);
-        notnan_wfg(1,:) = notnan_wfg(1,:)./V;
-        % notnan_wfg = [
-        %     wf_global(1,1:end-width(wf_global(2,isnan(wf_global(2,:)))))./V;
-        %     wf_global(2,1:end-width(wf_global(2,isnan(wf_global(2,:)))))
-        %     ];
-
-        % WA + filtfilt
-        [~,ia,~]=unique(notnan_wfg(1,:));
-        notnan_wfg = notnan_wfg(:,ia);
-        grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
-        % disp(size(grad_time));
-        grad_data1 = filtfilt(filt_des,double(interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear")));
-        grad_data2 = gradient(grad_data1)./(gradient(grad_time));
-        wf_grad = [
-            grad_time;
-            grad_data1;
-            grad_data2
-            ];
-
-        % WA
-%         [~,ia,~]=unique(notnan_wfg(1,:));
-%         notnan_wfg = notnan_wfg(:,ia);
-%         grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
-%         grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
-%         grad_data2 = gradient(grad_data1)./(gradient(grad_time));
-%         wf_grad = [
-%             grad_time;
-%             grad_data1;
-%             grad_data2
-%             ];
-
-        % WA
-        % [~,ia,~]=unique(notnan_wfg(1,:));
-        % notnan_wfg = notnan_wfg(:,ia);
-        % grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
-        % grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
-        % grad_data2 = gradient(grad_data1)./(gradient(grad_time));
-        % wf_grad = [
-        %     grad_time;
-        %     grad_data1;
-        %     grad_data2
-        %     ];
-
-        % WA+MA
-        % wf_grad = [
-        %     wf_global(1,:)./V;
-        %     movmean(wf_global(2,:),[4*mov_num, 4*mov_num]);
-        %     gradient(movmean(wf_global(2,:),[mov_num/3, 2*mov_num/3]))./(gradient(wf_global(1,:))./V)
-        %     ];
-
-        % wf_grad = [
-        %     wf_global(1,:)./V;
-        %     wf_global(2,:);
-        %     gradient(wf_global(2,:))./(gradient(wf_global(1,:))./V)
-        %     ];
-            
-        % disp(sc + "-" + sum(isnan(wf_grad(2,:))));
+        if sensing
+            % WA + filtfilt
+            [~,ia,~]=unique(notnan_wfg(1,:));
+            notnan_wfg = notnan_wfg(:,ia);
+            grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
+            % disp(size(grad_time));
+            grad_data1 = filtfilt(filt_des,double(interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear")));
+            grad_data2 = gradient(grad_data1)./(gradient(grad_time));
+            wf_grad = [
+                grad_time;
+                grad_data1;
+                grad_data2
+                ];
+        else
+            % WA
+            wf_global = [
+                wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), wf_local(1,:);
+                wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), makima(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end))).*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
+                ];
+            wf_grad = [
+                wf_global(1,:)./V;
+                wf_global(2,:);
+                gradient(wf_global(2,:))./(gradient(wf_global(1,:))./V)
+                ];
+        end
         sc = sc + 1;
     end
     % set(check_plot, "XData", wf_grad(1,:), "YData", wf_grad(3,:));

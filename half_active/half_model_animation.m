@@ -49,10 +49,18 @@ vec_color_f = [1 0 0];
 input_vector_f = quiver(cx_f,cy_f,0,(u(1,1)/vector_length_param),0,"LineWidth",2,Color=vec_color_f);
 input_vector_r = quiver(cx_r,cy_r,0,(u(2,1)/vector_length_param),0,"LineWidth",2,Color=vec_color_f);
 
-camera_pos = scatter(1.88, 1.40+states(1,1), MarkerFaceColor=[0 1 0],MarkerEdgeColor=[0 0 0],SizeData=100);
-fill_x = [1.88 1.88+5.06 1.88+7];
-fill_y = [1.40+states(1,1) interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,1)*V+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,1)*V+7,'linear')];
-preview_area = fill(fill_x, fill_y, 'yellow',FaceAlpha=0.2);
+% previewing draw
+previewing = fprev_rprev || LQR_fprev_rprev;
+if previewing
+    camera_pos = scatter(1.88, 1.40+states(1,1), MarkerFaceColor=[0 1 0],MarkerEdgeColor=[0 0 0],SizeData=100);
+    fill_x = [1.88 1.88+5.06 1.88+7];
+    if sensing
+        fill_y = [1.40+states(1,1) interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,1)*V+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,1)*V+7,'linear')];
+    else
+        fill_y = [1.40+states(1,1) makima(TL,road_total_r,TL(1,1)*V+5.06) makima(TL,road_total_r,TL(1,1)*V+7)];
+    end
+    preview_area = fill(fill_x, fill_y, 'yellow',FaceAlpha=0.2);
+end
 
 % time count
 txdata = round(TL(1,1),2);
@@ -136,8 +144,6 @@ for s=2:c/2
         delete(circle_as_a_wheel_r);
         delete(input_vector_f);
         delete(input_vector_r);
-        delete(camera_pos);
-        delete(preview_area);
         img = imread('temp_body.png');
         img(img==0)=255;
         newimg = zeros(371,1140,3);
@@ -170,14 +176,22 @@ for s=2:c/2
         input_vector_f = quiver(cx_f,cy_f+r,0,(u(1,cc)/vector_length_param),0,"LineWidth",2,Color=vec_color_f);
         input_vector_r = quiver(cx_r,cy_r+r,0,(u(2,cc)/vector_length_param),0,"LineWidth",2,Color=vec_color_r);
 
-        camera_pos = scatter(cx_r+1.88, 1.40+states(1,s), MarkerFaceColor=[0 1 0],MarkerEdgeColor=[0 0 0],SizeData=100);
-        if sampling
-            fill_x = [cx_r+1.88 cx_r+1.88+5.06 cx_r+1.88+7];
-            fill_y = [1.40+states(1,s) interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V+7,'linear')];
-            preview_area = fill(fill_x, fill_y, 'yellow',FaceAlpha=0.2);
-            sampling = false;
-        else
-            sampling = true;
+        if previewing
+            delete(camera_pos);
+            delete(preview_area);
+            camera_pos = scatter(cx_r+1.88, 1.40+states(1,s), MarkerFaceColor=[0 1 0],MarkerEdgeColor=[0 0 0],SizeData=100);
+            if sampling
+                fill_x = [cx_r+1.88 cx_r+1.88+5.06 cx_r+1.88+7];
+                if sensing
+                    fill_y = [1.40+states(1,s) interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V+7,'linear')];
+                else
+                    fill_y = [1.40+states(1,s) 0 0];
+                end
+                preview_area = fill(fill_x, fill_y, 'yellow',FaceAlpha=0.2);
+                sampling = false;
+            else
+                sampling = true;
+            end
         end
 
         txdata = round(TL(1,s),2);
