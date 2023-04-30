@@ -104,18 +104,18 @@ frames(s_f) = getframe(gcf);
 drawnow;
 mod_m = 100;
 newimg = zeros(371,1140,3);
-videoname = "videos/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"-fps-"+(1/dt)/mod_m;
+videoname = "videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"-fps-"+(1/dt)/mod_m;
 if not(exist("videos",'dir'))
     mkdir("videos");
 end
-if not(exist("videos/_half_thesis_sensor_",'dir'))
-    mkdir("videos/_half_thesis_sensor_");
+if not(exist("videos/"+branch,'dir'))
+    mkdir("videos/"+branch);
 end
-if not(exist("videos/_half_thesis_sensor_/"+control,'dir'))
-    mkdir("videos/_half_thesis_sensor_/"+control);
+if not(exist("videos/"+branch+"/"+control,'dir'))
+    mkdir("videos/"+branch+"/"+control);
 end
-if not(exist("videos/_half_thesis_sensor_/"+control+"/"+shape,'dir'))
-    mkdir("videos/_half_thesis_sensor_/"+control+"/"+shape);
+if not(exist("videos/"+branch+"/"+control+"/"+shape,'dir'))
+    mkdir("videos/"+branch+"/"+control+"/"+shape);
 end
 video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = (1/dt)/mod_m;

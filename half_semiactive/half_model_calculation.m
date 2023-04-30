@@ -1,7 +1,8 @@
-%% branch: half_thesis_sensor
+%% branch: semi-active-proto
 close all;
 clear;
 clc;
+branch = "_semi-active-proto_";
 
 %% Vehicle parameter
 m_b = 1000;     % [kg]      body mass
@@ -338,7 +339,7 @@ wr_acc = @(zwr,zwrdot,zb,ang,zbdot,angdot,rp,rpdot,ur) (k_sr*(-L_r*ang+zb-zwr)-k
 ang_acc =@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-(k_sf*(L_f*ang+zb-zwf)+c_sf*(L_f*angdot+zbdot-zwfdot))*L_f+(k_sr*(-L_r*ang+zb-zwr)+c_sr*(-L_r*angdot+zbdot-zwrdot))*L_r+(L_f*uf-L_r*ur))/I_b;
 
 % check preview road
-% videoname = "videos/_half_thesis_sensor_/"+"_LQR_fprev_rprev_"+"/"+shape+"/PreviewedRoad--"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld;
+% videoname = "videos/"+branch+"/"+"_LQR_fprev_rprev_"+"/"+shape+"/PreviewedRoad--"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld;
 % video = VideoWriter(videoname,'MPEG-4');
 % video.FrameRate = (1/tc)/100;
 % open(video);
@@ -679,33 +680,33 @@ fontsize(r_fig,10.5,"points");
 grid on;
 
 figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
-if not(exist("figs/_half_thesis_sensor_",'dir'))
-    mkdir("figs/_half_thesis_sensor_")
+if not(exist("figs/"+branch,'dir'))
+    mkdir("figs/"+branch)
 end
-if not(exist("figs/_half_thesis_sensor_/"+control,'dir'))
-    mkdir("figs/_half_thesis_sensor_/"+control)
+if not(exist("figs/"+branch+"/"+control,'dir'))
+    mkdir("figs/"+branch+"/"+control)
 end
-if not(exist("figs/_half_thesis_sensor_/"+control+"/"+shape,'dir'))
-    mkdir("figs/_half_thesis_sensor_/"+control+"/"+shape)
+if not(exist("figs/"+branch+"/"+control+"/"+shape,'dir'))
+    mkdir("figs/"+branch+"/"+control+"/"+shape)
 end
-if not(exist("jpgs/_half_thesis_sensor_",'dir'))
-    mkdir("jpgs/_half_thesis_sensor_")
+if not(exist("jpgs/"+branch,'dir'))
+    mkdir("jpgs/"+branch)
 end
-if not(exist("jpgs/_half_thesis_sensor_/"+control,'dir'))
-    mkdir("jpgs/_half_thesis_sensor_/"+control)
+if not(exist("jpgs/"+branch+"/"+control,'dir'))
+    mkdir("jpgs/"+branch+"/"+control)
 end
-if not(exist("jpgs/_half_thesis_sensor_/"+control+"/"+shape,'dir'))
-    mkdir("jpgs/_half_thesis_sensor_/"+control+"/"+shape)
+if not(exist("jpgs/"+branch+"/"+control+"/"+shape,'dir'))
+    mkdir("jpgs/"+branch+"/"+control+"/"+shape)
 end
-if not(exist("figs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder,'dir'))
-    mkdir("figs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder)
+if not(exist("figs/"+branch+"/"+control+"/"+shape+"/"+figfolder,'dir'))
+    mkdir("figs/"+branch+"/"+control+"/"+shape+"/"+figfolder)
 end
-if not(exist("jpgs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder,'dir'))
-    mkdir("jpgs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder)
+if not(exist("jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder,'dir'))
+    mkdir("jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder)
 end
 
-saveas(r_fig,"figs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.fig");
-saveas(r_fig,"jpgs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.jpg");
+saveas(r_fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.fig");
+saveas(r_fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.jpg");
 
 for i=1:height(states)
     if i==4 || i==8
@@ -733,8 +734,8 @@ ylabel("Wheel Actuator Force [N]");
 legend("{\it f_{af}} : Front Wheel", "{\it f_{ar}} : Rear Wheel");
 fontname(fig,"Times New Roman");
 fontsize(fig,10.5,"points");
-saveas(fig,"figs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force.fig");
-saveas(fig,"jpgs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force.jpg");
+saveas(fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force.fig");
+saveas(fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force.jpg");
 
 % compare the timings of rear road profile and actuator input
 fig = figure('name',"Actuator_Force_and_Road",'Position', [500+20 500-20 600 190]);
@@ -760,8 +761,8 @@ ax.YAxis(2).Color = [1 0 0];
 fontname(fig,"Times New Roman");
 fontsize(fig,10.5,"points");
 grid on;
-saveas(fig,"figs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force_and_Road.fig");
-saveas(fig,"jpgs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force_and_Road.jpg");
+saveas(fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force_and_Road.fig");
+saveas(fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force_and_Road.jpg");
 
 if animation
     close all;
