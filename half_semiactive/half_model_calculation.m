@@ -37,12 +37,12 @@ ts = 1/fs;       % sampling cycle
 animation = true; % draw an animation or not
 
 % control method
-passive = false;
+passive = true;
 LQR = false;
 rprev = false;
 LQR_rprev = false;
 fprev_rprev = false;
-LQR_fprev_rprev = true;
+LQR_fprev_rprev = false;
 
 ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_"];
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
@@ -413,22 +413,6 @@ dw_prev = zeros(4,M+1);
 % LOOP
 for i=1:c-1
 
-    % load current states
-    zb = states(1,i);
-    zwf = states(2,i);
-    zwr = states(3,i);
-    ang = states(4,i);
-    zbdot = states(5,i);
-    zwfdot = states(6,i);
-    zwrdot = states(7,i);
-    angdot = states(8,i);
-
-    % load road profile
-    rpf = r_p(1,i);
-    rpr = r_p(2,i);
-    rpfdot = r_p(3,i);
-    rprdot = r_p(4,i);
-
     % make road preview profile
     if mod(i+(ts/dt-1), ts/dt) == 0
         current_dis = r_p_prev(1,i);
@@ -511,76 +495,23 @@ for i=1:c-1
     end
     % set(check_plot, "XData", wf_grad(1,:), "YData", wf_grad(3,:));
     % drawnow;
+
+    % load current states
+    x = states(1:4,i);
+    v = states(5:8,i);
+
+    % load road profile
+    d = r_p(:,i);
     
     % load current input
-    uf = u(1, cc);
-    ur = u(2, cc);
+    u_in = u(:,cc);
 
-    % k1l1-update
-    kb1 = dt*zbdot;
-    kf1 = dt*zwfdot;
-    kr1 = dt*zwrdot;
-    ka1 = dt*angdot;
-    lb1 = dt*body_acc(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur);
-    lf1 = dt*wf_acc(zwf,zwfdot,zb,ang,zbdot,angdot,rpf,rpfdot,uf);
-    lr1 = dt*wr_acc(zwr,zwrdot,zb,ang,zbdot,angdot,rpr,rprdot,ur);
-    la1 = dt*ang_acc(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur);
+    % states-update with Runge-Kutta
+    % Runge kutta
+    states(:,i+1) = runge(x, v, u_in, d, Ap, Bp, Ep, dt);
+    accelerations(:,i+1) = [states(5,i+1);states(8,i+1)]./dt;
 
-    % k2l2-update
-    kb2 = dt*(zbdot+lb1/2);
-    kf2 = dt*(zwfdot+lf1/2);
-    kr2 = dt*(zwrdot+lr1/2);
-    ka2 = dt*(angdot+la1/2);
-    lb2 = dt*body_acc(zb+kb1/2,zbdot+lb1/2,zwf+kf1/2,zwr+kr1/2,ang+ka1/2,zwfdot+lf1/2,zwrdot+lr1/2,angdot+la1/2,uf,ur);
-    lf2 = dt*wf_acc(zwf+kf1/2,zwfdot+lf1/2,zb+kb1/2,ang+ka1/2,zbdot+lb1/2,angdot+la1/2,rpf,rpfdot,uf);
-    lr2 = dt*wr_acc(zwr+kr1/2,zwrdot+lr1/2,zb+kb1/2,ang+ka1/2,zbdot+lb1/2,angdot+la1/2,rpr,rprdot,ur);
-    la2 = dt*ang_acc(zb+kb1/2,zbdot+lb1/2,zwf+kf1/2,zwr+kr1/2,ang+ka1/2,zwfdot+lf1/2,zwrdot+lr1/2,angdot+la1/2,uf,ur);
-
-    % k3l3-update
-    kb3 = dt*(zbdot+lb2/2);
-    kf3 = dt*(zwfdot+lf2/2);
-    kr3 = dt*(zwrdot+lr2/2);
-    ka3 = dt*(angdot+la2/2);
-    lb3 = dt*body_acc(zb+kb2/2,zbdot+lb2/2,zwf+kf2/2,zwr+kr2/2,ang+ka2/2,zwfdot+lf2/2,zwrdot+lr2/2,angdot+la2/2,uf,ur);
-    lf3 = dt*wf_acc(zwf+kf2/2,zwfdot+lf2/2,zb+kb2/2,ang+ka2/2,zbdot+lb2/2,angdot+la2/2,rpf,rpfdot,uf);
-    lr3 = dt*wr_acc(zwr+kr2/2,zwrdot+lr2/2,zb+kb2/2,ang+ka2/2,zbdot+lb2/2,angdot+la2/2,rpr,rprdot,ur);
-    la3 = dt*ang_acc(zb+kb2/2,zbdot+lb2/2,zwf+kf2/2,zwr+kr2/2,ang+ka2/2,zwfdot+lf2/2,zwrdot+lr2/2,angdot+la2/2,uf,ur);
-
-    % k4l4-update
-    kb4 = dt*(zbdot+lb3/2);
-    kf4 = dt*(zwfdot+lf3/2);
-    kr4 = dt*(zwrdot+lr3/2);
-    ka4 = dt*(angdot+la3/2);
-    lb4 = dt*body_acc(zb+kb3/2,zbdot+lb3/2,zwf+kf3/2,zwr+kr3/2,ang+ka3/2,zwfdot+lf3/2,zwrdot+lr3/2,angdot+la3/2,uf,ur);
-    lf4 = dt*wf_acc(zwf+kf3/2,zwfdot+lf3/2,zb+kb3/2,ang+ka3/2,zbdot+lb3/2,angdot+la3/2,rpf,rpfdot,uf);
-    lr4 = dt*wr_acc(zwr+kr3/2,zwrdot+lr3/2,zb+kb3/2,ang+ka3/2,zbdot+lb3/2,angdot+la3/2,rpr,rprdot,ur);
-    la4 = dt*ang_acc(zb+kb3/2,zbdot+lb3/2,zwf+kf3/2,zwr+kr3/2,ang+ka3/2,zwfdot+lf3/2,zwrdot+lr3/2,angdot+la3/2,uf,ur);
-
-    % coordination Runge-Kutta coefficient
-    RK = [
-        kb1, kb2, kb3, kb4;
-        kf1, kf2, kf3, kf4;
-        kr1, kr2, kr3, kr4;
-        ka1, ka2, ka3, ka4;
-        lb1, lb2, lb3, lb4;
-        lf1, lf2, lf3, lf4;
-        lr1, lr2, lr3, lr4;
-        la1, la2, la3, la4;
-        ];
-
-    % states-update
-    for j=1:height(states)
-        states(j,i+1) = states(j,i) + (RK(j,1) + 2*RK(j,2) + 2*RK(j,3) + RK(j,4))/6;
-
-        % save accelerations
-        if j == 5
-            accelerations(1,i+1) = (RK(j,1) + 2*RK(j,2) + 2*RK(j,3) + RK(j,4))/(6*dt);  % body heave acceleration
-        elseif j == 8
-            accelerations(2,i+1) = (RK(j,1) + 2*RK(j,2) + 2*RK(j,3) + RK(j,4))/(6*dt);  % body pitch angular acceleration
-        end
-    end
-
-    % find appropriate input
+    % find appropriate next input
     if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive
         cc = (i-1)/(tc/dt)+1;                   % list slice
         [~,ia,~]=unique(wf_grad(1,:));
@@ -598,38 +529,9 @@ for i=1:c-1
         X(1:height(e),cc) = e(:,cc);                     % X=[e;dx]
         X(height(e)+1:end,cc) = dx(:,cc);
 
-        if rprev || fprev_rprev || LQR_fprev_rprev || LQR_rprev
-            if rprev || LQR_rprev
-                % rprev, LQR_rprev
-                for pre=1:M+1
-                    FDW(:,cc) = FDW(:,cc) + Fdj(:,:,pre)*dw_r(:, cc+(pre-1));
-                    % FDW(:,cc) = FDW(:,cc) + Fdj(:,:,pre)*dw_r(:, i+(pre-1)*(tc/dt));
-                end
-            else
-                % fprev_rprev, LQR_fprev_rprev
-                if wf_grad(1,1) <= 0
-                    for pre=1:M+1
-                        FDW(:,cc) = FDW(:,cc) + Fdj(:,:,pre)*dw_prev(:, pre);
-                        % FDW(:,cc) = FDW(:,cc) + Fdj(:,:,pre)*dw_fr(:, cc+(pre-1));
-                        % FDW(:,cc) = FDW(:,cc) + Fdj(:,:,pre)*dw_fr(:, i+(pre-1)*(tc/dt));
-                    end
-                else
-                    for pre=1:M+1
-                        FDW(:,cc) = FDW(:,cc) + Fdj(:,:,pre)*dw_r(:, cc+(pre-1));
-                    end
-                end
-            end
-            if LQR_rprev || LQR_fprev_rprev
-                % LQR_rprev, LQR_fprev_rprev
-                du(:,cc+1) = F*X(:,cc) + FDW(:,cc);
-            else
-                % rprev, fprev_rprev
-                du(:,cc+1) = FDW(:,cc);
-            end
-        else
-            % LQR
-            du(:,cc+1) = F*X(:,cc);
-        end
+        % calculate input
+        du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
+
         if cc ~= 1
             u(:, cc+1) = u(:, cc) + du(:, cc+1);
         else
@@ -657,7 +559,9 @@ end
 pitch_integral = trapz(TL(1:end-width(states(4,isnan(states(4,:))))),abs(rad2deg(double(states(4,1:end-width(states(4,isnan(states(4,:)))))))))
 pitchacc_integral = trapz(TL(1:end-width(states(8,isnan(states(8,:))))),abs(rad2deg(double(states(8,1:end-width(states(8,isnan(states(8,:)))))))))
 
-%% ========================Drawing figures======================== %%
+%% =============================================================== %%
+%                          Drawing figures                          %
+% ================================================================= %
 states_name = [
     "Body_Heave_Displacement", "Time [s]", "Body Heave Displacement [m]";
     "Front_Wheel_Heave_Displacement", "Time [s]", "Front Wheel Heave Displacement [m]";
@@ -680,30 +584,7 @@ fontsize(r_fig,10.5,"points");
 grid on;
 
 figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
-if not(exist("figs/"+branch,'dir'))
-    mkdir("figs/"+branch)
-end
-if not(exist("figs/"+branch+"/"+control,'dir'))
-    mkdir("figs/"+branch+"/"+control)
-end
-if not(exist("figs/"+branch+"/"+control+"/"+shape,'dir'))
-    mkdir("figs/"+branch+"/"+control+"/"+shape)
-end
-if not(exist("jpgs/"+branch,'dir'))
-    mkdir("jpgs/"+branch)
-end
-if not(exist("jpgs/"+branch+"/"+control,'dir'))
-    mkdir("jpgs/"+branch+"/"+control)
-end
-if not(exist("jpgs/"+branch+"/"+control+"/"+shape,'dir'))
-    mkdir("jpgs/"+branch+"/"+control+"/"+shape)
-end
-if not(exist("figs/"+branch+"/"+control+"/"+shape+"/"+figfolder,'dir'))
-    mkdir("figs/"+branch+"/"+control+"/"+shape+"/"+figfolder)
-end
-if not(exist("jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder,'dir'))
-    mkdir("jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder)
-end
+made_successfully = folder_maker(branch,control,shape,figfolder);
 
 saveas(r_fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.fig");
 saveas(r_fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.jpg");
