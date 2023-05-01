@@ -37,12 +37,12 @@ ts = 1/fs;       % sampling cycle
 animation = true; % draw an animation or not
 
 % control method
-passive = true;
+passive = false;
 LQR = false;
 rprev = false;
 LQR_rprev = false;
 fprev_rprev = false;
-LQR_fprev_rprev = false;
+LQR_fprev_rprev = true;
 
 ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_"];
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
