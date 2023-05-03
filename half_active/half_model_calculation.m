@@ -40,9 +40,9 @@ animation = true; % draw an animation or not
 passive = false;
 LQR = false;
 rprev = false;
-LQR_rprev = false;
+LQR_rprev = true;
 fprev_rprev = false;
-LQR_fprev_rprev = true;
+LQR_fprev_rprev = false;
 
 ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_"];
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
@@ -51,11 +51,11 @@ control = ctrl_names(logi_ctrl)
 %% road profile
 
 sensing = false;
-paper = false;
+paper = true;
 sin_wave = false;
 step = false;
 manhole = false;
-jari = true;
+jari = false;
 
 TL = 0:dt:T;                                                                  % time list ([s])
 dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
@@ -530,7 +530,7 @@ for i=1:c-1
         X(height(e)+1:end,cc) = dx(:,cc);
 
         % calculate input
-        du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
+        du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
 
         if cc ~= 1
             u(:, cc+1) = u(:, cc) + du(:, cc+1);

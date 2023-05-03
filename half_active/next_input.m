@@ -1,15 +1,15 @@
-function du_next = next_input(logi_ctrl,M,F,X,FDW,Fdj,dw_r,dw_prev,dw_fr)
+function du_next = next_input(logi_ctrl,M,F,X,FDW,Fdj,thre,dw_r,dw_prev,dw_fr)
     
     % logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev]
     if any(logi_ctrl(3:end))
-        if any(3:4)
+        if any(logi_ctrl(3:4))
             % rprev, LQR_rprev
             for pre=1:M+1
                 FDW = FDW + Fdj(:,:,pre)*dw_r(:, (pre));
             end
         else
             % fprev_rprev, LQR_fprev_rprev
-            if wf_grad(1,1) <= 0
+            if thre <= 0
                 for pre=1:M+1
                     FDW = FDW + Fdj(:,:,pre)*dw_prev(:, pre);
                     % FDW = FDW + Fdj(:,:,pre)*dw_fr(:, (pre-1));
