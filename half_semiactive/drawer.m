@@ -1,4 +1,4 @@
-function drawer(x,y,i,k,figfolder,control,shape)
+function drawer(x,y,i,k,figfolder,branch,control,shape)
 
 fig = figure('name',i(1),'Position', [500+20*k 500-20*k 600 190]);
 plot(x,y,"LineWidth",2,"Color","#0000ff");
