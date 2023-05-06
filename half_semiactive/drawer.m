@@ -8,7 +8,7 @@ xlabel(i(2));
 ylabel(i(3));
 fontname(fig,"Times New Roman");
 fontsize(fig,10.5,"points");
-saveas(fig,"figs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/"+i(1));
-saveas(fig,"jpgs/_half_thesis_sensor_/"+control+"/"+shape+"/"+figfolder+"/"+i(1)+".jpg");
+saveas(fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/"+i(1));
+saveas(fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/"+i(1)+".jpg");
 
 end
