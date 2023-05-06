@@ -1,7 +1,9 @@
 function du_next = next_input(logi_ctrl,M,F,X,FDW,Fdj,thre,dw_r,dw_prev,dw_fr)
     
     % logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev]
-    if any(logi_ctrl(3:end))
+    if logi_ctrl(1)
+        du_next = zeros(2,1);
+    elseif any(logi_ctrl(3:end))
         if any(logi_ctrl(3:4))
             % rprev, LQR_rprev
             for pre=1:M+1

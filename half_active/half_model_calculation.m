@@ -37,10 +37,10 @@ ts = 1/fs;       % sampling cycle
 animation = true; % draw an animation or not
 
 % control method
-passive = false;
+passive = true;
 LQR = false;
 rprev = false;
-LQR_rprev = true;
+LQR_rprev = false;
 fprev_rprev = false;
 LQR_fprev_rprev = false;
 
