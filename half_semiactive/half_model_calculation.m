@@ -38,11 +38,11 @@ animation = true; % draw an animation or not
 
 % control method
 passive = false;
-LQR = false;
+LQR = true;
 rprev = false;
 LQR_rprev = false;
 fprev_rprev = false;
-LQR_fprev_rprev = true;
+LQR_fprev_rprev = false;
 
 ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_"];
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
@@ -531,6 +531,16 @@ for i=1:c-1
 
         % calculate input
         du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
+        fv_diff = states(1,i)-states(2,i);
+        fr_diff = states(1,i)-states(3,i);
+
+        % TEST pre semi-active-suspension
+        if sign(fv_diff) =< 0
+            du(1,cc+1) = 0;
+        end
+        if sign(fr_diff) =< 0
+            du(2,cc+1) = 0;
+        end
 
         if cc ~= 1
             u(:, cc+1) = u(:, cc) + du(:, cc+1);
