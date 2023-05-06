@@ -601,16 +601,16 @@ saveas(r_fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.j
 
 for i=1:height(states)
     if i==4 || i==8
-        drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,figfolder,control,shape);
+        drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,figfolder,branch,control,shape);
     else
-        drawer(TL,states(i,:),states_name(i,:),i,figfolder,control,shape);
+        drawer(TL,states(i,:),states_name(i,:),i,figfolder,branch,control,shape);
     end
 end
 
 
 %% additional draw
-drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,figfolder,control,shape);
-drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,figfolder,control,shape);
+drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,figfolder,branch,control,shape);
+drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,figfolder,branch,control,shape);
 
 % drawer(control_TL,u(1,:),["Front_Wheel_Actuator_Force", "Time [s]", "Front Wheel Actuator Force [N]"],11,figfolder,shape);
 % drawer(control_TL,u(2,:),["Rear_Wheel_Actuator_Force", "Time [s]", "Rear Wheel Actuator Force [N]"],12,figfolder,shape);
