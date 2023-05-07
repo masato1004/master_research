@@ -37,12 +37,12 @@ ts = 1/fs;       % sampling cycle
 animation = true; % draw an animation or not
 
 % control method
-passive = false;
+passive = true;
 LQR = false;
 rprev = false;
 LQR_rprev = false;
 fprev_rprev = false;
-LQR_fprev_rprev = true;
+LQR_fprev_rprev = false;
 
 ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_"];
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
@@ -50,9 +50,9 @@ control = ctrl_names(logi_ctrl)
 
 %% road profile
 
-sensing = false;
+sensing = true;
 paper = false;
-sin_wave = true;
+sin_wave = false;
 step = false;
 manhole = false;
 jari = false;
@@ -453,20 +453,20 @@ for i=1:c-1
         eta_1 = 0.5*(1-eta);
         eta_2 = 0.5*(1+eta);
 
-        [~,ia,~]=unique(wf_global(1,:));
-        wf_global = wf_global(:,ia);
+        % [~,ia,~]=unique(wf_global(1,:));
+        % wf_global = wf_global(:,ia);
 
-        % wf_global = [wf_global, wf_local];
-        % [~,ind] = sort(wf_global(1,:));
-        % wf_global=wf_global(:,ind);
+        wf_global = [wf_global, wf_local];
+        [~,ind] = sort(wf_global(1,:));
+        wf_global=wf_global(:,ind);
 
 
         % mov_num = mm_ratio*width(wf_local);
 
-        % notnan_wfg = rmmissing(wf_global,2);
-        % notnan_wfg(1,:) = notnan_wfg(1,:)./V;
 
         if sensing
+            notnan_wfg = rmmissing(wf_global,2);
+            notnan_wfg(1,:) = notnan_wfg(1,:)./V;
             % WA + filtfilt
             [~,ia,~]=unique(notnan_wfg(1,:));
             notnan_wfg = notnan_wfg(:,ia);
