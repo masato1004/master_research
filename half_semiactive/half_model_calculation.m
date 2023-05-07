@@ -535,10 +535,10 @@ for i=1:c-1
         fr_diff = states(1,i)-states(3,i);
 
         % TEST pre semi-active-suspension
-        if sign(fv_diff) <= 0
+        if sign(fv_diff)+sign(du(1,cc+1)) == 0
             du(1,cc+1) = 0;
         end
-        if sign(fr_diff) <= 0
+        if sign(fr_diff)+sign(du(2,cc+1)) == 0
             du(2,cc+1) = 0;
         end
 
