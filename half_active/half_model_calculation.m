@@ -37,12 +37,12 @@ ts = 1/fs;       % sampling cycle
 animation = true; % draw an animation or not
 
 % control method
-passive = true;
+passive = false;
 LQR = false;
 rprev = false;
 LQR_rprev = false;
 fprev_rprev = false;
-LQR_fprev_rprev = false;
+LQR_fprev_rprev = true;
 
 ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_"];
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
@@ -51,8 +51,8 @@ control = ctrl_names(logi_ctrl)
 %% road profile
 
 sensing = false;
-paper = true;
-sin_wave = false;
+paper = false;
+sin_wave = true;
 step = false;
 manhole = false;
 jari = false;
@@ -60,7 +60,7 @@ jari = false;
 TL = 0:dt:T;                                                                  % time list ([s])
 dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
 start_disturbance = 9;                                                        % the start distance of disturbance ([m])
-max_z0 = 0.080;                                                                % [m] max road displacement
+max_z0 = 0.005;                                                                % [m] max road displacement
 const = 6;                                                                    % amplitude
 max_distance = 300;                                                           % [m] driving mileage
 dis_total = 0:max_distance/(T/dt):max_distance;                               % distance list for road profile ([m])
@@ -102,8 +102,8 @@ elseif paper
 elseif sin_wave
     disturbance_total_f = max_z0*0.5+max_z0*sin(const*dis_total_f-pi/2)/2;        % road disturbance for front wheel ([m])
     disturbance_total_r = max_z0*0.5+max_z0*sin(const*dis_total_r-pi/2)/2;        % road disturbance for rear wheel ([m])
-    road_total_f = [zeros(1,int32(T*3/(dt*max_distance))), disturbance_total_f];  % converting front disturbance and buffer ([m])
-    road_total_r = [zeros(1,int32(T*(3+L_f+L_r)/(dt*max_distance))), disturbance_total_r];  % converting rear disturbance and buffer ([m])
+    road_total_f = [zeros(1,int32(T*start_disturbance/(dt*max_distance))), disturbance_total_f];  % converting front disturbance and buffer ([m])
+    road_total_r = [zeros(1,int32(T*(start_disturbance+L_f+L_r)/(dt*max_distance))+1), disturbance_total_r];  % converting rear disturbance and buffer ([m])
     
     r_p_f = makima(dis_total,road_total_f,dis);                                   % front road profile
     r_p_r = makima(dis_total,road_total_r,dis);                                   % rear road profile
@@ -591,16 +591,16 @@ saveas(r_fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.j
 
 for i=1:height(states)
     if i==4 || i==8
-        drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,figfolder,control,shape);
+        drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,figfolder,branch,control,shape);
     else
-        drawer(TL,states(i,:),states_name(i,:),i,figfolder,control,shape);
+        drawer(TL,states(i,:),states_name(i,:),i,figfolder,branch,control,shape);
     end
 end
 
 
 %% additional draw
-drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,figfolder,control,shape);
-drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,figfolder,control,shape);
+drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,figfolder,branch,control,shape);
+drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,figfolder,branch,control,shape);
 
 % drawer(control_TL,u(1,:),["Front_Wheel_Actuator_Force", "Time [s]", "Front Wheel Actuator Force [N]"],11,figfolder,shape);
 % drawer(control_TL,u(2,:),["Rear_Wheel_Actuator_Force", "Time [s]", "Rear Wheel Actuator Force [N]"],12,figfolder,shape);
