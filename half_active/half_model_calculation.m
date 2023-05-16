@@ -37,10 +37,10 @@ ts = 1/fs;       % sampling cycle
 animation = true; % draw an animation or not
 
 % control method
-passive = true;
+passive = false;
 LQR = false;
 rprev = false;
-LQR_rprev = false;
+LQR_rprev = true;
 fprev_rprev = false;
 LQR_fprev_rprev = false;
 
@@ -50,8 +50,8 @@ control = ctrl_names(logi_ctrl)
 
 %% road profile
 
-sensing = true;
-paper = false;
+sensing = false;
+paper = true;
 sin_wave = false;
 step = false;
 manhole = false;
