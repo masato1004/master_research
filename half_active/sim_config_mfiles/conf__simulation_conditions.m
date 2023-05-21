@@ -4,8 +4,12 @@ animation = false;
 prev_anim = false;
 
 % add noise or not
-high_freq_noise = false;
+high_freq_noise = true;
 low_freq_noise  = false;
+
+% spatial smoothing method
+wa = true;
+lpf = true;
 
 % control method
 passive = false;
@@ -16,8 +20,8 @@ fprev_rprev     = false;
 LQR_fprev_rprev = true;
 
 % road profile
-sensing = true;
-paper   = false;
+sensing = false;
+paper   = true;
 sin_wave = false;
 step    = false;
 manhole = false;
