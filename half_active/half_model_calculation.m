@@ -23,29 +23,29 @@ run("sim_config_mfiles/conf__state_space_settings.m")
 % Control design
 run("sim_config_mfiles/conf__control_design.m")
 
+% Preview data loading
+run("sim_config_mfiles/conf__preview_data_loader.m")
+
 % Animation of previewing
 if prev_anim
     run("sim_config_mfiles/conf__preview_animation_settings.m")
 end
-
-% Preview data loading
-run("sim_config_mfiles/conf__preview_data_loader.m")
 
 % Preview animation settings
 % run("sim_config_mfiles/conf__preview_animation_settings.m")
 
 %% accelerate functions (without controller)
 % body acceleration
-body_acc=@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-k_sf*(L_f*ang+zb-zwf)-k_sr*(-L_r*ang+zb-zwr)-c_sf*(L_f*angdot+zbdot-zwfdot)-c_sr*(-L_r*angdot+zbdot-zwrdot)+uf+ur)/m_b;
+% body_acc=@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-k_sf*(L_f*ang+zb-zwf)-k_sr*(-L_r*ang+zb-zwr)-c_sf*(L_f*angdot+zbdot-zwfdot)-c_sr*(-L_r*angdot+zbdot-zwrdot)+uf+ur)/m_b;
 
 % front wheel acceleration
-wf_acc = @(zwf,zwfdot,zb,ang,zbdot,angdot,rp,rpdot,uf) (k_sf*(L_f*ang+zb-zwf)-k_w*(zwf-rp)+c_sf*(L_f*angdot+zbdot-zwfdot)-c_w*(zwfdot-rpdot)-uf)/m_w;
+% wf_acc = @(zwf,zwfdot,zb,ang,zbdot,angdot,rp,rpdot,uf) (k_sf*(L_f*ang+zb-zwf)-k_w*(zwf-rp)+c_sf*(L_f*angdot+zbdot-zwfdot)-c_w*(zwfdot-rpdot)-uf)/m_w;
 
 % rear wheel acceleration
-wr_acc = @(zwr,zwrdot,zb,ang,zbdot,angdot,rp,rpdot,ur) (k_sr*(-L_r*ang+zb-zwr)-k_w*(zwr-rp)+c_sr*(-L_r*angdot+zbdot-zwrdot)-c_w*(zwrdot-rpdot)-ur)/m_w;
+% wr_acc = @(zwr,zwrdot,zb,ang,zbdot,angdot,rp,rpdot,ur) (k_sr*(-L_r*ang+zb-zwr)-k_w*(zwr-rp)+c_sr*(-L_r*angdot+zbdot-zwrdot)-c_w*(zwrdot-rpdot)-ur)/m_w;
 
 % angular acceleration
-ang_acc =@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-(k_sf*(L_f*ang+zb-zwf)+c_sf*(L_f*angdot+zbdot-zwfdot))*L_f+(k_sr*(-L_r*ang+zb-zwr)+c_sr*(-L_r*angdot+zbdot-zwrdot))*L_r+(L_f*uf-L_r*ur))/I_b;
+% ang_acc =@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-(k_sf*(L_f*ang+zb-zwf)+c_sf*(L_f*angdot+zbdot-zwfdot))*L_f+(k_sr*(-L_r*ang+zb-zwr)+c_sr*(-L_r*angdot+zbdot-zwrdot))*L_r+(L_f*uf-L_r*ur))/I_b;
 
 
 %% ========================simulation========================= %%
@@ -73,8 +73,6 @@ for i=1:c-1
                     prev_start:tc*V:prev_end;
                     interp1(r_p_prev(1,:),data_end*ones(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end,'linear')
                     ];
-                    
-                % display("HERE"+sc);
             end
         else
             wf_local = [
@@ -89,9 +87,6 @@ for i=1:c-1
             wf_local = wf_local + noise;
         end
 
-        % set(check_plot0, "XData", wf_local(1,:), "YData", wf_local(2,:));
-        % drawnow;
-
         Lpass = wf_local(1,1) - last_minimum;
         last_minimum = wf_local(1,1);
         Ltotal = wf_local(1,end) - wf_local(1,1);
@@ -99,19 +94,29 @@ for i=1:c-1
         eta_1 = 0.5*(1-eta);
         eta_2 = 0.5*(1+eta);
 
-        % [~,ia,~]=unique(wf_global(1,:));
-        % wf_global = wf_global(:,ia);
+        if wa
+            % WA
+            if sensing
+                wf_global = [
+                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
+                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
+                    ];
 
+            else
+                wf_global = [
+                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), wf_local(1,:);
+                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), makima(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end))).*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
+                    ];
+            end
 
-
-        % mov_num = mm_ratio*width(wf_local);
-
-
-        if sensing
+        else
             wf_global = [wf_global, wf_local];
             [~,ind] = sort(wf_global(1,:));
             wf_global=wf_global(:,ind);
-            
+        end
+
+        if lpf
+            % LPF
             notnan_wfg = rmmissing(wf_global,2);
             notnan_wfg(1,:) = notnan_wfg(1,:)./V;
             % WA + filtfilt
@@ -127,17 +132,13 @@ for i=1:c-1
                 grad_data2
                 ];
         else
-            % WA
-            wf_global = [
-                wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), wf_local(1,:);
-                wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), makima(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end))).*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
-                ];
             wf_grad = [
                 wf_global(1,:)./V;
                 wf_global(2,:);
                 gradient(wf_global(2,:))./(gradient(wf_global(1,:))./V)
                 ];
         end
+
         sc = sc + 1;
     end
     % set(check_plot, "XData", wf_grad(1,:), "YData", wf_grad(3,:));

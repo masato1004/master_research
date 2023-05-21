@@ -8,12 +8,6 @@ if sensing
     file = load(load_dir + "/" + listing(2).name);
     vertices = file.vertices;
     
-    mm_ratio = 0.35;
-    mm_range = 5*ts;
-    
-    filt_des = designfilt("lowpassiir",FilterOrder=6, HalfPowerFrequency=0.006,DesignMethod="butter",SampleRate=1);
-    
-    
     wf_local = previewing(vertices);
     data_end = wf_local(2,round(end/2));
     wf_global = wf_local; last_minimum = 1.9;

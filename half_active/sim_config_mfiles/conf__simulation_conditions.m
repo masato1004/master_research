@@ -1,14 +1,14 @@
 %% Dfine simulation condition with boolean
 % draw an animation or not
 animation = false;
-prev_anim = false;
+prev_anim = true;
 
 % add noise or not
 high_freq_noise = true;
 low_freq_noise  = false;
 
 % spatial smoothing method
-wa = true;
+wa  = true;
 lpf = true;
 
 % control method
@@ -35,7 +35,7 @@ fs  = 50;         % sampling frequence
 ts  = 1/fs;       % sampling cycle
 cc  = 1;          % control cycle counter
 sc  = 1;          % sampling cycle counter
-sd  = 0.025/3     % standard deviation of additional noise
+sd  = 0.02/3     % standard deviation of additional noise
 
 
 %% conbine settings
@@ -56,3 +56,8 @@ control = ctrl_names(logi_ctrl)
 shape_names = ["_sensing2_","_paper_","_sin_","_step_","_manhole_","_jari_"];
 logi_shape = [sensing, paper, sin_wave, step, manhole, jari];
 shape = shape_names(logi_shape)
+
+%% LPF settings
+if lpf
+    filt_des = designfilt("lowpassiir",FilterOrder=6, HalfPowerFrequency=0.006,DesignMethod="butter",SampleRate=1);
+end
