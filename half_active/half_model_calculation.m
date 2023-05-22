@@ -104,8 +104,8 @@ for i=1:c-1
 
             else
                 wf_global = [
-                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), wf_local(1,:);
-                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-0.1), makima(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end))).*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
+                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-2), wf_local(1,:);
+                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-2), makima(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end))).*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
                     ];
             end
 
