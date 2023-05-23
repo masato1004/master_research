@@ -88,10 +88,10 @@ for i=1:c-1
         end
         if low_freq_noise
             sig = 3-2*randi(2);
-            lnoise = sig*lsd(wf_local(1,:))+(0.15/3)*randn(size(wf_local(2,:)));
+            lnoise = sig*lsd(wf_local(1,:))+(lsd(wf_local(1,:))./3).*randn(size(wf_local(2,:)));
             wf_local(1,:) = wf_local(1,:) + lnoise;
             [~,ind] = sort(wf_local(1,:));
-            wf_local=wf_local(:,ind);
+            wf_local= wf_local(:,ind);
         end
 
         if wa
