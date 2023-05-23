@@ -80,18 +80,24 @@ for i=1:c-1
         
         % Noise addition
         if high_freq_noise
-            noise = sd*randn(size(wf_local(2,:)));
-            wf_local = wf_local + noise;
+            hnoise = hsd*randn(size(wf_local(2,:)));
+            wf_local(2,:) = wf_local(2,:) + hnoise;
+        end
+        if low_freq_noise
+            sig = -1+2*mod(randi(10000),2);
+            lnoise = lsd(wf_local(1,:))+(0.15/3)*randn(size(wf_local(2,:)));
+            wf_local(1,:) = wf_local(1,:) + lnoise;
+            [~,ind] = sort(wf_local(1,:));
+            wf_local=wf_local(:,ind);
         end
 
-        Lpass = wf_local(1,1) - last_minimum;
-        last_minimum = wf_local(1,1);
-        Ltotal = wf_local(1,end) - wf_local(1,1);
-        eta = Lpass/Ltotal;
-        eta_1 = 0.5*(1-eta);
-        eta_2 = 0.5*(1+eta);
-
         if wa
+            Lpass = wf_local(1,1) - last_minimum;
+            last_minimum = wf_local(1,1);
+            Ltotal = wf_local(1,end) - wf_local(1,1);
+            eta = Lpass/Ltotal;
+            eta_1 = 0.5*(1-eta);
+            eta_2 = 0.5*(1+eta);
             % WA
             if sensing
                 wf_global = [
@@ -186,9 +192,9 @@ for i=1:c-1
         wf_grad(1,:) = wf_grad(1,:) - tc;
 
         if prev_anim
-            set(check_plot0, "XData", wf_local(1,:), "YData", wf_local(2,:));
-            set(check_plot, "XData", wf_global(1,:), "YData", wf_global(2,:));
-            set(check_plot2, "XData", wf_grad(1,:).*V, "YData", wf_grad(2,:));
+            set(check_plot0, "XData", wf_local(1,:), "YData", wf_local(2,:));  % blue
+            set(check_plot, "XData", wf_global(1,:), "YData", wf_global(2,:)); % red
+            set(check_plot2, "XData", wf_grad(1,:).*V, "YData", wf_grad(2,:)); % green
             % display(cc);
             
             txdata = round(TL(1,i),2);
