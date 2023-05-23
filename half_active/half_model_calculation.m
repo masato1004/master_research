@@ -26,13 +26,10 @@ run("sim_config_mfiles/conf__control_design.m")
 % Preview data loading
 run("sim_config_mfiles/conf__preview_data_loader.m")
 
-% Animation of previewing
+% Preview animation settings
 if prev_anim
     run("sim_config_mfiles/conf__preview_animation_settings.m")
 end
-
-% Preview animation settings
-% run("sim_config_mfiles/conf__preview_animation_settings.m")
 
 %% accelerate functions (without controller)
 % body acceleration
