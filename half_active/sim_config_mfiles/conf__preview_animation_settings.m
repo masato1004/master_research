@@ -1,5 +1,5 @@
 % check preview road
-videoname = "../videos/"+branch+"/"+"_LQR_fprev_rprev_"+"/"+shape+"/PreviewedRoad--"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld;
+videoname = "../videos/"+conditions;
 video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = (1/tc)/100;
 open(video);

@@ -26,6 +26,9 @@ run("sim_config_mfiles/conf__control_design.m")
 % Preview data loading
 run("sim_config_mfiles/conf__preview_data_loader.m")
 
+figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
+conditions = folder_maker(branch,control,shape,figfolder,smoothing_method,added_noise);
+
 % Preview animation settings
 if prev_anim
     run("sim_config_mfiles/conf__preview_animation_settings.m")
@@ -84,8 +87,8 @@ for i=1:c-1
             wf_local(2,:) = wf_local(2,:) + hnoise;
         end
         if low_freq_noise
-            sig = -1+2*mod(randi(10000),2);
-            lnoise = lsd(wf_local(1,:))+(0.15/3)*randn(size(wf_local(2,:)));
+            sig = 3-2*randi(2);
+            lnoise = sig*lsd(wf_local(1,:))+(0.15/3)*randn(size(wf_local(2,:)));
             wf_local(1,:) = wf_local(1,:) + lnoise;
             [~,ind] = sort(wf_local(1,:));
             wf_local=wf_local(:,ind);
@@ -240,25 +243,22 @@ fontname(r_fig,"Times New Roman");
 fontsize(r_fig,10.5,"points");
 grid on;
 
-figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
-made_successfully = folder_maker(branch,control,shape,figfolder);
-
-saveas(r_fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.fig");
-saveas(r_fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Road_Profile.jpg");
+saveas(r_fig,"figs/"+conditions+"/Road_Profile.fig");
+saveas(r_fig,"jpgs/"+conditions+"/Road_Profile.jpg");
 
 for i=1:height(states)
     if i==4 || i==8
-        drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,figfolder,branch,control,shape);
+        drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,conditions);
     else
-        drawer(TL,states(i,:),states_name(i,:),i,figfolder,branch,control,shape);
+        drawer(TL,states(i,:),states_name(i,:),i,conditions);
     end
 end
 
 
 %% additional draw
 % accelerations
-drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,figfolder,branch,control,shape);
-drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,figfolder,branch,control,shape);
+drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,conditions);
+drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,conditions);
 
 % % preview data
 % p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);
@@ -302,8 +302,8 @@ ylabel("Wheel Actuator Force [N]");
 legend("{\it f_{af}} : Front Wheel", "{\it f_{ar}} : Rear Wheel");
 fontname(fig,"Times New Roman");
 fontsize(fig,10.5,"points");
-saveas(fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force.fig");
-saveas(fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force.jpg");
+saveas(fig,"figs/"+conditions+"/Actuator_Force.fig");
+saveas(fig,"jpgs/"+conditions+"/Actuator_Force.jpg");
 
 % compare the timings of rear road profile and actuator input
 fig = figure('name',"Actuator_Force_and_Road",'Position', [500+20 500-20 600 190]);
@@ -329,8 +329,8 @@ ax.YAxis(2).Color = [1 0 0];
 fontname(fig,"Times New Roman");
 fontsize(fig,10.5,"points");
 grid on;
-saveas(fig,"figs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force_and_Road.fig");
-saveas(fig,"jpgs/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/Actuator_Force_and_Road.jpg");
+saveas(fig,"figs/"+conditions+"/Actuator_Force_and_Road.fig");
+saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
 
 if animation
     close all;
