@@ -1,5 +1,5 @@
 % check preview road
-videoname = "../videos/"+conditions;
+videoname = "../videos/"+conditions+"/preview_check";
 video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = (1/tc)/100;
 open(video);
