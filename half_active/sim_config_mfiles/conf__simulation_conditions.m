@@ -1,14 +1,14 @@
 %% Dfine simulation condition with boolean
 % draw an animation or not
-animation = true;
-prev_anim = true;
+animation = false;
+prev_anim = false;
 
 % add noise or not
 high_freq_noise = true;
 low_freq_noise  = true;
 
 % spatial smoothing method
-wa  = false;
+wa  = true;
 lpf = true;
 
 % control method
@@ -37,7 +37,7 @@ cc  = 1;          % control cycle counter
 sc  = 1;          % sampling cycle counter
 hsd = 0.02/3;     % standard deviation of additional high freq noise
 % lsd = @(x) 4.185*(x.^2)/1000;     % standard deviation of additional low freq noise
-lsd = @(x) 4.185*(x.^2)/1000;     % standard deviation of additional low freq noise
+lsd = @(a,b,x) x.*a + b;     % standard deviation of additional low freq noise
 
 
 %% conbine settings

@@ -89,8 +89,8 @@ for i=1:c-1
         if low_freq_noise
             sig = 3-2*randi(2);
             % lnoise = sig*lsd(wf_local(1,:))+(lsd(wf_local(1,:))./3).*randn(size(wf_local(2,:)));
-            lnoise = sig*
-            wf_local(1,:) = wf_local(1,:) + lnoise;
+            lnoise = sig*lsd((0.03/7)*randn(),(0.005)*randn(),wf_local(1,:));
+            wf_local(2,:) = wf_local(2,:) + lnoise;
             [~,ind] = sort(wf_local(1,:));
             wf_local= wf_local(:,ind);
         end
@@ -122,29 +122,25 @@ for i=1:c-1
             wf_global=wf_global(:,ind);
         end
 
+
+        % LPF
+        notnan_wfg = rmmissing(wf_global,2);
+        notnan_wfg(1,:) = notnan_wfg(1,:)./V;
+        % WA + filtfilt
+        [~,ia,~]=unique(notnan_wfg(1,:));
+        notnan_wfg = notnan_wfg(:,ia);
+        grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
+        grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
+        % disp(size(grad_time));
         if lpf
-            % LPF
-            notnan_wfg = rmmissing(wf_global,2);
-            notnan_wfg(1,:) = notnan_wfg(1,:)./V;
-            % WA + filtfilt
-            [~,ia,~]=unique(notnan_wfg(1,:));
-            notnan_wfg = notnan_wfg(:,ia);
-            grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
-            % disp(size(grad_time));
-            grad_data1 = filtfilt(filt_des,double(interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear")));
-            grad_data2 = gradient(grad_data1)./(gradient(grad_time));
-            wf_grad = [
-                grad_time;
-                grad_data1;
-                grad_data2
-                ];
-        else
-            wf_grad = [
-                wf_global(1,:)./V;
-                wf_global(2,:);
-                gradient(wf_global(2,:))./(gradient(wf_global(1,:))./V)
-                ];
+            grad_data1 = filtfilt(filt_des,double(grad_data1));
         end
+        grad_data2 = gradient(grad_data1)./gradient(grad_time);
+        wf_grad = [
+            grad_time;
+            grad_data1;
+            grad_data2
+            ];
 
         sc = sc + 1;
     end
