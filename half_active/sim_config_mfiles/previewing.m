@@ -91,7 +91,7 @@ function prev_profile = previewing(vertices)
     prev_profile=line(ind,2:3)';
     
     % fig = figure('name', "Road Displacement from ZED",'Position', [500-20 500-20 1400 380]);
-    % plot(line_neo(:,2),line_neo(:,3),"LineWidth",1,"Color","#0000ff");
+    % plot(prev_profile(1,:),prev_profile(2,:),"LineWidth",1,"Color","#0000ff");
     
 end
 

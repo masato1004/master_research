@@ -3,7 +3,14 @@ function prev_profile = previewing(vertices)
     % LOAD POINT CLOUD
     
     % PICK UP ROAD POINT CLOUD
-    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
+    % range_min = 5.06;     % minimum measurable distance [m]
+    % range_max = 18;        % maximum measurable distance [m]
+    road_width_min = -1.2;
+    road_width_max = 1.2;
+    
+    % road_data = vertices(vertices(:,1)>=road_width_min & vertices(:,1)<=road_width_max & vertices(:,2)<=range_max & vertices(:,2)>=range_min,:,:);
+
+    road_data = vertices(vertices(:,1)>=road_width_min & vertices(:,1)<=road_width_max,:,:);
     raod_cloud = pointCloud(road_data);
     % figure;
     % pcshow(raod_cloud);
