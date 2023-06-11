@@ -8,17 +8,11 @@ len = length(listing);
 
 angle_errors = zeros(len*iteration_num,1);
 height_errors = zeros(len,iteration_num);
-vertices_list = [];
 
-for i = 1:len
+for i = 1:len    
     file = load(load_dir + "/" + listing(i).name);
-    vertices = file.vertices;
-    vertices_list(i) = vertices;
-end
-
-for i = 1:len       
+    vertices = file.vertices;   
     for k = 1:iteration_num
-        vertices = vertices_list(i);
         [prev_profile, angle_d, predicted_height] = previewing(vertices);
 
         angle_errors(k+(i-1)*iteration_num,1) = angle_d-16;
