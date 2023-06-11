@@ -1,15 +1,15 @@
 %% Dfine simulation condition with boolean
 % draw an animation or not
 animation = false;
-prev_anim = true;
+prev_anim = false;
 
 % add noise or not
 high_freq_noise = true;
 low_freq_noise  = true;
 
 % spatial smoothing method
-wa  = false;
-lpf = false;
+wa  = true;
+lpf = true;
 
 % control method
 passive = false;
