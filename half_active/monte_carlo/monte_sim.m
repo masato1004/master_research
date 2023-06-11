@@ -14,11 +14,14 @@ for con = 1:5
     % max_z0 = max_z0_list(con);
 
     for loop = 1:monte_iter_num
+        if mod(loop,10) == 0
+            display(con+":"+loop);
+        end
         run("half_model_calculation.m")
         pitch_inte_list(loop) = pitch_integral;
         pitch_max_list(loop) = pitch_max;
         input_inte_list(loop) = input_integral;
         input_max_list(loop) = input_max;
     end
-    save("ld="+ld+"-max_z0="+max_z0,"pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
+    save("ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
 end
