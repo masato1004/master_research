@@ -89,7 +89,7 @@ for i=1:c-1
         if low_freq_noise
             % sig = 3-2*randi(2);
             % lnoise = sig*lsd(wf_local(1,:))+(lsd(wf_local(1,:))./3).*randn(size(wf_local(2,:)));
-            lnoise = lsd(sqrt(deg2rad(trend_error_var))*randn(),sqrt(height_error_var)*randn(),wf_local(1,:));
+            lnoise = lsd(tan(sqrt(deg2rad(trend_error_var))*randn()),sqrt(height_error_var)*randn(),wf_local(1,:));
             wf_local(2,:) = wf_local(2,:) + lnoise;
             [~,ind] = sort(wf_local(1,:));
             wf_local= wf_local(:,ind);
