@@ -9,7 +9,7 @@ branch = "_half_thesis_sensor_";
 run("../sim_config_mfiles/conf__plant_parameters.m")
 
 % Simulation parameter
-run("../sim_config_mfiles/conf__simulation_conditions.m")
+run("conf__simulation_conditions.m")
 
 % Road profile settings
 run("conf__rpf_settings.m")
@@ -213,11 +213,11 @@ if prev_anim
     close(video);
 end
 
-pitch_max = max(abs(states(4,:)))
-pitch_integral = trapz(TL(1:end-width(states(4,isnan(states(4,:))))),abs(rad2deg(double(states(4,1:end-width(states(4,isnan(states(4,:)))))))))
-pitchacc_integral = trapz(TL(1:end-width(states(8,isnan(states(8,:))))),abs(rad2deg(double(states(8,1:end-width(states(8,isnan(states(8,:)))))))))
-input_max = max(abs(u(1,:)))
-input_integral = trapz(control_TL(1:end-width(u(1,isnan(u(1,:))))),abs(rad2deg(double(u(1,1:end-width(u(1,isnan(u(1,:)))))))))
+pitch_max = max(abs(states(4,:)));
+pitch_integral = trapz(TL(1:end-width(states(4,isnan(states(4,:))))),abs(rad2deg(double(states(4,1:end-width(states(4,isnan(states(4,:)))))))));
+pitchacc_integral = trapz(TL(1:end-width(states(8,isnan(states(8,:))))),abs(rad2deg(double(states(8,1:end-width(states(8,isnan(states(8,:)))))))));
+input_max = max(abs(u(1,:)));
+input_integral = trapz(control_TL(1:end-width(u(1,isnan(u(1,:))))),abs(rad2deg(double(u(1,1:end-width(u(1,isnan(u(1,:)))))))));
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
 %                          Drawing figures                          %
