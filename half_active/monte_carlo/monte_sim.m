@@ -23,6 +23,6 @@ for con = 1:5
         input_inte_list(loop) = input_integral;
         input_max_list(loop) = input_max;
     end
-    save("ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
+    save("results/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
 end
 save("total_variables.mat");
