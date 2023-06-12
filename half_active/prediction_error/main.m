@@ -32,6 +32,8 @@ for i = 1:len
 
         angle_errors(k+(i-1)*iteration_num,1) = angle_d-16;
         height_errors(i,k) = predicted_height;
+        
+        clear prev_profile angle_d predicted_heigh;
         if mod(k,100) == 0
             display(i+":"+k);
         end
