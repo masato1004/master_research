@@ -35,7 +35,7 @@ fs  = 50;         % sampling frequence
 ts  = 1/fs;       % sampling cycle
 cc  = 1;          % control cycle counter
 sc  = 1;          % sampling cycle counter
-hsd = 0.02/3;     % standard deviation of additional high freq noise
+hsd = sqrt(sensor_noise_var);     % standard deviation of additional high freq noise
 % lsd = @(x) 4.185*(x.^2)/1000;     % standard deviation of additional low freq noise
 lsd = @(a,b,x) x.*a + b;     % standard deviation of additional low freq noise
 
