@@ -9,6 +9,7 @@ len = length(listing);
 angle_errors = zeros(len*iteration_num,1);
 height_errors = zeros(len,iteration_num);
 sensor_vars = zeros(len*iteration_num,1);
+V = 50*1000/3600; % m/s
 
 
 for i = 1:len    
