@@ -1,4 +1,4 @@
-monte_iter_num = 10000;
+monte_iter_num = 500;
 
 ld_list = [0.25, 0.5, 1, 1.5, 2];
 max_z0_list = [0.02, 0.03, 0.04, 0.05, 0.08];
