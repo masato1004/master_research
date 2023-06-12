@@ -1,6 +1,6 @@
 clear;
 
-iteration_num = 10000;
+iteration_num = 1000;
 
 load_dir = "preview_datas";
 listing = dir(load_dir+"/*.mat");
@@ -20,9 +20,9 @@ for i = 1:len
     vertices = file.vertices;   
     for k = 1:iteration_num
         [prev_profile, angle_d, predicted_height] = previewing(vertices);
-        prev_profile = rmmissing(prev_profile,2);
         [~,ia,~]=unique(prev_profile(1,:));
         prev_profile = prev_profile(:,ia);
+        prev_profile = rmmissing(prev_profile,2);
         T = (prev_profile(1,end) - prev_profile(1,1))/V;
         t = 0:ts:T;
         X = prev_profile(2,:);
