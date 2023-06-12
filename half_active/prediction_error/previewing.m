@@ -87,7 +87,7 @@ function [prev_profile, angle_d, predicted_height] = previewing(vertices)
     
     %% PICK UP AS 2D
     range_min = 5.06;     % minimum measurable distance [m]
-    range_max = 18;        % maximum measurable distance [m]
+    range_max = 7;        % maximum measurable distance [m]
     pick_up_width = 0.24; % width of datas for a road profile [m]
     pick_up_center = 0;   % center of pick up position [m]
     
