@@ -9,7 +9,10 @@ len = length(listing);
 angle_errors = zeros(len*iteration_num,1);
 height_errors = zeros(len,iteration_num);
 sensor_vars = zeros(len*iteration_num,1);
+
 V = 50*1000/3600; % m/s
+ts = 0.001;
+fs = 1/ts;
 
 
 for i = 1:len    
@@ -18,9 +21,9 @@ for i = 1:len
     for k = 1:iteration_num
         [prev_profile, angle_d, predicted_height] = previewing(vertices);
         prev_profile = rmmissing(prev_profile,2);
+        [~,ia,~]=unique(prev_profile(1,:));
+        prev_profile = prev_profile(:,ia);
         T = (prev_profile(1,end) - prev_profile(1,1))/V;
-        ts = 0.001;
-        fs = 1/ts;
         t = 0:ts:T;
         X = prev_profile(2,:);
         X = interp1((prev_profile(1,:)-prev_profile(1,1))./V,X,t,"linear");
