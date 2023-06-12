@@ -10,6 +10,7 @@ angle_errors = zeros(len*iteration_num,1);
 height_errors = zeros(len,iteration_num);
 sensor_vars = zeros(len*iteration_num,1);
 
+T = (prev_profile(1,end) - prev_profile(1,1))/V;
 ts = 0.001;
 fs = 1/ts;
 t = 0:ts:T;
