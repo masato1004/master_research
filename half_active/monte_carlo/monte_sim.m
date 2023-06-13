@@ -10,8 +10,8 @@ input_inte_list_onlylpf = zeros(monte_iter_num);
 input_max_list_onlylpf = zeros(monte_iter_num);
 
 for con = 1:5
-    ld = ld_list(con);
-    % max_z0 = max_z0_list(con);
+    % ld = ld_list(con);
+    max_z0 = max_z0_list(con);
 
     for loop = 1:monte_iter_num
         if mod(loop,10) == 0
