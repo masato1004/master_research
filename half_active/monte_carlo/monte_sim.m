@@ -3,11 +3,11 @@ monte_iter_num = 500;
 ld_list = [0.25, 0.5, 1, 1.5, 2];
 max_z0_list = [0.02, 0.03, 0.04, 0.05, 0.08];
 
-pitch_inte_list = zeros(monte_iter_num);
-pitch_max_list = zeros(monte_iter_num);
+pitch_inte_list_passive = zeros(monte_iter_num);
+pitch_max_list_passive = zeros(monte_iter_num);
 
-input_inte_list = zeros(monte_iter_num);
-input_max_list = zeros(monte_iter_num);
+input_inte_list_passive = zeros(monte_iter_num);
+input_max_list_passive = zeros(monte_iter_num);
 
 for con = 1:5
     % ld = ld_list(con);
@@ -18,11 +18,11 @@ for con = 1:5
             display(con+":"+loop);
         end
         run("half_model_calculation.m")
-        pitch_inte_list(loop) = pitch_integral;
-        pitch_max_list(loop) = pitch_max;
-        input_inte_list(loop) = input_integral;
-        input_max_list(loop) = input_max;
+        pitch_inte_list_passive(loop) = pitch_integral;
+        pitch_max_list_passive(loop) = pitch_max;
+        input_inte_list_passive(loop) = input_integral;
+        input_max_list_passive(loop) = input_max;
     end
-    save("results/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
+    save("results/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_passive","pitch_max_list_passive","input_inte_list_passive","input_max_list_passive");
 end
 save("total_variables.mat");
