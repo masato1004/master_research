@@ -235,10 +235,10 @@ input_integral = trapz(control_TL(1:end-width(u(1,isnan(u(1,:))))),abs(rad2deg(d
 
 % r_fig = figure('name',"Road-profile: Frequency "+frequency+" Hz",'Position', [600 200 600 190]);
 % plot(dis,r_p_f,"LineWidth",1,"Color","#0000ff");
+% ylim([-0.01,0.1])
+% ylim([-0.03,0.04])
 % ylabel("Displacement [m]");
 % xlabel("Distance Traveled [m]");
-% % ylim([-0.01,0.1])
-% % ylim([-0.03,0.04])
 % fontname(r_fig,"Times New Roman");
 % fontsize(r_fig,10.5,"points");
 % grid on;
