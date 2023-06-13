@@ -28,7 +28,7 @@ for i = 1:5
             input_inte_list = input_inte_list(input_inte_list(:,:)~=0);
             input_max_list = input_max_list(input_max_list(:,:)~=0);   % 500*1
 
-            inte_fig = figure('name',"inte-"+load_name+".mat");
+            inte_fig = figure('name',"inte-"+load_name+".mat","Position",[100+5*(i-1)+(k-1),100+5*(i-1)+(k-1),265,200]);
             scatter(input_inte_list,pitch_inte_list,20,[1,0,0].*ones(size(input_inte_list))); hold on; grid on; box on;
             scatter(input_inte_list_nonfilter,pitch_inte_list_nonfilter,20,[0,0,1].*ones(size(input_inte_list)));
             scatter(input_inte_list_onlylpf,pitch_inte_list_onlylpf,20,[0,0,1].*ones(size(input_inte_list)));
@@ -38,7 +38,7 @@ for i = 1:5
             fontname(inte_fig,"Times New Roman");
             fontsize(inte_fig,9.5,"points");
 
-            max_fig = figure('name',"max-"+load_name+".mat");
+            max_fig = figure('name',"max-"+load_name+".mat","Position",[150+5*(i-1)+(k-1),100+5*(i-1)+(k-1),265,200]);
             scatter(input_max_list,pitch_max_list,20,[1,0,0].*ones(size(input_max_list))); hold on; grid on; box on;
             scatter(input_max_list_nonfilter,pitch_max_list_nonfilter,20,[0,0,0].*ones(size(input_max_list)));
             scatter(input_max_list_onlylpf,pitch_max_list_onlylpf,20,[0,0,0].*ones(size(input_max_list)));
