@@ -3,8 +3,8 @@ TL = 0:dt:T;     % time list ([s])
 dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
 start_disturbance = 9;                                                        % the start distance of disturbance ([m])
 
-% max_z0 = 0.08;                                                                % [m] max road displacement
-ld = 2;
+max_z0 = 0.08;                                                                % [m] max road displacement
+% ld = 2;
 const = 6;                                                                    % amplitude
 max_distance = 300;                                                           % [m] driving mileage
 dis_total = 0:max_distance/(T/dt):max_distance;                               % distance list for road profile ([m])
