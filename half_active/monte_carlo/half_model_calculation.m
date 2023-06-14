@@ -220,7 +220,7 @@ end
 % input_integral = trapz(control_TL(1:end-width(u(1,isnan(u(1,:))))),abs(rad2deg(double(u(1,1:end-width(u(1,isnan(u(1,:)))))))));
 
 pitch_max = max(abs(states(4,:)));
-pitch_integral = trapz(TL(1,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(states(4,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V)))))
+pitch_integral = trapz(TL(1,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(states(4,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V)))));
 pitchacc_integral = trapz(TL(1,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(states(8,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V)))));
 input_max = max(abs(u(1,:)));
 input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
