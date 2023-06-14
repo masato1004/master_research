@@ -1,4 +1,4 @@
-function [road_total_f,road_total_r,ld,frequency,max_z0] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,const,max_distance,ld,dis_total,dis_total_f,dis_total_r)
+function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,const,max_distance,ld,dis_total,dis_total_f,dis_total_r)
     
     % sensing
     if shape == "_sensing2_"

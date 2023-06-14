@@ -10,7 +10,7 @@ dis_total = 0:max_distance/(T/dt):max_distance;                               % 
 dis_total_f = 0:max_distance/(T/dt):max_distance-start_disturbance;                           % distance list for front road profile ([m])
 dis_total_r = 0:max_distance/(T/dt):max_distance-start_disturbance-(L_f+L_r);                 % distance list for rear road profile ([m])
 
-[road_total_f,road_total_r,ld,frequency,max_z0] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,const,max_distance,dis_total,dis_total_f,dis_total_r);
+[road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,const,max_distance,dis_total,dis_total_f,dis_total_r);
 
 if sensing
     r_p_f = interp1(road_total_f(:,1)',road_total_f(:,2)',dis,'linear');                                   % front road profile
