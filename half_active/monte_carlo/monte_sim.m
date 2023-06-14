@@ -1,6 +1,6 @@
 monte_iter_num = 500;
 
-ld_list = [0.25, 0.5, 1, 1.5, 2];
+ld_list = [0.25, 0.5, 1, 1.5];
 max_z0_list = [0.02, 0.03, 0.04, 0.05, 0.08];
 
 
@@ -24,7 +24,7 @@ pitch_max_list_onlylpf = zeros(monte_iter_num);
 input_inte_list = zeros(monte_iter_num);
 input_max_list = zeros(monte_iter_num);
 
-for con = 1:5
+for con = 1:width(ld_list)
     ld = ld_list(con);
     % max_z0 = max_z0_list(con);
 
