@@ -19,27 +19,19 @@ input_max_list_onlylpf = zeros(monte_iter_num);
 
 
 pitch_inte_list = zeros(monte_iter_num);
-pitch_max_list_onlylpf = zeros(monte_iter_num);
+pitch_max_list = zeros(monte_iter_num);
 
 input_inte_list = zeros(monte_iter_num);
 input_max_list = zeros(monte_iter_num);
 
-for con = 1:width(max_z0_list)
-    % ld = ld_list(con);
-    max_z0 = max_z0_list(con);
+for con = 1:width(ld_list)
+    ld = ld_list(con);
+    % max_z0 = max_z0_list(con);
 
     for loop = 1:monte_iter_num
         if mod(loop,10) == 0
             display(con+":"+loop);
         end
-<<<<<<< HEAD
-%         run("half_model_calculation.m")
-%         pitch_inte_list_nonfilter(loop) = pitch_integral;
-%         pitch_max_list_nonfilter(loop) = pitch_max;
-%         input_inte_list_nonfilter(loop) = input_integral;
-%         input_max_list_nonfilter(loop) = input_max;
-=======
-<<<<<<< HEAD
         % run("half_model_calculation.m")
         % pitch_inte_list_nonfilter(loop) = pitch_integral;
         % pitch_max_list_nonfilter(loop) = pitch_max;
@@ -51,62 +43,15 @@ for con = 1:width(max_z0_list)
         % pitch_max_list_onlylpf(loop) = pitch_max;
         % input_inte_list_onlylpf(loop) = input_integral;
         % input_max_list_onlylpf(loop) = input_max;
-=======
-<<<<<<< HEAD
+
         run("half_model_calculation.m")
-        pitch_inte_list_nonfilter(loop) = pitch_integral;
-        pitch_max_list_nonfilter(loop) = pitch_max;
-        input_inte_list_nonfilter(loop) = input_integral;
-        input_max_list_nonfilter(loop) = input_max;
->>>>>>> 939b269901c8b3762a5cde33df4cd493d41e4927
-        
-=======
-%         run("half_model_calculation.m")
-%         pitch_inte_list_nonfilter(loop) = pitch_integral;
-%         pitch_max_list_nonfilter(loop) = pitch_max;
-%         input_inte_list_nonfilter(loop) = input_integral;
-%         input_max_list_nonfilter(loop) = input_max;
-%         
->>>>>>> d33b46cda4af4aa52a94f8e359c13bcda3a96963
-%         run("half_model_calculation.m")
-%         pitch_inte_list_onlylpf(loop) = pitch_integral;
-%         pitch_max_list_onlylpf(loop) = pitch_max;
-%         input_inte_list_onlylpf(loop) = input_integral;
-%         input_max_list_onlylpf(loop) = input_max;
-<<<<<<< HEAD
-%         
-%         run("half_model_calculation.m")
-%         pitch_inte_list(loop) = pitch_integral;
-%         pitch_max_list(loop) = pitch_max;
-%         input_inte_list(loop) = input_integral;
-%         input_max_list(loop) = input_max;
+        pitch_inte_list(loop) = pitch_integral;
+        pitch_max_list(loop) = pitch_max;
+        input_inte_list(loop) = input_integral;
+        input_max_list(loop) = input_max;
     end
-    save("nonfiltered/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_nonfilter","pitch_max_list_nonfilter","input_inte_list_nonfilter","input_max_list_nonfilter");
-%     save("onlylpf/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_onlylpf","pitch_max_list_onlylpf","input_inte_list_onlylpf","input_max_list_onlylpf");
-%     save("filtered/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
-=======
->>>>>>> 913d5ae826dddc6e1b0221daf210c6f396d9544d
-        
-%         run("half_model_calculation.m")
-%         pitch_inte_list(loop) = pitch_integral;
-%         pitch_max_list(loop) = pitch_max;
-%         input_inte_list(loop) = input_integral;
-%         input_max_list(loop) = input_max;
-    end
-<<<<<<< HEAD
-%     save("nonfiltered/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_nonfilter","pitch_max_list_nonfilter","input_inte_list_nonfilter","input_max_list_nonfilter");
-    save("onlylpf/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_onlylpf","pitch_max_list_onlylpf","input_inte_list_onlylpf","input_max_list_onlylpf");
-%     save("filtered/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
-=======
-<<<<<<< HEAD
     % save("nonfiltered/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_nonfilter","pitch_max_list_nonfilter","input_inte_list_nonfilter","input_max_list_nonfilter");
     % save("onlylpf/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_onlylpf","pitch_max_list_onlylpf","input_inte_list_onlylpf","input_max_list_onlylpf");
-=======
-%     save("nonfiltered/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_nonfilter","pitch_max_list_nonfilter","input_inte_list_nonfilter","input_max_list_nonfilter");
-%     save("onlylpf/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_onlylpf","pitch_max_list_onlylpf","input_inte_list_onlylpf","input_max_list_onlylpf");
->>>>>>> 913d5ae826dddc6e1b0221daf210c6f396d9544d
     save("filtered/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list");
->>>>>>> d33b46cda4af4aa52a94f8e359c13bcda3a96963
->>>>>>> 939b269901c8b3762a5cde33df4cd493d41e4927
 end
 save("total_variables.mat");
