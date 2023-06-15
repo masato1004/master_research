@@ -6,9 +6,12 @@ ld_list = [0.25, 0.5, 1, 1.5, 2];
 max_z0_list = [0.02, 0.03, 0.04, 0.05, 0.08];
 
 % mat file folder
-smoothed_dir = "filtered/";
-nonsmoothed_dir = "nonfiltered/";
-onlylpf_dir = "onlylpf/";
+% smoothed_dir = "filtered/";
+% nonsmoothed_dir = "nonfiltered/";
+% onlylpf_dir = "onlylpf/";
+smoothed_dir = "legacy/controled/";
+nonsmoothed_dir = "legacy/results/";
+onlylpf_dir = "legacy/onlylpf/";
 
 % loading and drawing
 for i = 1:5
@@ -16,8 +19,7 @@ for i = 1:5
     for k = 1:5
         max_z0 = max_z0_list(k);
 
-        if max_z0==0.08 && ld ~= 2
-        % if max_z0==0.08 || ld==2
+        if max_z0==0.08 || ld==2
             load_name = "ld="+ld+"-max_z0="+max_z0;
             load(smoothed_dir+load_name);
             load(nonsmoothed_dir+load_name);
@@ -38,21 +40,6 @@ for i = 1:5
             pitch_max_list = pitch_max_list(pitch_max_list(:,:)~=0);
             input_inte_list = input_inte_list(input_inte_list(:,:)~=0);
             input_max_list = input_max_list(input_max_list(:,:)~=0);   % 500*1
-
-            pitch_inte_list_nonfilter = reshape(pitch_inte_list_nonfilter,[],1);
-            pitch_max_list_nonfilter = reshape(pitch_max_list_nonfilter,[],1);
-            input_inte_list_nonfilter = reshape(input_inte_list_nonfilter,[],1);
-            input_max_list_nonfilter = reshape(input_max_list_nonfilter,[],1);   % 500*1
-
-            pitch_inte_list_onlylpf = reshape(pitch_inte_list_onlylpf,[],1);
-            pitch_max_list_onlylpf = reshape(pitch_max_list_onlylpf,[],1);
-            input_inte_list_onlylpf = reshape(input_inte_list_onlylpf,[],1);
-            input_max_list_onlylpf = reshape(input_max_list_onlylpf,[],1);   % 500*1
-            
-            pitch_inte_list = reshape(pitch_inte_list,[],1);
-            pitch_max_list = reshape(pitch_max_list,[],1);
-            input_inte_list = reshape(input_inte_list,[],1);
-            input_max_list = reshape(input_max_list,[],1);   % 500*1
 
             inte_fig = figure('name',"inte-"+load_name+".mat","Position",[100+5*(i-1)+(k-1),100+5*(i-1)+(k-1),265,200]);
             scatter(input_inte_list_nonfilter,pitch_inte_list_nonfilter,20,[0,0,1].*ones(size(pitch_inte_list_nonfilter))); hold on; grid on; box on;
