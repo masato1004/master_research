@@ -6,12 +6,12 @@ ld_list = [0.25, 0.5, 1, 1.5, 2];
 max_z0_list = [0.02, 0.03, 0.04, 0.05, 0.08];
 
 % mat file folder
-% smoothed_dir = "filtered/";
-% nonsmoothed_dir = "nonfiltered/";
-% onlylpf_dir = "onlylpf/";
-smoothed_dir = "legacy/controled/";
-nonsmoothed_dir = "legacy/results/";
-onlylpf_dir = "legacy/onlylpf/";
+smoothed_dir = "filtered/";
+nonsmoothed_dir = "nonfiltered/";
+onlylpf_dir = "onlylpf/";
+% smoothed_dir = "legacy/controled/";
+% nonsmoothed_dir = "legacy/results/";
+% onlylpf_dir = "legacy/onlylpf/";
 
 % loading and drawing
 for i = 1:5
