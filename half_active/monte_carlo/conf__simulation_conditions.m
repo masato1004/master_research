@@ -8,8 +8,8 @@ high_freq_noise = true;
 low_freq_noise  = true;
 
 % spatial smoothing method
-wa  = true;
-lpf = true;
+% wa  = true;
+% lpf = true;
 
 % control method
 passive = false;
