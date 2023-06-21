@@ -96,6 +96,8 @@ for i=1:c-1
         end
 
         if wa
+            [~,ia,~]=unique(wf_global(1,:));
+            wf_global = wf_global(:,ia);
             Lpass = wf_local(1,1) - last_minimum;
             last_minimum = wf_local(1,1);
             Ltotal = wf_local(1,end) - wf_local(1,1);
