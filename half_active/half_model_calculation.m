@@ -49,7 +49,7 @@ end
 
 
 %% ========================simulation========================= %%
-
+dw_list = [];
 % LOOP
 for i=1:c-1
 
@@ -173,6 +173,7 @@ for i=1:c-1
             interp1(wf_grad(1,:),[0,diff(wf_grad(3,:))],[0:M].*tc,'linear');
             dw_r(4, [0:M]+cc);
             ];
+        dw_list = [dw_list,dw_prev];
 
         % calculate new states
         e(:,cc) = -C*states(:,i);                        % e=r-y

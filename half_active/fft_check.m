@@ -18,7 +18,11 @@ P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
 
 f = fs*(0:(L/2))/L;
-plot(f,P1) 
+figure('Position', [680,693,467,185])
+plot(f,P1,"Linewidth",2,"Color","#0000ff"), grid on, hold on;
+xline(20,"k--","Cut off frequency","Linewidth",2)
 title("Single-Sided Amplitude Spectrum of X(t)")
 xlabel("f (Hz)")
 ylabel("|P1(f)|")
+fontname(gca,"Times New Roman");
+fontsize(gca,9.5,"points");

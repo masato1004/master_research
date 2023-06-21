@@ -4,12 +4,12 @@ animation = false;
 prev_anim = false;
 
 % add noise or not
-high_freq_noise = true;
-low_freq_noise  = true;
+high_freq_noise = false;
+low_freq_noise  = false;
 
 % spatial smoothing method
-wa  = true;
-lpf = true;
+wa  = false;
+lpf = false;
 
 % control method
 passive = false;
