@@ -17,3 +17,4 @@ for i = 1:80
     plane_errors_set(i,:,1) = trend_error_list(reshape(idx(i,:,1),1,500));
     plane_errors_set(i,:,2) = height_error_list(reshape(idx(i,:,2),1,500));
 end
+save("data_set.mat","plane_errors_set","trend_error_list","height_error_list","sensor_noise_list")
