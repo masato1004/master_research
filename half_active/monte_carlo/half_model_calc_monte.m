@@ -210,7 +210,7 @@ for i=1:c-1
         end
     end
 end
-disp(s_count);
+% disp(s_count);
 
 if prev_anim
     close(video);

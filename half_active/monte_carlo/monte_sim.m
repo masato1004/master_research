@@ -35,7 +35,7 @@ for conz = 1:width(max_z0_list)
 
         for loop = 1:monte_iter_num
             if mod(loop,10) == 0
-                display(con+":"+loop);
+                display(conz+":"+conl+":"+loop);
             end
             wa  = false;
             lpf = false;
@@ -44,7 +44,7 @@ for conz = 1:width(max_z0_list)
             pitch_max_list_nonfilter(1,loop) = pitch_max;
             input_inte_list_nonfilter(1,loop) = input_integral;
             input_max_list_nonfilter(1,loop) = input_max;
-            wf_global_nonfilter(loop) = {[wf_global(1,:)+T*V; wf_global(2,:)]};
+            % wf_global_nonfilter(loop) = {[wf_global(1,:)+T*V; wf_global(2,:)]};
             clear wf_global;
             
             wa  = false;
@@ -54,7 +54,7 @@ for conz = 1:width(max_z0_list)
             pitch_max_list_onlylpf(1,loop) = pitch_max;
             input_inte_list_onlylpf(1,loop) = input_integral;
             input_max_list_onlylpf(1,loop) = input_max;
-            wf_global_onlylpf(loop) = {[wf_global(1,:)+T*V; wf_global(2,:)]};
+            % wf_global_onlylpf(loop) = {[wf_global(1,:)+T*V; wf_global(2,:)]};
             clear wf_global;
 
             wa  = true;
@@ -64,12 +64,12 @@ for conz = 1:width(max_z0_list)
             pitch_max_list(1,loop) = pitch_max;
             input_inte_list(1,loop) = input_integral;
             input_max_list(1,loop) = input_max;
-            wf_global_filter(loop) = {[wf_global(1,:)+T*V; wf_global(2,:)]};
+            % wf_global_filter(loop) = {[wf_global(1,:)+T*V; wf_global(2,:)]};
             clear wf_global;
         end
-        save("nonfiltered_all/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_nonfilter","pitch_max_list_nonfilter","input_inte_list_nonfilter","input_max_list_nonfilter","wf_global_nonfilter","r_p_prev");
-        save("onlylpf_all/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_onlylpf","pitch_max_list_onlylpf","input_inte_list_onlylpf","input_max_list_onlylpf","wf_global_onlylpf","r_p_prev");
-        save("filtered_all/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list","wf_global_filter","r_p_prev");
+        save("nonfiltered_specify/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_nonfilter","pitch_max_list_nonfilter","input_inte_list_nonfilter","input_max_list_nonfilter","wf_global_nonfilter","r_p_prev");
+        save("onlylpf_specify/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list_onlylpf","pitch_max_list_onlylpf","input_inte_list_onlylpf","input_max_list_onlylpf","wf_global_onlylpf","r_p_prev");
+        save("filtered_specify/ld="+ld+"-max_z0="+max_z0+".mat","pitch_inte_list","pitch_max_list","input_inte_list","input_max_list","wf_global_filter","r_p_prev");
     end
 end
 save("total_variables.mat");
