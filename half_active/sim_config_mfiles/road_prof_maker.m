@@ -1,4 +1,4 @@
-function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,const,max_distance,dis_total,dis_total_f,dis_total_r)
+function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,ld,const,max_distance,dis_total,dis_total_f,dis_total_r)
     
     % sensing
     if shape == "_sensing2_"
@@ -16,8 +16,7 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
 
     % same as paper
     elseif shape == "_paper_"
-        Td = 2/V;
-        ld = Td*V;
+        Td = ld/V;
         dis_length = 0:max_distance/(T/dt):ld;
         road_total_f = [zeros(1,int32(T*start_disturbance/(dt*max_distance))), (max_z0/2)*(1-cos(2*pi*dis_length/ld)), zeros(size(dt:max_distance/(T/dt):max_distance-(start_disturbance+ld)))];  % converting front disturbance and buffer ([m])
         road_total_r = [zeros(1,int32(T*(start_disturbance+L_f+L_r)/(dt*max_distance))), (max_z0/2)*(1-cos(2*pi*dis_length/ld)), zeros(1,width(dis_total)-width([zeros(1,int32(T*(start_disturbance+L_f+L_r)/(dt*max_distance))), (max_z0/2)*(1-cos(2*pi*dis_length/ld))]))];  % converting rear disturbance and buffer ([m])
