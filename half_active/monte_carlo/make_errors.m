@@ -5,9 +5,9 @@ trend_std = sqrt(trend_error_var);
 height_std = sqrt(height_error_var);
 noise_std = sqrt(sensor_noise_var);
 
-trend_error_list = round(deg2rad(trend_std)*randn(1,200),1);
-height_error_list = round(height_std*randn(1,200),3);
-sensor_noise_list = round(noise_std*randn(1,200),3);
+trend_error_list = round(deg2rad(trend_std)*randn(1,500),3);
+height_error_list = round(height_std*randn(1,500),3);
+sensor_noise_list = round(noise_std*randn(1,500),3);
 
 idx = randi(200,[100,500,2]);
 
