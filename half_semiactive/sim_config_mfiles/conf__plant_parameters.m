@@ -1,4 +1,5 @@
-%% Vehicle parameter
+%% Vehicle specifications
+global m_b, m_w, k_sf, k_sr, k_w, c_sf, c_sr, c_w, I_b, L_f, L_r
 m_b = 1000;     % [kg]      body mass
 m_w = 30;       % [kg]      wheel mass
 k_sf = 33000;   % [N/m]     front spring stiffness
@@ -17,6 +18,7 @@ L_r = 1.4;      % [m]       rear length
 
 cam_fwheel_dis = 0.895;
 
+%% Vehicle parameter
 Vkm_h = 50;     % [km/h]    driving velocity
 Vkm_m=Vkm_h/60;
 V=Vkm_m*1000/60;% [m/s]

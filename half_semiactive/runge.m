@@ -1,30 +1,7 @@
-function x_1 = runge(x, v, u, d, A, B, E, dt)
-
-    k1 = dt*v;
-    a1 = motion_func([x;v], u, d, A, B, E);
-    l1 = dt*a1(end-height(v)+1:end);
-
-    k2 = dt*(v+l1/2);
-    a2 = motion_func([x;v]+[k1;l1]./2, u, d, A, B, E);
-    l2 = dt*a2(end-height(v)+1:end);
-
-    k3 = dt*(v+l2/2);
-    a3 = motion_func([x;v]+[k2;l2]./2, u, d, A, B, E);
-    l3 = dt*a3(end-height(v)+1:end);
-
-    k4 = dt*(v+l3/2);
-    a4 = motion_func([x;v]+[k3;l3]./2, u, d, A, B, E);
-    l4 = dt*a4(end-height(v)+1:end);
-
-    rk = [
-        k1, k2, k3, k4;
-        l1, l2, l3, l4
-        ];
-    const = [
-        1;
-        2;
-        2;
-        1
-        ];
-    x_1 = [x;v] + (rk*const/6);
+function dx = runge(x, u, d, A, B, E, dt)
+    x1 = x;      b1 = dt*state_equation(x1, u, d, A, B, E);
+    x2 = x+b1/2; b2 = dt*state_equation(x2, u, d, A, B, E);
+    x3 = x+b2/2; b3 = dt*state_equation(x3, u, d, A, B, E);
+    x4 = x+b3;   b4 = dt*state_equation(x4, u, d, A, B, E);
+    dx = x + (b1 + 2*b2 + 2*b3 + b4)/6;
 end
