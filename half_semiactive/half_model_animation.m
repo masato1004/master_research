@@ -109,19 +109,7 @@ frames(s_f) = getframe(gcf);
 drawnow;
 mod_m = 100;
 newimg = zeros(371,1140,3);
-videoname = "videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"-fps-"+(1/dt)/mod_m;
-if not(exist("videos",'dir'))
-    mkdir("videos");
-end
-if not(exist("videos/"+branch,'dir'))
-    mkdir("videos/"+branch);
-end
-if not(exist("videos/"+branch+"/"+control,'dir'))
-    mkdir("videos/"+branch+"/"+control);
-end
-if not(exist("videos/"+branch+"/"+control+"/"+shape,'dir'))
-    mkdir("videos/"+branch+"/"+control+"/"+shape);
-end
+videoname = "videos/"+conditions+"-fps-"+(1/dt)/mod_m;
 video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = (1/dt)/mod_m;
 open(video);
