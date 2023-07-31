@@ -1,5 +1,6 @@
 %% Vehicle specifications
-global m_b, m_w, k_sf, k_sr, k_w, c_sf, c_sr, c_w, I_b, L_f, L_r
+global m_b m_w k_sf k_sr k_w c_sf c_sr c_w I_b L_f L_r
+
 m_b = 1000;     % [kg]      body mass
 m_w = 30;       % [kg]      wheel mass
 k_sf = 33000;   % [N/m]     front spring stiffness
