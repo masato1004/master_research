@@ -201,7 +201,7 @@ function f = half_model_calculation(pop)
                     b_H = reshape(pop(1,num_w+1:num_w+num_hid),[num_hid,1]);
                     b_O = reshape(pop(1,num_w+num_hid+1:num_nn),[num_out,1]);
             
-                    u(:, cc+1) = purelin(w_HO*tansig(w_IH*[states(8,i);dzdiff_f;dzdiff_r] + b_H) + b_O);
+                    u(:, cc+1) = purelin(w_HO*tansig(w_IH*[states(:,i);dzdiff_f;dzdiff_r] + b_H) + b_O);
                 else
                     du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),pop(p,:));  % actual data
 
