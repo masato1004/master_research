@@ -11,17 +11,21 @@ function f = half_model_calculation(pop)
     global num_in num_hid num_out num_w num_b num_nn
     num = size(pop,1);
 
+    %% Simulation configulation files
+    % Plant parameter
+    run("sim_config_mfiles/conf__plant_parameters.m")
+
+    % Simulation parameter
+    run("sim_config_mfiles/conf__simulation_conditions.m")
+
+    % Road profile settings
+    run("sim_config_mfiles/conf__rpf_settings.m")
+
+    % Preview data loading
+    run("sim_config_mfiles/conf__preview_data_loader.m")
 
     for p = 1:num
         %% Simulation configulation files
-        % Plant parameter
-        run("sim_config_mfiles/conf__plant_parameters.m")
-
-        % Simulation parameter
-        run("sim_config_mfiles/conf__simulation_conditions.m")
-
-        % Road profile settings
-        run("sim_config_mfiles/conf__rpf_settings.m")
 
         % Initial conditions
         run("sim_config_mfiles/conf__initial_conditions.m")
@@ -31,9 +35,6 @@ function f = half_model_calculation(pop)
 
         % Control design
         run("sim_config_mfiles/conf__control_design.m")
-
-        % Preview data loading
-        run("sim_config_mfiles/conf__preview_data_loader.m")
 
         % figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
         % conditions = folder_maker(branch,control,shape,figfolder,smoothing_method,added_noise);
@@ -63,7 +64,7 @@ function f = half_model_calculation(pop)
         for i=1:c-1
 
             % make road preview profile
-            if mod(i+(ts/dt-1), ts/dt) == 0
+            if mod(i+(ts/dt-1), ts/dt) == 0 && ~semi_active
                 current_dis = r_p_prev(1,i);
                 % load road profile
                 if sensing
@@ -237,7 +238,7 @@ function f = half_model_calculation(pop)
         % input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
         
 
-        f(p,1) = 1/(pitch_integral + 10*pitch_max);
+        f(p,1) = 1/(pitch_integral + 10*pitch_max + input_integral);
     end
 
 

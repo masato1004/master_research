@@ -2,7 +2,7 @@
 close all;
 clear;
 clc;
-branch = "_half_thesis_sensor_";
+branch = "_semi_active_proto_";
 load("ga_controller.mat")
 
 % function f = half_model_calculation(pop)

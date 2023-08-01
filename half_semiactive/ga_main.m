@@ -5,8 +5,8 @@ close all
 global  bound rng
 global num_in num_hid num_out num_w num_b num_nn
 %% Initializing parameters
-pops=200;                      % population size
-maxgen=500;                   % maximum generation
+pops=20;                      % population size
+maxgen=200;                   % maximum generation
 crossp=0.8;                   % crossover probability
 mutatep=0.5;                  % mutation probability
 
@@ -21,8 +21,8 @@ num_b = num_hid+num_out;  % bias
 num_nn = num_w + num_b;
 
 
-a = -1000.0;
-b = 1000.0;
+a = -10.0;
+b = 10.0;
 pop = a + (b-a).*rand(pops, num_nn);
 
 numvar = size(pops,2);
