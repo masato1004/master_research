@@ -27,9 +27,17 @@ pop = a + (b-a).*rand(pops, num_nn);
 
 numvar = size(pops,2);
 
+maxf = []; meanf= [];
+
 % pop=zeros(pops,numvar);      
 % pop(:,1:numvar)=(ones(pops,1)*rng).*(rand(pops,numvar))+(ones(pops,1)*bound(:,1)');
+figure(1);
+xlim([1,maxgen]);
+xlabel("Generation");
+ylabel("Fitness Function")
 
+maxf_p = plot(maxf,Color="#ff0000",LineWidth=2);
+meanf_p = plot(meanf_p,Color="#0000ff",LineWidth=2);
 %% start generation
 for it=1:maxgen
     it
@@ -70,6 +78,9 @@ for it=1:maxgen
     
     [bfit,bind]=max(fpop);
     bsol=pop(bind,:);
+
+    set(maxf_p,'XData',1:it,"YData",maxf);
+    set(meanf_p,'XData',1:it,"YData",meanf_p);
 
     % save elite
     pop(inds,:)=bchrom; % generate next pop with elite
