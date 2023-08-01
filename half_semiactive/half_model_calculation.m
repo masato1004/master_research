@@ -193,12 +193,23 @@ function f = half_model_calculation(pop)
 
                 % calculate input
                 % du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));  % sensor data
-                du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),pop(p,:));  % actual data
-
-                if cc ~= 1
-                    u(:, cc+1) = u(:, cc) + du(:, cc+1);
+                if semi_active
+                    dzdiff_f = (L_f*states(8,i)+states(5,i))-d(3);
+                    dzdiff_r = (-L_r*states(8,i)+states(5,i))-d(4);
+                    w_IH = reshape(pop(1,1:num_in*num_hid),[num_hid,num_in]);
+                    w_HO = reshape(pop(1,num_in*num_hid+1:num_w),[num_out,num_hid]);
+                    b_H = reshape(pop(1,num_w+1:num_w+num_hid),[num_hid,1]);
+                    b_O = reshape(pop(1,num_w+num_hid+1:num_nn),[num_out,1]);
+            
+                    u(:, cc+1) = purelin(w_HO*tansig(w_IH*[states(8,i);dzdiff_f;dzdiff_r] + b_H) + b_O);
                 else
-                    u(:, cc+1) = du(:, cc+1);
+                    du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),pop(p,:));  % actual data
+
+                    if cc ~= 1
+                        u(:, cc+1) = u(:, cc) + du(:, cc+1);
+                    else
+                        u(:, cc+1) = du(:, cc+1);
+                    end
                 end
                 wf_global(1,:) = wf_global(1,:) - tc*V; last_minimum = last_minimum - tc*V;
                 wf_grad(1,:) = wf_grad(1,:) - tc;
