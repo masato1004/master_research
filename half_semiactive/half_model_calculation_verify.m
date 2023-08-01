@@ -1,62 +1,61 @@
-function f = half_model_calculation(pop)
+%% branch: half_thesis_sensor
+close all;
+clear;
+clc;
+branch = "_half_thesis_sensor_";
+load("ga_controller.mat")
 
-    %% branch: half_thesis_sensor
-    % close all;
-    % clear;
-    % clc;
-    branch = "_half_thesis_sensor_";
-
-
+% function f = half_model_calculation(pop)
 
     global num_in num_hid num_out num_w num_b num_nn
     num = size(pop,1);
 
 
-    for p = 1:num
-        %% Simulation configulation files
-        % Plant parameter
-        run("sim_config_mfiles/conf__plant_parameters.m")
+    %% Simulation configulation files
+    % Plant parameter
+    run("sim_config_mfiles/conf__plant_parameters.m")
 
-        % Simulation parameter
-        run("sim_config_mfiles/conf__simulation_conditions.m")
+    % Simulation parameter
+    run("sim_config_mfiles/conf__simulation_conditions.m")
 
-        % Road profile settings
-        run("sim_config_mfiles/conf__rpf_settings.m")
+    % Road profile settings
+    run("sim_config_mfiles/conf__rpf_settings.m")
 
-        % Initial conditions
-        run("sim_config_mfiles/conf__initial_conditions.m")
+    % Initial conditions
+    run("sim_config_mfiles/conf__initial_conditions.m")
 
-        % States definition
-        run("sim_config_mfiles/conf__state_space_settings.m")
+    % States definition
+    run("sim_config_mfiles/conf__state_space_settings.m")
 
-        % Control design
-        run("sim_config_mfiles/conf__control_design.m")
+    % Control design
+    run("sim_config_mfiles/conf__control_design.m")
 
-        % Preview data loading
-        run("sim_config_mfiles/conf__preview_data_loader.m")
+    % Preview data loading
+    run("sim_config_mfiles/conf__preview_data_loader.m")
 
-        % figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
-        % conditions = folder_maker(branch,control,shape,figfolder,smoothing_method,added_noise);
+    figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
+    conditions = folder_maker(branch,control,shape,figfolder,smoothing_method,added_noise);
 
-        % % Preview animation settings
-        % if prev_anim
-        %     run("sim_config_mfiles/conf__preview_animation_settings.m")
-        % end
+    % Preview animation settings
+    if prev_anim
+        run("sim_config_mfiles/conf__preview_animation_settings.m")
+    end
 
-        %% accelerate functions (without controller)
-        % body acceleration
-        % body_acc=@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-k_sf*(L_f*ang+zb-zwf)-k_sr*(-L_r*ang+zb-zwr)-c_sf*(L_f*angdot+zbdot-zwfdot)-c_sr*(-L_r*angdot+zbdot-zwrdot)+uf+ur)/m_b;
+    %% accelerate functions (without controller)
+    % body acceleration
+    % body_acc=@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-k_sf*(L_f*ang+zb-zwf)-k_sr*(-L_r*ang+zb-zwr)-c_sf*(L_f*angdot+zbdot-zwfdot)-c_sr*(-L_r*angdot+zbdot-zwrdot)+uf+ur)/m_b;
 
-        % front wheel acceleration
-        % wf_acc = @(zwf,zwfdot,zb,ang,zbdot,angdot,rp,rpdot,uf) (k_sf*(L_f*ang+zb-zwf)-k_w*(zwf-rp)+c_sf*(L_f*angdot+zbdot-zwfdot)-c_w*(zwfdot-rpdot)-uf)/m_w;
+    % front wheel acceleration
+    % wf_acc = @(zwf,zwfdot,zb,ang,zbdot,angdot,rp,rpdot,uf) (k_sf*(L_f*ang+zb-zwf)-k_w*(zwf-rp)+c_sf*(L_f*angdot+zbdot-zwfdot)-c_w*(zwfdot-rpdot)-uf)/m_w;
 
-        % rear wheel acceleration
-        % wr_acc = @(zwr,zwrdot,zb,ang,zbdot,angdot,rp,rpdot,ur) (k_sr*(-L_r*ang+zb-zwr)-k_w*(zwr-rp)+c_sr*(-L_r*angdot+zbdot-zwrdot)-c_w*(zwrdot-rpdot)-ur)/m_w;
+    % rear wheel acceleration
+    % wr_acc = @(zwr,zwrdot,zb,ang,zbdot,angdot,rp,rpdot,ur) (k_sr*(-L_r*ang+zb-zwr)-k_w*(zwr-rp)+c_sr*(-L_r*angdot+zbdot-zwrdot)-c_w*(zwrdot-rpdot)-ur)/m_w;
 
-        % angular acceleration
-        % ang_acc =@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-(k_sf*(L_f*ang+zb-zwf)+c_sf*(L_f*angdot+zbdot-zwfdot))*L_f+(k_sr*(-L_r*ang+zb-zwr)+c_sr*(-L_r*angdot+zbdot-zwrdot))*L_r+(L_f*uf-L_r*ur))/I_b;
+    % angular acceleration
+    % ang_acc =@(zb,zbdot,zwf,zwr,ang,zwfdot,zwrdot,angdot,uf,ur) (-(k_sf*(L_f*ang+zb-zwf)+c_sf*(L_f*angdot+zbdot-zwfdot))*L_f+(k_sr*(-L_r*ang+zb-zwr)+c_sr*(-L_r*angdot+zbdot-zwrdot))*L_r+(L_f*uf-L_r*ur))/I_b;
 
 
+    for p = 1:1
         %% ========================simulation========================= %%
         dw_list = [];
         % LOOP
@@ -192,7 +191,7 @@ function f = half_model_calculation(pop)
 
                 % calculate input
                 % du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));  % sensor data
-                du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),pop(p,:));  % actual data
+                du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),bchrom);  % actual data
 
                 if cc ~= 1
                     u(:, cc+1) = u(:, cc) + du(:, cc+1);
@@ -237,127 +236,126 @@ function f = half_model_calculation(pop)
         % input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
         
 
-        f(p,1) = 1/(pitch_integral + 10*pitch_max);
+        f(p,1) = 1/(pitch_integral + 10*pitch_max)
     end
 
+    % return
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
 %                          Drawing figures                          %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
-% states_name = [
-%     "Body_Heave_Displacement", "Time [s]", "Body Heave Displacement [m]";
-%     "Front_Wheel_Heave_Displacement", "Time [s]", "Front Wheel Heave Displacement [m]";
-%     "Rear_Wheel_Heave_Displacement", "Time [s]", "Rear Wheel Heave Displacement [m]";
-%     "Body_Pitch_Angle", "Time [s]", "Body Pitch Angle [deg]";
-%     "Body_Heave_Velocity", "Time [s]", "Body Heave Velocity [m/s]";
-%     "Front_Wheel_Heave_Velocity", "Time [s]", "Front Wheel Heave Velocity [m/s]";
-%     "Rear_Wheel_Heave_Velocity", "Time [s]", "Rear Wheel Heave Velocity [m/s]";
-%     "Body_Pitch_Angular_Velocity", "Time [s]", "Body Pitch Angular Velocity [deg/s]"
-%     ];
+states_name = [
+    "Body_Heave_Displacement", "Time [s]", "Body Heave Displacement [m]";
+    "Front_Wheel_Heave_Displacement", "Time [s]", "Front Wheel Heave Displacement [m]";
+    "Rear_Wheel_Heave_Displacement", "Time [s]", "Rear Wheel Heave Displacement [m]";
+    "Body_Pitch_Angle", "Time [s]", "Body Pitch Angle [deg]";
+    "Body_Heave_Velocity", "Time [s]", "Body Heave Velocity [m/s]";
+    "Front_Wheel_Heave_Velocity", "Time [s]", "Front Wheel Heave Velocity [m/s]";
+    "Rear_Wheel_Heave_Velocity", "Time [s]", "Rear Wheel Heave Velocity [m/s]";
+    "Body_Pitch_Angular_Velocity", "Time [s]", "Body Pitch Angular Velocity [deg/s]"
+    ];
 
-% r_fig = figure('name',"Road-profile: Frequency "+frequency+" Hz",'Position', [600 200 600 190]);
-% plot(dis,r_p_f,"LineWidth",1,"Color","#0000ff");
+r_fig = figure('name',"Road-profile: Frequency "+frequency+" Hz",'Position', [600 200 600 190]);
+plot(dis,r_p_f,"LineWidth",1,"Color","#0000ff");
+ylabel("Displacement [m]");
+xlabel("Distance Traveled [m]");
+% ylim([-0.01,0.1])
+% ylim([-0.03,0.04])
+fontname(r_fig,"Times New Roman");
+fontsize(r_fig,10.5,"points");
+grid on;
+
+saveas(r_fig,"figs/"+conditions+"/Road_Profile.fig");
+saveas(r_fig,"jpgs/"+conditions+"/Road_Profile.jpg");
+
+for i=1:height(states)
+    if i==4 || i==8
+        drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,conditions);
+    else
+        drawer(TL,states(i,:),states_name(i,:),i,conditions);
+    end
+end
+
+
+%% additional draw
+% accelerations
+drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,conditions);
+drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,conditions);
+
+% % preview data
+% p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);
+% plot(dis_dw,dw_fr(1,:),"LineWidth",1,"Color","#0000ff");
 % ylabel("Displacement [m]");
 % xlabel("Distance Traveled [m]");
-% % ylim([-0.01,0.1])
-% % ylim([-0.03,0.04])
-% fontname(r_fig,"Times New Roman");
-% fontsize(r_fig,10.5,"points");
+% fontname(p_fig,"Times New Roman");
+% fontsize(p_fig,10.5,"points");
 % grid on;
 
-% saveas(r_fig,"figs/"+conditions+"/Road_Profile.fig");
-% saveas(r_fig,"jpgs/"+conditions+"/Road_Profile.jpg");
-
-% for i=1:height(states)
-%     if i==4 || i==8
-%         drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,conditions);
-%     else
-%         drawer(TL,states(i,:),states_name(i,:),i,conditions);
-%     end
-% end
-
-
-% %% additional draw
-% % accelerations
-% drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,conditions);
-% drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,conditions);
-
-% % % preview data
-% % p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);
-% % plot(dis_dw,dw_fr(1,:),"LineWidth",1,"Color","#0000ff");
-% % ylabel("Displacement [m]");
-% % xlabel("Distance Traveled [m]");
-% % fontname(p_fig,"Times New Roman");
-% % fontsize(p_fig,10.5,"points");
-% % grid on;
-
-% % % difference of preview data
-% % p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);
-% % yyaxis left;
-% % plot(dis_dw,dw_fr(1,:),"LineWidth",1,"Color","#0000ff");
-% % ylabel("Displacement [m]");
-% % xlabel("Distance Traveled [m]");
-% % hold on;
-% % ax = gca;
-% % ax.YAxis(1).Color = [0 0 1];
-% % yyaxis right;
-% % plot(dis_dw,dw_fr(3,:),"LineWidth",1,"Color","#ff0000");
-% % ylabel("Displacement [m]");
-% % xlabel("Distance Traveled [m]");
-% % ax.YAxis(2).Color = [1 0 0];
-% % % ylim([-0.01,0.1])
-% % % ylim([-0.03,0.04])
-% % fontname(p_fig,"Times New Roman");
-% % fontsize(p_fig,10.5,"points");
-% % grid on;
-
-% % drawer(control_TL,u(1,:),["Front_Wheel_Actuator_Force", "Time [s]", "Front Wheel Actuator Force [N]"],11,figfolder,shape);
-% % drawer(control_TL,u(2,:),["Rear_Wheel_Actuator_Force", "Time [s]", "Rear Wheel Actuator Force [N]"],12,figfolder,shape);
-% fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
-% plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
+% % difference of preview data
+% p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);
+% yyaxis left;
+% plot(dis_dw,dw_fr(1,:),"LineWidth",1,"Color","#0000ff");
+% ylabel("Displacement [m]");
+% xlabel("Distance Traveled [m]");
 % hold on;
-% plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff","LineStyle","--");
-% grid on;
-% xlim([0,3]);
-% xlabel("Time [s]");
-% ylabel("Wheel Actuator Force [N]");
-% legend("{\it f_{af}} : Front Wheel", "{\it f_{ar}} : Rear Wheel");
-% fontname(fig,"Times New Roman");
-% fontsize(fig,10.5,"points");
-% saveas(fig,"figs/"+conditions+"/Actuator_Force.fig");
-% saveas(fig,"jpgs/"+conditions+"/Actuator_Force.jpg");
-
-% % compare the timings of rear road profile and actuator input
-% fig = figure('name',"Actuator_Force_and_Road",'Position', [500+20 500-20 600 190]);
-% xlim([0,3]);
-% yyaxis left
-% plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
-% hold on;
-% plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff");
-% grid on;
-% xlabel("Time [s]");
-% ylabel("Wheel Actuator Force [N]");
-% ylim([-4000,4000]);
 % ax = gca;
 % ax.YAxis(1).Color = [0 0 1];
-% yyaxis right
-% ylim([-0.09,0.09]);
-% plot(TL,r_p_f,"LineWidth",2,"Color","#ff0000");
-% plot(TL,r_p_r,"LineWidth",2,"Color","#ff0000");
-% ylabel("Road Displacement [m]");
-% legend("{\it f_{af}} : Front Actuator", "{\it f_{ar}} : Rear Actuator", "{\it z_{0f}} : Front Road Displacement", "{\it z_{0r}} : Rear Road Displacement");
-% ax = gca;
+% yyaxis right;
+% plot(dis_dw,dw_fr(3,:),"LineWidth",1,"Color","#ff0000");
+% ylabel("Displacement [m]");
+% xlabel("Distance Traveled [m]");
 % ax.YAxis(2).Color = [1 0 0];
-% fontname(fig,"Times New Roman");
-% fontsize(fig,10.5,"points");
+% % ylim([-0.01,0.1])
+% % ylim([-0.03,0.04])
+% fontname(p_fig,"Times New Roman");
+% fontsize(p_fig,10.5,"points");
 % grid on;
-% saveas(fig,"figs/"+conditions+"/Actuator_Force_and_Road.fig");
-% saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
 
-% if animation
-%     close all;
-%     clear frames;
-%     run("half_model_animation.m")
-% end
+% drawer(control_TL,u(1,:),["Front_Wheel_Actuator_Force", "Time [s]", "Front Wheel Actuator Force [N]"],11,figfolder,shape);
+% drawer(control_TL,u(2,:),["Rear_Wheel_Actuator_Force", "Time [s]", "Rear Wheel Actuator Force [N]"],12,figfolder,shape);
+fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
+plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
+hold on;
+plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff","LineStyle","--");
+grid on;
+xlim([0,3]);
+xlabel("Time [s]");
+ylabel("Wheel Actuator Force [N]");
+legend("{\it f_{af}} : Front Wheel", "{\it f_{ar}} : Rear Wheel");
+fontname(fig,"Times New Roman");
+fontsize(fig,10.5,"points");
+saveas(fig,"figs/"+conditions+"/Actuator_Force.fig");
+saveas(fig,"jpgs/"+conditions+"/Actuator_Force.jpg");
 
+% compare the timings of rear road profile and actuator input
+fig = figure('name',"Actuator_Force_and_Road",'Position', [500+20 500-20 600 190]);
+xlim([0,3]);
+yyaxis left
+plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
+hold on;
+plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff");
+grid on;
+xlabel("Time [s]");
+ylabel("Wheel Actuator Force [N]");
+ylim([-4000,4000]);
+ax = gca;
+ax.YAxis(1).Color = [0 0 1];
+yyaxis right
+ylim([-0.09,0.09]);
+plot(TL,r_p_f,"LineWidth",2,"Color","#ff0000");
+plot(TL,r_p_r,"LineWidth",2,"Color","#ff0000");
+ylabel("Road Displacement [m]");
+legend("{\it f_{af}} : Front Actuator", "{\it f_{ar}} : Rear Actuator", "{\it z_{0f}} : Front Road Displacement", "{\it z_{0r}} : Rear Road Displacement");
+ax = gca;
+ax.YAxis(2).Color = [1 0 0];
+fontname(fig,"Times New Roman");
+fontsize(fig,10.5,"points");
+grid on;
+saveas(fig,"figs/"+conditions+"/Actuator_Force_and_Road.fig");
+saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
+
+if animation
+    close all;
+    clear frames;
+    run("half_model_animation.m")
 end

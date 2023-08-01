@@ -17,7 +17,8 @@ LQR     = false;
 rprev   = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
-LQR_fprev_rprev = true;
+LQR_fprev_rprev = false;
+semi_active = true;
 
 % road profile
 sensing = false;
@@ -48,26 +49,26 @@ if width(noise_name(noise_logi)) == 2
 elseif width(noise_name(noise_logi)) == 0
     added_noise = "";
 else
-    added_noise= noise_name(noise_logi)
+    added_noise= noise_name(noise_logi);
 end
 
 smoothing_name = ["_wa_" "_lpf_"];
 smoothing_logi = [wa lpf];
 if width(smoothing_name(smoothing_logi)) == 2
-    smoothing_method = "_wa-lpf_"
+    smoothing_method = "_wa-lpf_";
 elseif width(smoothing_name(smoothing_logi)) == 0
     smoothing_method = "";
 else
-    smoothing_method= smoothing_name(smoothing_logi)
+    smoothing_method= smoothing_name(smoothing_logi);
 end
 
-ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_"];
+ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","semi_active"];
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
-control = ctrl_names(logi_ctrl)
+control = ctrl_names(logi_ctrl);
 
 shape_names = ["_sensing2_","_paper_","_sin_","_step_","_manhole_","_jari_"];
 logi_shape = [sensing, paper, sin_wave, step, manhole, jari];
-shape = shape_names(logi_shape)
+shape = shape_names(logi_shape);
 
 %% LPF settings
 if lpf

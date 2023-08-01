@@ -2,7 +2,7 @@
 function dX = motion_func(X,U,w)
     global m_b m_w k_sf k_sr k_w c_sf c_sr c_w I_b L_f L_r
 
-    % Mddx + Cdx + Kx = Dw
+    % Mddx + Cdx + Kx = Dw + Fu
     M_mat = [
         m_b 0 0 0;
         0 m_w 0 0;
@@ -31,11 +31,14 @@ function dX = motion_func(X,U,w)
         0   0   0   0
     ];
 
-    b_mat = [
-        1   1;
-        -1  0;
-        0   -1;
-        L_f -L_r
+
+    dzdiff_f = (L_f*X(8)+X(5))-w(3);
+    dzdiff_r = (-L_r*X(8)+X(5))-w(4);
+    F_mat = [
+        -dzdiff_f       -dzdiff_r;
+        dzdiff_f        0;
+        0               dzdiff_r;
+        -L_f*dzdiff_f   L_r*dzdiff_r
     ];
 
 
@@ -46,8 +49,8 @@ function dX = motion_func(X,U,w)
     ];
 
     B = [
-        zeros(size(b_mat));
-        M_mat\b_mat
+        zeros(size(F_mat));
+        M_mat\F_mat
     ];
 
     D = [
