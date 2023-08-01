@@ -238,7 +238,7 @@ function f = half_model_calculation(pop)
         % input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
         
 
-        f(p,1) = 1/(pitch_integral + 10*pitch_max + input_integral);
+        f(p,1) = 1/(pitch_integral + 10*pitch_max + 0.0001*input_integral + 0.0001*input_max);
     end
 
 
