@@ -7,8 +7,8 @@ load("ga_controller.mat")
 
 % function f = half_model_calculation(pop)
 
-    global num_in num_hid num_out num_w num_b num_nn
-    num = size(pop,1);
+    global num_in num_hid num_out num_w1 num_w2 num_b num_nn num_hid1 num_hid2
+    % num = size(pop,1);
 
 
     %% Simulation configulation files
@@ -191,12 +191,25 @@ load("ga_controller.mat")
 
                 % calculate input
                 % du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));  % sensor data
-                du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),bchrom);  % actual data
+                if semi_active
+                    dzdiff_f = (L_f*X(10,cc)+X(7,cc))-X(8,cc);
+                    dzdiff_r = (-L_r*X(10,cc)+X(7,cc))-X(9,cc);
+                    w_IH = reshape(bchrom(p,1:num_in*num_hid1),[num_hid1,num_in]);
+                    w_HH = reshape(bchrom(p,num_in*num_hid1+1:num_w1),[num_hid2,num_hid1]);
+                    w_HO = reshape(bchrom(p,num_w1+1:num_nn),[num_out,num_hid2]);
+                    % b_H = reshape(pop(p,num_w+1:num_nn),[num_hid,1]);
+                    % b_O = reshape(pop(p,num_w+num_hid+1:num_nn),[num_out,1]);
 
-                if cc ~= 1
-                    u(:, cc+1) = u(:, cc) + du(:, cc+1);
+                    u(:, cc+1) = (purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])))).^2;
+                    %u(:,cc+1)=[100;100];
                 else
-                    u(:, cc+1) = du(:, cc+1);
+                    du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),bchrom);  % actual data
+
+                    if cc ~= 1
+                        u(:, cc+1) = u(:, cc) + du(:, cc+1);
+                    else
+                        u(:, cc+1) = du(:, cc+1);
+                    end
                 end
                 wf_global(1,:) = wf_global(1,:) - tc*V; last_minimum = last_minimum - tc*V;
                 wf_grad(1,:) = wf_grad(1,:) - tc;

@@ -8,8 +8,8 @@ global  bound rng
 [pops,numvar]=size(offs);
 mut=round(mutprop*pops*numvar); % 突然変異を行う回数
 
-a = -2000.0;
-b = 2000.0;
+a = -20.0;
+b = 20.0;
 for i=1:mut
     x=ceil(rand*pops);      % どの個体
     y=ceil(rand*numvar);    % どの遺伝子

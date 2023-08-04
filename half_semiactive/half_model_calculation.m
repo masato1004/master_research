@@ -1,4 +1,4 @@
-function f = half_model_calculation(pop)
+function f = half_model_calculation(pop,maxgen,it)
 
     %% branch: half_thesis_sensor
     % close all;
@@ -8,7 +8,8 @@ function f = half_model_calculation(pop)
 
 
 
-    global num_in num_hid num_out num_w num_b num_nn
+    global num_in num_hid num_out num_w1 num_w2 num_b num_nn num_hid1 num_hid2
+    global nowf_p nowf f_line inds
     num = size(pop,1);
 
     %% Simulation configulation files
@@ -171,7 +172,7 @@ function f = half_model_calculation(pop)
             % Runge kutta
             states(:,i+1) = runge(states(:,i), u_in, d, Ap, Bp, Ep, dt);
             accelerations(:,i+1) = [states(5,i+1);states(8,i+1)]./dt;
-        
+            
             % find appropriate next input
             if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive
                 cc = (i-1)/(tc/dt)+1;                   % list slice
@@ -194,14 +195,15 @@ function f = half_model_calculation(pop)
                 % calculate input
                 % du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));  % sensor data
                 if semi_active
-                    dzdiff_f = (L_f*states(8,i)+states(5,i))-d(3);
-                    dzdiff_r = (-L_r*states(8,i)+states(5,i))-d(4);
-                    w_IH = reshape(pop(1,1:num_in*num_hid),[num_hid,num_in]);
-                    w_HO = reshape(pop(1,num_in*num_hid+1:num_w),[num_out,num_hid]);
-                    b_H = reshape(pop(1,num_w+1:num_w+num_hid),[num_hid,1]);
-                    b_O = reshape(pop(1,num_w+num_hid+1:num_nn),[num_out,1]);
-            
-                    u(:, cc+1) = purelin(w_HO*tansig(w_IH*[states(:,i);dzdiff_f;dzdiff_r] + b_H) + b_O);
+                    dzdiff_f = (L_f*X(10,cc)+X(7,cc))-X(8,cc);
+                    dzdiff_r = (-L_r*X(10,cc)+X(7,cc))-X(9,cc);
+                    w_IH = reshape(pop(p,1:num_in*num_hid1),[num_hid1,num_in]);
+                    w_HH = reshape(pop(p,num_in*num_hid1+1:num_w1),[num_hid2,num_hid1]);
+                    w_HO = reshape(pop(p,num_w1+1:num_nn),[num_out,num_hid2]);
+                    % b_H = reshape(pop(p,num_w+1:num_nn),[num_hid,1]);
+                    % b_O = reshape(pop(p,num_w+num_hid+1:num_nn),[num_out,1]);
+
+                    u(:, cc+1) = (purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])))).^2;
                 else
                     du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),pop(p,:));  % actual data
 
@@ -249,7 +251,15 @@ function f = half_model_calculation(pop)
         % input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
         
 
-        f(p,1) = 1/(pitch_integral + 10*pitch_max + 0.0001*input_integral + 0.0001*input_max);
+        % f(p,1) = 1/(3*pitch_integral + 10*pitch_max + input_integral + 0.1*sum(abs(w_HO),"all") + 0.1*sum(abs(w_IH),"all") + 0.1*sum(abs(w_HH),"all") + 0.1*sum(abs(b_H),"all"));
+        f(p,1) = 1/(3*pitch_integral + 10*pitch_max + input_integral);
+        if p ~= inds
+            nowf(1,(it-1)*num+p) = f(p,1);
+        end
+        set(nowf_p,"XData",1/num:1/num:maxgen,"YData",nowf);
+        set(f_line,"Value",f(p,1));
+        drawnow
+        disp("Inner simulation loop: " + p +', '+ f(p,1))
     end
 
 
