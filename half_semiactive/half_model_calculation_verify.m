@@ -200,7 +200,7 @@ load("ga_controller.mat")
                     % b_H = reshape(pop(p,num_w+1:num_nn),[num_hid,1]);
                     % b_O = reshape(pop(p,num_w+num_hid+1:num_nn),[num_out,1]);
 
-                    u(:, cc+1) = (purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])))).^2;
+                    u(:, cc+1) = purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])));
                     %u(:,cc+1)=[100;100];
                 else
                     du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),bchrom);  % actual data

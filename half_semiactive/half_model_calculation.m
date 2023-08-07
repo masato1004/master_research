@@ -62,8 +62,8 @@ function f = half_model_calculation(pop,maxgen,it)
         %% ========================simulation========================= %%
         dw_list = [];
         % LOOP
+        penalty = 0;
         for i=1:c-1
-
             % make road preview profile
             if mod(i+(ts/dt-1), ts/dt) == 0 && ~semi_active
                 current_dis = r_p_prev(1,i);
@@ -203,7 +203,12 @@ function f = half_model_calculation(pop,maxgen,it)
                     % b_H = reshape(pop(p,num_w+1:num_nn),[num_hid,1]);
                     % b_O = reshape(pop(p,num_w+num_hid+1:num_nn),[num_out,1]);
 
-                    u(:, cc+1) = (purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])))).^2;
+                    u(:, cc+1) = purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])));
+                    if sum(u(:, cc+1)<[-c_sf;-c_sr]) ~= 0
+                        penalty = penalty - 0.001;
+                    else
+                        penalty = penalty - 0;
+                    end
                 else
                     du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),pop(p,:));  % actual data
 
@@ -252,7 +257,7 @@ function f = half_model_calculation(pop,maxgen,it)
         
 
         % f(p,1) = 1/(3*pitch_integral + 10*pitch_max + input_integral + 0.1*sum(abs(w_HO),"all") + 0.1*sum(abs(w_IH),"all") + 0.1*sum(abs(w_HH),"all") + 0.1*sum(abs(b_H),"all"));
-        f(p,1) = 1/(3*pitch_integral + 10*pitch_max + input_integral);
+        f(p,1) = 1/(3*pitch_integral + 10*pitch_max + input_integral) + penalty;
         if p ~= inds
             nowf(1,(it-1)*num+p) = f(p,1);
         end

@@ -5,7 +5,7 @@ close all
 global nowf_p nowf f_line inds
 global num_in num_hid num_out num_w1 num_w2 num_b num_nn num_hid1 num_hid2
 %% Initializing parameters
-pops=40;                      % population size
+pops=500;                      % population size
 maxgen=500;                   % maximum generation
 crossp=0.8;                   % crossover probability
 mutatep=0.35;                  % mutation probability
@@ -24,8 +24,8 @@ num_b = num_hid*0;  % bias
 num_nn = num_w2 + num_b;
 
 
-a = -20.0;
-b = 20.0;
+a = -250.0;
+b = 250.0;
 pop = a + (b-a).*rand(pops, num_nn);
 
 numvar = size(pops,2);
@@ -41,7 +41,7 @@ nowf_p = plot(nowf,Color="#ccccff",LineWidth=0.7); grid on;
 meanf_p = plot(meanf,Color="#0000ff",LineWidth=2); grid on;
 f_line = yline(nan,'-',"Current Fitness",DisplayName="");
 
-xlim([1,maxgen]);
+xlim([0,maxgen]);
 xlabel("Generation");
 ylabel("Fitness Function");
 fontname(fig_ga,"Times New Roman");
@@ -62,7 +62,7 @@ for it=1:maxgen
     bchrom=pop(inds,:);     % elite
  
     % cross pair
-    toursize=5;
+    toursize=pops/2;
     players=ceil(pops*rand(pops,toursize));
 
     scores=fpop(players);
