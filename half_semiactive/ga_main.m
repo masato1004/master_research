@@ -35,15 +35,22 @@ nowf = ones(1,maxgen*pops)*nan; inds = nan;
 
 % pop=zeros(pops,numvar);      
 % pop(:,1:numvar)=(ones(pops,1)*rng).*(rand(pops,numvar))+(ones(pops,1)*bound(:,1)');
-fig_ga = figure('Name',"GA processer",'Position', [100 400 1800 600]);
-maxf_p = plot(maxf,'-o',Color="#ff0000",LineWidth=2); hold on; box on;
-nowf_p = plot(nowf,Color="#ccccff",LineWidth=0.7); grid on;
-meanf_p = plot(meanf,Color="#0000ff",LineWidth=2); grid on;
+fig_ga = figure('Name',"GA processer",'Position', [100 400 1800 800]);
+subplot(211);
+maxf_p = plot(maxf,'-o',Color="#ff0000",LineWidth=2); hold on; box on, grid on;
+xlim([0,maxgen]);
+xlabel("Generation");
+ylabel("Max Fitness");
+
+subplot(212);
+nowf_p = plot(nowf,Color="#ccccff",LineWidth=0.7); hold on; box on, grid on;
+meanf_p = plot(meanf,Color="#0000ff",LineWidth=2);
 f_line = yline(nan,'-',"Current Fitness",DisplayName="");
 
 xlim([0,maxgen]);
 xlabel("Generation");
-ylabel("Fitness Function");
+ylabel("Fitness");
+legend("Each population","Average in a generation")
 fontname(fig_ga,"Times New Roman");
 fontsize(fig_ga,16,"points");
 
