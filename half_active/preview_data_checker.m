@@ -21,7 +21,7 @@ ylabel("Previewed Road Displacement [m]");
 % xline(prev_end,'--',"\bf Farest Preview",DisplayName="");
 % time count
 
-load_dir = "preview_datas";
+load_dir = "sim_config_mfiles/preview_datas";
 listing = dir(load_dir+"/*.mat");
 tc = 0.001;
 ts = 0.02;
@@ -35,7 +35,7 @@ pu = 1;
 
 all_list = [];
 
-for sc = 1:round(data_num/pick_up):2
+for sc = 1:round(data_num/pick_up):23
     file = load(load_dir + "/" + listing(sc).name);
     vertices = file.vertices;
     wf_local = previewing(vertices);
@@ -62,12 +62,12 @@ for sc = 1:round(data_num/pick_up):2
     if sc ~=1
         wf_local(1,:) = wf_local(1,:) + ts*V*(sc-1);
     end
-    wf_local(1,:) = wf_local(1,:) - ts*V*(3-sc);
+    % wf_local(1,:) = wf_local(1,:) - ts*V*(3-sc);
+    all_list = [all_list, wf_local];
     % figure;
     % plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color='r');
     % plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color=map(sc,:));
-    all_list = [all_list, wf_local];
-    check_plot = plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color=map(sc*65,:));
+    % check_plot = plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color=map(sc*65,:));
     drawnow;
     if pu ~= pick_up
         disp_name = ["$\it{k}"+"\rm-"+pu+"$", disp_name];
@@ -127,11 +127,11 @@ xlabel("Local Distance from Front Wheel [m]");
 ylabel("Displacement [m]");
 pu = pu + 1;
 
-% [~,ind] = sort(all_list(1,:));
-% all_list=all_list(:,ind);
-% all_plot = figure('name',"preview road",'Position', [500-20 500-20 600 190]);
-% plot(all_list(1,:),all_list(2,:),"LineWidth",2,Color=[0 0 1]);
-% legend(disp_name,'Interpreter','latex');
-% xline(0,'--r',"Front Wheel",DisplayName="");
-% fontname(check,"Times New Roman");
-% fontsize(check,10.5,"points");
+[~,ind] = sort(all_list(1,:));
+all_list=all_list(:,ind);
+all_plot = figure('name',"preview road",'Position', [500-20 500-20 600 190]);
+plot(all_list(1,:),all_list(2,:),"LineWidth",2,Color=[0 0 1]);
+legend(disp_name,'Interpreter','latex');
+xline(0,'--r',"Front Wheel",DisplayName="");
+fontname(check,"Times New Roman");
+fontsize(check,10.5,"points");
