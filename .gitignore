@@ -6,8 +6,10 @@ bin-release/
 
 # Other files and folders
 .settings/
-sensing/zed-matlab
+sensing/zed-matlab/build
+sensing/zed-matlab/build/*
 sensing/zed-matlab/*
+sensing/zed-matlab
 
 # Executables
 *.swf
