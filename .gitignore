@@ -8,6 +8,8 @@ bin-release/
 .settings/
 sensing/zed-matlab/build
 sensing/zed-matlab/build/*
+sensing/zed-matlab/matlab/ZEDfigure/*
+sensing/zed-matlab/matlab/ZEDimage/*
 
 # Executables
 *.swf
