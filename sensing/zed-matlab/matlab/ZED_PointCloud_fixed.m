@@ -16,7 +16,7 @@ cam_height = 1.45; % [m]
 % requested_size = [1700 1200];
 requested_size = [750 500];
 % requested_size = [640 480];
-cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 1; % 1~4
+cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 2; % 1~4
 % cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 3; % 1~4
 
 depth_max = 15;  % [m]
@@ -43,6 +43,9 @@ result = mexZED('open', InitParameters);
 caminfo = mexZED('getCameraInformation'); % checking parameters
 
 %% Run
+if not(exist("ZEDply/"+Exp_purpose,'dir'))
+    mkdir("ZEDply/"+Exp_purpose)
+end
 if(strcmp(result,'SUCCESS'))
     % Create Figure
     f = figure('name','ZED SDK : Point Cloud','NumberTitle','off','keypressfcn',@(obj,evt) 0);
@@ -100,6 +103,11 @@ if(strcmp(result,'SUCCESS'))
 
             drawnow; %this checks for interrupts
             count = count + 1;
+
+            vertices = [reshape(pt_X, [height(pt_X)*width(pt_X),1]),reshape(pt_Y, [height(pt_Y)*width(pt_Y),1]),reshape(pt_Z, [height(pt_Z)*width(pt_Z),1])];
+            pt_output = pointCloud(vertices);
+            pcwrite(pt_output,"ZEDply/"+count+"test",PLYformat="binary")
+
             key = uint8(get(f,'CurrentCharacter'));
             if(~length(key))
                 key=0;
