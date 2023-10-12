@@ -10,6 +10,8 @@ sensing/zed-matlab/build
 sensing/zed-matlab/build/*
 sensing/zed-matlab/matlab/ZEDfigure/*
 sensing/zed-matlab/matlab/ZEDimage/*
+unreal_engine/
+unreal_engine/*
 
 # Executables
 *.swf
