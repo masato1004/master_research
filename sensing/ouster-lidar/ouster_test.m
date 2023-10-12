@@ -1,6 +1,6 @@
 Exp_purpose = "test";
 
-ousterObj = ousterlidar("OS1-128","test.json",port=7502);
+ousterObj = ousterlidar("OS1-128","test.json",Port=7502);
 start(ousterObj);
 
 if not(exist("OusterLiDARply/"+Exp_purpose,'dir'))
