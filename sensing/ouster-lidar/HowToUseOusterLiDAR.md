@@ -42,8 +42,9 @@
     ```
 * MATLABコマンドラインで以下を入力  
   ```MATLAB
-  ousterlidar("os1-128","ousterlidar_calib.json",Port=7502)
+  obj = ousterlidar("os1-128","ousterlidar_calib.json",Port=7502)
   ```  
+  エラーが出なければ接続完了．preview(obj)でリアルタイムのデータをストリーミングできる．`doc ousterlidar`でその他使用方法がみられる．  
   上記で記述している`ousterlidar_calib.json`に足りない部分があれば，指摘されるデータを取得できるAPIコマンドを[os-シリアル番号.local](http://os-sirialNumber.local/)のdocumentationタブにて検索し，ターミナルで入力
 
 ## ===上記手順を踏んでもうまく行かない場合===
@@ -55,4 +56,10 @@ number used while creating the object.
 とエラーが出た場合，ESETによってOusterLiDARと繋げているイーサネットでのUDP通信がブロックされている可能性が高い．その場合，以下の手順でブロックを解除する．
 * MATLABで`ousterlidar("os1-128","ousterlidar_calib.json",Port=7502)`を入力し，上記エラーが出ることを確認．
 * "ESET internet security"を開く
-* 「概要」タブで，ネットワークを選択
+* 「概要」タブで，「ネットワーク検査」を選択  
+  ![Alt text](image.png)  
+* "os-シリアル番号.local"を選択
+* ブロックされた通信の詳細を選択
+* MATLABからのUDP通信のブロックを解除
+
+以上の手順を踏むことで，MATLABからOusterLiDARへの接続が可能になる．
