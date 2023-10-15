@@ -18,7 +18,7 @@ while (key ~= 27)
     % drawnow; %this checks for interrupts
     count = count + 1;
 
-    pcwrite(ptCloud,"OusterLiDARply/"+count+"test",PLYformat="binary")
+    pcwrite(ptCloud,"OusterLiDARply/"+Exp_purpose+"/"++count+"test",PLYformat="binary")
 
     key = uint8(get(f,'CurrentCharacter'));
     if(~length(key))
