@@ -6,7 +6,7 @@ start(ousterObj);
 if not(exist("OusterLiDARply/"+Exp_purpose,'dir'))
     mkdir("OusterLiDARply/"+Exp_purpose)
 end
-f = figure('name','ZED SDK : Point Cloud','NumberTitle','off','keypressfcn',@(obj,evt) 0);
+f = figure('name','Ouster LiDAR : Point Cloud','NumberTitle','off','keypressfcn',@(obj,evt) 0);
 
 key = 1;
 % loop over frames, till Esc is pressed
