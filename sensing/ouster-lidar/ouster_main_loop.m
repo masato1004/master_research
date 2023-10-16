@@ -43,7 +43,7 @@ fps=count/tend
 
 %% check the last pointcloud and clear objects
 close f;
-figure('name'='ouster LiDAR and IMU');
+figure(name='ouster LiDAR and IMU');
 subplot(121); pcshow(lidarCloud);
 subplot(122); pcshow(imuObj);
 clear lidarObj;
