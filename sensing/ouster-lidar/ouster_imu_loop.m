@@ -1,11 +1,12 @@
-Exp_purpose = "test";
+exp_purpose = "test";
 
 ousterObj = ousterlidar("OS1-128","ousterlidar_caib.json",Port=7503);
 start(ousterObj);
 
-if not(exist("OusterIMUply/"+Exp_purpose,'dir'))
-    mkdir("OusterIMUply/"+Exp_purpose)
+if not(exist("OusterIMUply/"+exp_purpose,'dir'))
+    mkdir("OusterIMUply/"+exp_purpose)
 end
+sevedir = "OusterIMUply/"+exp_purpose+"/";
 f = figure('name','Ouster IMU : Point Cloud','NumberTitle','off','keypressfcn',@(obj,evt) 0);
 
 key = 1;
@@ -18,7 +19,7 @@ while (key ~= 27)
     % drawnow; %this checks for interrupts
     count = count + 1;
 
-    pcwrite(ptCloud,"OusterIMUply/"+Exp_purpose+"/"++count+"test",PLYformat="binary")
+    pcwrite(ptCloud,sevedir+count+"-"+timestamp,PLYformat="binary")
 
     key = uint8(get(f,'CurrentCharacter'));
     if(~length(key))

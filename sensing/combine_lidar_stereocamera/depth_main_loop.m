@@ -11,9 +11,15 @@ exp_time = string(datetime);
 if not(exist("OusterLiDARply/"+exp_purpose+"/"+exp_time,'dir'))
     mkdir("OusterLiDARply/"+exp_purpose+"/"+exp_time)
 end
-if not(exist("OusterIMUply/"+exp_purpose,'dir'))
-    mkdir("OusterIMUply/"+exp_purpose)
+if not(exist("OusterIMUply/"+exp_purpose+"/"+exp_time,'dir'))
+    mkdir("OusterIMUply/"+exp_purpose+"/"+exp_time)
 end
+if not(exist("ZED2iply/"+exp_purpose+"/"+exp_time,'dir'))
+    mkdir("ZED2iply/"+exp_purpose+"/"+exp_time)
+end
+savedir_lidar = "OusterLiDARply/"+exp_purpose+"/"+exp_time+"/";
+savedir_imu = "OusterIMUply/"+exp_purpose+"/"+exp_time+"/";
+savedir_zed = "ZED2iply/"+exp_purpose+"/"+exp_time+"/";
 
 %% configuration of zed camera
 run("zed_config.m");
@@ -29,7 +35,7 @@ f = figure('name','Ouster LiDAR : Point Cloud','NumberTitle','off','keypressfcn'
 key = 1;
 
 %% loop over frames, till Esc is pressed
-count = 0;
+count = 1000000;
 tstart = tic;
 while (key ~= 27)
     count = count + 1;
@@ -39,14 +45,18 @@ while (key ~= 27)
     result = mexZED('grab', RuntimeParameters);
 
     if(strcmp(result,'SUCCESS'))  % get stereo camera data
+        % get pointcloud data
         [pt_X, pt_Y, pt_Z] = mexZED('retrieveMeasure', 3, requested_size(1), requested_size(2));
         vertices = [reshape(pt_X, [height(pt_X)*width(pt_X),1]),reshape(pt_Y, [height(pt_Y)*width(pt_Y),1]),reshape(pt_Z, [height(pt_Z)*width(pt_Z),1])];
         zedCloud = pointCloud(vertices);
-        pcwrite(zedCloud,"ZEDply/"+exp_purpose+"/"+count+"test",PLYformat="binary")
+        pcwrite(zedCloud,savedir_zed+count+"-"+imutimestamp,PLYformat="binary")
+
+        % get imu data
+        sensors_data = mexZED('getSensorsData', 1); % ask CURRENT sensors data
     end
 
-    pcwrite(lidarCloud,"OusterLiDARply/"+exp_purpose+"/"+count+"test",PLYformat="binary")  % save lidar data as ply
-    pcwrite(imuCloud,"OusterIMUply/"+exp_purpose+"/"+count+"test",PLYformat="binary")  % save lidar data as ply
+    pcwrite(lidarCloud,"OusterLiDARply/"+exp_purpose+"/"+count+"-"+lidartimestamp,PLYformat="binary")  % save lidar data as ply
+    pcwrite(imuCloud,"OusterIMUply/"+exp_purpose+"/"+count+"-"+imutimestamp,PLYformat="binary")  % save lidar data as ply
 
     % keyboard interrupt
     key = uint8(get(f,'CurrentCharacter'));

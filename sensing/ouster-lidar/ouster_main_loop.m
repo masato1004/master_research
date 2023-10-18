@@ -4,10 +4,11 @@ exp_time = string(datetime);
 if not(exist("OusterLiDARply/"+exp_purpose+"/"+exp_time,'dir'))
     mkdir("OusterLiDARply/"+exp_purpose+"/"+exp_time)
 end
-if not(exist("OusterIMUply/"+exp_purpose,'dir'))
-    mkdir("OusterIMUply/"+exp_purpose)
+if not(exist("OusterIMUply/"+exp_purpose+"/"+exp_time,'dir'))
+    mkdir("OusterIMUply/"+exp_purpose+"/"+exp_time)
 end
-
+savedir_lidar = "OusterLiDARply/"+exp_purpose+"/"+exp_time+"/";
+savedir_imu = "OusterIMUply/"+exp_purpose+"/"+exp_time+"/";
 
 %% generate objects
 lidarObj = ousterlidar("OS1-128","ousterlidar_caib.json",Port=7502);
@@ -20,7 +21,7 @@ f = figure('name','Ouster LiDAR : Point Cloud','NumberTitle','off','keypressfcn'
 key = 1;
 
 %% loop over frames, till Esc is pressed
-count = 0;
+count = 1000000;
 tstart = tic;
 while (key ~= 27)
     
@@ -29,8 +30,8 @@ while (key ~= 27)
     
     count = count + 1;
 
-    pcwrite(lidarCloud,"OusterLiDARply/"+exp_purpose+"/"+count+"test",PLYformat="binary")  % save lidar data as ply
-    pcwrite(imuCloud,"OusterIMUply/"+exp_purpose+"/"+count+"test",PLYformat="binary")  % save lidar data as ply
+    pcwrite(lidarCloud,savedir_lidar+count+"-"+lidartimestamp,PLYformat="binary")  % save lidar data as ply
+    pcwrite(imuCloud,savedir_imu+count+"-"+imutimestamp,PLYformat="binary")  % save lidar data as ply
 
     % keyboard interrupt
     key = uint8(get(f,'CurrentCharacter'));
