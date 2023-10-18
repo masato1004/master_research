@@ -19,7 +19,7 @@ while (key ~= 27)
     % drawnow; %this checks for interrupts
     count = count + 1;
 
-    pcwrite(ptCloud,sevedir+count+"-"+timestamp,PLYformat="binary")
+    pcwrite(ptCloud,sevedir+count+"-"+datestr(timestamp,"HH-mm-ss_FFF"),PLYformat="binary")
 
     key = uint8(get(f,'CurrentCharacter'));
     if(~length(key))
@@ -27,7 +27,7 @@ while (key ~= 27)
     end
 end
 tend = toc(tstart);
-fps=count/tend
+fps=(count-1000000)/tend
 
 pcshow(ptCloud);
 pcviewer(ptCloud);

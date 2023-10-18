@@ -30,8 +30,8 @@ while (key ~= 27)
     
     count = count + 1;
 
-    pcwrite(lidarCloud,savedir_lidar+count+"-"+lidartimestamp,PLYformat="binary")  % save lidar data as ply
-    pcwrite(imuCloud,savedir_imu+count+"-"+imutimestamp,PLYformat="binary")  % save lidar data as ply
+    pcwrite(lidarCloud,savedir_lidar+count+"-"+datestr(lidartimestamp,"HH-mm-ss_FFF"),PLYformat="binary")  % save lidar data as ply
+    pcwrite(imuCloud,savedir_imu+count+"-"+datestr(imutimestamp,"HH-mm-ss_FFF"),PLYformat="binary")  % save lidar data as ply
 
     % keyboard interrupt
     key = uint8(get(f,'CurrentCharacter'));
@@ -40,7 +40,7 @@ while (key ~= 27)
     end
 end
 tend = toc(tstart);
-fps=count/tend
+fps=(count-1000000)/tend
 
 %% check the last pointcloud and clear objects
 close f;

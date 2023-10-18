@@ -10,6 +10,7 @@ sensing/zed-matlab/build
 sensing/zed-matlab/build/*
 sensing/zed-matlab/matlab/ZEDfigure/*
 sensing/zed-matlab/matlab/ZEDimage/*
+sensing/zed-matlab/matlab/ZEDply/*
 unreal_engine/
 unreal_engine/*
 
