@@ -16,7 +16,7 @@ cam_height = 1.45; % [m]
 % requested_size = [1700 1200];
 requested_size = [750 500];
 % requested_size = [640 480];
-cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 2; % 1~4
+cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 1; % 1~4
 % cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 3; % 1~4
 
 depth_max = 15;  % [m]
