@@ -89,6 +89,12 @@ time_text = text(cx_f, 2, str);
 time_text.FontSize = 20;
 % time_text.FixedWidthFontName("TimesNewRoman")
 
+%% velocity display
+vel_data = round(x(9,1)*3.6,2);
+str = {"Velocity [km/h]",vel_data};
+vel_text = text(cx_f-l_f, 2, str);
+vel_text.FontSize = 20;
+
 %% set arounders
 xl = xlabel('Driving Distance [m]',FontSize=13);
 ylabel('Vertical Displacement [m]',FontSize=13);
@@ -206,6 +212,11 @@ for s=2:tl_w/2
         str = {"Time [s]",txdata};
         time_text.String = str;
         time_text.Position = [cx_f, 2];
+
+        vel_data = round(x(9,s)*3.6,2);
+        str = {"Velocity [km/h]",vel_data};
+        vel_text.String = str;
+        vel_text.Position = [cx_b, 2];
 
 %         g = get(gca);
 %         g.Children

@@ -18,8 +18,8 @@ c_vf = 2500;      % 前ダンパ減衰減数                        [N.s/m]
 c_vr = 2500;      % 後ダンパ減衰係数                        [N.s/m]
 k_hf = 80000;      % 前輪前後方向移動ばね定数                 [N/m]
 k_hr = 80000;      % 後輪前後方向移動ばね定数                 [N/m]
-c_hf = 1000;          % 前輪前後方向移動減衰係数                  [N.s/m]
-c_hr = 1000;          % 後輪前後方向移動減衰係数                  [N.s/m]
+c_hf = 1800;          % 前輪前後方向移動減衰係数                  [N.s/m]
+c_hr = 1800;          % 後輪前後方向移動減衰係数                  [N.s/m]
 k_tf = 270000;      % 前タイヤ弾性係数                           [N/m]
 k_tr = 270000;      % 後タイヤ弾性係数                          [N/m]
 c_tf = 1000;        % 前タイヤ減衰係数                          [N.s/m]
@@ -28,7 +28,7 @@ tantheta_f = 0.1;   % アンチダイブ角
 tantheta_r = 0.5;   % アンチリフト角
 
 %Brake
-Brake = 2500;              %総ブレーキ力
+Brake = 400;              %総ブレーキ力
 kbf = 0.5;                  %前ブレーキ配分
 f_xf = Brake*kbf;            %フロントブレーキ制動力
 f_xr = Brake*(1-kbf);        %リアブレーキ制動力
@@ -127,7 +127,7 @@ for i = 1:tl_w-1
     % if x(8,i) < 0 && x(9,i) < 0 && x(10,i) < 0
     %     bk_input = zeros(2,1);
     % end
-    if x(8,i) <= 0
+    if x(9,i) <= 0
         bk_input(:,i) = zeros(2,1);
         X1 = x(:,i);           b1 = dt*motion_func(X1, bk_input(:,i), A, B);
         X2 = x(:,i) + b1/2;    b2 = dt*motion_func(X2, bk_input(:,i), A, B);
@@ -135,11 +135,12 @@ for i = 1:tl_w-1
         X4 = x(:,i) + b3/2;    b4 = dt*motion_func(X4, bk_input(:,i), A, B);
         x(:,i+1) = x(:,i) + (b1+ 2*b2 + 2*b3 + b4)/6;
         x(2,i+1) = x(2,i);
+        x(9,i+1) = x(9,i);
     else
-        X1 = x(:,i);           b1 = dt*motion_func(X1, bk_input(:,i), A, B);
-        X2 = x(:,i) + b1/2;    b2 = dt*motion_func(X2, bk_input(:,i), A, B);
-        X3 = x(:,i) + b2/2;    b3 = dt*motion_func(X3, bk_input(:,i), A, B);
-        X4 = x(:,i) + b3/2;    b4 = dt*motion_func(X4, bk_input(:,i), A, B);
+        X1 = x(:,i);           b1 = dt*motion_func(X1, tl(i)*bk_input(:,i), A, B);
+        X2 = x(:,i) + b1/2;    b2 = dt*motion_func(X2, tl(i)*bk_input(:,i), A, B);
+        X3 = x(:,i) + b2/2;    b3 = dt*motion_func(X3, tl(i)*bk_input(:,i), A, B);
+        X4 = x(:,i) + b3/2;    b4 = dt*motion_func(X4, tl(i)*bk_input(:,i), A, B);
         x(:,i+1) = x(:,i) + (b1+ 2*b2 + 2*b3 + b4)/6;
     end
     % if i*dt >= 5
