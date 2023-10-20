@@ -5,8 +5,16 @@ disp('-- Get 3D Point Cloud --');
 close all;
 clear mex; clear functions; clear all;
 
+%% prepare directory
+exp_purpose = "-test-";
+exp_time = datestr(datetime,'yyyy-mm-dd-HH-MM-ss');
+
+if not(exist("ZED2iply/"+exp_purpose+"/"+exp_time,'dir'))
+    mkdir("ZED2iply/"+exp_purpose+"/"+exp_time)
+end
+savedir_zed = "ZED2iply/"+exp_purpose+"/"+exp_time+"/";
+
 %% Experiment parameter
-Exp_purpose = "-20230227tile-";
 
 object_distance = 0-15;  % [m]
 
@@ -14,9 +22,9 @@ cam_angle = 16;    % [deg]
 cam_height = 1.45; % [m]
 
 % requested_size = [1700 1200];
-requested_size = [750 500];
+requested_size = [800 650];
 % requested_size = [640 480];
-cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 1; % 1~4
+cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 2; % 1~4
 % cResolution = ["2K", "1080HD", "720HD", "VGA"]; cam_resolution = 3; % 1~4
 
 depth_max = 15;  % [m]
@@ -43,9 +51,7 @@ result = mexZED('open', InitParameters);
 caminfo = mexZED('getCameraInformation'); % checking parameters
 
 %% Run
-if not(exist("ZEDply/"+Exp_purpose,'dir'))
-    mkdir("ZEDply/"+Exp_purpose)
-end
+
 if(strcmp(result,'SUCCESS'))
     % Create Figure
     f = figure('name','ZED SDK : Point Cloud','NumberTitle','off','keypressfcn',@(obj,evt) 0);
@@ -76,7 +82,7 @@ if(strcmp(result,'SUCCESS'))
     
     key = 1;
     % loop over frames, till Esc is pressed
-    count = 0;
+    count = 100000000;
     tstart = tic;
     while (key ~= 27)
         % grab the current image and compute the depth
@@ -106,7 +112,7 @@ if(strcmp(result,'SUCCESS'))
 
             vertices = [reshape(pt_X, [height(pt_X)*width(pt_X),1]),reshape(pt_Y, [height(pt_Y)*width(pt_Y),1]),reshape(pt_Z, [height(pt_Z)*width(pt_Z),1])];
             pt_output = pointCloud(vertices);
-            pcwrite(pt_output,"ZEDply/"+count+"test",PLYformat="binary")
+            pcwrite(pt_output,savedir_zed+count+"-"+string(datetime('now','TimeZone','local','Format','HH-mm-ss-SSSSS')),PLYformat="binary")
 
             key = uint8(get(f,'CurrentCharacter'));
             if(~length(key))
@@ -115,7 +121,7 @@ if(strcmp(result,'SUCCESS'))
         end
     end
     tend = toc(tstart);
-    fps=count/tend
+    fps=(count-100000000)/tend
     close(f)
 end
 
@@ -127,28 +133,28 @@ clear mex;
 
 %% Drawing
 vertices = [reshape(pt_X, [height(pt_X)*width(pt_X),1]),reshape(pt_Y, [height(pt_Y)*width(pt_Y),1]),reshape(pt_Z, [height(pt_Z)*width(pt_Z),1])];
-pt_output = pcshow(pointCloud(vertices));
+% pt_output = pcshow(pointCloud(vertices));
 
 %% save
-% if not(exist("ZEDimage/t"+Exp_purpose,'dir'))
-%     mkdir("ZEDimage/t"+Exp_purpose)
+% % if not(exist("ZEDimage/t"+Exp_purpose,'dir'))
+% %     mkdir("ZEDimage/t"+Exp_purpose)
+% % end
+% if not(exist("ZEDfigure/"+Exp_purpose,'dir'))
+%     mkdir("ZEDimage/"+Exp_purpose)
 % end
-if not(exist("ZEDfigure/"+Exp_purpose,'dir'))
-    mkdir("ZEDimage/"+Exp_purpose)
-end
-
-figdir_name = "ZEDfigure/"+Exp_purpose+"/camH-"+cam_height+"-camA-"+cam_angle+"-objD-"+object_distance;
-% if not(exist("ZEDimage/t"+Exp_purpose+"/camH-"+cam_height+"-camA-"+cam_angle+"-objD-"+object_distance,'dir'))
-%     mkdir("ZEDimage/t"+Exp_purpose+"/camH-"+cam_height+"-camA-"+cam_angle+"-objD-"+object_distance)
+% 
+% figdir_name = "ZEDfigure/"+Exp_purpose+"/camH-"+cam_height+"-camA-"+cam_angle+"-objD-"+object_distance;
+% % if not(exist("ZEDimage/t"+Exp_purpose+"/camH-"+cam_height+"-camA-"+cam_angle+"-objD-"+object_distance,'dir'))
+% %     mkdir("ZEDimage/t"+Exp_purpose+"/camH-"+cam_height+"-camA-"+cam_angle+"-objD-"+object_distance)
+% % end
+% if not(exist(figdir_name,'dir'))
+%     mkdir(figdir_name)
 % end
-if not(exist(figdir_name,'dir'))
-    mkdir(figdir_name)
-end
-figdir_name2 = figdir_name+"/"+"min-"+depth_min+"-max-"+depth_max+"-dMode-"+dMode(dmode_num)+"sMode"+sMode(smode_num)+"-ptcSize-"+requested_size(1)+"_"+requested_size(2)+"-camReso-"+cResolution(cam_resolution);
-if not(exist(figdir_name2,'dir'))
-    mkdir(figdir_name2)
-end
-
-fig_name = figdir_name2+"/"+t;
-saveas(pt_output,fig_name+"pt.fig");
-save(fig_name+"mt.mat");
+% figdir_name2 = figdir_name+"/"+"min-"+depth_min+"-max-"+depth_max+"-dMode-"+dMode(dmode_num)+"sMode"+sMode(smode_num)+"-ptcSize-"+requested_size(1)+"_"+requested_size(2)+"-camReso-"+cResolution(cam_resolution);
+% if not(exist(figdir_name2,'dir'))
+%     mkdir(figdir_name2)
+% end
+% 
+% fig_name = figdir_name2+"/"+t;
+% saveas(pt_output,fig_name+"pt.fig");
+% save(fig_name+"mt.mat");
