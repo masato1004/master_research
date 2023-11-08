@@ -5,11 +5,13 @@ function prev_profile = previewing(vertices)
     % PICK UP ROAD POINT CLOUD
     road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
     raod_cloud = pointCloud(road_data);
+
+    % ptCloudA = pointCloud(road_data);
     % figure;
     % pcshow(raod_cloud);
     
     % DOWN SAMPLING
-    gridStep = 0.05;
+    gridStep = 0.03;
     ptCloudA = pcdownsample(raod_cloud,'gridAverage',gridStep);
     % figure;
     % pcshow(ptCloudA);
@@ -181,4 +183,13 @@ function z = applyModel(model, x, y)
     c = model(3);
     d = model(4);
     z = -a*x/c - b*y/c - d/c;
+end
+
+%% DEM of road
+function rd = road_dem(ptc_datas)
+    depth = 8;
+    mesh2 = pc2surfacemesh(pointCloud(ptc_datas),"poisson",depth);
+    surfaceMeshShow(mesh2)
+    figure
+    pcshow(mesh2.Vertices)
 end
