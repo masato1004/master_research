@@ -6,6 +6,13 @@ bin-release/
 
 # Other files and folders
 .settings/
+sensing/zed-matlab/build
+sensing/zed-matlab/build/*
+sensing/zed-matlab/matlab/ZEDfigure/*
+sensing/zed-matlab/matlab/ZEDimage/*
+sensing/zed-matlab/matlab/ZEDply/*
+unreal_engine/
+unreal_engine/*
 
 # Executables
 *.swf
@@ -14,10 +21,12 @@ bin-release/
 *.apk
 *.png
 *.jpg
+*.exr
 *.fig
 *.mp4
 *.mov
 *.asv
+*.ply
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
