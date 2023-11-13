@@ -39,12 +39,17 @@ function du_next = next_input(logi_ctrl,M,F,X,FDW,Fdj,thre,dw_r,dw_prev,dw_fr,po
         % LQR
         du_next = F*X;
     else
-        w_IH = reshape(pop(1,1:num_in*num_hid),[num_hid,num_in]);
-        w_HO = reshape(pop(1,num_in*num_hid+1:num_w),[num_out,num_hid]);
-        b_H = reshape(pop(1,num_w+1:num_w+num_hid),[num_hid,1]);
-        b_O = reshape(pop(1,num_w+num_hid+1:num_nn),[num_out,1]);
+        
+        dzdiff_f = (L_f*X(10)+X(7))-X(8);
+        dzdiff_r = (-L_r*X(10)+X(7))-X(9);
+        w_IH = reshape(pop(1,1:num_in*num_hid1),[num_hid1,num_in]);
+        w_HH = reshape(pop(1,num_in*num_hid1+1:num_w1),[num_hid2,num_hid1]);
+        w_HO = reshape(pop(1,num_w1+1:num_w2),[num_out,num_hid2]);
+        % b_H1 = reshape(pop(1,num_w2+1:num_w2+num_hid1),[num_hid1,1]);
+        % b_H2 = reshape(pop(1,num_w2+num_hid1+1:num_w2+num_hid),[num_hid2,1]);
+        % b_O = reshape(pop(1,num_w2+num_hid+1:num_nn),[num_out,1]);
 
-        du_next = purelin(w_HO*tansig(w_IH*X + b_H) + b_O);
+        du_next = purelin(w_HO*(tansig(w_HH*(tansig(w_IH*[X(:);dzdiff_f;dzdiff_r])))));
     end
 
 end

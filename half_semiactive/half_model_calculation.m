@@ -9,7 +9,7 @@ function f = half_model_calculation(pop,maxgen,it)
 
 
     global num_in num_hid num_out num_w1 num_w2 num_b num_nn num_hid1 num_hid2
-    global nowf_p nowf f_line inds
+    global nowinf_p nowinr_p nowin nowf_p nowf f_line inds
     num = size(pop,1);
 
     %% Simulation configulation files
@@ -166,7 +166,8 @@ function f = half_model_calculation(pop,maxgen,it)
             d = r_p(:,i);
             
             % load current input
-            u_in = u(:,cc);
+            % u_in = u(:,cc);
+            u_in = [0; 0];
 
             % states-update with Runge-Kutta
             % Runge kutta
@@ -197,18 +198,24 @@ function f = half_model_calculation(pop,maxgen,it)
                 if semi_active
                     dzdiff_f = (L_f*X(10,cc)+X(7,cc))-X(8,cc);
                     dzdiff_r = (-L_r*X(10,cc)+X(7,cc))-X(9,cc);
-                    w_IH = reshape(pop(p,1:num_in*num_hid1),[num_hid1,num_in]);
-                    w_HH = reshape(pop(p,num_in*num_hid1+1:num_w1),[num_hid2,num_hid1]);
-                    w_HO = reshape(pop(p,num_w1+1:num_nn),[num_out,num_hid2]);
-                    % b_H = reshape(pop(p,num_w+1:num_nn),[num_hid,1]);
-                    % b_O = reshape(pop(p,num_w+num_hid+1:num_nn),[num_out,1]);
+                    w_IH = gpuArray(reshape(pop(p,1:num_in*num_hid1),[num_hid1,num_in]));
+                    w_HH = gpuArray(reshape(pop(p,num_in*num_hid1+1:num_w1),[num_hid2,num_hid1]));
+                    w_HO = gpuArray(reshape(pop(p,num_w1+1:num_w2),[num_out,num_hid2]));
+                    % b_H1 = reshape(pop(p,num_w2+1:num_w2+num_hid1),[num_hid1,1]);
+                    % b_H2 = reshape(pop(p,num_w2+num_hid1+1:num_w2+num_hid),[num_hid2,1]);
+                    % b_O = reshape(pop(p,num_w2+num_hid+1:num_nn),[num_out,1]);
 
-                    u(:, cc+1) = purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])));
+                    u(:, cc+1) = purelin(w_HO*(tansig(w_HH*(tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])))));
                     if sum(u(:, cc+1)<[-c_sf;-c_sr]) ~= 0
                         penalty = penalty - 0.001;
                     else
                         penalty = penalty - 0;
                     end
+
+                    % States redefinition
+                    c_sf = 3300+gather(u(1, cc+1));    % [N/(m/s)] front damping
+                    c_sr = 3250+gather(u(1, cc+1));    % [N/(m/s)] rear damping
+                    run("sim_config_mfiles/conf__state_space_settings.m")
                 else
                     du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),pop(p,:));  % actual data
 
@@ -257,10 +264,13 @@ function f = half_model_calculation(pop,maxgen,it)
         
 
         % f(p,1) = 1/(3*pitch_integral + 10*pitch_max + input_integral + 0.1*sum(abs(w_HO),"all") + 0.1*sum(abs(w_IH),"all") + 0.1*sum(abs(w_HH),"all") + 0.1*sum(abs(b_H),"all"));
-        f(p,1) = 1/(3*pitch_integral + 10*pitch_max + input_integral) + penalty;
+        f(p,1) = 1/(3*pitch_integral + 10*pitch_max + 5*input_integral) + penalty;
         if p ~= inds
             nowf(1,(it-1)*num+p) = f(p,1);
         end
+        
+        set(nowinf_p,"XData",control_TL,"YData",u(1,:));
+        set(nowinr_p,"XData",control_TL,"YData",u(2,:));
         set(nowf_p,"XData",1/num:1/num:maxgen,"YData",nowf);
         set(f_line,"Value",f(p,1));
         drawnow

@@ -196,11 +196,12 @@ load("ga_controller.mat")
                     dzdiff_r = (-L_r*X(10,cc)+X(7,cc))-X(9,cc);
                     w_IH = reshape(bchrom(p,1:num_in*num_hid1),[num_hid1,num_in]);
                     w_HH = reshape(bchrom(p,num_in*num_hid1+1:num_w1),[num_hid2,num_hid1]);
-                    w_HO = reshape(bchrom(p,num_w1+1:num_nn),[num_out,num_hid2]);
-                    % b_H = reshape(pop(p,num_w+1:num_nn),[num_hid,1]);
-                    % b_O = reshape(pop(p,num_w+num_hid+1:num_nn),[num_out,1]);
+                    w_HO = reshape(bchrom(p,num_w1+1:num_w2),[num_out,num_hid2]);
+                    % b_H1 = reshape(pop(p,num_w2+1:num_w2+num_hid1),[num_hid1,1]);
+                    % b_H2 = reshape(pop(p,num_w2+num_hid1+1:num_w2+num_hid),[num_hid2,1]);
+                    % b_O = reshape(pop(p,num_w2+num_hid+1:num_nn),[num_out,1]);
 
-                    u(:, cc+1) = purelin(w_HO*tansig(w_HH*tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])));
+                    u(:, cc+1) = purelin(w_HO*(tansig(w_HH*(tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])))));
                     %u(:,cc+1)=[100;100];
                 else
                     du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),bchrom);  % actual data
