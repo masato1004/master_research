@@ -1,10 +1,10 @@
 % ga_main.m
-
+warning("off","all");
 clc
 clear
 close all
 global nowinf_p nowinr_p nowin nowf_p nowf f_line inds
-global num_in num_hid num_out num_w1 num_w2 num_b num_nn num_hid1 num_hid2
+global num_in num_in1 num_in2 num_mid num_hid num_out num_w1 num_w2 num_b num_nn num_hid1 num_hid2
 %% Initializing parameters
 pops=50;                      % population size
 maxgen=50;                   % maximum generation
@@ -14,13 +14,16 @@ mutatep=0.35;                  % mutation probability
 %% initializing pop
 
 % network1
-num_in = 12;    % input layer
+num_in1 = 10;    % input layer
+num_in2 = 4;    % input layer
+num_mid = 44;    % input layer
 num_hid1 = 40;
+num_in = num_in1*num_hid1 + num_in2;
 num_hid2 = 40;
 num_hid = num_hid1 + num_hid2;  % hidden layer
 num_out = 2;   % output layer
-num_w1 = num_in*num_hid1 + num_hid1*num_hid2;  % weight
-num_w2 = num_in*num_hid1 + num_hid1*num_hid2 + num_hid2*num_out;  % weight
+num_w1 = num_in1*num_hid1 + num_in2 + num_mid*num_hid1 + num_hid1*num_hid2;  % weight
+num_w2 = num_w1 + num_hid2*num_out;  % weight
 num_b = (num_hid+num_out)*0;  % bias
 num_nn = num_w2 + num_b;
 
@@ -128,7 +131,7 @@ ylabel('fitness')
 title('fitness preogress')
 legend("maximum fintness","meanftness")
 
-save("ga_controller_b.mat", "num_in", "num_hid", "num_out", "num_w1", "num_w2", "num_b", "num_nn", "num_hid1", "num_hid2", "bchrom");
+save("ga_controller_b.mat", "num_in", "num_in1", "num_in2", "num_mid", "num_hid", "num_out", "num_w1", "num_w2", "num_b", "num_nn", "num_hid1", "num_hid2", "bchrom");
 
 % Apply controller
 % run("half_model_calculation_verify.m")

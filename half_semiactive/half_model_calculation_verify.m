@@ -1,9 +1,9 @@
 %% branch: half_thesis_sensor
-close all;
+% close all;
 clear;
 clc;
 branch = "_semi_active_proto_";
-load("ga_controller.mat")
+load("ga_controller_b.mat")
 
 % function f = half_model_calculation(pop)
 
@@ -163,7 +163,8 @@ load("ga_controller.mat")
             d = r_p(:,i);
             
             % load current input
-            u_in = u(:,cc);
+            % u_in = u(:,cc);
+            u_in = [0; 0];
 
             % states-update with Runge-Kutta
             % Runge kutta
@@ -181,6 +182,7 @@ load("ga_controller.mat")
                     interp1(wf_grad(1,:),[0,diff(wf_grad(3,:))],[0:M].*tc,'linear');
                     dw_r(4, [0:M]+cc);
                     ];
+                dw_prev(isnan(dw_prev)) = 0;
                 dw_list = [dw_list,dw_prev];
 
                 % calculate new states
@@ -192,17 +194,24 @@ load("ga_controller.mat")
                 % calculate input
                 % du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));  % sensor data
                 if semi_active
-                    dzdiff_f = (L_f*X(10,cc)+X(7,cc))-X(8,cc);
-                    dzdiff_r = (-L_r*X(10,cc)+X(7,cc))-X(9,cc);
-                    w_IH = reshape(bchrom(p,1:num_in*num_hid1),[num_hid1,num_in]);
-                    w_HH = reshape(bchrom(p,num_in*num_hid1+1:num_w1),[num_hid2,num_hid1]);
-                    w_HO = reshape(bchrom(p,num_w1+1:num_w2),[num_out,num_hid2]);
+                    % dzdiff_f = (L_f*X(10,cc)+X(7,cc))-X(8,cc);
+                    % dzdiff_r = (-L_r*X(10,cc)+X(7,cc))-X(9,cc);
+                    w_IH1 = gpuArray(reshape(pop(p,1:num_in1*num_hid1),[num_hid1,num_in1]));
+                    w_IH2 = gpuArray(reshape(pop(p,num_in1*num_hid1+1:num_in),[1,num_in2]));
+                    w_MID = gpuArray(reshape(pop(p,num_in+1:num_in+num_mid*num_hid1),[num_hid1,num_mid]));
+                    w_HH = gpuArray(reshape(pop(p,num_in+num_mid*num_hid1+1:num_w1),[num_hid2,num_hid1]));
+                    w_HO = gpuArray(reshape(pop(p,num_w1+1:num_nn),[num_out,num_hid2]));
                     % b_H1 = reshape(pop(p,num_w2+1:num_w2+num_hid1),[num_hid1,1]);
                     % b_H2 = reshape(pop(p,num_w2+num_hid1+1:num_w2+num_hid),[num_hid2,1]);
                     % b_O = reshape(pop(p,num_w2+num_hid+1:num_nn),[num_out,1]);
 
-                    u(:, cc+1) = purelin(w_HO*(tansig(w_HH*(tansig(w_IH*[X(:,cc);dzdiff_f;dzdiff_r])))));
+                    u(:, cc+1) = purelin(w_HO*(tansig(w_HH*(tansig(w_IH1*X(:,cc)+w_MID*((w_IH2*dw_prev)'))))));
                     %u(:,cc+1)=[100;100];
+
+                    % States redefinition
+                    c_sf = 3300+u(1, cc+1);    % [N/(m/s)] front damping
+                    c_sr = 3250+u(2, cc+1);    % [N/(m/s)] rear damping
+                    run("sim_config_mfiles/conf__state_space_settings.m")
                 else
                     du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M),bchrom);  % actual data
 
