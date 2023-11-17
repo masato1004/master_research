@@ -1,6 +1,6 @@
 %% Dfine simulation condition with boolean
 % draw an animation or not
-animation = true;
+animation = false;
 prev_anim = false;
 
 % add noise or not
@@ -20,8 +20,8 @@ fprev_rprev     = false;
 LQR_fprev_rprev = false;
 
 % road profile
-sensing = false;
-paper   = true;
+sensing = true;
+paper   = false;
 sin_wave = false;
 step    = false;
 manhole = false;
