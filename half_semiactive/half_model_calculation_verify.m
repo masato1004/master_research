@@ -59,6 +59,7 @@ load("ga_controller_b.mat")
         %% ========================simulation========================= %%
         dw_list = [];
         % LOOP
+        penalty = 0;
         for i=1:c-1
 
             % make road preview profile
@@ -196,16 +197,21 @@ load("ga_controller_b.mat")
                 if semi_active
                     % dzdiff_f = (L_f*X(10,cc)+X(7,cc))-X(8,cc);
                     % dzdiff_r = (-L_r*X(10,cc)+X(7,cc))-X(9,cc);
-                    w_IH1 = gpuArray(reshape(pop(p,1:num_in1*num_hid1),[num_hid1,num_in1]));
-                    w_IH2 = gpuArray(reshape(pop(p,num_in1*num_hid1+1:num_in),[1,num_in2]));
-                    w_MID = gpuArray(reshape(pop(p,num_in+1:num_in+num_mid*num_hid1),[num_hid1,num_mid]));
-                    w_HH = gpuArray(reshape(pop(p,num_in+num_mid*num_hid1+1:num_w1),[num_hid2,num_hid1]));
-                    w_HO = gpuArray(reshape(pop(p,num_w1+1:num_nn),[num_out,num_hid2]));
+                    w_IH1 = gpuArray(reshape(bchrom(p,1:num_in1*num_hid1),[num_hid1,num_in1]));
+                    w_IH2 = gpuArray(reshape(bchrom(p,num_in1*num_hid1+1:num_in),[1,num_in2]));
+                    w_MID = gpuArray(reshape(bchrom(p,num_in+1:num_in+num_mid*num_hid1),[num_hid1,num_mid]));
+                    w_HH = gpuArray(reshape(bchrom(p,num_in+num_mid*num_hid1+1:num_w1),[num_hid2,num_hid1]));
+                    w_HO = gpuArray(reshape(bchrom(p,num_w1+1:num_nn),[num_out,num_hid2]));
                     % b_H1 = reshape(pop(p,num_w2+1:num_w2+num_hid1),[num_hid1,1]);
                     % b_H2 = reshape(pop(p,num_w2+num_hid1+1:num_w2+num_hid),[num_hid2,1]);
                     % b_O = reshape(pop(p,num_w2+num_hid+1:num_nn),[num_out,1]);
 
                     u(:, cc+1) = purelin(w_HO*(tansig(w_HH*(tansig(w_IH1*X(:,cc)+w_MID*((w_IH2*dw_prev)'))))));
+                    if sum(u(:, cc+1)<[-c_sf;-c_sr]) ~= 0
+                        penalty = penalty - 0.001;
+                    else
+                        penalty = penalty - 0;
+                    end
                     %u(:,cc+1)=[100;100];
 
                     % States redefinition
@@ -259,7 +265,7 @@ load("ga_controller_b.mat")
         % input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
         
 
-        f(p,1) = 1/(pitch_integral + 10*pitch_max)
+        f(p,1) = 1/(3*pitch_integral + 10*pitch_max + 5*input_integral) + penalty;
     end
 
     % return
