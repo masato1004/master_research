@@ -1,17 +1,18 @@
-depth = 6;
+depth = 8;
 mesh2 = pc2surfacemesh(pointCloud(ptc_datas),"poisson",depth);
+datas = mesh2.Vertices;
 % surfaceMeshShow(mesh2)
 % writeSurfaceMesh(mesh2,"test_surface");
 figure
-pcshow(mesh2.Vertices); hold on;
+pcshow(datas); hold on;
 
 %% pointcloud interpolation
-xlist = -1:0.1:1;
-ylist = 3:0.1:12;
+xlist = -1:0.01:1;
+ylist = 3:0.01:12;
 [xq,yq] = meshgrid(xlist,ylist);
-elevation_mesh = griddata(datas(:,1),datas(:,2),datas(:,3),xq,yq,"cubic");
+elevation_mesh = griddata(double(datas(:,1)),double(datas(:,2)),double(datas(:,3)),xq,yq,"natural");
 figure;
-surf(xq,yq,elevation_mesh);
+mesh(xq,yq,elevation_mesh);
 axis equal
 % colormap default
 
@@ -21,7 +22,7 @@ figure;
 
 z_vec = [0,0,1];                        % z vector
 angle_r = subspace(z_vec',u_vec');          % [rad] angle
-gradient_mesh = surf(xq,yq,abs(fy)+abs(fx));
+gradient_mesh = mesh(xq,yq,10*(abs(fy)+abs(fx)));
 axis equal
 % colormap(autumn(5))
 

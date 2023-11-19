@@ -4,15 +4,15 @@ function prev_profile = previewing(vertices)
     
     % PICK UP ROAD POINT CLOUD
     road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
-    raod_cloud = pointCloud(road_data);
+    % raod_cloud = pointCloud(road_data);
 
-    % ptCloudA = pointCloud(road_data);
+    ptCloudA = pointCloud(road_data);
     % figure;
     % pcshow(raod_cloud);
     
     % DOWN SAMPLING
-    gridStep = 0.03;
-    ptCloudA = pcdownsample(raod_cloud,'gridAverage',gridStep);
+    % gridStep = 0.03;
+    % ptCloudA = pcdownsample(raod_cloud,'gridAverage',gridStep);
     % figure;
     % pcshow(ptCloudA);
     
