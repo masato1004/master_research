@@ -6,7 +6,7 @@ close all;
 clear mex; clear functions; clear all;
 
 %% prepare directory
-exp_purpose = "-test-";
+exp_purpose = "-middlestay-";
 exp_time = datestr(datetime,'yyyy-mm-dd-HH-MM-ss');
 
 if not(exist("ZED2iply/"+exp_purpose+"/"+exp_time,'dir'))

@@ -1,4 +1,5 @@
-exp_purpose = "test";
+warning("off","all");
+exp_purpose = "middlestay";
 
 ousterObj = ousterlidar("OS1-128","ousterlidar_caib.json",Port=7502);
 start(ousterObj);
