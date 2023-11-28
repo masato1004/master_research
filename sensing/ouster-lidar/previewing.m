@@ -1,9 +1,20 @@
 function prev_profile = previewing(vertices)
 
+    %% ROTATE POINT CLOUD TO MATCH THE ZED-COORDINATE
+    z_vec = [0,0,1];
+    rotationVector = (pi/2) * z_vec/norm(z_vec);
+    rotationMatrix = rotationVectorToMatrix(rotationVector);
+    translation = [0 0 0];
+    tform = rigid3d(rotationMatrix,translation);
+    ptCloudOut = pctransform(ptCloud,tform);
+    vertices = ptCloudOut.Location;
+    % figure
+    % pcshow(ptCloudOut)
+    
     % LOAD POINT CLOUD
     
-    % PICK UP ROAD POINT CLOUD
-    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
+    %% PICK UP ROAD POINT CLOUD
+    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2 & vertices(:,3)<=0.3,:,:);
     road_data = pointCloud(road_data);
     % figure;
     % pcshow(raod_cloud);
@@ -63,6 +74,7 @@ function prev_profile = previewing(vertices)
     new_mesh = reshape(new_mesh,81,3);
     new_mesh = pointCloud(new_mesh);
     
+    % stereo camera angle -> -25.93
     rotationVector = -angle_r * r_axis/norm(r_axis);
     rotationMatrix = rotationVectorToMatrix(rotationVector);
     translation = [0 0 0];

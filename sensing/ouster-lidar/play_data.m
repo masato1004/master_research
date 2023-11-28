@@ -13,9 +13,9 @@ while k <= length(listing)
     ptCloud = pcread(savedir_lidar+listing(k).name);
     % view(player,ptCloud);
     pcshow(ptCloud)
-    xlim([-3,1])
-    ylim([-1,10])
-    zlim([-2,2.5])
+    % xlim([-3,1])
+    % ylim([-1,10])
+    % zlim([-2,2.5])
     
     xlabel('\itX \rm[m]')
     ylabel('\itY \rm[m]')
