@@ -1,6 +1,8 @@
 function prev_profile = previewing(vertices)
-
+    % ptCloud = pcread("C:\Users\masato\research\master_research\sensing\ouster-lidar\OusterLiDARply\stay\2023-11-28-17-23-33\100000132-17-23-40-61165.ply");
     %% ROTATE POINT CLOUD TO MATCH THE ZED-COORDINATE
+    x_vec = [1,0,0];
+    y_vec = [0,1,0];
     z_vec = [0,0,1];
     rotationVector = (pi/2) * z_vec/norm(z_vec);
     rotationMatrix = rotationVectorToMatrix(rotationVector);
@@ -14,14 +16,15 @@ function prev_profile = previewing(vertices)
     % LOAD POINT CLOUD
     
     %% PICK UP ROAD POINT CLOUD
-    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2 & vertices(:,3)<=0.3,:,:);
+    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
     road_data = pointCloud(road_data);
+    ptCloudA = road_data;
     % figure;
     % pcshow(raod_cloud);
     
     % DOWN SAMPLING
-    gridStep = 0.05;
-    ptCloudA = pcdownsample(road_data,'gridAverage',gridStep);
+    % gridStep = 0.05;
+    % ptCloudA = pcdownsample(road_data,'gridAverage',gridStep);
     % figure;
     % pcshow(ptCloudA);
     
@@ -85,6 +88,7 @@ function prev_profile = previewing(vertices)
     % Lift the road up for camera-height by mesh
     ptc_datas = ptCloudOut.Location;
     ptc_datas(:,3) = ptc_datas(:,3) - mean(new_mesh_out.Location(:,3));
+    ptc_datas = ptc_datas(ptc_datas(:,3)<=0.3,:,:);
     % figure;
     % pcshow(pointCloud(xyz));
     
