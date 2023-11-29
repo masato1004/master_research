@@ -1,5 +1,9 @@
 function prev_profile = previewing(vertices)
+    %% lidar
     % ptCloud = pcread("C:\Users\masato\research\master_research\sensing\ouster-lidar\OusterLiDARply\stay\2023-11-28-17-23-33\100000132-17-23-40-61165.ply");
+    %% stereo camera
+    ptCloud = pcread("C:\Users\masato\research\master_research\sensing\zed-matlab\matlab\ZED2iply\-stay-\2023-11-28-17-23-32\100000085-17-23-41-61170.ply");
+    vertices = ptCloud.Location;
     %% ROTATE POINT CLOUD TO MATCH THE ZED-COORDINATE
     x_vec = [1,0,0];
     y_vec = [0,1,0];
