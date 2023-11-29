@@ -21,6 +21,7 @@ function prev_profile = previewing(vertices)
     
     %% PICK UP ROAD POINT CLOUD
     road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
+    % road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2 & vertices(:,2)<=7,:,:);  % for fixing stereocamera pointcloud
     road_data = pointCloud(road_data);
     ptCloudA = road_data;
     % figure;
