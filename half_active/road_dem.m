@@ -1,7 +1,7 @@
 depth = 8;
-mesh2 = pc2surfacemesh(pointCloud(ptc_datas),"poisson",depth);
+mesh2 = pc2surfacemesh(pointCloud([-1*ptc_datas(:,1),ptc_datas(:,2),-1*ptc_datas(:,3)]),"poisson",depth);
 datas = mesh2.Vertices;
-% surfaceMeshShow(mesh2)
+% surfaceMeshShow(mesh2,"WireFrame",true)
 % writeSurfaceMesh(mesh2,"test_surface");
 figure
 pcshow(datas); hold on;
@@ -24,9 +24,11 @@ figure;
 
 z_vec = [0,0,1];                        % z vector
 angle_r = subspace(z_vec',u_vec');          % [rad] angle
-gradient_mesh = mesh(xq,yq,(abs(fy)+abs(fx)));
+gradient_mesh = mesh(-xq,yq,(abs(fy)+abs(fx)));
 axis equal
 % colormap(autumn(5))
+% mesh3 = pc2surfacemesh(pointCloud([reshape(xq,[numel(xq),1]),reshape(yq,[numel(yq),1]),-1*reshape((abs(fy)+abs(fx)),[numel((abs(fy)+abs(fx))),1])]),"poisson",depth);
+% surfaceMeshShow(mesh3);
 
 %% draw
 figure;

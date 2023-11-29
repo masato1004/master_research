@@ -69,14 +69,22 @@ function prev_profile = previewing(vertices)
     rotationMatrix = rotationVectorToMatrix(rotationVector);
     translation = [0 0 0];
     tform = rigid3d(rotationMatrix,translation);
-    ptCloudOut = pctransform(raod_cloud,tform);
+    ptCloudOut = pctransform(ptCloudA,tform);
     new_mesh_out = pctransform(new_mesh,tform);
     
     % Lift the road up for camera-height by mesh
     ptc_datas = ptCloudOut.Location;
     ptc_datas(:,3) = ptc_datas(:,3) - mean(new_mesh_out.Location(:,3));
     % figure;
-    % pcshow(pointCloud(xyz));
+    % pcshow(ptc_datas);
+    % xlabel("\itX \rm[m]");
+    % ylabel("\itY \rm[m]");
+    % zlabel("\itZ \rm[m]");
+    % set(gcf,'color','w');
+    % set(gca,'color','w');
+    % fontname(gcf,"Times New Roman");
+    % fontsize(gca,9,"points");
+    % set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
     
     %% PICK UP AS 2D
     range_min = 5.06;     % minimum measurable distance [m]
