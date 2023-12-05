@@ -1,9 +1,9 @@
 function prev_profile = previewing(vertices)
     %% lidar
-    % ptCloud = pcread("C:\Users\masato\research\master_research\sensing\ouster-lidar\OusterLiDARply\stay\2023-11-28-17-23-33\100000132-17-23-40-61165.ply");
+    ptCloud = pcread("C:\Users\masato\research\master_research\sensing\ouster-lidar\OusterLiDARply\stay\2023-11-28-17-23-33\100000132-17-23-40-61165.ply");
     %% stereo camera
-    ptCloud = pcread("C:\Users\masato\research\master_research\sensing\zed-matlab\matlab\ZED2iply\-stay-\2023-11-28-17-23-32\100000085-17-23-41-61170.ply");
-    vertices = ptCloud.Location;
+    % ptCloud = pcread("C:\Users\masato\research\master_research\sensing\zed-matlab\matlab\ZED2iply\-stay-\2023-11-28-17-23-32\100000085-17-23-41-61170.ply");
+    % vertices = ptCloud.Location;
     %% ROTATE POINT CLOUD TO MATCH THE ZED-COORDINATE
     x_vec = [1,0,0];
     y_vec = [0,1,0];
@@ -98,7 +98,8 @@ function prev_profile = previewing(vertices)
     % pcshow(pointCloud(xyz));
     
     %% PICK UP AS 2D
-    range_min = 5.06;     % minimum measurable distance [m]
+    % range_min = 5.06;     % minimum measurable distance [m]
+    range_min = 0;     % minimum measurable distance [m]
     range_max = 7;        % maximum measurable distance [m]
     pick_up_width = 0.24; % width of datas for a road profile [m]
     pick_up_center = 0;   % center of pick up position [m]
