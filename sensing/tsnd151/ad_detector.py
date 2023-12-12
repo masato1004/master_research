@@ -8,6 +8,7 @@
 import os
 import sys
 import serial
+import subprocess
 import time
 import struct
 import binascii
@@ -231,9 +232,9 @@ class Tsnd:
             input_voltage = self.term4_in
         
         # 1.5V以上のアナログ入力でTrue
-        if input_voltage >= 1500:
+        if input_voltage >= 1500 and input_voltage <= 3000:
             return True
-        elif input_voltage < 1500:
+        elif input_voltage >= 0 and input_voltage < 1500:
             return False
         else:
             return False
@@ -402,8 +403,12 @@ class Tsnd:
 
 
 if __name__ == '__main__':
-
-    tsnd = Tsnd('COM5')
+    # os.chmod('/dev/ttyACM0',666)
+    cmd = 'sudo chmod 666 /dev/ttyACM0'#<=ここにコマンドを当てはめる
+    process = (subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                            shell=True).communicate()[0]).decode('utf-8')
+    tsnd = Tsnd('/dev/ttyACM0')
+    # tsnd = Tsnd('COM5')
     tsnd.setup_all()
     tsnd.start()
     for i in range(100):
