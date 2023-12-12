@@ -92,42 +92,43 @@ if __name__ == '__main__':
         # 計測開始通知
         str =ser.read(1)
 	
-        # ヘッダ検索
-        while ord(str) != 0x9A:
-                str = ser.read(1)
-
-        # コマンド取得
-        str = ser.read(1)
 	
         # 加速度角速度計測データ通知のみ処理する
-        if ord(str) == 0x80:
-                
-                # タイムスタンプ
-                str = ser.read(4)
-                
-                # 加速度X
-                data1 = ser.read(1)
-                data2 = ser.read(1)
-                data3 = ser.read(1)
+        for i in range(1000):
+                str = ser.read(1)
+                # ヘッダ検索
+                while ord(str) != 0x9A:
+                        str = ser.read(1)
+                # コマンド取得
+                str = ser.read(1)
+                if ord(str) == 0x80:
+                        
+                        # タイムスタンプ
+                        str = ser.read(4)
+                        
+                        # 加速度X
+                        data1 = ser.read(1)
+                        data2 = ser.read(1)
+                        data3 = ser.read(1)
 
-                # 3byteの値を4byteのint型としてマイナスのハンドリング
-                if ord(data3) & 0x80:
-                        data4 = b'\xFF'
-                else:
-                        data4 = b'\x00'
-		
-                print(binascii.b2a_hex(data1))
-                print(binascii.b2a_hex(data2))
-                print(binascii.b2a_hex(data3))
-                print(binascii.b2a_hex(data4))
-		
-                # エンディアン変換
-                accx = ord(data1)
-                accx += ord(data2)<<8
-                accx += ord(data3)<<16
-                accx += ord(data4)<<24
+                        # 3byteの値を4byteのint型としてマイナスのハンドリング
+                        if ord(data3) & 0x80:
+                                data4 = b'\xFF'
+                        else:
+                                data4 = b'\x00'
+                        
+                        # print(binascii.b2a_hex(data1))
+                        # print(binascii.b2a_hex(data2))
+                        # print(binascii.b2a_hex(data3))
+                        # print(binascii.b2a_hex(data4))
+                        
+                        # エンディアン変換
+                        accx = ord(data1)
+                        accx += ord(data2)<<8
+                        accx += ord(data3)<<16
+                        accx += ord(data4)<<24
 
-                print("accx = %d" % (ctypes.c_int(accx).value))
+                        print("accx = %d" % (ctypes.c_int(accx).value))
         
 	
         ser.close();
