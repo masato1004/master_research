@@ -29,6 +29,9 @@ class Tsnd:
 
         # Serial port Open
         self.ser.open()
+        
+        # 同期信号確認変数初期値定義
+        self.sync_check = False
 
     def setup_all(self):
         self.accparam_setup()
@@ -223,6 +226,18 @@ class Tsnd:
         # for i in range(1000):
         # コマンド取得
         
+    def detect_input(self,input_voltage: int = None):
+        if input_voltage == None:
+            input_voltage = self.term4_in
+        
+        # 1.5V以上のアナログ入力でTrue
+        if input_voltage >= 1500:
+            return True
+        elif input_voltage < 1500:
+            return False
+        else:
+            return False
+    
     def __get_acc(self):
         str = self.ser.read(1)
         
@@ -273,11 +288,11 @@ class Tsnd:
             # 不要端子情報
             str = self.ser.read(5)
             
-            # 端子3
+            # 外部接続端子3
             term3_1 = self.ser.read(1)
             term3_2 = self.ser.read(1)
             
-            # 端子4
+            # 外部接続端子4
             term4_1 = self.ser.read(1)
             term4_2 = self.ser.read(1)
             
@@ -287,13 +302,17 @@ class Tsnd:
             print(binascii.b2a_hex(term4_2))
             
             # エンディアン変換
-            term3_in = ord(term3_1)
-            term3_in += ord(term3_2)<<8
-            term4_in = ord(term4_1)
-            term4_in += ord(term4_2)<<8
+            self.term3_in = ord(term3_1)
+            self.term3_in += ord(term3_2)<<8
+            self.term4_in = ord(term4_1)
+            self.term4_in += ord(term4_2)<<8
 
-            print("term3_in = %d" % (ctypes.c_int(term3_in).value))
-            print("term4_in = %d" % (ctypes.c_int(term4_in).value*3000/4095))
+            # デバッグ出力[mV]
+            print("term3_in = %d [mV]" % (ctypes.c_int(self.term3_in).value*3000/4095))
+            print("term4_in = %d [mV]" % (ctypes.c_int(self.term4_in).value*3000/4095))
+            
+            # 同期信号検出
+            self.sync_check = self.detect_input(self.term4_in)
         
     def __get_airpressure(self):
         str = self.ser.read(1)
@@ -389,4 +408,6 @@ if __name__ == '__main__':
     tsnd.start()
     for i in range(100):
         tsnd.get_datas()
+        if tsnd.sync_check:
+            print("SYNC INPUT DETECTED")
     del tsnd
