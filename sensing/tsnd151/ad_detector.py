@@ -8,11 +8,14 @@
 import os
 import sys
 import serial
-import subprocess
 import time
 import struct
 import binascii
 import ctypes
+
+# import rospy
+# import rosparam
+# from std_msgs.msg import String
 
 
 class Tsnd:
@@ -33,6 +36,25 @@ class Tsnd:
         
         # 同期信号確認変数初期値定義
         self.sync_check = False
+
+        # パブリッシュ設定
+        # rospy.init_node('tsnd151_publisher')
+        # # self.word = rospy.get_param("~content", "default")
+        # self.pub = rospy.Publisher('sync_info', String, queue_size=1)
+
+        # self.setup_all()
+        # self.start()
+
+        # self.r = rospy.Rate(800) # 800hz
+        # while not rospy.is_shutdown():
+        #     self.get_datas()
+        #     if self.sync_check:
+        #         print("SYNC INPUT DETECTED")
+        #         self.str = "SYNC INPUT DETECTED"
+        #         rospy.loginfo(self.str)
+        #         self.pub.publish(self.str)
+        #     self.r.sleep()
+
 
     def setup_all(self):
         self.accparam_setup()
@@ -403,12 +425,7 @@ class Tsnd:
 
 
 if __name__ == '__main__':
-    # os.chmod('/dev/ttyACM0',666)
-    cmd = 'sudo chmod 666 /dev/ttyACM0'#<=ここにコマンドを当てはめる
-    process = (subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                            shell=True).communicate()[0]).decode('utf-8')
     tsnd = Tsnd('/dev/ttyACM0')
-    # tsnd = Tsnd('COM5')
     tsnd.setup_all()
     tsnd.start()
     for i in range(100):

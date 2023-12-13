@@ -8,6 +8,7 @@
 import os
 import sys
 import serial
+import subprocess
 import time
 import struct
 import binascii
@@ -15,6 +16,9 @@ import ctypes
 
 if __name__ == '__main__':
 
+    # subprocess.run(('sudo', '-S',
+    #                 'chmod', '666', '/dev/ttyACM0'),
+    #                input='masatontoI104\n'.encode(), check=True)
     # Serial port 設定
     ser = serial.Serial()
     # ser.port = "COM5"  # ポート
