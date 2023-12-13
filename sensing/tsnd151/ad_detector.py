@@ -55,7 +55,6 @@ class Tsnd:
         #         self.pub.publish(self.str)
         #     self.r.sleep()
 
-
     def setup_all(self):
         self.accparam_setup()
         self.airpressureparam_setup()
@@ -425,7 +424,8 @@ class Tsnd:
 
 
 if __name__ == '__main__':
-    tsnd = Tsnd('/dev/ttyACM0')
+    # tsnd = Tsnd('COM5')
+    tsnd = Tsnd('/dev/ttyACM0')  # sudo chmod 666 /dev/ttyACM0
     tsnd.setup_all()
     tsnd.start()
     for i in range(100):
