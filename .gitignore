@@ -1,6 +1,8 @@
 # Build and Release Folders
 bin-debug/
 bin-release/
+sensing/
+sensing/*
 [Oo]bj/
 [Bb]in/
 
