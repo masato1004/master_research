@@ -1,0 +1,110 @@
+﻿  Building Custom Rule C:/Users/INOUE MASATO/research/master_research/sensing/zed-matlab/src/mex/CMakeLists.txt
+  mexZED.cpp
+C:\Program Files (x86)\ZED SDK\dependencies\opencv_3.1.0\include\opencv2/core/mat.hpp(1965,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files (x86)\ZED SDK\dependencies\opencv_3.1.0\include\opencv2/core/persistence.hpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files (x86)\ZED SDK\dependencies\opencv_3.1.0\include\opencv2/core/utility.hpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files (x86)\ZED SDK\dependencies\opencv_3.1.0\include\opencv2/core/utility.hpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\include\iter.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include\cuda.h(20648,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2\include\cuda.h(21324,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(3331,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7123,16): warning C4251: 'sl::InitParameters::sdk_verbose_log_file': class 'sl::String' は __export キーワードを使って struct 'sl::InitParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(145,58): message : 'sl::String' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7175,19): warning C4251: 'sl::InitParameters::input': class 'sl::InputType' は __export キーワードを使って struct 'sl::InitParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(760,26): message : 'sl::InputType' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7197,16): warning C4251: 'sl::InitParameters::optional_settings_path': class 'sl::String' は __export キーワードを使って struct 'sl::InitParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(145,58): message : 'sl::String' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7208,16): warning C4251: 'sl::InitParameters::optional_opencv_calibration_file': class 'sl::String' は __export キーワードを使って struct 'sl::InitParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(145,58): message : 'sl::String' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7496,19): warning C4251: 'sl::PositionalTrackingParameters::initial_world_transform': class 'sl::Transform' は __export キーワードを使って struct 'sl::PositionalTrackingParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(3291,60): message : 'sl::Transform' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7537,16): warning C4251: 'sl::PositionalTrackingParameters::area_file_path': class 'sl::String' は __export キーワードを使って struct 'sl::PositionalTrackingParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(145,58): message : 'sl::String' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7756,31): warning C4251: 'sl::SpatialMappingParameters::allowed_resolution': struct 'std::pair<float,float>' は __export キーワードを使って struct 'sl::SpatialMappingParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7645,22): message : 'std::pair<float,float>' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7772,31): warning C4251: 'sl::SpatialMappingParameters::allowed_range': struct 'std::pair<float,float>' は __export キーワードを使って struct 'sl::SpatialMappingParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7645,22): message : 'std::pair<float,float>' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(7974,16): warning C4251: 'sl::RecordingParameters::video_filename': class 'sl::String' は __export キーワードを使って struct 'sl::RecordingParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(145,58): message : 'sl::String' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(8259,35): warning C4251: 'sl::ObjectDetectionRuntimeParameters::object_class_filter': class 'std::vector<sl::OBJECT_CLASS,std::allocator<sl::OBJECT_CLASS>>' は __export キーワードを使って struct 'sl::ObjectDetectionRuntimeParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(8259,14): message : 'std::vector<sl::OBJECT_CLASS,std::allocator<sl::OBJECT_CLASS>>' の宣言を確認してください
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(8265,39): warning C4251: 'sl::ObjectDetectionRuntimeParameters::object_class_detection_confidence_threshold': class 'std::map<sl::OBJECT_CLASS,float,std::less<sl::OBJECT_CLASS>,std::allocator<std::pair<const sl::OBJECT_CLASS,float>>>' は __export キーワードを使って struct 'sl::ObjectDetectionRuntimeParameters' にエクスポートしてください。
+C:\Program Files (x86)\ZED SDK\include\sl/Camera.hpp(8265,14): message : 'std::map<sl::OBJECT_CLASS,float,std::less<sl::OBJECT_CLASS>,std::allocator<std::pair<const sl::OBJECT_CLASS,float>>>' の宣言を確認してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(167,80): warning C4244: '引数': 'size_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(168,80): warning C4244: '引数': 'size_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(195,80): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(202,74): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(217,65): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(243,81): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(250,75): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(258,73): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(265,67): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(281,65): warning C4267: '引数': 'size_t' から 'mwSize' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(301,91): warning C4244: '引数': 'uint64_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(324,93): warning C4244: '引数': 'uint64_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(342,91): warning C4244: '引数': 'uint64_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(504,25): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(515,31): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(517,32): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(523,57): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(523,41): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(542,25): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(554,31): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(556,32): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(562,62): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(562,46): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(578,21): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(609,63): warning C4244: '引数': 'double' から 'size_t' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(609,54): warning C4244: '引数': 'double' から 'size_t' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(609,45): warning C4244: '引数': 'double' から 'size_t' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(609,36): warning C4244: '引数': 'double' から 'size_t' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(626,25): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(660,29): warning C4244: '=': 'size_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(661,29): warning C4244: '=': 'size_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(662,29): warning C4244: '=': 'size_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(663,29): warning C4244: '=': 'size_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(705,26): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(706,24): warning C4244: '初期化中': 'uint64_t' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(770,106): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(786,25): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(805,25): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(993,24): warning C4244: '初期化中': 'unsigned __int64' から 'double' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1002,24): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1012,32): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1024,24): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1034,32): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1069,52): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1076,54): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1091,51): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(1092,51): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(53,15): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(99,16): message : コンパイル対象の関数 テンプレート インスタンス化 'mxArray *floatmat_to_mat<5>(cv::Mat &)' のリファレンスを確認してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(83,15): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(103,16): message : コンパイル対象の関数 テンプレート インスタンス化 'mxArray *rgbimage_to_mat<8>(cv::Mat &)' のリファレンスを確認してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(398,27): warning C4244: '初期化中': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(432,25): message : コンパイル対象の関数 テンプレート インスタンス化 'void getValue<sl::DEPTH_MODE>(std::string,std::string,mxArray *,T &)' のリファレンスを確認してください
+          with
+          [
+              T=sl::DEPTH_MODE
+          ]
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\include\iter.h(253,23): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\include\iter.h(248,5): message : クラス テンプレート メンバー関数 'pix_iter_rgb<T>::pix_iter_rgb(data_t *,int,int,int)' のコンパイル中
+          with
+          [
+              data_t=T
+          ]
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(87,28): message : 'rgbimage_to_mat' の 'pix_iter_rgb<T>::pix_iter_rgb' への最初の参照を参照してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(87,21): message : コンパイル対象の クラス テンプレート インスタンス化 'pix_iter_rgb<T>' のリファレンスを確認してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(103,16): message : コンパイル対象の関数 テンプレート インスタンス化 'mxArray *rgbimage_to_mat<8>(cv::Mat &)' のリファレンスを確認してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\include\iter.h(36,56): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\include\iter.h(32,5): message : クラス テンプレート メンバー関数 'pix_iterator_2d<T,eRowWise>::pix_iterator_2d(data_t *,int,int,int)' のコンパイル中
+          with
+          [
+              data_t=T
+          ]
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(60,41): message : 'floatmat_to_mat' の 'pix_iterator_2d<T,eRowWise>::pix_iterator_2d' への最初の参照を参照してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(60,34): message : コンパイル対象の クラス テンプレート インスタンス化 'pix_iterator_2d<T,eRowWise>' のリファレンスを確認してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\mex\mexZED.cpp(101,16): message : コンパイル対象の関数 テンプレート インスタンス化 'mxArray *floatmat_to_mat<2>(cv::Mat &)' のリファレンスを確認してください
+C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\src\include\iter.h(37,50): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+     ライブラリ C:/Users/INOUE MASATO/research/master_research/sensing/zed-matlab/build/mex/Release/mexZED.lib とオブジェクト C:/Users/INOUE MASATO/research/master_research/sensing/zed-matlab/build/mex/Release/mexZED.exp を作成中
+  mexZED.vcxproj -> C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\build\mex\Release\mexZED.mexw64

@@ -1,0 +1,10 @@
+^C:\USERS\INOUE MASATO\RESEARCH\MASTER_RESEARCH\SENSING\ZED-MATLAB\BUILD\CMAKEFILES\3E57644F7EC8CC3D1BA260195D580AE3\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/INOUE MASATO/research/master_research/sensing/zed-matlab/src" "-BC:/Users/INOUE MASATO/research/master_research/sensing/zed-matlab/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/INOUE MASATO/research/master_research/sensing/zed-matlab/build/MEX.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

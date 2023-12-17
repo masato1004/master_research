@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\INOUE MASATO\research\master_research\sensing\zed-matlab\build\CMakeFiles\822679e9d1bc6a6ee4345b9be811a1ec\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{42174525-5989-3B51-B9A2-F2B3D5E1C199}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
