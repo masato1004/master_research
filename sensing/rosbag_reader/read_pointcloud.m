@@ -1,8 +1,9 @@
 %% load tf from calibration file
 % transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
 transform = load("transform.mat","transform").transform;
-rotm = eul2rotm(rad2deg(transform(4:6)),'XYZ');
-translation = transform(1:3);
+rotm = quat2rotm(-[transform(7),transform(4:6)]);
+% translation = transform(1:3);
+translation = [0,0,0];
 tform = rigid3d(rotm,translation);
 
 %% ros ouster pointcloud topic
@@ -29,14 +30,17 @@ display("start");
 for i = 1:length(oust)
     % display ouster pointcloud
     ospc = pointCloud(readXYZ(ousMsgs{i}));
-    ospc = pctransform(ospc,tform);
+    % ospc = pctransform(ospc,tform);
     ouspc_show = pcshow(ospc); hold on;
 
     % display zed2i pointcloud
     zedpc = pointCloud(readXYZ(zedMsgs{i}));
-    % zedpc = pctransform(zedpc,tform);
+    zedpc = pctransform(zedpc,tform);
     zedpc_show = pcshow(zedpc);
     drawnow
+
+    delete(zedpc_show);
+    delete(ouspc_show);
     % n_strPadded = sprintf('%04d',i) ;
     % pcFileName = strcat(pcFilesPath,'/',n_strPadded,'.pcd');
     % pcwrite(pc,pcFileName);
