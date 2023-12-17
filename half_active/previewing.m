@@ -64,7 +64,7 @@ function prev_profile = previewing(vertices)
     new_mesh = pointCloud(new_mesh);
     
     rotationVector = -angle_r * r_axis/norm(r_axis);
-    rotationMatrix = rotationVectorToMatrix(rotationVector);
+    rotationMatrix = rotvec2mat3d(rotationVector);
     translation = [0 0 0];
     tform = rigid3d(rotationMatrix,translation);
     ptCloudOut = pctransform(road_data,tform);

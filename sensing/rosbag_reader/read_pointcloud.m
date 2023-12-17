@@ -1,28 +1,41 @@
 %% load tf from calibration file
-transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
-% ros time resolution is 1e-6
-bag = rosbag("/home/inouemasato/ytlab_ros_ws/ytlab_rosbag/rosbag/_2023-12-09-16-57-02.bag");
-osbag = select(bag,'Topic','/ouster/points');
-osMsgs = readMessages(osbag);
-osts = timeseries(osbag);
-ost = osts.Time;
+% transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
+transform = load("transform.mat","transform").transform;
+rotm = eul2rotm(rad2deg(transform(4:6)),'XYZ');
+translation = transform(1:3);
+tform = rigid3d(rotm,translation);
 
+%% ros ouster pointcloud topic
+% ros time resolution is 1e-6
+bag = rosbag("E:\nissan\20231209_calibration\_2023-12-09-16-57-02.bag");
+ousbag = select(bag,'Topic','/ouster/points');
+ousMsgs = readMessages(ousbag);
+ousts = timeseries(ousbag);
+oust = ousts.Time;
+
+%% ros zed2i pointcloud topic
 zedbag = select(bag,'Topic','/zed2i/zed_node/point_cloud/cloud_registered');
 zedMsgs = readMessages(zedbag);
 zedts = timeseries(zedbag);
-zedt = osts.Time;
+zedt = ousts.Time;
 % pcFilesPath = fullfile(tempdir,'PointClouds');
 % 
 % if ~exist(pcFilesPath,'dir')
 %     mkdir(pcFilesPath);
 % end
-display("start");
-for i = 1:length(ost)
-    ospc = pointCloud(readXYZ(osMsgs{i}));
-    pcshow(ospc);
 
+%% show
+display("start");
+for i = 1:length(oust)
+    % display ouster pointcloud
+    ospc = pointCloud(readXYZ(ousMsgs{i}));
+    ospc = pctransform(ospc,tform);
+    ouspc_show = pcshow(ospc); hold on;
+
+    % display zed2i pointcloud
     zedpc = pointCloud(readXYZ(zedMsgs{i}));
-    pcshow(zedpc);
+    % zedpc = pctransform(zedpc,tform);
+    zedpc_show = pcshow(zedpc);
     drawnow
     % n_strPadded = sprintf('%04d',i) ;
     % pcFileName = strcat(pcFilesPath,'/',n_strPadded,'.pcd');
