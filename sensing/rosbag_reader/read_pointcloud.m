@@ -8,7 +8,7 @@ tform = rigid3d(rotm,translation);
 
 %% ros ouster pointcloud topic
 % ros time resolution is 1e-6
-bag = rosbag("E:\nissan\20231209_calibration\_2023-12-09-16-57-02.bag");
+% bag = rosbag("E:\nissan\20231209_calibration\_2023-12-09-16-57-02.bag");
 ousbag = select(bag,'Topic','/ouster/points');
 ousMsgs = readMessages(ousbag);
 ousts = timeseries(ousbag);
