@@ -1,5 +1,5 @@
 %% branch: half_thesis_sensor
-close all;
+% close all;
 clear;
 clc;
 branch = "_half_thesis_sensor_";
