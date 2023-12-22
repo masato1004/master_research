@@ -254,9 +254,9 @@ class Tsnd:
         
         # 1.5V以上のアナログ入力でTrue
         if input_voltage >= 1500 and input_voltage <= 3000:
-            return True
-        elif input_voltage >= 0 and input_voltage < 1500:
             return False
+        elif input_voltage >= 0 and input_voltage < 1500:
+            return True
         else:
             return False
     
@@ -428,7 +428,7 @@ if __name__ == '__main__':
     tsnd = Tsnd('/dev/ttyACM0')  # sudo chmod 666 /dev/ttyACM0
     tsnd.setup_all()
     tsnd.start()
-    for i in range(100):
+    for i in range(1000):
         tsnd.get_datas()
         if tsnd.sync_check:
             print("SYNC INPUT DETECTED")
