@@ -1,6 +1,6 @@
 %% load tf from calibration file
-% transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
-transform = load("transform.mat","transform").transform;
+transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
+% transform = load("transform.mat","transform").transform;
 rotm = quat2rotm(-[transform(7),transform(4:6)]);
 % translation = transform(1:3);
 translation = [0,0,0];
