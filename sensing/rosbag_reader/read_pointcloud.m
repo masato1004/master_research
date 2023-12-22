@@ -1,14 +1,14 @@
 %% load tf from calibration file
-transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
-% transform = load("transform.mat","transform").transform;
-rotm = quat2rotm(-[transform(7),transform(4:6)]);
-% translation = transform(1:3);
-translation = [0,0,0];
+% transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
+transform = load("transform.mat","transform").transform;
+rotm = quat2rotm([transform(7),transform(4:6)]);
+translation = transform(1:3);
+% translation = [0,0,0];
 tform = rigid3d(rotm,translation);
 
 %% ros ouster pointcloud topic
 % ros time resolution is 1e-6
-% bag = rosbag("E:\nissan\20231209_calibration\_2023-12-09-16-57-02.bag");
+bag = rosbag("E:\nissan\20231221_oppama_trial\_2023-12-21-16-25-08bar_high.bag");
 ousbag = select(bag,'Topic','/ouster/points');
 ousMsgs = readMessages(ousbag);
 ousts = timeseries(ousbag);
