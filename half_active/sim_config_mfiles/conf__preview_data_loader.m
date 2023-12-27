@@ -3,7 +3,7 @@ prev_start = 5.06;
 prev_end = 7;
 current_dis = r_p_prev(1,1);
 if sensing
-    load_dir = "preview_datas";
+    load_dir = "../preview_datas";
     listing = dir(load_dir+"/*.mat");
     file = load(load_dir + "/" + listing(2).name);
     vertices = file.vertices;

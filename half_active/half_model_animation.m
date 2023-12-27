@@ -31,18 +31,18 @@ road_profile = plot(TL(1,1)*V-1.4:6.2/500:TL(1,1)*V+10,road,"Color","black",Line
 hold on;
 
 % first draw of body
-img = imread('body.png'); 
-y_bias = 225;
-x_bias = 345;
+img = imread('march_body.png'); 
+y_bias = 270;
+x_bias = 415;
 img_h = height(img);
 img_w = width(img);
-resize_ratio = 715;
+resize_ratio = 792;
 body_draw = image([-(img_w*(L_f+L_r)/resize_ratio)/2+x_bias*(L_f+L_r)/resize_ratio (img_w*(L_f+L_r)/resize_ratio)/2+x_bias*(L_f+L_r)/resize_ratio],[(img_h*(L_f+L_r)/resize_ratio)/2+y_bias*(L_f+L_r)/resize_ratio -(img_h*(L_f+L_r)/resize_ratio)/2+y_bias*(L_f+L_r)/resize_ratio],img);        % 画像の表示
 hold on;
 
 % drawing a circle as a wheel
 phi = linspace(0,2*pi,100);
-r = 0.7/2;           % 半径
+r = 0.55/2;           % 半径
 cx_f = TL(1,1)*V+L_f+L_r; cy_f = r+r_p(1,1); % 中心
 cx_r = TL(1,1)*V; cy_r = r+r_p(2,1); % 中心
 circle_as_a_wheel_f = plot(r*sin(phi)+cx_f,r*cos(phi)+cy_f,Color="black",LineWidth=3);
@@ -73,6 +73,7 @@ str = {"Time [s]",txdata};
 time_text = text(cx_f, 2, str);
 time_text.FontSize = 20;
 % time_text.FixedWidthFontName("TimesNewRoman")
+axis equal
 
 %% set arounders
 xl = xlabel('Driving Distance [m]',FontSize=13);
@@ -108,7 +109,7 @@ s_f = 1;
 frames(s_f) = getframe(gcf);
 drawnow;
 mod_m = 100;
-newimg = zeros(371,1140,3);
+newimg = zeros(432,1166,3);
 videoname = "videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"-fps-"+(1/dt)/mod_m;
 if not(exist("videos",'dir'))
     mkdir("videos");
@@ -139,7 +140,7 @@ for s=2:c/2
             road = interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V-1.4:6.2/500:TL(1,s)*V+10,'linear');
         end
 
-        origin_angle = fitsread('ariya.fits',"image");
+        origin_angle = fitsread('march.fits',"image");
         origin_angle = rescale(origin_angle);
         J = imrotate(origin_angle,states(4,s)*180/pi,'bilinear','crop');
         imwrite(J,'temp_body.png')
@@ -151,12 +152,12 @@ for s=2:c/2
         delete(input_vector_r);
         img = imread('temp_body.png');
         % img(img==0)=255;
-        newimg = zeros(371,1140,3);
+        newimg = zeros(img_h,img_w,3);
         newimg(:,:,1)=img(:,:);
         newimg(:,:,2)=img(:,:);
         newimg(:,:,3)=img(:,:);
         newimg = newimg*0.004;
-        body_draw = image([-(img_w*(L_f+L_r)/resize_ratio)/2+cx_b+x_bias*(L_f+L_r)/resize_ratio (img_w*(L_f+L_r)/resize_ratio)/2+cx_b+x_bias*(L_f+L_r)/resize_ratio],[(img_h*(L_f+L_r)/resize_ratio)/2+cy_b+y_bias*(L_f+L_r)/resize_ratio -(img_h*(L_f+L_r)/resize_ratio)/2+cy_b+y_bias*(L_f+L_r)/683],newimg);        % 画像の表示
+        body_draw = image([-(img_w*(L_f+L_r)/resize_ratio)/2+cx_b+x_bias*(L_f+L_r)/resize_ratio (img_w*(L_f+L_r)/resize_ratio)/2+cx_b+x_bias*(L_f+L_r)/resize_ratio],[(img_h*(L_f+L_r)/resize_ratio)/2+cy_b+y_bias*(L_f+L_r)/resize_ratio -(img_h*(L_f+L_r)/resize_ratio)/2+cy_b+y_bias*(L_f+L_r)/resize_ratio],newimg);        % 画像の表示
         hold on;
         set(road_profile,'XData',TL(1,s)*V-1.4:6.2/500:TL(1,s)*V+10,"YData",road);
         set(road_area,'XData',TL(1,s)*V-1.4:6.2/500:TL(1,s)*V+10,"YData",road);

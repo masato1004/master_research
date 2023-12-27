@@ -1,8 +1,8 @@
-%% branch: half_thesis_sensor
-% close all;
+%% branch: main
+close all;
 clear;
 clc;
-branch = "_half_thesis_sensor_";
+branch = "_lng-ctrl_";
 
 %% Simulation configulation files
 % Plant parameter
