@@ -4,15 +4,15 @@ function prev_profile = previewing(vertices)
     
     % PICK UP ROAD POINT CLOUD
     road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
+    road_data = pointCloud(road_data);
     % raod_cloud = pointCloud(road_data);
 
-    ptCloudA = pointCloud(road_data);
     % figure;
     % pcshow(raod_cloud);
     
     % DOWN SAMPLING
-    % gridStep = 0.03;
-    % ptCloudA = pcdownsample(raod_cloud,'gridAverage',gridStep);
+    gridStep = 0.05;
+    ptCloudA = pcdownsample(road_data,'gridAverage',gridStep);
     % figure;
     % pcshow(ptCloudA);
     
@@ -66,10 +66,10 @@ function prev_profile = previewing(vertices)
     new_mesh = pointCloud(new_mesh);
     
     rotationVector = -angle_r * r_axis/norm(r_axis);
-    rotationMatrix = rotationVectorToMatrix(rotationVector);
+    rotationMatrix = rotvec2mat3d(rotationVector);
     translation = [0 0 0];
     tform = rigid3d(rotationMatrix,translation);
-    ptCloudOut = pctransform(ptCloudA,tform);
+    ptCloudOut = pctransform(road_data,tform);
     new_mesh_out = pctransform(new_mesh,tform);
     
     % Lift the road up for camera-height by mesh

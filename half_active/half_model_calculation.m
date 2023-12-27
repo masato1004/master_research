@@ -1,4 +1,4 @@
-%% branch: lng-ctrl
+%% branch: main
 close all;
 clear;
 clc;
