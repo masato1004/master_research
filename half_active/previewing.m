@@ -4,13 +4,15 @@ function prev_profile = previewing(vertices)
     
     % PICK UP ROAD POINT CLOUD
     road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
-    raod_cloud = pointCloud(road_data);
+    % raod_cloud = pointCloud(road_data);
+
+    ptCloudA = pointCloud(road_data);
     % figure;
     % pcshow(raod_cloud);
     
     % DOWN SAMPLING
-    gridStep = 0.05;
-    ptCloudA = pcdownsample(raod_cloud,'gridAverage',gridStep);
+    % gridStep = 0.03;
+    % ptCloudA = pcdownsample(raod_cloud,'gridAverage',gridStep);
     % figure;
     % pcshow(ptCloudA);
     
@@ -67,14 +69,22 @@ function prev_profile = previewing(vertices)
     rotationMatrix = rotationVectorToMatrix(rotationVector);
     translation = [0 0 0];
     tform = rigid3d(rotationMatrix,translation);
-    ptCloudOut = pctransform(raod_cloud,tform);
+    ptCloudOut = pctransform(ptCloudA,tform);
     new_mesh_out = pctransform(new_mesh,tform);
     
     % Lift the road up for camera-height by mesh
     ptc_datas = ptCloudOut.Location;
     ptc_datas(:,3) = ptc_datas(:,3) - mean(new_mesh_out.Location(:,3));
     % figure;
-    % pcshow(pointCloud(xyz));
+    % pcshow(ptc_datas);
+    % xlabel("\itX \rm[m]");
+    % ylabel("\itY \rm[m]");
+    % zlabel("\itZ \rm[m]");
+    % set(gcf,'color','w');
+    % set(gca,'color','w');
+    % fontname(gcf,"Times New Roman");
+    % fontsize(gca,9,"points");
+    % set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
     
     %% PICK UP AS 2D
     range_min = 5.06;     % minimum measurable distance [m]
@@ -181,4 +191,13 @@ function z = applyModel(model, x, y)
     c = model(3);
     d = model(4);
     z = -a*x/c - b*y/c - d/c;
+end
+
+%% DEM of road
+function rd = road_dem(ptc_datas)
+    depth = 8;
+    mesh2 = pc2surfacemesh(pointCloud(ptc_datas),"poisson",depth);
+    surfaceMeshShow(mesh2)
+    figure
+    pcshow(mesh2.Vertices)
 end

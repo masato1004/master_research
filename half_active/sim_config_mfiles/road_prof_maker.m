@@ -2,7 +2,7 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
     
     % sensing
     if shape == "_sensing2_"
-        true_datas = load("line_neo4.mat");
+        true_datas = load("../line_neo4.mat");
     %     true_datas = load("line_neo4_as_truedata.mat");
         true_profile = true_datas.line_neo4;
         [~,ia,~]=unique(true_profile(:,1));
@@ -12,7 +12,7 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
         [~,ia,~]=unique(road_total_r(:,1));
         road_total_r = road_total_r(ia,:,:);
 
-        frequency = 0; max_z0 = 0; ld = 4;
+        frequency = 0; max_z0 = 0; ld = 4; dis_length=0;
 
     % same as paper
     elseif shape == "_paper_"
