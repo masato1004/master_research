@@ -7,7 +7,7 @@ translation = [transform(2),transform(3)-0.55,transform(1)-0.55];
 tform = rigid3d(rotm,translation);
 
 %% lidar inclination
-lidar_inc = 21; % [deg]
+lidar_inc = 20; % [deg]
 rotvec = [1,0,0]*deg2rad(lidar_inc);
 rotationMatrix = rotvec2mat3d(rotvec);
 translation = [0 0 0];
@@ -63,3 +63,44 @@ end
 %     pcshow(ptcloud);
 %     drawnow
 % end
+
+%% ego view
+helperVisualizeEgoView(ospc);
+%%%
+% *|helperVisualizeEgoView|* visualizes point cloud data in the ego
+% perspective by rotating about the center.
+function player = helperVisualizeEgoView(ptCloud)
+
+% Create a pcplayer object
+xlimits = ptCloud.XLimits;
+ylimits = ptCloud.YLimits;
+zlimits = ptCloud.ZLimits;
+
+player = pcplayer(xlimits, ylimits, zlimits);
+
+% Turn off axes lines
+axis(player.Axes, 'off');
+
+% Set up camera to show ego view
+camproj(player.Axes, 'perspective');
+camva(player.Axes, 90);
+campos(player.Axes, [0 0 0]);
+camtarget(player.Axes, [-1 0 0]);
+
+% Set up a transformation to rotate by 5 degrees
+theta = 5;
+
+eulerAngles = [0 0 theta];
+translation = [0 0 0];
+rotateByTheta = rigidtform3d(eulerAngles, translation);
+
+for n = 0 : theta : 359
+    % Rotate point cloud by theta
+    ptCloud = pctransform(ptCloud, rotateByTheta);
+    
+    % Display point cloud
+    view(player, ptCloud);
+    
+    pause(0.05)
+end
+end
