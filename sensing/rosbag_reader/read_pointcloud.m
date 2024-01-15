@@ -36,7 +36,7 @@ zedt = ousts.Time;
 disp("start");
 for i = 1:length(oust)
     % display ouster pointcloud
-    ospc_read = readXYZ(ousMsgs{i});
+    ospc_read = readXYZ(ousMsgs{i}); % 150 -> bar
     % ospc = pointCloud(ospc_read(ospc_read(:,2)>=-1.2 & ospc_read(:,2)<=7 & ospc_read(:,1)>=-2 & ospc_read(:,1)<=2,:,:));
     ospc = pointCloud(ospc_read(ospc_read(:,2)>=-1.2 & ospc_read(:,2)<=7,:,:));
     ospc = pctransform(ospc,tform_lidar);
@@ -49,7 +49,7 @@ for i = 1:length(oust)
     % zedpc_show = pcshow(zedpc);
     drawnow
 
-    delete(zedpc_show);
+    % delete(zedpc_show);
     delete(ouspc_show);
     % n_strPadded = sprintf('%04d',i) ;
     % pcFileName = strcat(pcFilesPath,'/',n_strPadded,'.pcd');

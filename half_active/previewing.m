@@ -3,7 +3,7 @@ function prev_profile = previewing(vertices)
     % LOAD POINT CLOUD
     
     % PICK UP ROAD POINT CLOUD
-    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2,:,:);
+    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2 & vertices(:,2)>=0,:,:);
     road_data = pointCloud(road_data);
     % raod_cloud = pointCloud(road_data);
 
@@ -34,7 +34,7 @@ function prev_profile = previewing(vertices)
 %     % mesh2 = mesh(X_pre,Y_pre,Z_pre,"AlphaData",0.5,"EdgeColor","g","FaceColor","none");
     
     %% PCFITPLANE
-    max_distance = 0.02;  % [m]
+    max_distance = 0.01;  % [m]
     model = pcfitplane(ptCloudA,max_distance);
     new_ver = ptCloudA.Location;
     X_max = max(new_ver(:,1),[],'all');
@@ -65,7 +65,7 @@ function prev_profile = previewing(vertices)
     new_mesh = reshape(new_mesh,81,3);
     new_mesh = pointCloud(new_mesh);
     
-    rotationVector = -angle_r * r_axis/norm(r_axis);
+    rotationVector = angle_r * r_axis/norm(r_axis);
     rotationMatrix = rotvec2mat3d(rotationVector);
     translation = [0 0 0];
     tform = rigid3d(rotationMatrix,translation);
@@ -75,22 +75,22 @@ function prev_profile = previewing(vertices)
     % Lift the road up for camera-height by mesh
     ptc_datas = ptCloudOut.Location;
     ptc_datas(:,3) = ptc_datas(:,3) - mean(new_mesh_out.Location(:,3));
-    % figure;
-    % pcshow(ptc_datas);
-    % xlabel("\itX \rm[m]");
-    % ylabel("\itY \rm[m]");
-    % zlabel("\itZ \rm[m]");
-    % set(gcf,'color','w');
-    % set(gca,'color','w');
-    % fontname(gcf,"Times New Roman");
-    % fontsize(gca,9,"points");
-    % set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
+    figure;
+    pcshow(ptc_datas);
+    xlabel("\itX \rm[m]");
+    ylabel("\itY \rm[m]");
+    zlabel("\itZ \rm[m]");
+    set(gcf,'color','w');
+    set(gca,'color','w');
+    fontname(gcf,"Times New Roman");
+    fontsize(gca,9,"points");
+    set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
     
     %% PICK UP AS 2D
-    range_min = 5.06;     % minimum measurable distance [m]
-    range_max = 7;        % maximum measurable distance [m]
-    pick_up_width = 0.24; % width of datas for a road profile [m]
-    pick_up_center = 0;   % center of pick up position [m]
+    range_min = 0.1;     % minimum measurable distance [m]
+    range_max = 5;        % maximum measurable distance [m]
+    pick_up_width = 0.1; % width of datas for a road profile [m]
+    pick_up_center = -0.15;   % center of pick up position [m]
     
     p_min = pick_up_center - pick_up_width/2;
     p_max = pick_up_center + pick_up_width/2;
