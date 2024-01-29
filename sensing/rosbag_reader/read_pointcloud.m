@@ -2,8 +2,9 @@
 % transform = readmatrix("/home/inouemasato/ytlab_ros_ws/ytlab_handheld_sensoring_system/ytlab_handheld_sensoring_system_modules/calibration_files/calibration_file_zed.csv");
 transform = load("transform.mat","transform").transform;
 rotm = quat2rotm([transform(7),transform(4:6)]);
-translation = [transform(2),transform(3)-0.55,transform(1)-0.55];
-% translation = [0,0,0];
+% translation = [transform(2),transform(3)-0.55,transform(1)-0.55];
+% translation = [transform(2),transform(3),transform(1)];
+translation = [0,0,0];
 tform = rigid3d(rotm,translation);
 
 %% lidar inclination
@@ -34,19 +35,20 @@ zedt = ousts.Time;
 
 %% show
 disp("start");
+figure;
 for i = 1:length(oust)
     % display ouster pointcloud
-    ospc_read = readXYZ(ousMsgs{i}); % 150 -> bar
+    ospc_read = readXYZ(ousMsgs{i}); % 130 -> bar
     % ospc = pointCloud(ospc_read(ospc_read(:,2)>=-1.2 & ospc_read(:,2)<=7 & ospc_read(:,1)>=-2 & ospc_read(:,1)<=2,:,:));
     ospc = pointCloud(ospc_read(ospc_read(:,2)>=-1.2 & ospc_read(:,2)<=7,:,:));
     ospc = pctransform(ospc,tform_lidar);
     ouspc_show = pcshow(ospc); hold on;
 
     % display zed2i pointcloud
-    % zedpc = pointCloud(readXYZ(zedMsgs{i}));
-    % zedpc = pctransform(zedpc,tform);
-    % zedpc = pctransform(zedpc,tform_lidar);
-    % zedpc_show = pcshow(zedpc);
+    zedpc = pointCloud(readXYZ(zedMsgs{i}));
+    zedpc = pctransform(zedpc,tform);
+    zedpc = pctransform(zedpc,tform_lidar);
+    zedpc_show = pcshow(zedpc);
     drawnow
 
     % delete(zedpc_show);

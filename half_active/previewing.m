@@ -3,12 +3,12 @@ function prev_profile = previewing(vertices)
     % LOAD POINT CLOUD
     
     % PICK UP ROAD POINT CLOUD
-    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2 & vertices(:,2)>=0,:,:);
+    road_data = vertices(vertices(:,1)>=-1.2 & vertices(:,1)<=1.2 & vertices(:,2)>=0 ,:,:);
     road_data = pointCloud(road_data);
     % raod_cloud = pointCloud(road_data);
 
     % figure;
-    % pcshow(raod_cloud);
+    % pcshow(road_cloud);
     
     % DOWN SAMPLING
     gridStep = 0.05;
@@ -83,13 +83,13 @@ function prev_profile = previewing(vertices)
     set(gcf,'color','w');
     set(gca,'color','w');
     fontname(gcf,"Times New Roman");
-    fontsize(gca,9,"points");
+    fontsize(gca,16,"points");
     set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
     
     %% PICK UP AS 2D
-    range_min = 0.1;     % minimum measurable distance [m]
+    range_min = 2.66;     % minimum measurable distance [m]
     range_max = 5;        % maximum measurable distance [m]
-    pick_up_width = 0.1; % width of datas for a road profile [m]
+    pick_up_width = 0.2; % width of datas for a road profile [m]
     pick_up_center = -0.15;   % center of pick up position [m]
     
     p_min = pick_up_center - pick_up_width/2;
@@ -99,6 +99,13 @@ function prev_profile = previewing(vertices)
     % line = ptc_datas(ptc_datas(:,1)>=-0.075 & ptc_datas(:,1)<=0.075 & ptc_datas(:,2)<=7 & ptc_datas(:,2)>=5.06,:,:);
     [~,ind] = sort(line(:,2));
     prev_profile=line(ind,2:3)';
+
+    % figure();plot(prev_profile(1,:),prev_profile(2,:),"LineWidth",2,"Color","#0000ff")
+    % fontname(gcf,"Times New Roman");
+    % xlabel("\itY \rm[m]");
+    % ylabel("\itZ \rm[m]");
+    % grid on
+    % fontsize(gca,16,"points");
     
     % fig = figure('name', "Road Displacement from ZED",'Position', [500-20 500-20 1400 380]);
     % plot(line_neo(:,2),line_neo(:,3),"LineWidth",1,"Color","#0000ff");
