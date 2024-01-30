@@ -3,7 +3,7 @@ TL = 0:dt:T;     % time list ([s])
 dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
 start_disturbance = 9;                                                        % the start distance of disturbance ([m])
 
-max_z0 = 0.08;                                                                % [m] max road displacement
+max_z0 = 0.05;                                                                % [m] max road displacement
 ld = 2;
 const = 6;                                                                    % amplitude
 max_distance = 300;                                                           % [m] driving mileage
@@ -30,6 +30,13 @@ r_p = [
     gradient(r_p_f)./dt;
     gradient(r_p_r)./dt
     ];
+% r_p_prev = [
+%     dis;
+%     r_p_f(end-144:end),r_p_f(1:end-145);
+%     r_p_r(end-144:end),r_p_r(1:end-145);
+%     gradient([r_p_f(end-144:end),r_p_f(1:end-145)])./dt;
+%     gradient([r_p_r(end-144:end),r_p_r(1:end-145)])./dt
+%     ];
 r_p_prev = [
     dis;
     r_p_f;
