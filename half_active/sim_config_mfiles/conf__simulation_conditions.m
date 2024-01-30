@@ -1,6 +1,6 @@
 %% Define simulation condition with boolean
 % draw an animation or not
-animation = false;
+animation = true;
 prev_anim = false;
 
 % add noise or not
@@ -12,12 +12,12 @@ wa  = false;
 lpf = false;
 
 % control method
-passive = false;
+passive = true;
 LQR     = false;
 rprev   = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
-LQR_fprev_rprev = true;
+LQR_fprev_rprev = false;
 
 % road profile
 sensing = false;
