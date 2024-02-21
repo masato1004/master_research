@@ -3,10 +3,12 @@ rotate_angle_temp = [0 0 0];
 translation_temp = [0 -1.755 1.030]; % from memo
 tform_temp = rigidtform3d(rotate_angle_temp,translation_temp);
 figure
-ospc_read = readXYZ(ousMsgs{116}); % 150 -> bar
-% ospc = pointCloud(ospc_read(ospc_read(:,2)>=-1.2 & ospc_read(:,2)<=7 & ospc_read(:,1)>=-2 & ospc_read(:,1)<=2,:,:));
-ospc = pointCloud(ospc_read(ospc_read(:,2)>=-1.2 & ospc_read(:,2)<=7 & ospc_read(:,1)>=-8 & ospc_read(:,1)<=8,:,:));
-ospc = pctransform(ospc,tform_lidar);
+r_ospc_read = readXYZ(r_ousMsgs{965}); % 965 -> hump
+r_ospc = pointCloud(r_ospc_read(r_ospc_read(:,1)>=1.5 & r_ospc_read(:,1)<=8.5 & r_ospc_read(:,2)>=-2 & r_ospc_read(:,2)<=2,:,:));
+% r_ospc = pointCloud(r_ospc_read(r_ospc_read(:,1)>=1.5 & r_ospc_read(:,1)<=8.5,:,:));
+% r_ospc = pointCloud(r_ospc_read);
+r_ospc = pctransform(r_ospc,r_tform);
+r_ospc = pctransform(r_ospc,tform_lidar);
 %ouspc_show = pcshow(ospc); hold on;
 xlabel("\itX \rm[m]");
 ylabel("\itY \rm[m]");
