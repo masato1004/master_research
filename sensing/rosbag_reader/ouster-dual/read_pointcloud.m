@@ -46,6 +46,7 @@ r_oust = r_ousts.Time;
 %% show
 disp("start");
 figure;
+
 [min_len,min_idx] = min([length(r_oust),length(f_oust)]);
 max_time = max([r_oust(1:end-2),f_oust],[],'all');
 min_time = min([r_oust(1:end-2),f_oust],[],'all');
@@ -58,7 +59,7 @@ round_num = 3;
 f_oust_rounded = round(f_oust,round_num);
 r_oust_rounded = round(r_oust,round_num);
 
-start_sec = 47.5;
+start_sec = 46.5;
 front_pass_data_num = sum(f_oust_rounded < time_list(start_sec/dt));
 rear_pass_data_num = sum(r_oust_rounded < time_list(start_sec/dt));
 f_oust_rounded = f_oust_rounded(f_oust_rounded > time_list(start_sec/dt));
@@ -69,6 +70,7 @@ r_data_num = rear_pass_data_num + 1;
 f_oust_dnum = 1;
 r_oust_dnum = 1;
 
+all_around = false;
 for i = start_sec/dt:length(time_list)
     if abs(time_list(i) - f_oust_rounded(f_oust_dnum)) < dt/10
             % display ouster-front pointcloud
@@ -77,12 +79,25 @@ for i = start_sec/dt:length(time_list)
             % f_ospc = pointCloud(f_ospc_read(f_ospc_read(:,2)<=1.2 & f_ospc_read(:,2)>=-7,:,:));
             f_ospc = pointCloud(f_ospc_read);
             f_ospc = pctransform(f_ospc,f_tform);
-            f_ospc = pctransform(f_ospc,tform_lidar);
-            f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,1)>=-1.2 & f_ospc.Location(:,1)<=7 & f_ospc.Location(:,2)>=-2 & f_ospc.Location(:,2)<=2,:,:));
+            
+            if ~all_around
+                f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,1)>=2.1 & f_ospc.Location(:,1)<=7 & f_ospc.Location(:,2)>=-2 & f_ospc.Location(:,2)<=2,:,:));
+                [f_ospc, ~, plane_tform] = fitplane(f_ospc,0.01);
+                f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,3)>=-1 & f_ospc.Location(:,3)<=0.2,:,:));
+            else
+                f_ospc = pctransform(f_ospc,tform_lidar);
+                xlim([-60,60]);
+                ylim([-50,50]);
+            end
+            
             if f_oust_dnum >= 2
                 delete(f_ouspc_show);
             end
             f_ouspc_show = pcshow(f_ospc); hold on;
+            xlabel("\itX \rm[m]");
+            ylabel("\itY \rm[m]");
+            zlabel("\itZ \rm[m]");
+
             f_data_num = f_data_num + 1;
             f_oust_dnum = f_oust_dnum + 1;
             view(-90,40)
@@ -95,13 +110,29 @@ for i = start_sec/dt:length(time_list)
             % r_ospc = pointCloud(r_ospc_read(r_ospc_read(:,1)>=1.5 & r_ospc_read(:,1)<=8.5 & r_ospc_read(:,2)>=-2 & r_ospc_read(:,2)<=2,:,:));
             % r_ospc = pointCloud(r_ospc_read(r_ospc_read(:,1)>=1.5 & r_ospc_read(:,1)<=8.5,:,:));
             r_ospc = pointCloud(r_ospc_read);
+            
+            % r_ospc = pctransform(r_ospc,f_tform);  % from front-lidar to stereo-camera
+
             r_ospc = pctransform(r_ospc,r_tform);
-            r_ospc = pctransform(r_ospc,tform_lidar);
-            r_ospc = pointCloud(r_ospc.Location(r_ospc.Location(:,1)>=1.5 & r_ospc.Location(:,1)<=8.5 & r_ospc.Location(:,2)>=-2 & r_ospc.Location(:,2)<=2,:,:));
+
+            if ~all_around
+                r_ospc = pointCloud(r_ospc.Location(r_ospc.Location(:,1)>=1.5 & r_ospc.Location(:,1)<=8.5 & r_ospc.Location(:,2)>=-2 & r_ospc.Location(:,2)<=2,:,:));
+                [r_ospc, ~, plane_tform] = fitplane(r_ospc,0.01);
+                r_ospc = pointCloud(r_ospc.Location(r_ospc.Location(:,3)>=-1 & r_ospc.Location(:,3)<=0.2,:,:));
+            else
+                r_ospc = pctransform(r_ospc,tform_lidar);
+                xlim([-60,60]);
+                ylim([-50,50]);
+            end
+
             if r_oust_dnum >= 2
                 delete(r_ouspc_show);
             end
             r_ouspc_show = pcshow(r_ospc); hold on;
+            xlabel("\itX \rm[m]");
+            ylabel("\itY \rm[m]");
+            zlabel("\itZ \rm[m]");
+
             r_data_num = r_data_num + 1;
             r_oust_dnum = r_oust_dnum + 1;
             view(-90,40)
