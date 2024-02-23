@@ -15,6 +15,10 @@ rotagl = [0,zed_inc_y,zed_inc_z];
 translation = [0 0 0];
 tform_lidar = rigidtform3d(rotagl,translation);
 
+% translat with position parameter from cad
+rotate_angle_cam2wheel = [0 0 0];
+translation_cam2wheel = [-0.9701 0 0]; % from cad
+tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,translation_cam2wheel);
 
 bag = rosbag("D:\nissan\20240220_natc_internship\_2024-02-20-15-59-15_drive1_20-15-10.bag");
 %% ros ouster-front pointcloud topic
@@ -59,7 +63,7 @@ round_num = 3;
 f_oust_rounded = round(f_oust,round_num);
 r_oust_rounded = round(r_oust,round_num);
 
-start_sec = 46.5;
+start_sec = 47.8;
 front_pass_data_num = sum(f_oust_rounded < time_list(start_sec/dt));
 rear_pass_data_num = sum(r_oust_rounded < time_list(start_sec/dt));
 f_oust_rounded = f_oust_rounded(f_oust_rounded > time_list(start_sec/dt));
@@ -81,7 +85,7 @@ for i = start_sec/dt:length(time_list)
             f_ospc = pctransform(f_ospc,f_tform);
             
             if ~all_around
-                f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,1)>=2.1 & f_ospc.Location(:,1)<=7 & f_ospc.Location(:,2)>=-2 & f_ospc.Location(:,2)<=2,:,:));
+                f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,1)>=2.1 & f_ospc.Location(:,1)<=8.5 & f_ospc.Location(:,2)>=-2 & f_ospc.Location(:,2)<=2,:,:));
                 [f_ospc, ~, plane_tform] = fitplane(f_ospc,0.01);
                 f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,3)>=-1 & f_ospc.Location(:,3)<=0.2,:,:));
             else
@@ -93,6 +97,7 @@ for i = start_sec/dt:length(time_list)
             if f_oust_dnum >= 2
                 delete(f_ouspc_show);
             end
+            f_ospc = pctransform(f_ospc,tform_cam2wheel);
             f_ouspc_show = pcshow(f_ospc); hold on;
             xlabel("\itX \rm[m]");
             ylabel("\itY \rm[m]");
@@ -128,6 +133,7 @@ for i = start_sec/dt:length(time_list)
             if r_oust_dnum >= 2
                 delete(r_ouspc_show);
             end
+            r_ospc = pctransform(r_ospc,tform_cam2wheel);
             r_ouspc_show = pcshow(r_ospc); hold on;
             xlabel("\itX \rm[m]");
             ylabel("\itY \rm[m]");
@@ -138,7 +144,7 @@ for i = start_sec/dt:length(time_list)
             view(-90,40)
             % drawnow
     end
-    disp(round(time_list(i)-time_list(1),2)+"[s]--"+ f_data_num + "-" + r_data_num)
+    disp(round(time_list(i)-time_list(1),2)+"[s]--"+ f_data_num + " " + r_data_num)
 
     % display zed2i pointcloud
     % zedpc = pointCloud(readXYZ(zedMsgs{i}));
@@ -161,7 +167,7 @@ end
 % end
 
 %% ego view
-% helperVisualizeEgoView(ospc);
+% helperVisualizeEgoView(pointCloud(f_ospc_read));
 %%%
 % *|helperVisualizeEgoView|* visualizes point cloud data in the ego
 % perspective by rotating about the center.

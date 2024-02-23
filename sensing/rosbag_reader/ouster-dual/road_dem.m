@@ -1,5 +1,5 @@
 depth = 8;
-mesh2 = pc2surfacemesh(pointCloud([-1*ptc_datas(:,1),ptc_datas(:,2),-1*ptc_datas(:,3)]),"poisson",depth);
+mesh2 = pc2surfacemesh(pointCloud([-1*f_ospc.Location(:,1),f_ospc.Location(:,2),f_ospc.Location(:,3)]),"poisson",depth);
 datas = mesh2.Vertices;
 % surfaceMeshShow(mesh2,"WireFrame",true)
 % writeSurfaceMesh(mesh2,"test_surface");
@@ -9,8 +9,8 @@ pcshow(datas); hold on;
 %% pointcloud interpolation
 % xlist = -1:0.05:1;
 % ylist = 3:0.05:12;
-xlist = -1:0.05:1;
-ylist = 1.5:0.05:6.5;
+xlist = 2:0.05:6.5;
+ylist = -1:0.05:1;
 [xq,yq] = meshgrid(xlist,ylist);
 elevation_mesh = griddata(double(datas(:,1)),double(datas(:,2)),double(datas(:,3)),xq,yq,"natural");
 figure;
