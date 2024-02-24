@@ -1,7 +1,7 @@
 close all;
 %% set infomations
 msg_nums = [949 951];
-gridStep = 0.09;
+gridStep = 0.05;
 
 % install params
 f_ousmsg_num = msg_nums(1);

@@ -1,8 +1,8 @@
 close all;
 %% set infomations
 % v20
-velocity = 20;
-msg_nums_start = [949 951];
+velocity = 19;
+msg_nums_start = [948 950];
 msg_nums_end = [971 973];
 
 % v15
@@ -39,7 +39,7 @@ pick_up_width = 0.3;  % width of datas for a road profile [m]
 pick_up_center = 0;   % center of pick up position [m]
 
 % movmean setting
-mean_data_num = [50, 50];
+mean_data_num = [30, 30];
 
 % define params
 p_min = pick_up_center - pick_up_width/2;
@@ -112,6 +112,7 @@ all_list = [];
 tic
 for i = 0:data_num
 
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % get point cloud and transfrom into front-wheel-coordinate
     % front
     f_ospc_read = readXYZ(f_ousMsgs{f_ousmsg_num_start+i});
