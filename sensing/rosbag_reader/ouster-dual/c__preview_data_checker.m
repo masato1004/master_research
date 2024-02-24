@@ -1,150 +1,184 @@
+close all;
 %% set infomations
-msg_nums_start = [966 969];
-msg_nums_end = [966 969];
+% v20
+velocity = 20;
+msg_nums_start = [949 951];
+msg_nums_end = [971 973];
 
-% install params
+% v15
+% velocity = 14.1;
+% msg_nums_start = [1824 1827];
+% msg_nums_end = [1854 1857];
+
+% v10
+% velocity = 11;
+% msg_nums_start = [2722 2724];
+% msg_nums_end = [2760 2762];
+
+gridStep = 0.05;
+
+% define params
 f_ousmsg_num_start = msg_nums_start(1);
 r_ousmsg_num_start = msg_nums_start(2);
 f_ousmsg_num_end = msg_nums_end(1);
 r_ousmsg_num_end = msg_nums_end(2);
 
+%% correct road surface profile
+max_z0 = 0.025;                                                                % [m] max road displacement
+ld = [0.05 0.15 0.05];
+start_disturbance = 6.95;                                                                    % amplitude
+max_distance = 30;                                                           % [m] driving mileage
+f_dis_total =  [0,start_disturbance,start_disturbance+ld(1),start_disturbance+sum(ld(1:2)),start_disturbance+sum(ld),max_distance];
+r_dis_total =  [0,start_disturbance,start_disturbance+ld(1),start_disturbance+sum(ld(1:2)),start_disturbance+sum(ld),max_distance];
+road_total = [0,0,max_z0,max_z0,0,0];  % converting front disturbance and buffer ([m])
+
+%% 2 dimentionize settings
+range_min = 0;        % minimum measurable distance [m]
+range_max = 8;        % maximum measurable distance [m]
+pick_up_width = 0.3;  % width of datas for a road profile [m]
+pick_up_center = 0;   % center of pick up position [m]
+
+% movmean setting
+mean_data_num = [50, 50];
+
+% define params
+p_min = pick_up_center - pick_up_width/2;
+p_max = pick_up_center + pick_up_width/2;
+
 %% video settings
-% videoname = "videos/_half_thesis_sensor_/"+"_LQR_fprev_rprev_"+"/"+shape+"/PreviewedRoad";
-% video = VideoWriter(videoname,'MPEG-4');
-% video.FrameRate = (1/tc)/100;
-% open(video);
+video_dir = "video";
+folder_maker(video_dir);
+videoname = "v" + velocity;
+video = VideoWriter(video_dir + "/" + videoname,'MPEG-4');
+video.FrameRate = 1;
+open(video);
 
 %% figure settings
-% close all;
-check = figure('name',"preview road",'Position', [500-20 500-20 600 190]);
-% check_plot = plot(wf_global(1,:),wf_global(2,:),"LineWidth",2,"Color","#0000ff");
-% xline(prev_start-mm_range*V,'--');
-% mov_line = xline(prev_end,'--');
-% xlim([-0.05,0.1]);
-% xlim([-1,10]);
-ylim([-0.06,0.14]);
-grid on;
-hold on;
-% xlabel("Preview Time [s]");
-xlabel("Local Distance from Front Wheel [m]");
-ylabel("Previewed Road Displacement [m]");
-% xline(prev_start,'--',"\bf Nearest Preview",DisplayName="");
-% xline(prev_end,'--',"\bf Farest Preview",DisplayName="");
+fig = figure('name', "RSP from LiDAR",'Position', [100 100 700 380]);
+
 % time count
+timedata = 0;
+str = {timedata + " [s]"};
 
-%% laod data settings
-% load_dir = "preview_datas";
-% listing = dir(load_dir+"/*.mat");
-tc = 0.001;
+% front
+f_ax = subplot(211);% front
+f_correct_road = plot(f_dis_total,road_total,"LineWidth",2,"Color","#aaaaaa"); hold on;
+f_sc = scatter(0,0,1.2,"filled","MarkerFaceColor","#0000ff"); hold on;  % picked up points
+f_pl = plot(0,0,"LineWidth",2,"LineStyle",":","Color","#ff0000"); % moving average
+grid on;
+xlim(f_ax,[range_min,range_max]);
+ylim(f_ax,[-0.08, 0.08]);
+% axis equal;
+f_time_text = text(7,0.05,str);
+f_time_text.FontSize = 10;
+xlabel(f_ax,"Local Distance from Front Wheel [m]");
+ylabel(f_ax,"Previewed Displacement [m]");
+title(f_ax,"Front LiDAR");
+legend(["Actual Road","Raw data","Moving Average"],"Location","southwest");
+
+% rear
+r_ax = subplot(212);
+r_correct_road = plot(r_dis_total,road_total,"LineWidth",2,"Color","#aaaaaa"); hold on;
+r_sc = scatter(0,0,1.2,"filled","MarkerFaceColor","#0000ff"); % picked up points
+r_pl = plot(0,0,"LineWidth",2,"LineStyle",":","Color","#ff0000"); % moving average
+grid on;
+xlim(r_ax,[range_min,range_max]);
+ylim(r_ax,[-0.08, 0.08]);
+% axis equal;
+r_time_text = text(7,0.05,str);
+r_time_text.FontSize = 10;
+xlabel(r_ax,"Local Distance from Front Wheel [m]");
+ylabel(r_ax,"Previewed Displacement [m]");
+title(r_ax,"Roof LiDAR");
+legend(["Actual Road","Raw data","Moving Average"],"Location","southwest");
+
+fontname(gcf,"Times New Roman");
+fontsize(gcf,10,"points");
+
+% drawnow;
+
+%% loop settings
+data_num = min(abs(msg_nums_start- msg_nums_end));
+
 ts = 0.05;
-V = 20*1000/3600;
+V = velocity*1000/3600;
 
-map = colormap(check,"jet");
-data_num = 23;
-disp_name = ["$\it{k}$","",""];
-pick_up = 23;
-pu = 1;
+f_last_data_num = f_ousmsg_num_start;
+r_last_data_num = r_ousmsg_num_start;
 
 all_list = [];
 
 %% loop
-for sc = 1:round(data_num/pick_up):data_num
-    file = load(load_dir + "/" + listing(sc).name);
-    vertices = file.vertices;
-    wf_local = previewing(vertices);
-    wf_local=rmmissing(wf_local,2);
-    data_end = wf_local(2,end);
+tic
+for i = 0:data_num
 
-    %% Fig3-8-30
-    % check = figure('name',"preview road",'Position', [500-sc*2 500-sc*2 600 190]);
-    % check_plot = plot(wf_global(1,:),wf_global(2,:),"LineWidth",2,"Color","#0000ff");
-    % xline(prev_start-mm_range*V,'--');
-    % mov_line = xline(prev_end,'--');
-    % xlim([-0.05,0.1]);
-    % xlabel("Preview Time [s]");
-    % plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color="#0000ff");
-%     xlim([4.5,7.5]);
-    % ylim([-0.1,0.15]);
-    % xlabel("Ground Distance from Sensor [m]");
-    % ylabel("Displacement [m]");
-    % fontname(check,"Times New Roman");
-    % fontsize(check,10.5,"points");
-    % grid on;
+    % get point cloud and transfrom into front-wheel-coordinate
+    % front
+    f_ospc_read = readXYZ(f_ousMsgs{f_ousmsg_num_start+i});
+    f_ospc = pointCloud(f_ospc_read);
+    f_ospc = pctransform(f_ospc,f_tform);
+    f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,1)>=1.2 & f_ospc.Location(:,2)>=-4 & f_ospc.Location(:,2)<=4 & f_ospc.Location(:,3)<=5,:,:));
+    f_downptCloud = pcdownsample(f_ospc,'gridAverage',gridStep);
+    [f_ospc, ~, plane_tform] = fitplane(f_ospc,f_downptCloud,0.01);
+    f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,3)>=-1 & f_ospc.Location(:,3)<=0.2 & f_ospc.Location(:,2)>=-2 & f_ospc.Location(:,2)<=2 & f_ospc.Location(:,1)<=8.5,:,:));
+    % f_ospc = pctransform(f_ospc,tform_cam2wheel);
 
-    %% Fig4-2, 4-3
-    if sc ~=1
-        wf_local(1,:) = wf_local(1,:) + ts*V*(sc-1);
-    end
-    % wf_local(1,:) = wf_local(1,:) - ts*V*(data_num-sc);
-%     figure;
-%     plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color='r');
-%     plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color=map(sc*11,:));
-    all_list = [all_list, wf_local];
-%     check_plot = plot(wf_local(1,:),wf_local(2,:),"LineWidth",2,Color=map(sc,:));
+    % rear
+    r_ospc_read = readXYZ(r_ousMsgs{r_ousmsg_num_start+i}); % 965 -> hump
+    r_ospc = pointCloud(r_ospc_read);
+    r_ospc = pctransform(r_ospc,r_tform);
+    r_ospc = pointCloud(r_ospc.Location(r_ospc.Location(:,1)>=1 & r_ospc.Location(:,2)>=-4 & r_ospc.Location(:,2)<=4 & r_ospc.Location(:,3)<=5,:,:));
+    r_downptCloud = pcdownsample(r_ospc,'gridAverage',gridStep);
+    [r_ospc, ~, plane_tform] = fitplane(r_ospc,r_downptCloud,0.01);
+    r_ospc = pointCloud(r_ospc.Location(r_ospc.Location(:,3)>=-1 & r_ospc.Location(:,3)<=0.2 & r_ospc.Location(:,2)>=-2 & r_ospc.Location(:,2)<=2 & r_ospc.Location(:,1)<=9,:,:));
+    % r_ospc = pctransform(r_ospc,tform_cam2wheel);
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % 2 dimentionize
+    % front
+    f_line = f_ospc.Location(f_ospc.Location(:,2)>=p_min & f_ospc.Location(:,2)<=p_max & f_ospc.Location(:,1)<=range_max & f_ospc.Location(:,1)>=range_min,:,:);
+    [~,f_ind] = sort(f_line(:,1));
+    f_prev_profile=f_line(f_ind,[true false true])';
+    
+    % rear
+    r_line = r_ospc.Location(r_ospc.Location(:,2)>=p_min & r_ospc.Location(:,2)<=p_max & r_ospc.Location(:,1)<=range_max & r_ospc.Location(:,1)>=range_min,:,:);
+    % r_line = r_ospc.Location(r_ospc.Location(:,1)>=-0.075 & r_ospc.Location(:,1)<=0.075 & r_ospc.Location(:,2)<=7 & r_ospc.Location(:,2)>=5.06,:,:);
+    [~,r_ind] = sort(r_line(:,1));
+    r_prev_profile=r_line(r_ind,[true false true])';
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % drawing
+    timedata = timedata + ts;
+    str = {timedata + " [s]"};
+    f_time_text.String = str;
+    r_time_text.String = str;
+    
+    set(f_sc,"XData",f_prev_profile(1,:),"YData",f_prev_profile(2,:));
+    set(f_pl,"XData",f_prev_profile(1,:),"YData",movmean(f_prev_profile(2,:),mean_data_num));
+    set(r_sc,"XData",r_prev_profile(1,:),"YData",r_prev_profile(2,:));
+    set(r_pl,"XData",r_prev_profile(1,:),"YData",movmean(r_prev_profile(2,:),mean_data_num));
+
+    % correct road surface profile
+    % front
+    f_dis_total = f_dis_total - V*(f_oust(f_ousmsg_num_start+i) - f_oust(f_last_data_num));
+    set(f_correct_road,"XData",f_dis_total);
+    f_last_data_num = f_ousmsg_num_start+i;
+
+    % rear
+    r_dis_total = r_dis_total - V*(r_oust(r_ousmsg_num_start+i) - r_oust(r_last_data_num));
+    set(r_correct_road,"XData",r_dis_total);
+    r_last_data_num = r_ousmsg_num_start+i;
+
+    pause(0.5);
+
     drawnow;
-    if pu ~= pick_up
-        disp_name = ["$\it{k}"+"\rm-"+pu+"$", disp_name];
-%         disp_name = ["$\it{\tilde{w}}_{pre}(\it{k}"+"\rm-"+sc+")$", disp_name];
-
-        if sc == 1
-            wf_global = wf_local;
-            last_minimum = wf_local(1,1);
-        else
-            Lpass = wf_local(1,1) - last_minimum;
-            last_minimum = wf_local(1,1);
-            Ltotal = wf_local(1,end) - wf_local(1,1);
-            eta = Lpass/Ltotal;
-            eta_1 = 0.5*(1-eta);
-            eta_2 = 0.5*(1+eta);
-            [~,ia,~]=unique(wf_global(1,:));
-            wf_global = wf_global(:,ia);
-            wf_global = [
-                wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
-                wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
-                ];
-        end
-    else
-        Lpass = wf_local(1,1) - last_minimum;
-        last_minimum = wf_local(1,1);
-        Ltotal = wf_local(1,end) - wf_local(1,1);
-        eta = Lpass/Ltotal;
-        eta_1 = 0.5*(1-eta);
-        eta_2 = 0.5*(1+eta);
-        [~,ia,~]=unique(wf_global(1,:));
-        wf_global = wf_global(:,ia);
-        wf_global = [
-            wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
-            wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
-            ];
-        notnan_wfg = rmmissing(wf_global,2);
-        notnan_wfg(1,:) = notnan_wfg(1,:)./V;
-
-        [~,ia,~]=unique(notnan_wfg(1,:));
-        notnan_wfg = notnan_wfg(:,ia);
-        grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
-        grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
-        grad_data2 = gradient(grad_data1)./(gradient(grad_time));
-        wf_grad = [
-            grad_time;
-            grad_data1;
-            grad_data2
-            ];
-%         check_plot_global=figure(Position=[500-sc*2 500-sc*2 600 250]);
-%         plot(wf_global(1,:),wf_global(2,:),"LineWidth",2,Color="#0000ff");
-%         fontname(check_plot_global,"Times New Roman");
-%         fontsize(check_plot_global,10.5,"points");
-%         grid on;
-%         xlabel("Ground Distance from Sensor [m]");
-%         ylabel("Displacement [m]");
-% 
-    end
-    pu = pu + 1;
+    frame = getframe(fig);
+    writeVideo(video,frame);
+    % delete(f_sc);
+    % delete(f_pl);
+    % delete(r_sc);
+    % delete(r_pl);
 end
-[~,ind] = sort(all_list(1,:));
-all_list=all_list(:,ind);
-all_plot = figure('name',"preview road",'Position', [500-20 500-20 600 190]);
-plot(all_list(1,:),all_list(2,:),"LineWidth",2,Color=[0 0 1]);
-% legend(disp_name,'Interpreter','latex');
-% xline(0,'--r',"Front Wheel",DisplayName="");
-% fontname(check,"Times New Roman");
-% fontsize(check,10.5,"points");
+finish_time = toc
+calculation_time_per_frame = finish_time/(data_num+1)
+close(video);
