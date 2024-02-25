@@ -1,6 +1,6 @@
 %% simulate 32 channel lidar
-figure()
-ospc = pointCloud(readXYZ(ousMsgs{1}));
+% figure()
+ospc = pointCloud(readXYZ(f_ousMsgs{1}));
 data = ospc.Location;
 [theta,rho,z] = cart2pol(data(:,1),data(:,2),data(:,3));
 phi = atan2(z, rho);
@@ -12,6 +12,8 @@ for i = 0:2:127
 end
 data32 = pointCloud(data32);
 data32 = pctransform(data32,tform_lidar);
+
+%% play
 data32 = data32.Location;
 data32 = pointCloud(data32(data32(:,2)>=-1.2 & data32(:,2)<=10,:,:));
 lidarPlayer = pcplayer(data32.XLimits,data32.YLimits,data32.ZLimits);

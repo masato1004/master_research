@@ -22,18 +22,41 @@ road_total = [0,0,max_z0,max_z0,0,0];  % converting front disturbance and buffer
 %% front point Cloud
 f_ospc_read = readXYZ(f_ousMsgs{f_ousmsg_num}); % 965 -> hump
 f_ospc = pointCloud(f_ospc_read);
+
+% simulate 32 channel lidar
+[theta,rho,z] = cart2pol(f_ospc_read(:,1),f_ospc_read(:,2),f_ospc_read(:,3));
+phi = atan2(z, rho);
+[~,theta_idx] = sort(theta);
+[~,phi_idx] = sort(phi);
+data = f_ospc_read(phi_idx,:);
+data32 = [];
+% for i = 1:128:length(data)
+%     current_dataline = data(i:i+127,:);
+%     [theta_2,rho_2,z_2] = cart2pol(current_dataline(:,1),current_dataline(:,2),current_dataline(:,3));
+%     phi = atan2(z_2, rho_2);
+%     [~,phi_idx] = sort(phi);
+%     data(i:i+127,:) = current_dataline(phi_idx,:);
+% end
+% for i = 1:6:128
+%     data32 = [data32; data(i:128:end,:)];
+% end
+for i = 0:4:127
+    data32 = [data32; data(1024*i+1:1024*(i+1),:)];
+end
+f_ospc = pointCloud(data32);
+
 f_ospc = pctransform(f_ospc,f_tform);
 f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,1)>=1.2 & f_ospc.Location(:,2)>=-4 & f_ospc.Location(:,2)<=4 & f_ospc.Location(:,3)<=5,:,:));
 f_downptCloud = pcdownsample(f_ospc,'gridAverage',gridStep);
 [f_ospc, ~, plane_tform] = fitplane(f_ospc,f_downptCloud,0.01);
 f_ospc = pointCloud(f_ospc.Location(f_ospc.Location(:,3)>=-1 & f_ospc.Location(:,3)<=0.2 & f_ospc.Location(:,2)>=-2 & f_ospc.Location(:,2)<=2 & f_ospc.Location(:,1)<=8.5,:,:));
-% figure
-% f_ouspc_show = pcshow(f_ospc);
-% xlabel("\itX \rm[m]");
-% ylabel("\itY \rm[m]");
-% zlabel("\itZ \rm[m]");
-% fontname(gcf,"Times New Roman");
-% fontsize(gca,16,"points");
+figure
+f_ouspc_show = pcshow(f_ospc);
+xlabel("\itX \rm[m]");
+ylabel("\itY \rm[m]");
+zlabel("\itZ \rm[m]");
+fontname(gcf,"Times New Roman");
+fontsize(gca,16,"points");
 
 %% rear point Cloud
 r_ospc_read = readXYZ(r_ousMsgs{r_ousmsg_num}); % 965 -> hump
@@ -52,6 +75,8 @@ r_ospc = pointCloud(r_ospc.Location(r_ospc.Location(:,3)>=-1 & r_ospc.Location(:
 % fontsize(gca,16,"points");
 
 %% PICK UP AS 2D
+figure();
+
 range_min = 0;        % minimum measurable distance [m]
 range_max = 8;        % maximum measurable distance [m]
 pick_up_width = 0.3;  % width of datas for a road profile [m]
