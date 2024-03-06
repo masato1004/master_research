@@ -1,3 +1,4 @@
+warning('off','all');
 %% load tf from calibration file
 f_tf = readmatrix("calibration_file_zed_nissan_front.csv");
 r_tf = readmatrix("calibration_file_zed_nissan_roof.csv");
@@ -27,9 +28,11 @@ translation = [0 0 0];
 tform_lidar = rigidtform3d(rotagl,translation);
 
 %% Load bag file
-bag = rosbag("D:\nissan\20240220_natc_internship\_2024-02-20-15-59-15_drive1_20-15-10.bag");
+[file,path] = uigetfile("D:/nissan/*.bag");
+bag = rosbag(string(path) + string(file));
 
-%% ros ouster-front pointcloud topic
+%% Read topicks of pointcloud
+% ros ouster-front pointcloud topic
 % ros time resolution is 1e-6
 disp("Loading ouster_front/points ...")
 f_ousbag = select(bag,'Topic','/ouster_front/points');
@@ -39,7 +42,7 @@ f_oust = f_ousts.Time;
 disp("Successfuly loaded /ouster_front/points .")
 
 
-%% ros ouster-roof pointcloud topic
+% ros ouster-roof pointcloud topic
 disp("Loading ouster_rear/points ...")
 % ros time resolution is 1e-6
 r_ousbag = select(bag,'Topic','/ouster_roof/points');
@@ -53,11 +56,12 @@ disp("Successfuly loaded /ouster_roof/points .")
 %% show
 disp("start");
 figure;
+gridStep = 0.05;
 
 % define start and end time
 [min_len,min_idx] = min([length(r_oust),length(f_oust)]);
-max_time = max([r_oust(1:end-2),f_oust],[],'all');
-min_time = min([r_oust(1:end-2),f_oust],[],'all');
+max_time = max([r_oust; f_oust],[],'all');
+min_time = min([r_oust; f_oust],[],'all');
 
 % define time step
 dt = 1e-4;
@@ -69,7 +73,7 @@ f_oust_rounded = round(f_oust,round_num);
 r_oust_rounded = round(r_oust,round_num);
 
 % calculate the number of datas paied attended
-start_sec = 136;
+start_sec = 40;
 start_idx = int32(start_sec/dt);
 front_pass_data_num = sum(f_oust_rounded < time_list(start_idx));
 rear_pass_data_num = sum(r_oust_rounded < time_list(start_idx));
@@ -155,7 +159,7 @@ for i = start_idx:length(time_list)
             view(-90,40)
             % drawnow
     end
-    disp(round(time_list(i)-time_list(1),2)+"[s]--"+ f_data_num + " " + r_data_num)
+    disp(round(time_list(i)-time_list(1),2)+"[s]--"+ f_data_num + " " + r_data_num);
 
     % disp zed2i pointcloud
     % zedpc = pointCloud(readXYZ(zedMsgs{i}));

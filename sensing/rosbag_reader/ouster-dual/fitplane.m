@@ -1,7 +1,7 @@
-function [modified_data, plane, tform] = fitplane(data,downsampled_data,threshold)
+function [modified_data, plane_mesh, tform] = fitplane(data,downsampled_data,threshold)
     %% PCFITPLANE
     max_distance = threshold;  % [m]
-    model = pcfitplane(downsampled_data,max_distance,MaxNumTrials=1000);
+    model = pcfitplane(downsampled_data,max_distance,MaxNumTrials=7000);
     new_ver = data.Location;
     X_max = max(new_ver(:,1),[],'all');
     X_min = min(new_ver(:,1),[],'all');
@@ -22,6 +22,7 @@ function [modified_data, plane, tform] = fitplane(data,downsampled_data,threshol
     r_axis = cross(z_vec,u_vec);                % find a axis of rotation
 
     % Rotate the point cloud
+    plane_mesh = {X_pre,Y_pre,Z_pre};
     plane = reshape([X_pre,Y_pre,Z_pre],9,9,3);
     plane = reshape(plane,81,3);
     plane = pointCloud(plane);

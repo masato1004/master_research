@@ -75,16 +75,16 @@ function prev_profile = previewing(vertices)
     % Lift the road up for camera-height by mesh
     ptc_datas = ptCloudOut.Location;
     ptc_datas(:,3) = ptc_datas(:,3) - mean(new_mesh_out.Location(:,3));
-    figure;
-    pcshow(ptc_datas);
-    xlabel("\itX \rm[m]");
-    ylabel("\itY \rm[m]");
-    zlabel("\itZ \rm[m]");
-    set(gcf,'color','w');
-    set(gca,'color','w');
-    fontname(gcf,"Times New Roman");
-    fontsize(gca,16,"points");
-    set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
+    % figure;
+    % pcshow(ptc_datas);
+    % xlabel("\itX \rm[m]");
+    % ylabel("\itY \rm[m]");
+    % zlabel("\itZ \rm[m]");
+    % fontname(gcf,"Times New Roman");
+    % fontsize(gca,16,"points");
+    % set(gcf,'color','w');
+    % set(gca,'color','w');
+    % set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
     
     %% PICK UP AS 2D
     range_min = 2.66;     % minimum measurable distance [m]

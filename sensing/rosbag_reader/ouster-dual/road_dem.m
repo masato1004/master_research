@@ -5,11 +5,14 @@ datas = mesh2.Vertices;
 % writeSurfaceMesh(mesh2,"test_surface");
 figure
 pcshow(datas); hold on;
+xlabel("\itX \rm[m]");
+ylabel("\itY \rm[m]");
+zlabel("\itZ \rm[m]");
 
 %% pointcloud interpolation
 % xlist = -1:0.05:1;
 % ylist = 3:0.05:12;
-xlist = 2:0.05:6.5;
+xlist = -8:0.05:-1.5;
 ylist = -1:0.05:1;
 [xq,yq] = meshgrid(xlist,ylist);
 elevation_mesh = griddata(double(datas(:,1)),double(datas(:,2)),double(datas(:,3)),xq,yq,"natural");
