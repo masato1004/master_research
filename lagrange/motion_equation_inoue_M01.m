@@ -99,8 +99,8 @@ end
 
 %%% Amat*X + Bmat*u = Emat*F %%%
 %%% Ymat = Cmat*X + Dmat*u %%%
-Amat = [zeros(size(M,1)) eye(size(M,1)); -M\K  -M\C]
-Bmat = [zeros(size(M,1),1);M\B1]
-Emat = [zeros(size(M,1),1);M\E1]
-Cmat = eye(size(Amat,1))
-Dmat = []
+% Amat = [zeros(size(M,1)) eye(size(M,1)); -M\K  -M\C]
+% Bmat = [zeros(size(M,1),1);M\B1]
+% Emat = [zeros(size(M,1),1);M\E1]
+% Cmat = eye(size(Amat,1))
+% Dmat = []
