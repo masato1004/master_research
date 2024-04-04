@@ -66,7 +66,18 @@ C3 = simplify( C1 + C2 );
 
 K1 = simplify(jacobian(PE,q).');
 
-B1 = [ 0  1 ].';
+% x_b
+% z_b
+% z_wf
+% z_wr
+% theta
+
+% tau_f
+% tau_r
+% sus_f
+% sus_r
+
+B1 = [  ];
 
 % E1 = [ 0  -1 ].';
 E1 = [ -1  -1 ].';
