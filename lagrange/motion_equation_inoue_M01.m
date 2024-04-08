@@ -16,10 +16,12 @@ syms m_b m_wf m_wr I_b
 syms k_sf k_sr k_wf k_wr k_longf k_longr
 syms c_sf c_sr c_wf c_wr c_longf c_longr
 
+syms alpha_f alpha_r sus_f sus_r
+
 %%% Energy %%%
 syms KE PE DE
 %%% Common %%%
-syms t g u Lf Lr
+syms t g Lf Lr S r
 
 m_list   = [ m_b m_b m_wf m_wr I_b ].';
 k_list   = [ k_longf k_longr k_sf k_sr k_wf k_wr ].';
@@ -68,9 +70,14 @@ C3 = simplify( C1 + C2 );
 
 K1 = simplify(jacobian(PE,q).');
 
-E1 = simplify(jacobian(PE,w).');
-E2 = simplify(jacobian(DE,w).');
-E3 = simplify( E1 + E2 );
+input_acc = [
+    (m_wf+m_b/2)*(((1-S)*r*alpha_f - g*sin(atan(dz_disf/dx_disf)))*sin(atan(dz_disf/dx_disf)) + ((1-S)*r*alpha_r - g*sin(atan(dz_disr/dx_disr)))*sin(atan(dz_disr/dx_disr)))/(2*m_wf + m_b);
+    -g;
+    ((1-S)*r*alpha_f - g*sin(atan(dz_disf/dx_disf)))*cos(atan(dz_disf/dx_disf));
+    ((1-S)*r*alpha_r - g*sin(atan(dz_disr/dx_disr)))*cos(atan(dz_disr/dx_disr));
+    0
+];
+input_acc = simplify(input_acc);
 
 % x_b
 % z_b
@@ -106,14 +113,17 @@ for i=1:size(M,1)
     K(:,i) = diff(K1, q(i,1));
     C(:,i) = diff(C3, dq(i,1));
 end
-for i=1:size(E3,1)
-    E(:,i) = diff(E3, w(i,1));
+for j=1:size(w,1)
+    E1(:,j) = diff(-K1, w(j,1));
+    E2(:,j) = diff(-C3, w(j,1));
 end
+
+E = simplify( E1 + E2 );
 
 %%% Amat*X + Bmat*u = Emat*F %%%
 %%% Ymat = Cmat*X + Dmat*u %%%
 % Amat = [zeros(size(M,1)) eye(size(M,1)); -M\K  -M\C]
 % Bmat = [zeros(size(M,1),width(B));M\B1]
-% Emat = [zeros(size(M,1),width(E3));M\E3]
+Emat = [zeros(size(M,1),width(E));M\E];
 % Cmat = eye(size(Amat,1))
 % Dmat = []
