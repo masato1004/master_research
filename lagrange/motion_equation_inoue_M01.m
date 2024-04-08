@@ -29,6 +29,8 @@ q   = [ x_b z_b z_wf z_wr theta ].';
 dq  = [ dx_b dz_b dz_wf dz_wr dtheta ].';
 ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta ].';
 
+w  = [ x_disf, x_disr, z_disf, z_disr, dx_disf, dx_disr, dz_disf, dz_disr ].';
+
 % Xb = [ x_b  z_b].';
 % Xf = [ x_tf  z_b+lf*sin(q(7,1)) ].';
 % Xr = [ x_tr  z_b-lr*sin(q(7,1)) ].';
@@ -66,24 +68,32 @@ C3 = simplify( C1 + C2 );
 
 K1 = simplify(jacobian(PE,q).');
 
+E1 = simplify(jacobian(PE,w).');
+E2 = simplify(jacobian(DE,w).');
+E3 = simplify( E1 + E2 );
+
 % x_b
 % z_b
 % z_wf
 % z_wr
 % theta
 
-% tau_f
-% tau_r
+% alpha_f
+% alpha_r
 % sus_f
 % sus_r
 
-B1 = [  ];
+B1 = [
+       0,0;
+    0,0   ;
+    0,0   ;
+    0,0   ;
+    0,0
+    ];
 
-% E1 = [ 0  -1 ].';
-E1 = [ -1  -1 ].';
 
 disp(' ')
-disp(' M*ddq + C*dq + K*q = B*u + E*F ')
+disp(' M*ddq + C*dq + K*q = B*u + E3*w ')
 disp(' ')
 
 % M
@@ -96,11 +106,14 @@ for i=1:size(M,1)
     K(:,i) = diff(K1, q(i,1));
     C(:,i) = diff(C3, dq(i,1));
 end
+for i=1:size(E3,1)
+    E(:,i) = diff(E3, w(i,1));
+end
 
 %%% Amat*X + Bmat*u = Emat*F %%%
 %%% Ymat = Cmat*X + Dmat*u %%%
 % Amat = [zeros(size(M,1)) eye(size(M,1)); -M\K  -M\C]
-% Bmat = [zeros(size(M,1),1);M\B1]
-% Emat = [zeros(size(M,1),1);M\E1]
+% Bmat = [zeros(size(M,1),width(B));M\B1]
+% Emat = [zeros(size(M,1),width(E3));M\E3]
 % Cmat = eye(size(Amat,1))
 % Dmat = []
