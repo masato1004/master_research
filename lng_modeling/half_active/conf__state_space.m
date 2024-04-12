@@ -18,6 +18,8 @@
 % 
 % syms t g L_f L_r S r
 
+syms tc
+
 % run('../../lagrange/motion_equation_inoue_M01.m')  % only for the first time or when it was changed
 load('system_matrices.mat');
 
