@@ -18,15 +18,17 @@
 % 
 % syms t g L_f L_r S r
 
-tc = 0.001;
+syms tc
 
-% run('../../lagrange/motion_equation_inoue_M01.m')  % only for the first time or when it was changed
+% run('../../../lagrange/motion_equation_inoue_M01.m')  % only for the first time or when it was changed
 load('system_matrices.mat');
 
 %% Vehicle parameter
 m_b = 960;     % [kg]      body mass
 m_wf = 40;       % [kg]      wheel mass
 m_wr = m_wf;       % [kg]      wheel mass
+k_longf = 20000;
+k_longr = 24000;
 k_sf = 30000;   % [N/m]     front spring stiffness
 k_sr = 25000;   % [N/m]     rear spring stiffness
 % k_sf = 13000;   % [N/m]     front spring stiffness
@@ -34,15 +36,17 @@ k_sr = 25000;   % [N/m]     rear spring stiffness
 k_wf = 270000;   % [N/m]     tire stiffness
 k_wr = k_wf;   % [N/m]     tire stiffness
 % k_w = 60000;   % [N/m]     tire stiffness
+c_longf = 1000;
+c_longr = 1000;
 c_sf = 7000;    % [N/(m/s)] front damping
 c_sr = 6000;    % [N/(m/s)] rear damping
 c_wf = 1000;       % [N/(m/s)] tire damping
 c_wr = c_wf;       % [N/(m/s)] tire damping
-% c_w = 2000;       % [N/(m/s)] tire damping
 wb = 2.45;     % wheel base
 L_f = wb * 23/55;      % [m]       front length
 L_r = wb * 32/55;      % [m]       rear length
-I_b = m_b*((wb)/2)^2;      % [kgm^2]   inertia moment
+I_b = m_b*(wb/2)^2;      % [kgm^2]   inertia moment
+r = 0.55/2;           % [m]   radius of wheel
 
 Vkm_h = 10;     % [km/h]    driving velocity
 Vkm_m=Vkm_h/60;
@@ -52,18 +56,18 @@ V=Vkm_m*1000/60;% [m/s]
 Ap = subs(Amat);
 Bp = subs(Bmat);
 Ep = subs(Emat);
-C = subs(Cmat);
+C  = subs(Cmat);
 
 %% Discretization
-disc_func = @(tau,Mat) (-Amat\expm(Amat.*(tc-tau)))*Mat;
+disc_func = @(tau,Mat) (-Ap\expm(Ap.*(tc-tau)))*Mat;
 
-A = expm(Amat.*tc);
-B = disc_func(tc,Bmat) - disc_func(0,Bmat);
-E = disc_func(tc,Emat) - disc_func(0,Emat);
+A = expm(Ap.*tc);
+B = disc_func(tc,Bp) - disc_func(0,Bp);
+E = disc_func(tc,Ep) - disc_func(0,Ep);
 
-CA = Cmat*A;
-CB = Cmat*B;
-CE = Cmat*E;
+CA = C*A;
+CB = C*B;
+CE = C*E;
 
 % dx(k) = x(k) - x(k-1)
 % X(k) = phi*dx(k) + G*du(k) + Gd*dw(k)
