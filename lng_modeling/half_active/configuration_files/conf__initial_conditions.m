@@ -1,19 +1,23 @@
 %% Initial conditions
-c       = width(TL);
+c       = width(TL);\
+x_b     = zeros(1,c);    % [m]       body longitudinal position
 z_b     = zeros(1,c);    % [m]       body displacement
 z_wf    = zeros(1,c);    % [m]       front wheel displacement
 z_wr    = zeros(1,c);    % [m]       rear wheel displacement
 theta   = zeros(1,c);    % [rad]     body pitch angle
+x_bDot  = zeros(1,c);    % [m/s]     velocity
 z_bDot  = zeros(1,c);    % [m/s]     body heave velocity
 z_wfDot = zeros(1,c);    % [m/s]     front wheel heave velocity
 z_wrDot = zeros(1,c);    % [m/s]     rear wheel heave velocity
 theta_Dot = zeros(1,c);  % [rad/s]   body pitch angular velocity
 
 states = [
+    x_b
     z_b;
     z_wf;
     z_wr;
     theta;
+    x_bDot;
     z_bDot;
     z_wfDot;
     z_wrDot;

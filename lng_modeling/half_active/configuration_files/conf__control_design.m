@@ -2,8 +2,8 @@
 % parameters
 control_TL = 0:tc:T;                       % time line for control results
 c_ctrl = width(control_TL);
-u = zeros(2,c_ctrl);                            % input vector
-du= zeros(2,c_ctrl);                            % input-differencial vector
+u = zeros(4,c_ctrl);                            % input vector
+du= zeros(4,c_ctrl);                            % input-differencial vector
 e = zeros(height(C),c_ctrl);                    % output-error vector
 dx= zeros(height(states),c_ctrl);               % states-differencial vector
 
@@ -16,18 +16,18 @@ X = [
 Q = diag([1e-06, 1e+05, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+06]);       % all_pitch
 H = diag([1e-03,1e-03]);
 
-[P, K, ~] = idare(phi, G, Q, H, [], []);   % u = -Kx
-F = -K;                                      % u = Fx
+% [P, K, ~] = idare(phi, G, Q, H, [], []);   % u = -Kx
+% F = -K;                                      % u = Fx
 
-% preview controler
-% preview parameter
-M = 43;                        % preview step
-FDW = zeros(height(u), c_ctrl);
-Fd = @(j) -(H + G'*P*G)\G'*(((phi+G*F)')^(j))*P*Gd;       % function for Fd(j)
-Fdj = zeros(height(u), height(r_p), M+1);                 % feedforward gain vector list
-for j = 0:M
-    Fdj(:,:,j+1)=Fd(j);
-end
+% % preview controler
+% % preview parameter
+% M = 43;                        % preview step
+% FDW = zeros(height(u), c_ctrl);
+% Fd = @(j) -(H + G'*P*G)\G'*(((phi+G*F)')^(j))*P*Gd;       % function for Fd(j)
+% Fdj = zeros(height(u), height(r_p), M+1);                 % feedforward gain vector list
+% for j = 0:M
+%     Fdj(:,:,j+1)=Fd(j);
+% end
 
 dis_dw = 0:(T*V)/(T/tc):T*V+3;
 
