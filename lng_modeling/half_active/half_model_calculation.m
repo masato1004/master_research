@@ -158,7 +158,7 @@ for i=1:c-1
     % states-update with Runge-Kutta
     % Runge kutta
     states(:,i+1) = runge(states(:,i), u_in, d, Ap, Bp, Ep, dt);
-    accelerations(:,i+1) = [states(5,i+1);states(8,i+1)]./dt;
+    accelerations(:,i+1) = [states(6,i+1);states(7,i+1);states(10,i+1)]./dt;
  
     % find appropriate next input
     if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive
