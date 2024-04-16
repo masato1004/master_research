@@ -3,7 +3,7 @@ Vkm_h = 10;     % [km/h]    driving velocity
 Vkm_m=Vkm_h/60;
 V=Vkm_m*1000/60;% [m/s]
 
-c       = width(TL);\
+c       = width(TL);
 x_b     = zeros(1,c);    % [m]       body longitudinal position
 z_b     = zeros(1,c);    % [m]       body displacement
 z_wf    = zeros(1,c);    % [m]       front wheel displacement

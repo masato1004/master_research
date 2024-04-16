@@ -30,6 +30,7 @@ jari    = false;
 %% simulation parameter
 T   = 10;          % [s]       total simulation time
 dt  = 0.0001;     % [s]       delta time
+TL  = 0:dt:T;     % time list ([s])
 tc  = 0.001;      % control cycle
 fs  = 50;         % sampling frequence
 ts  = 1/fs;       % sampling cycle

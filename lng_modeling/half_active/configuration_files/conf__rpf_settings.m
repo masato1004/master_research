@@ -1,5 +1,3 @@
-
-TL = 0:dt:T;     % time list ([s])
 dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
 start_disturbance = 9;                                                        % the start distance of disturbance ([m])
 
