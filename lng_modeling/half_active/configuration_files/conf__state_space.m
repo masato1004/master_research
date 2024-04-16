@@ -46,10 +46,6 @@ L_r = wb * 32/55;      % [m]       rear length
 I_b = m_b*(wb/2)^2;      % [kgm^2]   inertia moment
 r = 0.55/2;           % [m]   radius of wheel
 
-Vkm_h = 10;     % [km/h]    driving velocity
-Vkm_m=Vkm_h/60;
-V=Vkm_m*1000/60;% [m/s]
-
 %% Load parameters into matrices
 Ap = subs(Amat);
 Bp = subs(Bmat);

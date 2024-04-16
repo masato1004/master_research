@@ -218,8 +218,8 @@ end
 % input_max = max(abs(u(1,:)));
 % input_integral = trapz(control_TL(1:end-width(u(1,isnan(u(1,:))))),abs(rad2deg(double(u(1,1:end-width(u(1,isnan(u(1,:)))))))));
 
-pitch_max = max(abs(states(4,:)));
-pitch_integral = trapz(TL(1,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(states(4,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V)))))
+pitch_max = max(abs(states(5,:)));
+pitch_integral = trapz(TL(1,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(states(5,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V)))))
 pitchacc_integral = trapz(TL(1,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(states(8,TL>(start_disturbance-1)/V&TL<(start_disturbance+ld+1)/V)))));
 input_max = max(abs(u(1,:)));
 input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
@@ -228,10 +228,12 @@ input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<
 %                          Drawing figures                          %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
 states_name = [
+    "Longitudinal_Position", "Time [s]", "Longitudinal Position [m]";
     "Body_Heave_Displacement", "Time [s]", "Body Heave Displacement [m]";
     "Front_Wheel_Heave_Displacement", "Time [s]", "Front Wheel Heave Displacement [m]";
     "Rear_Wheel_Heave_Displacement", "Time [s]", "Rear Wheel Heave Displacement [m]";
     "Body_Pitch_Angle", "Time [s]", "Body Pitch Angle [deg]";
+    "Velocity", "Time [s]", "Velocity [m/s]";
     "Body_Heave_Velocity", "Time [s]", "Body Heave Velocity [m/s]";
     "Front_Wheel_Heave_Velocity", "Time [s]", "Front Wheel Heave Velocity [m/s]";
     "Rear_Wheel_Heave_Velocity", "Time [s]", "Rear Wheel Heave Velocity [m/s]";
