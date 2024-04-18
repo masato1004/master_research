@@ -5,7 +5,9 @@ syms x_b dx_b ddx_b        % body longitudinal
 syms z_b dz_b ddz_b        % body vertical
 syms z_wf dz_wf ddz_wf     % fornt wheel vertical
 syms z_wr dz_wr ddz_wr     % rear wheel vertical
-syms theta dtheta ddtheta  % body rotation
+syms theta_b dtheta_b ddtheta_b  % body rotation
+syms theta_wf dtheta_wf ddtheta_wf
+syms theta_wr dtheta_wr ddtheta_wr
 
 syms x_disf dx_disf ddx_disf  % road longitudinal
 syms x_disr dx_disr ddx_disr  % road longitudinal
@@ -27,9 +29,9 @@ m_list   = [ m_b m_b m_wf m_wr I_b ].';
 k_list   = [ k_longf k_longr k_sf k_sr k_wf k_wr ].';
 c_list   = [ c_longf c_longr c_sf c_sr c_wf c_wr ].';
 
-q   = [ x_b z_b z_wf z_wr theta ].';
-dq  = [ dx_b dz_b dz_wf dz_wr dtheta ].';
-ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta ].';
+q   = [ x_b z_b z_wf z_wr theta_b ].';
+dq  = [ dx_b dz_b dz_wf dz_wr dtheta_b ].';
+ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta_b ].';
 
 w  = [ x_disf, x_disr, z_disf, z_disr, dx_disf, dx_disr, dz_disf, dz_disr ].';
 
@@ -85,7 +87,7 @@ input_acc = simplify(input_acc);
 % z_b
 % z_wf
 % z_wr
-% theta
+% theta_b
 
 % alpha_f
 % alpha_r
