@@ -29,9 +29,9 @@ m_list   = [ m_b m_b m_wf m_wr I_b ].';
 k_list   = [ k_longf k_longr k_sf k_sr k_wf k_wr ].';
 c_list   = [ c_longf c_longr c_sf c_sr c_wf c_wr ].';
 
-q   = [ x_b z_b z_wf z_wr theta_b ].';
-dq  = [ dx_b dz_b dz_wf dz_wr dtheta_b ].';
-ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta_b ].';
+q   = [ x_b z_b z_wf z_wr theta_b phi_wf phi_wr ].';
+dq  = [ dx_b dz_b dz_wf dz_wr dtheta_b dphi_wf dphi_wr ].';
+ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta_b ddphi_wf ddphi_wr ].';
 
 w  = [ x_disf, x_disr, z_disf, z_disr, dx_disf, dx_disr, dz_disf, dz_disr ].';
 
