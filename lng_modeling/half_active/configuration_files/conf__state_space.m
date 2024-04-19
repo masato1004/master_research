@@ -53,29 +53,29 @@ Ep = subs(Emat);
 C  = subs(Cmat);
 
 %% Discretization
-disc_func = @(tau,Mat) (-Ap\expm(Ap.*(tc-tau)))*Mat;
+% disc_func = @(tau,Mat) (-Ap\expm(Ap.*(tc-tau)))*Mat;
 
-A = expm(Ap.*tc);
-B = disc_func(tc,Bp) - disc_func(0,Bp);
-E = disc_func(tc,Ep) - disc_func(0,Ep);
+% A = expm(Ap.*tc);
+% B = disc_func(tc,Bp) - disc_func(0,Bp);
+% E = disc_func(tc,Ep) - disc_func(0,Ep);
 
-CA = C*A;
-CB = C*B;
-CE = C*E;
+% CA = C*A;
+% CB = C*B;
+% CE = C*E;
 
-% dx(k) = x(k) - x(k-1)
-% X(k) = phi*dx(k) + G*du(k) + Gd*dw(k)
-phi = [
-    eye(height(CA)), -CA;
-    zeros(width(CA),height(CA)), A
-    ];
+% % dx(k) = x(k) - x(k-1)
+% % X(k) = phi*dx(k) + G*du(k) + Gd*dw(k)
+% phi = [
+%     eye(height(CA)), -CA;
+%     zeros(width(CA),height(CA)), A
+%     ];
 
-G = [
-    -CB;
-    B
-    ];
+% G = [
+%     -CB;
+%     B
+%     ];
 
-Gd = [
-    -CE;
-    E
-    ];
+% Gd = [
+%     -CE;
+%     E
+%     ];

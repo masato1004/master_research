@@ -21,7 +21,7 @@ H = diag([1e-03,1e-03]);
 
 % % preview controler
 % % preview parameter
-% M = 43;                        % preview step
+M = 43;                        % preview step
 % FDW = zeros(height(u), c_ctrl);
 % Fd = @(j) -(H + G'*P*G)\G'*(((phi+G*F)')^(j))*P*Gd;       % function for Fd(j)
 % Fdj = zeros(height(u), height(r_p), M+1);                 % feedforward gain vector list

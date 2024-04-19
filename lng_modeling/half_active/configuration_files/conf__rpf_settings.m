@@ -11,22 +11,26 @@ dis_total_r = 0:max_distance/(T/dt):max_distance-start_disturbance-(L_f+L_r);   
 
 [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,ld,const,max_distance,dis_total,dis_total_f,dis_total_r);
 
-if sensing
-    r_p_f = interp1(road_total_f(:,1)',road_total_f(:,2)',dis,'linear');                                   % front road profile
-    r_p_r = interp1(road_total_r(:,1)',road_total_r(:,2)',dis,'linear');                                   % rear road profile
-    r_p_f = lowpass(r_p_f,0.5,1/dt);
-    r_p_r = lowpass(r_p_r,0.5,1/dt);
-else
-    r_p_f = makima(dis_total,road_total_f,dis);                                   % front road profile
-    r_p_r = makima(dis_total,road_total_r,dis);                                   % rear road profile
-end
+% if sensing
+%     r_p_f = interp1(road_total_f(:,1)',road_total_f(:,2)',dis,'linear');                                   % front road profile
+%     r_p_r = interp1(road_total_r(:,1)',road_total_r(:,2)',dis,'linear');                                   % rear road profile
+%     r_p_f = lowpass(r_p_f,0.5,1/dt);
+%     r_p_r = lowpass(r_p_r,0.5,1/dt);
+% else
+%     r_p_f = makima(dis_total,road_total_f,dis);                                   % front road profile
+%     r_p_r = makima(dis_total,road_total_r,dis);                                   % rear road profile
+% end
 
+% inverse offset method for calculate wheel trajectory
+inv_offset_f = [];
+for i = 1:width(dis_total)
+    inv_offset_f = [inv_offset_f, ]
 
 r_p = [
-    r_p_f;
-    r_p_r;
-    gradient(r_p_f)./dt;
-    gradient(r_p_r)./dt
+    road_total_f;
+    road_total_r;
+    gradient(road_total_f)./dt;
+    gradient(road_total_r)./dt
     ];
 % r_p_prev = [
 %     dis;
@@ -37,8 +41,8 @@ r_p = [
 %     ];
 r_p_prev = [
     dis;
-    r_p_f;
-    r_p_r;
-    gradient(r_p_f)./dt;
-    gradient(r_p_r)./dt
+    road_total_f;
+    road_total_r;
+    gradient(road_total_f)./dt;
+    gradient(road_total_r)./dt
     ];
