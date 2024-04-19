@@ -43,7 +43,7 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
         r_correct_road_p = interp1(r_dis_total,road_total,r_dis_total_p);
         road_total_r = r_correct_road_p(ismember(dis_total, r_dis_total_p));
 
-        frequency = 0; max_z0 = max_z0;
+        frequency = 0; max_z0 = max_z0; dis_length=sum(ld_list);
 
     % sin wave
     elseif shape == "_sin_"

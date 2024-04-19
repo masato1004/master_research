@@ -4,7 +4,7 @@ start_disturbance = 9;                                                        % 
 max_z0 = 0.025;                                                                % [m] max road displacement
 ld = 0.25;
 const = 6;                                                                    % amplitude
-max_distance = 300;                                                           % [m] driving mileage
+max_distance = 100;                                                           % [m] driving mileage
 dis_total = 0:max_distance/(T/dt):max_distance;                               % distance list for road profile ([m])
 dis_total_f = 0:max_distance/(T/dt):max_distance-start_disturbance;                           % distance list for front road profile ([m])
 dis_total_r = 0:max_distance/(T/dt):max_distance-start_disturbance-(L_f+L_r);                 % distance list for rear road profile ([m])
@@ -23,8 +23,12 @@ dis_total_r = 0:max_distance/(T/dt):max_distance-start_disturbance-(L_f+L_r);   
 
 % inverse offset method for calculate wheel trajectory
 inv_offset_f = [];
-for i = 1:width(dis_total)
-    inv_offset_f = [inv_offset_f, ]
+for i = 1:5:width(dis_total)
+    current_road_f = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
+    current_road_f = decimate(current_road_f,6);
+    half_circle_f = [current_road_f; sqrt(r^2 - (current_road_f-dis_total(i)).^2)+road_total_f(i)-r];
+    inv_offset_f = [inv_offset_f, half_circle_f];
+end
 
 r_p = [
     road_total_f;
