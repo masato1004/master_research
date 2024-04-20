@@ -29,9 +29,9 @@ m_list   = [ m_b m_b m_wf m_wr I_b ].';
 k_list   = [ k_longf k_longr k_sf k_sr k_wf k_wr ].';
 c_list   = [ c_longf c_longr c_sf c_sr c_wf c_wr ].';
 
-q   = [ x_b z_b z_wf z_wr theta_b phi_wf phi_wr ].';
-dq  = [ dx_b dz_b dz_wf dz_wr dtheta_b dphi_wf dphi_wr ].';
-ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta_b ddphi_wf ddphi_wr ].';
+q   = [ x_b z_b z_wf z_wr theta_b ].';
+dq  = [ dx_b dz_b dz_wf dz_wr dtheta_b ].';
+ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta_b ].';
 
 w  = [ x_disf, x_disr, z_disf, z_disr, dx_disf, dx_disr, dz_disf, dz_disr ].';
 
@@ -126,5 +126,5 @@ Amat = [zeros(size(M,1)) eye(size(M,1)); -M\K  -M\C];
 Bmat = [zeros(size(M,1),width(B));M\B];
 Emat = [zeros(size(M,1),width(E));M\E];
 Cmat = eye(size(Amat,1));
-save('../lng_modeling/half_active/system_matrices', 'Amat', 'Bmat', 'Emat', 'Cmat');
+save('../lng_modeling/half_active/configuration_files/system_matrices', 'Amat', 'Bmat', 'Emat', 'Cmat');
 % Dmat = []

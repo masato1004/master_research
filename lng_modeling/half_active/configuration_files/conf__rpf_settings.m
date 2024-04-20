@@ -23,11 +23,32 @@ dis_total_r = 0:max_distance/(T/dt):max_distance-start_disturbance-(L_f+L_r);   
 
 % inverse offset method for calculate wheel trajectory
 inv_offset_f = [];
+inv_offset_r = [];
+disp('Calculating inverse offset...')
 for i = 1:5:width(dis_total)
     current_road_f = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
-    current_road_f = decimate(current_road_f,6);
+    current_road_f = current_road_f(1:5:end);
     half_circle_f = [current_road_f; sqrt(r^2 - (current_road_f-dis_total(i)).^2)+road_total_f(i)-r];
     inv_offset_f = [inv_offset_f, half_circle_f];
+
+    current_road_r = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
+    current_road_r = current_road_r(1:5:end);
+    half_circle_r = [current_road_r; sqrt(r^2 - (current_road_r-dis_total(i)).^2)+road_total_r(i)-r];
+    inv_offset_r = [inv_offset_r, half_circle_r];
+end
+
+wheel_traj_f = [];
+wheel_traj_r= [];
+disp('Calculating wheel trajectory...')
+for i = 1:5:width(dis_total)
+    if i == 1
+        current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
+    elseif i == width(dis_total)
+        current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i)))];
+    else
+        current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
+    end
+    wheel_traj_r = [wheel_traj_r, current_traj_r];
 end
 
 r_p = [
