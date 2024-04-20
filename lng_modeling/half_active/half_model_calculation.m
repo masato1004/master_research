@@ -47,6 +47,15 @@ end
 
 
 %% ========================simulation========================= %%
+syms phi_f(Velosity) phi_r(Velosity)
+phi_f = Velosity*dt/r;
+phi_r = Velosity*dt/r;
+
+current_phi_f = subs(phi_f, V);
+current_phi_r = subs(phi_r, V);
+current_dphi_f = V/r;
+current_dphi_r = V/r;
+
 dw_list = [];
 % LOOP
 for i=1:c-1
@@ -157,7 +166,7 @@ for i=1:c-1
 
     % states-update with Runge-Kutta
     % Runge kutta
-    states(:,i+1) = runge(states(:,i), u_in, d, Ap, Bp, Ep, dt);
+    states(:,i+1) = runge(states(:,i), u_in, d, g, Ap, Bp, Ep, G, dt);
     accelerations(:,i+1) = [states(6,i+1);states(7,i+1);states(10,i+1)]./dt;
  
     % find appropriate next input

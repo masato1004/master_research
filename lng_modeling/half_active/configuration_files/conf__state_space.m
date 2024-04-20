@@ -51,7 +51,7 @@ S = 0.2;     % slip ratio
 g = 9.80665;
 
 %% Load parameters into matrices
-Ap = subs(Amat);
+Ap = double(subs(Amat));
 Bp = subs(Bmat);
 Ep = subs(Emat);
 C  = subs(Cmat);
