@@ -9,11 +9,11 @@ branch = "_lng-ctrl_";
 % Simulation parameter
 run("configuration_files/conf__simulation_conditions.m")
 
-% Initial conditions
-run("configuration_files/conf__initial_conditions.m")
-
 % States definition
 run("configuration_files/conf__state_space.m")
+
+% Initial conditions
+run("configuration_files/conf__initial_conditions.m")
 
 % Road profile settings
 run("configuration_files/conf__rpf_settings.m")

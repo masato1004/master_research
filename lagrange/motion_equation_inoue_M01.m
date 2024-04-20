@@ -75,7 +75,7 @@ C3 = simplify( C1 + C2 );
 K1 = simplify(jacobian(PE,q).');
 
 input_acc = [
-    (m_wf+m_b/2)*(((1-S)*r*alpha_f - g*sin(atan(dz_disf/dx_disf)))*sin(atan(dz_disf/dx_disf)) + ((1-S)*r*alpha_r - g*sin(atan(dz_disr/dx_disr)))*sin(atan(dz_disr/dx_disr)))/(2*m_wf + m_b);
+    (m_wf+m_b/2)*((1-S)*r*alpha_f*sin(atan(dz_disf/dx_disf)) + (1-S)*r*alpha_r*sin(atan(dz_disr/dx_disr)))/(2*m_wf + m_b);
     -g + sus_f + sus_r;
     ((1-S)*r*alpha_f - g*sin(atan(dz_disf/dx_disf)))*cos(atan(dz_disf/dx_disf)) - sus_f;
     ((1-S)*r*alpha_r - g*sin(atan(dz_disr/dx_disr)))*cos(atan(dz_disr/dx_disr)) - sus_r;

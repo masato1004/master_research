@@ -21,7 +21,11 @@ dis_total_r = 0:max_distance/(T/dt):max_distance-start_disturbance-(L_f+L_r);   
 %     r_p_r = makima(dis_total,road_total_r,dis);                                   % rear road profile
 % end
 
-% inverse offset method for calculate wheel trajectory
+
+%% Load wheel trajectory
+load("configuration_files/wheel_traj-"+shape+".mat");
+
+%% Calculate wheel trajectory with inverse offset method
 inv_offset_f = [];
 inv_offset_r = [];
 disp('Calculating inverse offset...')
@@ -54,6 +58,8 @@ for i = 1:5:width(dis_total)
     wheel_traj_f = [wheel_traj_f, current_traj_f];
     wheel_traj_r = [wheel_traj_r, current_traj_r];
 end
+wheel_traj_f = [dis_total; makima(wheel_traj_f(1,:),wheel_traj_f(2,:),dis_total)];
+wheel_traj_r = [dis_total; makima(wheel_traj_r(1,:),wheel_traj_r(2,:),dis_total)];
 save("wheel_traj-"+shape, "wheel_traj_f", "wheel_traj_r")
 
 

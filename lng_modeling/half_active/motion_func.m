@@ -1,4 +1,4 @@
-function dx = motion_func(x, u, d, A, B, E)
+function dx = motion_func(x, u, d, g, A, B, E, G)
     % dx = Ax + Bu +Ed
-    dx = A*x + B*u + E*d;
+    dx = A*x + B*u + E*d +G*g;
 end

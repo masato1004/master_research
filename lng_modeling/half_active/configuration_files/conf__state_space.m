@@ -45,12 +45,31 @@ L_f = wb * 23/55;      % [m]       front length
 L_r = wb * 32/55;      % [m]       rear length
 I_b = m_b*(wb/2)^2;      % [kgm^2]   inertia moment
 r = 0.55/2;           % [m]   radius of wheel
+S = 0.2;     % slip ratio
+
+% environmental parameter
+g = 9.80665;
 
 %% Load parameters into matrices
 Ap = subs(Amat);
 Bp = subs(Bmat);
 Ep = subs(Emat);
 C  = subs(Cmat);
+
+% gravity
+G = [
+    0;
+    0;
+    0;
+    0;
+    0;
+    -1;
+    -1;
+    -1;
+    -1;
+    -1;
+];
+% -sin(atan(dz_disf/dx_disf))^2 - sin(atan(dz_disr/dx_disr))^2
 
 %% Discretization
 % disc_func = @(tau,Mat) (-Ap\expm(Ap.*(tc-tau)))*Mat;
