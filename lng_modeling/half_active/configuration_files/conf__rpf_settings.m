@@ -42,14 +42,20 @@ wheel_traj_r= [];
 disp('Calculating wheel trajectory...')
 for i = 1:5:width(dis_total)
     if i == 1
+        current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i) | inv_offset_f(1,:)==dis_total(i+1)))];
         current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
     elseif i == width(dis_total)
+        current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i-1) | inv_offset_f(1,:)==dis_total(i)))];
         current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i)))];
     else
+        current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i-1) | inv_offset_f(1,:)==dis_total(i) | inv_offset_f(1,:)==dis_total(i+1)))];
         current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
     end
+    wheel_traj_f = [wheel_traj_f, current_traj_f];
     wheel_traj_r = [wheel_traj_r, current_traj_r];
 end
+save("wheel_traj-"+shape, "wheel_traj_f", "wheel_traj_r")
+
 
 r_p = [
     road_total_f;
