@@ -27,7 +27,6 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
     % bump
     elseif shape == "_bump_"
         ld_list = [0.05 0.15 0.05];
-        start_disturbance = 1;                                                                    % amplitude
 
         f_dis_total =  [0,start_disturbance,start_disturbance+ld_list(1),start_disturbance+sum(ld_list(1:2)),start_disturbance+sum(ld_list),max_distance];
         r_dis_total =  [0,start_disturbance+L_f+L_r,start_disturbance+L_f+L_r+ld_list(1),start_disturbance+L_f+L_r+sum(ld_list(1:2)),start_disturbance+L_f+L_r+sum(ld_list),max_distance-L_f-L_r];
