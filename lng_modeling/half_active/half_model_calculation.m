@@ -47,17 +47,10 @@ end
 
 
 %% ========================simulation========================= %%
-syms phi_f(Velosity) phi_r(Velosity)
-phi_f = Velosity*dt/r;
-phi_r = Velosity*dt/r;
-
-current_phi_f = subs(phi_f, V);
-current_phi_r = subs(phi_r, V);
-current_dphi_f = V/r;
-current_dphi_r = V/r;
 
 dw_list = [];
 % LOOP
+disp('Simulation Started')
 for i=1:c-1
 
     % make road preview profile
@@ -159,15 +152,40 @@ for i=1:c-1
     v = states(5:8,i);
 
     % load road profile
-    d = r_p(:,i);
+    disturbance(1,i+1) = interp1(mileage_f-interp1(dis_total,mileage_f,sum(sqrt([0,diff(disturbance(1,1:i))].^2 + [0,diff(disturbance(3,1:i))].^2))),dis_total,r*states(13,i)*dt);  % x_disf
+    disturbance(2,i+1) = interp1(mileage_r-interp1(dis_total,mileage_r,sum(sqrt([0,diff(disturbance(2,1:i))].^2 + [0,diff(disturbance(4,1:i))].^2))),dis_total,r*states(14,i)*dt);  % x_disr
+    disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
+    disturbance(4,i+1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
+    if i ~= 1
+        disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
+        disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
+        disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
+        disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
+    else
+        disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
+        disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
+        disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
+        disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
+    end
+    x_disf = disturbance(1,i);
+    x_disr = disturbance(2,i);
+    z_disf = disturbance(3,i);
+    z_disr = disturbance(4,i);
+    dx_disf =disturbance(5,i);
+    dx_disr =disturbance(6,i);
+    dz_disf =disturbance(7,i);
+    dz_disr =disturbance(8,i);
     
     % load current input
     u_in = u(:,cc);
 
-    % states-update with Runge-Kutta
-    % Runge kutta
-    states(:,i+1) = runge(states(:,i), u_in, d, g, Ap, Bp, Ep, G, dt);
-    accelerations(:,i+1) = [states(6,i+1);states(7,i+1);states(10,i+1)]./dt;
+    % Apply current parameter into matrices
+    Bp = double(subs(Bmat));
+    Ep = double(subs(Emat));
+    G  = double(subs(Gmat));
+    % States-Update Runge kutta
+    states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, G, dt);
+    accelerations(:,i+1) = [states(8,i+1);states(9,i+1);states(12,i+1)]./dt;
  
     % find appropriate next input
     if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive
@@ -263,7 +281,7 @@ saveas(r_fig,"figs/"+conditions+"/Road_Profile.fig");
 saveas(r_fig,"jpgs/"+conditions+"/Road_Profile.jpg");
 
 for i=1:height(states)
-    if i==4 || i==8
+    if sum(ismember([5,6,7,12,13,14],i))
         drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,conditions);
     else
         drawer(TL,states(i,:),states_name(i,:),i,conditions);
@@ -273,8 +291,9 @@ end
 
 %% additional draw
 % accelerations
-drawer(TL,accelerations(1,:),["Body_Heave_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],9,conditions);
-drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],10,conditions);
+drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],i+1,conditions);
+drawer(TL,accelerations(1,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
+drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
 
 % % preview data
 % p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);
@@ -307,46 +326,46 @@ drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time 
 
 % drawer(control_TL,u(1,:),["Front_Wheel_Actuator_Force", "Time [s]", "Front Wheel Actuator Force [N]"],11,figfolder,shape);
 % drawer(control_TL,u(2,:),["Rear_Wheel_Actuator_Force", "Time [s]", "Rear Wheel Actuator Force [N]"],12,figfolder,shape);
-fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
-plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
-hold on;
-plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff","LineStyle","--");
-grid on;
-xlim([0,3]);
-xlabel("Time [s]");
-ylabel("Wheel Actuator Force [N]");
-legend("{\it f_{af}} : Front Wheel", "{\it f_{ar}} : Rear Wheel");
-fontname(fig,"Times New Roman");
-fontsize(fig,10.5,"points");
-saveas(fig,"figs/"+conditions+"/Actuator_Force.fig");
-saveas(fig,"jpgs/"+conditions+"/Actuator_Force.jpg");
+% fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
+% plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
+% hold on;
+% plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff","LineStyle","--");
+% grid on;
+% xlim([0,3]);
+% xlabel("Time [s]");
+% ylabel("Wheel Actuator Force [N]");
+% legend("{\it f_{af}} : Front Wheel", "{\it f_{ar}} : Rear Wheel");
+% fontname(fig,"Times New Roman");
+% fontsize(fig,10.5,"points");
+% saveas(fig,"figs/"+conditions+"/Actuator_Force.fig");
+% saveas(fig,"jpgs/"+conditions+"/Actuator_Force.jpg");
 
-% compare the timings of rear road profile and actuator input
-fig = figure('name',"Actuator_Force_and_Road",'Position', [500+20 500-20 600 190]);
-xlim([0,3]);
-yyaxis left
-plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
-hold on;
-plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff");
-grid on;
-xlabel("Time [s]");
-ylabel("Wheel Actuator Force [N]");
-ylim([-4000,4000]);
-ax = gca;
-ax.YAxis(1).Color = [0 0 1];
-yyaxis right
-ylim([-0.09,0.09]);
-plot(TL,r_p_f,"LineWidth",2,"Color","#ff0000");
-plot(TL,r_p_r,"LineWidth",2,"Color","#ff0000");
-ylabel("Road Displacement [m]");
-legend("{\it f_{af}} : Front Actuator", "{\it f_{ar}} : Rear Actuator", "{\it z_{0f}} : Front Road Displacement", "{\it z_{0r}} : Rear Road Displacement");
-ax = gca;
-ax.YAxis(2).Color = [1 0 0];
-fontname(fig,"Times New Roman");
-fontsize(fig,10.5,"points");
-grid on;
-saveas(fig,"figs/"+conditions+"/Actuator_Force_and_Road.fig");
-saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
+% % compare the timings of rear road profile and actuator input
+% fig = figure('name',"Actuator_Force_and_Road",'Position', [500+20 500-20 600 190]);
+% xlim([0,3]);
+% yyaxis left
+% plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
+% hold on;
+% plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff");
+% grid on;
+% xlabel("Time [s]");
+% ylabel("Wheel Actuator Force [N]");
+% ylim([-4000,4000]);
+% ax = gca;
+% ax.YAxis(1).Color = [0 0 1];
+% yyaxis right
+% ylim([-0.09,0.09]);
+% plot(TL,r_p_f,"LineWidth",2,"Color","#ff0000");
+% plot(TL,r_p_r,"LineWidth",2,"Color","#ff0000");
+% ylabel("Road Displacement [m]");
+% legend("{\it f_{af}} : Front Actuator", "{\it f_{ar}} : Rear Actuator", "{\it z_{0f}} : Front Road Displacement", "{\it z_{0r}} : Rear Road Displacement");
+% ax = gca;
+% ax.YAxis(2).Color = [1 0 0];
+% fontname(fig,"Times New Roman");
+% fontsize(fig,10.5,"points");
+% grid on;
+% saveas(fig,"figs/"+conditions+"/Actuator_Force_and_Road.fig");
+% saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
 
 if animation
     close all;

@@ -40,6 +40,7 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 %     half_circle_r = [current_road_r; sqrt(r^2 - (current_road_r-dis_total(i)).^2)+road_total_r(i)-r];
 %     inv_offset_r = [inv_offset_r, half_circle_r];
 % end
+% disp('Done Calculating inverse offset.'+newline)
 
 % wheel_traj_f = [];
 % wheel_traj_r= [];
@@ -61,7 +62,16 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 % wheel_traj_f = [dis_total; makima(wheel_traj_f(1,:),wheel_traj_f(2,:),dis_total)];
 % wheel_traj_r = [dis_total; makima(wheel_traj_r(1,:),wheel_traj_r(2,:),dis_total)];
 % save("wheel_traj-"+shape, "wheel_traj_f", "wheel_traj_r")
+% disp('Done Calculating wheel trajectory.'+newline)
 
+disp('Calculating wheel mileage...')
+mileage_f = 0;
+mileage_r = 0;
+for k = 2:width(wheel_traj_f)
+    mileage_f = [mileage_f, sum(sqrt(diff(wheel_traj_f(1,1:k)).^2+diff(wheel_traj_f(2,1:k)).^2))];
+    mileage_r = [mileage_r, sum(sqrt(diff(wheel_traj_r(1,1:k)).^2+diff(wheel_traj_r(2,1:k)).^2))];
+end
+disp('Done Calculating wheel mileage.'+newline)
 
 r_p = [
     road_total_f;

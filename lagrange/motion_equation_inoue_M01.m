@@ -14,28 +14,28 @@ syms x_disr dx_disr ddx_disr  % road longitudinal
 syms z_disf dz_disf ddz_disf  % road displacement
 syms z_disr dz_disr ddz_disr  % road displacement
 
-syms m_b m_wf m_wr I_b
+syms m_b m_wf m_wr I_b I_wf I_wr
 syms k_sf k_sr k_wf k_wr k_longf k_longr
 syms c_sf c_sr c_wf c_wr c_longf c_longr
 
-syms alpha_f alpha_r sus_f sus_r
+syms tau_f tau_r sus_f sus_r
 
 %%% Energy %%%
 syms KE PE DE
 %%% Common %%%
 syms t g L_f L_r S r
 
-m_list   = [ m_b m_b m_wf m_wr I_b ].';
+m_list   = [ m_b m_b m_wf m_wr I_b I_wf I_wr ].';
 k_list   = [ k_longf k_longr k_sf k_sr k_wf k_wr ].';
 c_list   = [ c_longf c_longr c_sf c_sr c_wf c_wr ].';
 
-q   = [ x_b z_b z_wf z_wr theta_b ].';
-dq  = [ dx_b dz_b dz_wf dz_wr dtheta_b ].';
-ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta_b ].';
+q   = [ x_b z_b z_wf z_wr theta_b theta_wf theta_wr ].';
+dq  = [ dx_b dz_b dz_wf dz_wr dtheta_b dtheta_wf dtheta_wr ].';
+ddq = [ ddx_b ddz_b ddz_wf ddz_wr ddtheta_b ddtheta_wf ddtheta_wr ].';
 
 w  = [ x_disf, x_disr, z_disf, z_disr, dx_disf, dx_disr, dz_disf, dz_disr ].';
 
-u  = [ alpha_f alpha_r sus_f sus_r ].';
+u  = [ tau_f tau_r sus_f sus_r ].';
 
 % Xb = [ x_b  z_b].';
 % Xf = [ x_tf  z_b+L_f*sin(q(7,1)) ].';
@@ -75,11 +75,13 @@ C3 = simplify( C1 + C2 );
 K1 = simplify(jacobian(PE,q).');
 
 input_acc = [
-    (m_wf+m_b/2)*((1-S)*r*alpha_f*sin(atan(dz_disf/dx_disf)) + (1-S)*r*alpha_r*sin(atan(dz_disr/dx_disr)))/(2*m_wf + m_b);
-    -g + sus_f + sus_r;
-    ((1-S)*r*alpha_f - g*sin(atan(dz_disf/dx_disf)))*cos(atan(dz_disf/dx_disf)) - sus_f;
-    ((1-S)*r*alpha_r - g*sin(atan(dz_disr/dx_disr)))*cos(atan(dz_disr/dx_disr)) - sus_r;
-    L_f*sus_f - L_r*sus_r
+    0;
+    sus_f + sus_r;
+    - sus_f;
+    - sus_r;
+    L_f*sus_f - L_r*sus_r;
+    (1-S)*(tau_f/I_wf);
+    (1-S)*(tau_r/I_wr)
 ];
 input_acc = simplify(input_acc);
 
@@ -89,8 +91,8 @@ input_acc = simplify(input_acc);
 % z_wr
 % theta_b
 
-% alpha_f
-% alpha_r
+% tau_f
+% tau_r
 % sus_f
 % sus_r
 
