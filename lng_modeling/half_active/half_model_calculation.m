@@ -52,7 +52,9 @@ dw_list = [];
 % LOOP
 disp('Simulation Started')
 for i=1:c-1
-
+    if mod(i,1000) == 0
+        disp(i*100/(c-1) + "%");
+    end
     % make road preview profile
     if mod(i+(ts/dt-1), ts/dt) == 0
         current_dis = r_p_prev(1,i);
