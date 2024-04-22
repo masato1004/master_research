@@ -24,6 +24,27 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
         
         frequency = 0; max_z0 = max_z0;
 
+    % bump
+    elseif shape == "_bump_"
+        ld_list = [0.05 0.15 0.05];
+
+        f_dis_total =  [0,start_disturbance,start_disturbance+ld_list(1),start_disturbance+sum(ld_list(1:2)),start_disturbance+sum(ld_list),max_distance];
+        r_dis_total =  [0,start_disturbance+L_f+L_r,start_disturbance+L_f+L_r+ld_list(1),start_disturbance+L_f+L_r+sum(ld_list(1:2)),start_disturbance+L_f+L_r+sum(ld_list),max_distance-L_f-L_r];
+        road_total = [0,0,max_z0,max_z0,0,0];  % converting front disturbance and buffer ([m])
+        
+        f_dis_total_p = [f_dis_total, dis_total];
+        [f_dis_total_p,f_dis_idx] = sort(f_dis_total_p);
+        f_correct_road_p = interp1(f_dis_total,road_total,f_dis_total_p);
+        road_total_f = f_correct_road_p(ismember(dis_total, f_dis_total_p));
+
+        r_dis_total_p = [r_dis_total, dis_total];
+        [r_dis_total_p,r_dis_idx] = sort(r_dis_total_p);
+        r_correct_road_p = interp1(r_dis_total,road_total,r_dis_total_p);
+        road_total_r = r_correct_road_p(ismember(dis_total, r_dis_total_p));
+
+        frequency = 0; max_z0 = max_z0; dis_length=sum(ld_list);
+    
+
     % sin wave
     elseif shape == "_sin_"
         disturbance_total_f = max_z0*0.5+max_z0*sin(const*dis_total_f-pi/2)/2;        % road disturbance for front wheel ([m])
