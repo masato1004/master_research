@@ -22,12 +22,12 @@ fig_v = figure('Position', [600 200 1800 480]);
 wp = scatter(0,0,1,"white");
 hold on;
 if ~sensing
-    road=makima(dis_total,road_total_r,TL(1,1)*V-1.4:6.2/500:TL(1,1)*V+10);
+    road=makima(dis_total,road_total_r,states(1,1)-1.4:6.2/500:states(1,1)+10);
 else
-    road = interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,1)*V-1.4:6.2/500:TL(1,1)*V+10,'linear');
+    road = interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,1)-1.4:6.2/500:states(1,1)+10,'linear');
 end
-road_area = area(TL(1,1)*V-1.4:6.2/500:TL(1,1)*V+10,road,basevalue=-1);
-road_profile = plot(TL(1,1)*V-1.4:6.2/500:TL(1,1)*V+10,road,"Color","black",LineWidth=2);
+road_area = area(states(1,1)-1.4:6.2/500:states(1,1)+10,road,basevalue=-1);
+road_profile = plot(states(1,1)-1.4:6.2/500:states(1,1)+10,road,"Color","black",LineWidth=2);
 hold on;
 
 % first draw of body
@@ -43,8 +43,8 @@ hold on;
 % drawing a circle as a wheel
 phi = linspace(0,2*pi,100);
 r = 0.55/2;           % 半径
-cx_f = TL(1,1)*V+L_f+L_r; cy_f = r+r_p(1,1); % 中心
-cx_r = TL(1,1)*V; cy_r = r+r_p(2,1); % 中心
+cx_f = disturbance(1,1)+L_f+L_r; cy_f = r+disturbance(3,1); % 中心
+cx_r = disturbance(2,1); cy_r = r+disturbance(4,1); % 中心
 circle_as_a_wheel_f = plot(r*sin(phi)+cx_f,r*cos(phi)+cy_f,Color="black",LineWidth=3);
 hold on;
 circle_as_a_wheel_r = plot(r*sin(phi)+cx_r,r*cos(phi)+cy_r,Color="black",LineWidth=3);
@@ -60,9 +60,9 @@ if previewing
     camera_pos = scatter(1.88, 1.40+states(1,1), MarkerFaceColor=[0 1 0],MarkerEdgeColor=[0 0 0],SizeData=100);
     fill_x = [1.88 1.88+5.06 1.88+7];
     if sensing
-        fill_y = [1.40+states(1,1) interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,1)*V+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,1)*V+7,'linear')];
+        fill_y = [1.40+states(1,1) interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,1)+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,1)+7,'linear')];
     else
-        fill_y = [1.40+states(1,1) makima(TL,road_total_r,TL(1,1)*V+5.06) makima(TL,road_total_r,TL(1,1)*V+7)];
+        fill_y = [1.40+states(1,1) makima(TL,road_total_r,states(1,1)+5.06) makima(TL,road_total_r,states(1,1)+7)];
     end
     preview_area = fill(fill_x, fill_y, 'yellow',FaceAlpha=0.2);
 end
@@ -130,19 +130,19 @@ for s=2:c/2
     if mod(s,mod_m) == 0
         cc = s/(mod_m/10);
 %         TL(1,s)
-        cx_b = TL(1,s)*V; cy_b = states(1,s);           % displacement
-        cx_f = TL(1,s)*V+L_f+L_r; cy_f = r+states(2,s); % center of front wheel
-        cx_r = TL(1,s)*V; cy_r = r+states(3,s);         % center of rear wheel
+        cx_b = states(1,s); cy_b = states(2,s)-z_b_init;           % displacement
+        cx_f = disturbance(1,s)+L_f+L_r; cy_f = r+disturbance(3,s); % center of front wheel
+        cx_r = disturbance(2,s); cy_r = r+disturbance(4,s);         % center of rear wheel
 
         if ~sensing
-            road=makima(dis_total,road_total_r,TL(1,s)*V-1.4:6.2/500:TL(1,s)*V+10);
+            road=makima(dis_total,road_total_r,states(1,s)-1.4:6.2/500:states(1,s)+10);
         else
-            road = interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V-1.4:6.2/500:TL(1,s)*V+10,'linear');
+            road = interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,s)-1.4:6.2/500:states(1,s)+10,'linear');
         end
 
         origin_angle = fitsread('march.fits',"image");
         origin_angle = rescale(origin_angle);
-        J = imrotate(origin_angle,states(4,s)*180/pi,'bilinear','crop');
+        J = imrotate(origin_angle,states(5,s)*180/pi,'bilinear','crop');
         imwrite(J,'temp_body.png')
 
         delete(body_draw);
@@ -159,14 +159,14 @@ for s=2:c/2
         newimg = newimg*0.004;
         body_draw = image([-(img_w*(L_f+L_r)/resize_ratio)/2+cx_b+x_bias*(L_f+L_r)/resize_ratio (img_w*(L_f+L_r)/resize_ratio)/2+cx_b+x_bias*(L_f+L_r)/resize_ratio],[(img_h*(L_f+L_r)/resize_ratio)/2+cy_b+y_bias*(L_f+L_r)/resize_ratio -(img_h*(L_f+L_r)/resize_ratio)/2+cy_b+y_bias*(L_f+L_r)/resize_ratio],newimg);        % 画像の表示
         hold on;
-        set(road_profile,'XData',TL(1,s)*V-1.4:6.2/500:TL(1,s)*V+10,"YData",road);
-        set(road_area,'XData',TL(1,s)*V-1.4:6.2/500:TL(1,s)*V+10,"YData",road);
+        set(road_profile,'XData',states(1,s)-1.4:6.2/500:states(1,s)+10,"YData",road);
+        set(road_area,'XData',states(1,s)-1.4:6.2/500:states(1,s)+10,"YData",road);
 %         set(body_draw,'XData',[-(1140*(L_f+L_r)/683)/2+cx_b+330*(L_f+L_r)/683 (1140*(L_f+L_r)/683)/2+cx_b+330*(L_f+L_r)/683],'YData',[(371*(L_f+L_r)/683)/2+cy_b+200*(L_f+L_r)/683 -(371*(L_f+L_r)/683)/2+cy_b+200*(L_f+L_r)/683])
 %         set(circle_as_a_wheel_f,'XData',r*sin(phi)+cx_f,'YData',r*cos(phi)+cy_f)
         circle_as_a_wheel_f = plot(r*sin(phi)+cx_f,r*cos(phi)+cy_f,Color="black",LineWidth=3);
 %         set(circle_as_a_wheel_r,'XData',r*sin(phi)+cx_r,'YData',r*cos(phi)+cy_r)
         circle_as_a_wheel_r = plot(r*sin(phi)+cx_r,r*cos(phi)+cy_r,Color="black",LineWidth=3);
-        set(wp,'XData',TL(1,s)*V)
+        set(wp,'XData',states(1,s))
 
         if u(1,cc) ~= 0
             vec_color_f = [(1+u(1,cc)/abs(u(1,cc)))/2 0 (1-u(1,cc)/abs(u(1,cc)))/2];
@@ -189,7 +189,7 @@ for s=2:c/2
             if sampling
                 fill_x = [cx_r+1.88 cx_r+1.88+5.06 cx_r+1.88+7];
                 if sensing
-                    fill_y = [1.40+states(1,s) interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',TL(1,s)*V+7,'linear')];
+                    fill_y = [1.40+states(1,s) interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,s)+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,s)+7,'linear')];
                 else
                     fill_y = [1.40+states(1,s) 0 0];
                 end

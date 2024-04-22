@@ -263,25 +263,29 @@ states_name = [
     "Front_Wheel_Heave_Displacement", "Time [s]", "Front Wheel Heave Displacement [m]";
     "Rear_Wheel_Heave_Displacement", "Time [s]", "Rear Wheel Heave Displacement [m]";
     "Body_Pitch_Angle", "Time [s]", "Body Pitch Angle [deg]";
+    "Front_Wheel_Angle", "Time [s]", "Front Wheel Angle [deg]";
+    "Rear_Wheel_Angle", "Time [s]", "Rear Wheel Angle [deg]";
     "Velocity", "Time [s]", "Velocity [m/s]";
     "Body_Heave_Velocity", "Time [s]", "Body Heave Velocity [m/s]";
     "Front_Wheel_Heave_Velocity", "Time [s]", "Front Wheel Heave Velocity [m/s]";
     "Rear_Wheel_Heave_Velocity", "Time [s]", "Rear Wheel Heave Velocity [m/s]";
     "Body_Pitch_Angular_Velocity", "Time [s]", "Body Pitch Angular Velocity [deg/s]"
+    "Front_Wheel_Angular_Velocity", "Time [s]", "Front Wheel Angular Velocity [deg]";
+    "Rear_Wheel_Angular_Velocity", "Time [s]", "Rear Wheel Angular Velocity [deg]";
     ];
 
-r_fig = figure('name',"Road-profile: Frequency "+frequency+" Hz",'Position', [600 200 600 190]);
-plot(dis,r_p_f,"LineWidth",1,"Color","#0000ff");
-ylabel("Displacement [m]");
-xlabel("Distance Traveled [m]");
-% ylim([-0.01,0.1])
-% ylim([-0.03,0.04])
-fontname(r_fig,"Times New Roman");
-fontsize(r_fig,10.5,"points");
-grid on;
+% r_fig = figure('name',"Road-profile: Frequency "+frequency+" Hz",'Position', [600 200 600 190]);
+% plot(dis,r_p_f,"LineWidth",1,"Color","#0000ff");
+% ylabel("Displacement [m]");
+% xlabel("Distance Traveled [m]");
+% % ylim([-0.01,0.1])
+% % ylim([-0.03,0.04])
+% fontname(r_fig,"Times New Roman");
+% fontsize(r_fig,10.5,"points");
+% grid on;
 
-saveas(r_fig,"figs/"+conditions+"/Road_Profile.fig");
-saveas(r_fig,"jpgs/"+conditions+"/Road_Profile.jpg");
+% saveas(r_fig,"figs/"+conditions+"/Road_Profile.fig");
+% saveas(r_fig,"jpgs/"+conditions+"/Road_Profile.jpg");
 
 for i=1:height(states)
     if sum(ismember([5,6,7,12,13,14],i))
@@ -295,8 +299,8 @@ end
 %% additional draw
 % accelerations
 drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],i+1,conditions);
-drawer(TL,accelerations(1,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
-drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
+drawer(TL,accelerations(2,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
+drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
 
 % % preview data
 % p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);

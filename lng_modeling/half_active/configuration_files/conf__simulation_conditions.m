@@ -1,6 +1,6 @@
 %% Define simulation condition with boolean
 % draw an animation or not
-animation = false;
+animation = true;
 prev_anim = false;
 
 % add noise or not
