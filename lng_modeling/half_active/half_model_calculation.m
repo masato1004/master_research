@@ -53,7 +53,8 @@ dw_list = [];
 disp('Simulation Started')
 for i=1:c-1
     if mod(i,1000) == 0
-        disp(i*100/(c-1) + "%");
+        disp(round(i*100/(c-1),2) + "%");
+        disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
     end
     % make road preview profile
     if mod(i+(ts/dt-1), ts/dt) == 0

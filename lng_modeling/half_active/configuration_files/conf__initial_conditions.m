@@ -1,5 +1,5 @@
 %% Initial conditions
-Vkm_h = 10;     % [km/h]    driving velocity
+Vkm_h = 15;     % [km/h]    driving velocity
 Vkm_m=Vkm_h/60;
 V=Vkm_m*1000/60;% [m/s]
 

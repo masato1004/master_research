@@ -34,8 +34,8 @@ k_sr = 25000;   % [N/m]     rear spring stiffness
 k_wf = 270000;   % [N/m]     tire stiffness
 k_wr = k_wf;   % [N/m]     tire stiffness
 % k_w = 60000;   % [N/m]     tire stiffness
-c_longf = 10000;
-c_longr = 10000;
+c_longf = 100000;
+c_longr = 100000;
 c_sf = 7000;    % [N/(m/s)] front damping
 c_sr = 6000;    % [N/(m/s)] rear damping
 c_wf = 1000;       % [N/(m/s)] tire damping
@@ -66,10 +66,10 @@ Gmat = [
     -1;
     -1;
     0;
-    -sin(atan(dz_disf/dx_disf))/r;
-    -sin(atan(dz_disr/dx_disr))/r
-    % 0;
-    % 0
+    0;
+    0
+    % -sin(atan(dz_disf/dx_disf))/r;
+    % -sin(atan(dz_disr/dx_disr))/r
 ];
 
 %% Load parameters into matrices
