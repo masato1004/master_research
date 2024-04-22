@@ -298,7 +298,7 @@ end
 
 %% additional draw
 % accelerations
-drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Body Heave Acceleration [m/s^2]"],i+1,conditions);
+drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Body Longitudinal Acceleration [m/s^2]"],i+1,conditions);
 drawer(TL,accelerations(2,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
 drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
 
