@@ -302,6 +302,22 @@ drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Bod
 drawer(TL,accelerations(2,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
 drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
 
+fig_tile = figure('name',i(1),'Position', [500+20*k 500-20*k 600 190]);
+for i=1:height(states)
+    subplot(3,5,i)
+    if sum(ismember([5,6,7,12,13,14],i))
+        tile_drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,conditions);
+    else
+        tile_drawer(TL,states(i,:),states_name(i,:),i,conditions);
+    end
+end
+subplot(3,5,i+1)
+tile_drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Body Longitudinal Acceleration [m/s^2]"],i+1,conditions);
+fontname(fig_tile,"Times New Roman");
+fontsize(fig_tile,18,"points");
+saveas(fig_tile,"figs/"+conditions+"/tile");
+saveas(fig_tile,"jpgs/"+conditions+"/tile.jpg");
+
 % % preview data
 % p_fig = figure('name',"Preview data",'Position', [620 250 600 190]);
 % plot(dis_dw,dw_fr(1,:),"LineWidth",1,"Color","#0000ff");
