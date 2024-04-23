@@ -20,20 +20,20 @@ idx = time>-1;
 idx = time>36 & time<39;
 
 %% fft
-% idx = time>37.59 & time<38.07;
-% noisy_data = centroid_x(idx);
-% detrended_noisy_data = detrend(noisy_data);
-% noisy_time = time(idx);
-% 
-% sampling_freq = 1/0.02;
-% signal_length = length(detrended_noisy_data);
-% fft_noisy_data = fft(detrended_noisy_data);
-% 
-% P2 = abs(fft_noisy_data/signal_length);
-% P1 = P2(1:signal_length/2+1);
-% P1(2:end-1) = 2*P1(2:end-1);
-% f = sampling_freq/signal_length*(0:(signal_length/2));
-% drawer(f,P1,"Frequency [Hz]","One-sided spectrum"+newline+"|P1(f)|",fs,'FFT');
+idx = time>36.95 & time<37.23;
+noisy_data = centroid_x(idx);
+detrended_noisy_data = detrend(noisy_data);
+noisy_time = time(idx);
+
+sampling_freq = 1/0.02;
+signal_length = length(detrended_noisy_data);
+fft_noisy_data = fft(detrended_noisy_data);
+
+P2 = abs(fft_noisy_data/signal_length);
+P1 = P2(1:signal_length/2+1);
+P1(2:end-1) = 2*P1(2:end-1);
+f = sampling_freq/signal_length*(0:(signal_length/2));
+drawer(f,P1,"Frequency [Hz]","One-sided spectrum"+newline+"|P1(f)|",fs,'FFT');
 
 %% drawing datas for checking
 % drawer(x,y,xlabel,ylabel,fontsize,filename)
