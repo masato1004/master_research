@@ -25,8 +25,8 @@ load('system_matrices.mat');
 m_b = 960;     % [kg]      body mass
 m_wf = 40;       % [kg]      wheel mass
 m_wr = m_wf;       % [kg]      wheel mass
-k_longf = 592180;
-k_longr = 394790;
+k_longf = 592180*2;
+k_longr = 394790*2;
 k_sf = 30000;   % [N/m]     front spring stiffness
 k_sr = 25000;   % [N/m]     rear spring stiffness
 % k_sf = 13000;   % [N/m]     front spring stiffness
