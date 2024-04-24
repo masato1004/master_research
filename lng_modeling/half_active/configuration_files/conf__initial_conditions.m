@@ -3,10 +3,10 @@ Vkm_h = 13.6;     % [km/h]    driving velocity
 Vkm_m=Vkm_h/60;
 V=Vkm_m*1000/60;% [m/s]
 
-z_wf_init = -0.0217; % -(m_b/2+m_wf)*g/k_wf;    % [m]       front wheel displacement
-z_wr_init = -0.0160; % -(m_b/2+m_wr)*g/k_wr;    % [m]       rear wheel displacement
-z_b_init = -0.1914;  % (-(m_b/2)*g/k_sf -(m_b/2)*g/k_sr)/2 + (z_wf_init + z_wr_init)/2;
-theta_init = -0.0126; % asin(((-(m_b/2)*g/k_sf + z_wf_init) - (-(m_b/2)*g/k_sr + z_wr_init))/wb);
+z_wf_init = 0; % -(m_b/2+m_wf)*g/k_wf;    % [m]       front wheel displacement
+z_wr_init = 0; % -(m_b/2+m_wr)*g/k_wr;    % [m]       rear wheel displacement
+z_b_init = 0;  % (-(m_b/2)*g/k_sf -(m_b/2)*g/k_sr)/2 + (z_wf_init + z_wr_init)/2;
+theta_init = 0; % asin(((-(m_b/2)*g/k_sf + z_wf_init) - (-(m_b/2)*g/k_sr + z_wr_init))/wb);
 
 %% states
 c       = width(TL);
