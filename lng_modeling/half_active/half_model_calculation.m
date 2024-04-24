@@ -302,7 +302,7 @@ drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Bod
 drawer(TL,accelerations(2,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
 drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
 
-fig_tile = figure('name',i(1),'Position', [500+20*k 500-20*k 600 190]);
+fig_tile = figure();
 for i=1:height(states)
     subplot(3,5,i)
     if sum(ismember([5,6,7,12,13,14],i))

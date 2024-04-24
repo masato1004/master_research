@@ -1,6 +1,7 @@
 close all;
 clc;
 clear frames;
+warning("off","all")
 
 % figure;
 % axis equal
