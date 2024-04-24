@@ -155,8 +155,8 @@ for i=1:c-1
     v = states(5:8,i);
 
     % load road profile
-    disturbance(1,i+1) = makima(mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),dis_total,r*states(13,i)*dt);  % x_disf
-    disturbance(2,i+1) = makima(mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),dis_total,r*states(14,i)*dt);  % x_disr
+    disturbance(1,i+1) = makima(mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),dis_total,runge_wheel(r,0,states(13,i),dt));  % x_disf
+    disturbance(2,i+1) = makima(mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),dis_total,runge_wheel(r,0,states(14,i),dt));  % x_disr
     disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
     disturbance(4,i+1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
     if i ~= 1

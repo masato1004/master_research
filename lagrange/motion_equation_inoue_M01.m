@@ -80,8 +80,8 @@ input_acc = [
     - sus_f;
     - sus_r;
     L_f*sus_f - L_r*sus_r;
-    (1-S)*tau_f;
-    (1-S)*tau_r
+    tau_f;
+    tau_r
 ];
 input_acc = simplify(input_acc);
 
