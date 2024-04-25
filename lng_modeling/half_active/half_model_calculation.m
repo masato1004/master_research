@@ -226,8 +226,8 @@ for i=1:c-1
         u(:,i+1) = u(:,i);
     end
 
-    disturbance(1,i+1) = makima(mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),dis_total,r*states(6,i+1)-states(6,i));  % x_disf
-    disturbance(2,i+1) = makima(mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),dis_total,r*states(7,i+1)-states(7,i));  % x_disr
+    disturbance(1,i+1) = makima(mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),dis_total,r*(states(6,i+1)-states(6,i)));  % x_disf
+    disturbance(2,i+1) = makima(mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),dis_total,r*(states(7,i+1)-states(7,i)));  % x_disr
     disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
     disturbance(4,i+1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
     if i ~= 1
