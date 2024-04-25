@@ -155,21 +155,6 @@ for i=1:c-1
     v = states(5:8,i);
 
     % load road profile
-    disturbance(1,i+1) = makima(mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),dis_total,r*states(13,i)*dt);  % x_disf
-    disturbance(2,i+1) = makima(mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),dis_total,r*states(14,i)*dt);  % x_disr
-    disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
-    disturbance(4,i+1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
-    if i ~= 1
-        disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
-        disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
-        disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
-        disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
-    else
-        disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
-        disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
-        disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
-        disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
-    end
     x_disf = disturbance(1,i);
     x_disr = disturbance(2,i);
     z_disf = disturbance(3,i);
@@ -180,7 +165,7 @@ for i=1:c-1
     dz_disr =disturbance(8,i);
     
     % load current input
-    u_in = u(:,cc);
+    u_in = u(:,i);
 
     % Apply current parameter into matrices
     Bp = double(subs(Bmat));
@@ -191,7 +176,7 @@ for i=1:c-1
     accelerations(:,i+1) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
  
     % find appropriate next input
-    if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive
+    if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive && ~NLMPC
         cc = (i-1)/(tc/dt)+1;                   % list slice
         [~,ia,~]=unique(wf_grad(1,:));
         wf_grad = wf_grad(:,ia);
@@ -235,6 +220,26 @@ for i=1:c-1
             frame = getframe(check);
             writeVideo(video,frame);
         end
+    % elseif NLMPC
+        % [mv,nloptions] = nlmpcmove(nlobj,states(:,i),mv,yref,[],nloptions);
+    else
+        u(:,i+1) = u(:,i);
+    end
+
+    disturbance(1,i+1) = makima(mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),dis_total,r*states(6,i+1)-states(6,i));  % x_disf
+    disturbance(2,i+1) = makima(mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),dis_total,r*states(7,i+1)-states(7,i));  % x_disr
+    disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
+    disturbance(4,i+1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
+    if i ~= 1
+        disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
+        disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
+        disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
+        disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
+    else
+        disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
+        disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
+        disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
+        disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
     end
 end
 

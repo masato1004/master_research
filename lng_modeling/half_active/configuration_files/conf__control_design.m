@@ -2,10 +2,10 @@
 % parameters
 control_TL = 0:tc:T;                       % time line for control results
 c_ctrl = width(control_TL);
-u = zeros(4,c_ctrl);                            % input vector
-du= zeros(4,c_ctrl);                            % input-differencial vector
-e = zeros(height(C),c_ctrl);                    % output-error vector
-dx= zeros(height(states),c_ctrl);               % states-differencial vector
+u = zeros(4,c);                            % input vector
+du= zeros(4,c);                            % input-differencial vector
+e = zeros(height(C),c);                    % output-error vector
+dx= zeros(height(states),c);               % states-differencial vector
 
 X = [
     e;
@@ -55,3 +55,7 @@ w_fr = [
     ];
     
 dw_fr = [0, 0, 0, 0; diff(w_fr')]';         % preview road profile differencial
+
+
+%% MPC setting
+nlobj = nlmpc(14,4,4);

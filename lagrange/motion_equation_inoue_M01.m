@@ -127,6 +127,6 @@ E = simplify( E1 + E2 );
 Amat = [zeros(size(M,1)) eye(size(M,1)); -M\K  -M\C];
 Bmat = [zeros(size(M,1),width(B));M\B];
 Emat = [zeros(size(M,1),width(E));M\E];
-Cmat = eye(size(Amat,1));
+Cmat = diag([0,0,0,0,1,0,0,1,0,0,0,0,1,1]);
 save('../lng_modeling/half_active/configuration_files/system_matrices', 'Amat', 'Bmat', 'Emat', 'Cmat');
 % Dmat = []
