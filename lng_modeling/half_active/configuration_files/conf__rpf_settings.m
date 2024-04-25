@@ -65,8 +65,8 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 % disp('Done Calculating wheel trajectory.')
 
 disp('Calculating wheel mileage...')
-wheel_traj_f(2,:) = round(wheel_traj_f(2,:),5);
-wheel_traj_r(2,:) = round(wheel_traj_r(2,:),5);
+wheel_traj_f(2,abs(wheel_traj_f(2,:)) < 0.000005) = 0;
+wheel_traj_r(2,abs(wheel_traj_r(2,:)) < 0.000005) = 0;
 mileage_f = 0;
 mileage_r = 0;
 for k = 2:width(wheel_traj_f)
