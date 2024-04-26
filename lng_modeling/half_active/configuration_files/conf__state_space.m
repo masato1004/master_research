@@ -61,20 +61,20 @@ Gmat = [
     0;
     0;
     0;
-    0;
-    0;
-    0;
-    0;
-    0;
-    0;
-    0
     % 0;
-    % -1;
-    % -1;
-    % -1;
     % 0;
-    % -sin(atan(dz_disf/dx_disf))/r;
-    % -sin(atan(dz_disr/dx_disr))/r
+    % 0;
+    % 0;
+    % 0;
+    % 0;
+    % 0
+    0;
+    -1;
+    -1;
+    -1;
+    0;
+    -sin(atan(dz_disf/dx_disf))/r;
+    -sin(atan(dz_disr/dx_disr))/r
 ];
 
 %% Load parameters into matrices
