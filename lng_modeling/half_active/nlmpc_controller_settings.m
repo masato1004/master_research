@@ -1,7 +1,7 @@
 Ts = tc;       % control period
 pHorizon = 10; % prediction horizon (control horizon is same as this)
 
-runner = nlmpcMultistage(10, height(states), MV=[1 2 3 4], MD=[5 6 7 8 9 10 11 12]);
+runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
 
 runner.Model.StateFcn = 'mpc_configurations/stateFcn';
@@ -25,3 +25,6 @@ for ct=1:pHorizon+1
 end
 
 runner.UseMVRate = true;
+
+simdata = getSimulationData(runner);
+validateFcns(runner,rand(height(states),1),rand(height(u),1),simdata);

@@ -6,7 +6,7 @@ function J = costFcn(stage,x,u,dmv,p)
     if stage == 1
         J = dmv'*R*dmv;
     elseif stage == 11
-        J = (x-p)'*Q*(x-p);
+        J = (x-p)'*2*Q*(x-p);
     else
         J = (x-p)'*Q*(x-p) + dmv'*R*dmv;
     end
