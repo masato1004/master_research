@@ -172,8 +172,8 @@ for i=1:c-1
     Ep = double(subs(Emat));
     G  = double(subs(Gmat));
     % States-Update Runge kutta
-    states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, G, dt);
-    accelerations(:,i+1) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
+    states(:,i+1) = round(runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, G, dt),8);
+    accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
  
     % find appropriate next input
     if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive && ~NLMPC
