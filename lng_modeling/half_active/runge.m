@@ -1,4 +1,4 @@
-function dx = runge(x, u, d, g, A, B, E, Gmat, dt,wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total)
+function dx = runge(x, u, d, g, A, B, E, Gmat, dt, r, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total)
     x1 = x; d1 = d;
     dx_disf =d1(5,1);
     dx_disr =d1(6,1);
@@ -7,7 +7,7 @@ function dx = runge(x, u, d, g, A, B, E, Gmat, dt,wheel_traj_f,wheel_traj_r,mile
     G  = double(subs(Gmat));
     b1 = dt*motion_func(x1, u, d1, g, A, B, E, G);
 
-    x2 = x+b1/2; d2 = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,d1,x2,x1,dt);
+    x2 = x+b1/2; d2 = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,d1,x2,x1,dt,r);
     dx_disf =d2(5,1);
     dx_disr =d2(6,1);
     dz_disf =d2(7,1);
@@ -15,7 +15,7 @@ function dx = runge(x, u, d, g, A, B, E, Gmat, dt,wheel_traj_f,wheel_traj_r,mile
     G  = double(subs(Gmat));
     b2 = dt*motion_func(x2, u, d2, g, A, B, E, G);
     
-    x3 = x+b2/2; d3 = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,d1,x3,x1,dt);
+    x3 = x+b2/2; d3 = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,d1,x3,x1,dt,r);
     dx_disf =d3(5,1);
     dx_disr =d3(6,1);
     dz_disf =d3(7,1);
@@ -23,7 +23,7 @@ function dx = runge(x, u, d, g, A, B, E, Gmat, dt,wheel_traj_f,wheel_traj_r,mile
     G  = double(subs(Gmat));
     b3 = dt*motion_func(x3, u, d3, g, A, B, E, G);
 
-    x4 = x+b3; d4 = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,d1,x4,x1,dt);
+    x4 = x+b3; d4 = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,d1,x4,x1,dt,r);
     dx_disf =d4(5,1);
     dx_disr =d4(6,1);
     dz_disf =d4(7,1);
@@ -34,7 +34,7 @@ function dx = runge(x, u, d, g, A, B, E, Gmat, dt,wheel_traj_f,wheel_traj_r,mile
     dx = x + (b1 + 2*b2 + 2*b3 + b4)/6;
 end
 
-function d = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,current_d,new_states,current_states,dt)
+function d = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,current_d,new_states,current_states,dt,r)
     d(1,1) = makima(mileage_f-makima(dis_total,mileage_f,current_d(1,1)),dis_total,r*(new_states(6,1)-current_states(6,1)));  % x_disf
     d(2,1) = makima(mileage_r-makima(dis_total,mileage_r,current_d(2,1)),dis_total,r*(new_states(7,1)-current_states(7,1)));  % x_disr
     d(3,1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),d(1,1));                                                                % z_disf
