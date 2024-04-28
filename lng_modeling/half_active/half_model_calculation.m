@@ -51,10 +51,12 @@ end
 dw_list = [];
 % LOOP
 disp('Simulation Started')
+tic;
 for i=1:c-1
     if mod(i,1000) == 0
         disp(round(i*100/(c-1),2) + "%");
         disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
+        toc;
     end
     % make road preview profile
     if mod(i+(ts/dt-1), ts/dt) == 0
@@ -248,6 +250,7 @@ for i=1:c-1
         disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
     end
 end
+toc;
 
 if prev_anim
     close(video);
