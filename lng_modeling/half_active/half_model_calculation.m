@@ -174,7 +174,7 @@ for i=1:c-1
 
 
     % States-Update Runge kutta
-    states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, G, dt);
+    states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, G, dt, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total);
     accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
  
     % find appropriate next input
@@ -222,12 +222,12 @@ for i=1:c-1
             frame = getframe(check);
             writeVideo(video,frame);
         end
-    % elseif NLMPC
-    %     current_mileage_f = mileage_f-makima(dis_total,mileage_f,disturbance(1,i));
-    %     simdata.Measured
-    %     simdata.StageParmeter = repmat(referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
-    %     [mv,nloptions] = nlmpcmove(runner,states(:,i),u_in,simdata);
-    %     u(:,i+1) = mv;
+    elseif NLMPC
+        current_mileage_f = mileage_f-makima(dis_total,mileage_f,disturbance(1,i));
+        simdata.Measured
+        simdata.StageParmeter = repmat(referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
+        [mv,nloptions] = nlmpcmove(runner,states(:,i),u_in,simdata);
+        u(:,i+1) = mv;
     else
         u(:,i+1) = u(:,i);
     end

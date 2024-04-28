@@ -1,4 +1,4 @@
-function dxdt = stateFcn(x,u)
+function dxdt = stateFcn(x,u,p)
     % In a 2D environment with standard XY axis, the vehicle is a circular disc
     % (20 meters in diamater).  Two thrusts are to the left and right of the
     % center.  Tilting (theta) is defined as positive to left and negative to
