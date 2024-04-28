@@ -170,11 +170,11 @@ for i=1:c-1
     % Apply current parameter into matrices
     Bp = double(subs(Bmat));
     Ep = double(subs(Emat));
-    G  = double(subs(Gmat));
+    % G  = double(subs(Gmat));
 
 
     % States-Update Runge kutta
-    states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, G, dt, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total);
+    states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, Gmat, dt, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total);
     accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
  
     % find appropriate next input
