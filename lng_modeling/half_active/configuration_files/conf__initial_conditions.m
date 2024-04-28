@@ -6,7 +6,7 @@ V=Vkm_m*1000/60;% [m/s]
 z_wf_init = -(m_b*L_f/wb+m_wf)*g/k_wf;    % [m]       front wheel displacement
 z_wr_init = -(m_b*L_r/wb+m_wr)*g/k_wr;    % [m]       rear wheel displacement
 z_b_init = (-(m_b*L_f/wb)*g/k_sf -(m_b*L_r/wb)*g/k_sr)/2 + (z_wf_init + z_wr_init)/2;
-theta_init = asin(((-(m_b*L_f/wb)*g/k_sf + z_wf_init) - (-(m_b*L_r/wb)*g/k_sr + z_wr_init))/wb);
+theta_init = -0.01257407; % asin(((-(m_b*L_f/wb)*g/k_sf + z_wf_init) - (-(m_b*L_r/wb)*g/k_sr + z_wr_init))/wb);
 
 %% states
 c       = width(TL);
