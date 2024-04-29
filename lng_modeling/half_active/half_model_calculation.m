@@ -237,7 +237,7 @@ for i=1:c-1
         current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(2,i));
 
         simdata.StageFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.'];
-        simdata.StageParmeter = repmat(referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
+        simdata.StageParmeter = repmat(nlmpc_config__referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
         [mv,simdata] = nlmpcmove(runner,states(:,i),u_in,simdata);
         u(:,i+1) = mv;
     else
