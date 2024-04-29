@@ -1,7 +1,7 @@
 Ts = tc;       % control period
 pHorizon = 20; % prediction horizon (control horizon is same as this)
 
-runner = nlmpcMultistage(pHorizon, height(states), MV=[1:height(u)], MD=[1:height(disturbance)]);
+runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
 
 runner.Model.StateFcn = 'mpc_configurations/stateFcn';
