@@ -65,7 +65,7 @@ else
 end
 
 ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","_nlmpc_"];
-logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
+logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev, NLMPC];
 control = ctrl_names(logi_ctrl)
 
 shape_names = ["_sensing2_","_paper_","_bump_","_sin_","_step_","_manhole_","_jari_"];
