@@ -224,12 +224,17 @@ for i=1:c-1
             frame = getframe(check);
             writeVideo(video,frame);
         end
-    % elseif NLMPC
-    %     current_mileage_f = mileage_f-makima(dis_total,mileage_f,disturbance(1,i));
-    %     simdata.StageFcnParameter
-    %     simdata.StageParmeter = repmat(referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
-    %     [mv,nloptions] = nlmpcmove(runner,states(:,i),u_in,simdata);
-    %     u(:,i+1) = mv;
+    elseif NLMPC
+        local_dis = 0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9);
+        current_mileage_f = makmima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
+        current_mileage_r = makmima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
+        current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(1,i));
+        current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(2,i));
+
+        simdata.StageFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.'];
+        simdata.StageParmeter = repmat(referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
+        [mv,simdata] = nlmpcmove(runner,states(:,i),u_in,simdata);
+        u(:,i+1) = mv;
     else
         u(:,i+1) = u(:,i);
     end
@@ -237,7 +242,7 @@ for i=1:c-1
     disturbance(1,i+1) = makima(mileage_f,dis_total,r*states(6,i+1));  % x_disf
     disturbance(2,i+1) = makima(mileage_r,dis_total,r*states(7,i+1));  % x_disr
     disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
-    disturbance(4,i+1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
+    disturbance(4,i+1) = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
     if i ~= 1
         disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
         disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr

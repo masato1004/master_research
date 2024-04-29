@@ -91,43 +91,50 @@ function dxdt = stateFcn(x,u,p)
     
 
     %% set parameters through horizon
-    persistent last_param first_states current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r
+    persistent last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r
     if isempty(last_param) || last_param(1:8) ~= p(1:8)
         last_param = p;
         current_d = p(1:8);
-        current_dis = p(9:28);
-        current_mileage_f = p(29:48);
-        current_mileage_r = p(49:68);
-        current_wheel_traj_f = [p(69:88); p(89:108)];
-        current_wheel_traj_r = [p(109:128); p(129:148)];
+        current_dis = p(9:38);
+        current_mileage_f = p(39:68);
+        current_mileage_r = p(69:98);
+        current_wheel_traj_f = [p(99:128)];
+        current_wheel_traj_r = [p(129:158)];
         first_states = x;
-
-        G = [                        0;
-                                     0;
-                                     0;
-                                     0;
-                                     0;
-                                     0;
-                                     0;
-                                     0;
-                                    -1;
-                                    -1;
-                                    -1;
-                                     0;
-              -sin(atan(current_d(7)/current_d(5)))/r;
-             -sin(atan(current_d(8)/current_d(6)))/r];
-    
+        first_d = current_d;
+        last_d = current_d;
     else
         delta_x = x - first_states;
         front_wheel_rotation = delta_x(6)*r;
         rear_wheel_rotation  = delta_x(7)*r;
 
-        current_d(1) = makima(current_mileage_f,current_dis,r*states(6,i+1));  % x_disf
-        current_d(2) = makima(current_mileage_r,current_dis,r*states(7,i+1));  % x_disr
-        current_d(3) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));
-        current_d(4) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));
+        current_d(1) = makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
+        current_d(2) = makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
+        current_d(3) = makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1));
+        current_d(4) = makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2));
+        current_d(5) = diff([last_d(1,1), current_d(1,1)])/dt;
+        current_d(6) = diff([last_d(2,1), current_d(2,1)])/dt;
+        current_d(7) = diff([last_d(3,1), current_d(3,1)])/dt;
+        current_d(8) = diff([last_d(4,1), current_d(4,1)])/dt;
+
+        last_d = current_d;
     end
 
-    d = current_d;
-    dxdt = A*x + B*u + E*d + G*g;
+    
+    G = [                                     0;
+                                              0;
+                                              0;
+                                              0;
+                                              0;
+                                              0;
+                                              0;
+                                              0;
+                                             -1;
+                                             -1;
+                                             -1;
+                                              0;
+        -sin(atan(current_d(7)/current_d(5)))/r;
+        -sin(atan(current_d(8)/current_d(6)))/r];
+    
+    dxdt = A*x + B*u + E*current_d + G*g;
 

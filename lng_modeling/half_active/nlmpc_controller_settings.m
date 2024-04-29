@@ -6,7 +6,7 @@ runner.Ts = Ts;
 
 runner.Model.StateFcn = 'mpc_configurations/stateFcn';
 runner.Model.StateJacFcn = 'mpc_configurations/stateJacFcn';
-runner.Model.ParameterLength = height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*4;
+runner.Model.ParameterLength = height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2;
 
 % hard constraints
 runner.MV(1).Min = -700;
@@ -23,9 +23,12 @@ for ct=1:pHorizon+1
     runner.Stages(ct).CostFcn = 'mpc_configurations/costFcn';
     % runner.Stages(ct).CostJacFcn = 'mpc_configurations/costGradientFcn';
     runner.Stages(ct).ParameterLength = height(states);
+    runner.Stages(ct).IneqConFcn = "mpc_configurations/ineqConFcn";
 end
 
 runner.UseMVRate = true;
 
 simdata = getSimulationData(runner);
 validateFcns(runner,rand(height(states),1),rand(height(u),1),simdata);
+
+options = nlmpcmoveopt;
