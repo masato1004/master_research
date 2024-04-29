@@ -89,19 +89,45 @@ function dxdt = stateFcn(x,u,p)
                    0,           0,         0,         0,           0,           0,         0,         0;
                    0,           0,         0,         0,           0,           0,         0,         0];
     
-    G = [                        0;
-                                 0;
-                                 0;
-                                 0;
-                                 0;
-                                 0;
-                                 0;
-                                 0;
-                                -1;
-                                -1;
-                                -1;
-                                 0;
-          -sin(atan(u(11)/u(9)))/r;
-         -sin(atan(u(12)/u(10)))/r];
+
+    %% set parameters through horizon
+    persistent last_param first_states current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r
+    if isempty(last_param) || last_param(1:8) ~= p(1:8)
+        last_param = p;
+        current_d = p(1:8);
+        current_dis = p(9:28);
+        current_mileage_f = p(29:48);
+        current_mileage_r = p(49:68);
+        current_wheel_traj_f = [p(69:88); p(89:108)];
+        current_wheel_traj_r = [p(109:128); p(129:148)];
+        first_states = x;
+
+        G = [                        0;
+                                     0;
+                                     0;
+                                     0;
+                                     0;
+                                     0;
+                                     0;
+                                     0;
+                                    -1;
+                                    -1;
+                                    -1;
+                                     0;
+              -sin(atan(current_d(7)/current_d(5)))/r;
+             -sin(atan(current_d(8)/current_d(6)))/r];
     
-    dxdt = round(A*x + B*u + E*d + G*g, 14);
+    else
+        delta_x = x - first_states;
+        front_wheel_rotation = delta_x(6)*r;
+        rear_wheel_rotation  = delta_x(7)*r;
+
+        current_d(1) = makima(current_mileage_f,current_dis,r*states(6,i+1));  % x_disf
+        current_d(2) = makima(current_mileage_r,current_dis,r*states(7,i+1));  % x_disr
+        current_d(3) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));
+        current_d(4) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));
+    end
+
+    d = current_d;
+    dxdt = A*x + B*u + E*d + G*g;
+

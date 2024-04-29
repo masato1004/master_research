@@ -6,7 +6,7 @@ runner.Ts = Ts;
 
 runner.Model.StateFcn = 'mpc_configurations/stateFcn';
 runner.Model.StateJacFcn = 'mpc_configurations/stateJacFcn';
-runner.Model.ParameterLength = (pHorizon+10)*2;
+runner.Model.ParameterLength = height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*4;
 
 % hard constraints
 runner.MV(1).Min = -700;

@@ -224,18 +224,18 @@ for i=1:c-1
             frame = getframe(check);
             writeVideo(video,frame);
         end
-    elseif NLMPC
-        current_mileage_f = mileage_f-makima(dis_total,mileage_f,disturbance(1,i));
-        simdata.Measured
-        simdata.StageParmeter = repmat(referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
-        [mv,nloptions] = nlmpcmove(runner,states(:,i),u_in,simdata);
-        u(:,i+1) = mv;
+    % elseif NLMPC
+    %     current_mileage_f = mileage_f-makima(dis_total,mileage_f,disturbance(1,i));
+    %     simdata.StageFcnParameter
+    %     simdata.StageParmeter = repmat(referenceSignal(states(:,i),u,dx_init,Ts),pHorizon,1);
+    %     [mv,nloptions] = nlmpcmove(runner,states(:,i),u_in,simdata);
+    %     u(:,i+1) = mv;
     else
         u(:,i+1) = u(:,i);
     end
 
-    disturbance(1,i+1) = makima(mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),dis_total,r*(states(6,i+1)-states(6,i)));  % x_disf
-    disturbance(2,i+1) = makima(mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),dis_total,r*(states(7,i+1)-states(7,i)));  % x_disr
+    disturbance(1,i+1) = makima(mileage_f,dis_total,r*states(6,i+1));  % x_disf
+    disturbance(2,i+1) = makima(mileage_r,dis_total,r*states(7,i+1));  % x_disr
     disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
     disturbance(4,i+1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
     if i ~= 1
