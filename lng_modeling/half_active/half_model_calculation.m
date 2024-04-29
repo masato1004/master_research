@@ -21,6 +21,11 @@ run("configuration_files/conf__rpf_settings.m")
 % Control design
 run("configuration_files/conf__control_design.m")
 
+if NLMPC
+    % nlmpc settings
+    run("nlmpc_controller_settings.m")
+end
+
 % Preview data loading
 run("configuration_files/conf__preview_data_loader.m")
 
