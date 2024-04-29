@@ -23,12 +23,14 @@ for ct=1:pHorizon+1
     runner.Stages(ct).CostFcn = 'nlmpc_config__costFcn';
     % runner.Stages(ct).CostJacFcn = 'mpc_configurations/costGradientFcn';
     runner.Stages(ct).IneqConFcn = 'nlmpc_config__ineqConFcn';
-    runner.Stages(ct).ParameterLength = height(states);
+    runner.Stages(ct).ParameterLength = height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2+height(states);
+    % runner.Stages(ct).ParameterLength = height(states);
 end
 
 runner.UseMVRate = true;
 
 simdata = getSimulationData(runner);
-validateFcns(runner,rand(height(states),1),rand(height(u),1),simdata);
+size(simdata.StageParameter)
+% validateFcns(runner,rand(height(states),1),rand(height(u),1),simdata);
 
 options = nlmpcmoveopt;

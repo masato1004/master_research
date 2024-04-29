@@ -1,4 +1,4 @@
-function dxdt = stateFcn(x,u,p)
+function dxdt = nlmpc_config__stateFcn(x,u,p)
     % In a 2D environment with standard XY axis, the vehicle is a circular disc
     % (20 meters in diamater).  Two thrusts are to the left and right of the
     % center.  Tilting (theta) is defined as positive to left and negative to
@@ -19,6 +19,7 @@ function dxdt = stateFcn(x,u,p)
     
     % Copyright 2023 The MathWorks, Inc.
     %% Vehicle parameter
+    dt = 0.01;
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -92,7 +93,8 @@ function dxdt = stateFcn(x,u,p)
 
     %% set parameters through horizon
     persistent last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r
-    if isempty(last_param) || last_param(1:8) ~= p(1:8)
+    
+    if isempty(last_param) | last_param(1:8) ~= p(1:8)
         last_param = p;
         current_d = p(1:8);
         current_dis = p(9:38);
@@ -107,7 +109,7 @@ function dxdt = stateFcn(x,u,p)
         delta_x = x - first_states;
         front_wheel_rotation = delta_x(6)*r;
         rear_wheel_rotation  = delta_x(7)*r;
-
+        
         current_d(1) = makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
         current_d(2) = makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
         current_d(3) = makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1));
@@ -137,4 +139,5 @@ function dxdt = stateFcn(x,u,p)
         -sin(atan(current_d(8)/current_d(6)))/r];
     
     dxdt = A*x + B*u + E*current_d + G*g;
+    dxdt(isnan(dxdt)) = 0;
 

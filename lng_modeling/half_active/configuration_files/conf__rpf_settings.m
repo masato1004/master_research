@@ -64,16 +64,19 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 % save("wheel_traj-"+shape, "wheel_traj_f", "wheel_traj_r")
 % disp('Done Calculating wheel trajectory.')
 
-disp('Calculating wheel mileage...')
-wheel_traj_f(2,abs(wheel_traj_f(2,:)) < 0.000005) = 0;
-wheel_traj_r(2,abs(wheel_traj_r(2,:)) < 0.000005) = 0;
-mileage_f = 0;
-mileage_r = 0;
-for k = 2:width(wheel_traj_f)
-    mileage_f = [mileage_f, sum(sqrt(diff(wheel_traj_f(1,1:k)).^2+diff(wheel_traj_f(2,1:k)).^2))];
-    mileage_r = [mileage_r, sum(sqrt(diff(wheel_traj_r(1,1:k)).^2+diff(wheel_traj_r(2,1:k)).^2))];
-end
-disp('Done Calculating wheel mileage.')
+% disp('Calculating wheel mileage...')
+% wheel_traj_f(2,abs(wheel_traj_f(2,:)) < 0.000005) = 0;
+% wheel_traj_r(2,abs(wheel_traj_r(2,:)) < 0.000005) = 0;
+% mileage_f = 0;
+% mileage_r = 0;
+% for k = 2:width(wheel_traj_f)
+%     mileage_f = [mileage_f, sum(sqrt(diff(wheel_traj_f(1,1:k)).^2+diff(wheel_traj_f(2,1:k)).^2))];
+%     mileage_r = [mileage_r, sum(sqrt(diff(wheel_traj_r(1,1:k)).^2+diff(wheel_traj_r(2,1:k)).^2))];
+% end
+% save('mileage','mileage_f','mileage_r');
+% disp('Done Calculating wheel mileage.')
+
+load("mileage.mat");
 
 r_p = [
     road_total_f;
