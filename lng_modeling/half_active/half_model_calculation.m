@@ -464,6 +464,7 @@ saveas(fig_tile,"jpgs/"+conditions+"/tile.jpg");
 % saveas(fig,"figs/"+conditions+"/Actuator_Force_and_Road.fig");
 % saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
 
+%% animation
 if animation
     close all;
     clear frames;
