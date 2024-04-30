@@ -13,10 +13,10 @@ runner.MV(1).Min = -700;
 runner.MV(1).Max =  700;
 runner.MV(2).Min = -700;
 runner.MV(2).Max =  700;
-runner.MV(3).Min = -2000;
-runner.MV(3).Max = 2000;
-runner.MV(4).Min = -2000;
-runner.MV(4).Max = 2000;
+runner.MV(3).Min = -3000;
+runner.MV(3).Max = 3000;
+runner.MV(4).Min = -3000;
+runner.MV(4).Max = 3000;
 
 
 for ct=1:pHorizon+1
