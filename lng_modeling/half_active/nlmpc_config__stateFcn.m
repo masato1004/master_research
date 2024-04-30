@@ -45,50 +45,58 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
 
     g = 9.80665;
 
-    A = [                       0,                          0,                   0,                   0,                              0, 0, 0,                        1,                          0,                   0,                   0,                              0, 0, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          1,                   0,                   0,                              0, 0, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   1,                   0,                              0, 0, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   1,                              0, 0, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              1, 0, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 1, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 1;
-         -(k_longf + k_longr)/m_b,                          0,                   0,                   0,                              0, 0, 0, -(c_longf + c_longr)/m_b,                          0,                   0,                   0,                              0, 0, 0;
-                                0,         -(k_sf + k_sr)/m_b,            k_sf/m_b,            k_sr/m_b,     -(L_f*k_sf - L_r*k_sr)/m_b, 0, 0,                        0,         -(c_sf + c_sr)/m_b,            c_sf/m_b,            c_sr/m_b,     -(L_f*c_sf - L_r*c_sr)/m_b, 0, 0;
-                                0,                  k_sf/m_wf, -(k_sf + k_wf)/m_wf,                   0,                (L_f*k_sf)/m_wf, 0, 0,                        0,                  c_sf/m_wf, -(c_sf + c_wf)/m_wf,                   0,                (L_f*c_sf)/m_wf, 0, 0;
-                                0,                  k_sr/m_wr,                   0, -(k_sr + k_wr)/m_wr,               -(L_r*k_sr)/m_wr, 0, 0,                        0,                  c_sr/m_wr,                   0, -(c_sr + c_wr)/m_wr,               -(L_r*c_sr)/m_wr, 0, 0;
-                                0, -(L_f*k_sf - L_r*k_sr)/I_b,      (L_f*k_sf)/I_b,     -(L_r*k_sr)/I_b, -(k_sf*L_f^2 + k_sr*L_r^2)/I_b, 0, 0,                        0, -(L_f*c_sf - L_r*c_sr)/I_b,      (L_f*c_sf)/I_b,     -(L_r*c_sr)/I_b, -(c_sf*L_f^2 + c_sr*L_r^2)/I_b, 0, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 0;
-                                0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 0];
-    
-    B = [     0,      0,       0,        0;
-              0,      0,       0,        0;
-              0,      0,       0,        0;
-              0,      0,       0,        0;
-              0,      0,       0,        0;
-              0,      0,       0,        0;
-              0,      0,       0,        0;
-              0,      0,       0,        0;
-              0,      0,   1/m_b,    1/m_b;
-              0,      0, -1/m_wf,        0;
-              0,      0,       0,  -1/m_wr;
-              0,      0, L_f/I_b, -L_r/I_b;
-         1/I_wf,      0,       0,        0;
-              0, 1/I_wr,       0,        0];
-    
-    E = [          0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-         k_longf/m_b, k_longr/m_b,         0,         0, c_longf/m_b, c_longr/m_b,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0, k_wf/m_wf,         0,           0,           0, c_wf/m_wf,         0;
-                   0,           0,         0, k_wr/m_wr,           0,           0,         0, c_wr/m_wr;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0;
-                   0,           0,         0,         0,           0,           0,         0,         0];
+    persistent A B E disc_func
+    if isempty(A)
+        Ac = [                      0,                          0,                   0,                   0,                              0, 0, 0,                        1,                          0,                   0,                   0,                              0, 0, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          1,                   0,                   0,                              0, 0, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   1,                   0,                              0, 0, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   1,                              0, 0, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              1, 0, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 1, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 1;
+             -(k_longf + k_longr)/m_b,                          0,                   0,                   0,                              0, 0, 0, -(c_longf + c_longr)/m_b,                          0,                   0,                   0,                              0, 0, 0;
+                                    0,         -(k_sf + k_sr)/m_b,            k_sf/m_b,            k_sr/m_b,     -(L_f*k_sf - L_r*k_sr)/m_b, 0, 0,                        0,         -(c_sf + c_sr)/m_b,            c_sf/m_b,            c_sr/m_b,     -(L_f*c_sf - L_r*c_sr)/m_b, 0, 0;
+                                    0,                  k_sf/m_wf, -(k_sf + k_wf)/m_wf,                   0,                (L_f*k_sf)/m_wf, 0, 0,                        0,                  c_sf/m_wf, -(c_sf + c_wf)/m_wf,                   0,                (L_f*c_sf)/m_wf, 0, 0;
+                                    0,                  k_sr/m_wr,                   0, -(k_sr + k_wr)/m_wr,               -(L_r*k_sr)/m_wr, 0, 0,                        0,                  c_sr/m_wr,                   0, -(c_sr + c_wr)/m_wr,               -(L_r*c_sr)/m_wr, 0, 0;
+                                    0, -(L_f*k_sf - L_r*k_sr)/I_b,      (L_f*k_sf)/I_b,     -(L_r*k_sr)/I_b, -(k_sf*L_f^2 + k_sr*L_r^2)/I_b, 0, 0,                        0, -(L_f*c_sf - L_r*c_sr)/I_b,      (L_f*c_sf)/I_b,     -(L_r*c_sr)/I_b, -(c_sf*L_f^2 + c_sr*L_r^2)/I_b, 0, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 0;
+                                    0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 0];
+        
+        Bc = [    0,      0,       0,        0;
+                  0,      0,       0,        0;
+                  0,      0,       0,        0;
+                  0,      0,       0,        0;
+                  0,      0,       0,        0;
+                  0,      0,       0,        0;
+                  0,      0,       0,        0;
+                  0,      0,       0,        0;
+                  0,      0,   1/m_b,    1/m_b;
+                  0,      0, -1/m_wf,        0;
+                  0,      0,       0,  -1/m_wr;
+                  0,      0, L_f/I_b, -L_r/I_b;
+             1/I_wf,      0,       0,        0;
+                  0, 1/I_wr,       0,        0];
+        
+        Ec = [         0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+             k_longf/m_b, k_longr/m_b,         0,         0, c_longf/m_b, c_longr/m_b,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0, k_wf/m_wf,         0,           0,           0, c_wf/m_wf,         0;
+                       0,           0,         0, k_wr/m_wr,           0,           0,         0, c_wr/m_wr;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0];
+        disc_func = @(tau,Mat) (-Ac\expm(Ac.*(dt-tau)))*Mat;
+
+        A = expm(Ac.*dt);
+        B = disc_func(dt,Bc) - disc_func(0,Bc);
+        E = disc_func(dt,Ec) - disc_func(0,Ec);
+    end
     
 
     %% set parameters through horizon
@@ -123,7 +131,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     end
 
     
-    G = [                                     0;
+    Gc = [                                    0;
                                               0;
                                               0;
                                               0;
@@ -137,6 +145,8 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
                                               0;
         -sin(atan(current_d(7)/current_d(5)))/r;
         -sin(atan(current_d(8)/current_d(6)))/r];
+
+    G = disc_func(dt,Gc) - disc_func(0,Gc);
     
     dxdt = A*x + B*u + E*current_d + G*g;
     if sum(isnan(current_d)) ~= 0
