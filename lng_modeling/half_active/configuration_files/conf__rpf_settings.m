@@ -1,3 +1,4 @@
+warning("off","all");
 preT = 10;
 dis = 0:preT*V/(preT/dt):preT*V;                                                       % distance time line ([m])
 start_disturbance = 9;                                                        % the start distance of disturbance ([m])

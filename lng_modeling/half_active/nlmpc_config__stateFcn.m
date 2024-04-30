@@ -91,7 +91,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
                        0,           0,         0,         0,           0,           0,         0,         0;
                        0,           0,         0,         0,           0,           0,         0,         0;
                        0,           0,         0,         0,           0,           0,         0,         0];
-        disc_func = @(tau,Mat) (-Ac\expm(Ac.*(dt-tau)))*Mat;
+        disc_func = @(tau,Mat) (-pinv(Ac)*expm(Ac.*(dt-tau)))*Mat;
 
         A = expm(Ac.*dt);
         B = disc_func(dt,Bc) - disc_func(0,Bc);
@@ -145,6 +145,8 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
                                               0;
         -sin(atan(current_d(7)/current_d(5)))/r;
         -sin(atan(current_d(8)/current_d(6)))/r];
+
+    Gc(isnan(Gc)) = 0;
 
     G = disc_func(dt,Gc) - disc_func(0,Gc);
     

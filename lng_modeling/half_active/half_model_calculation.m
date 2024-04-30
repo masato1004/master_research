@@ -1,6 +1,6 @@
 %% branch: lng-ctrl
 close all;
-clear;
+clear all;
 clc;
 branch = "_lng-ctrl_";
 
