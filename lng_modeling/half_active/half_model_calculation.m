@@ -337,10 +337,10 @@ drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time 
 
 % road shape and wheel trajectory
 r_fig = figure('name',"Road-profile",'Position', [600 200 600 190]);
-plot(TL,makima(dis_total,road_total_f,disturbance(1,:)),"LineWidth",1,"Color","#0000ff",'DisplayName',"\itRoad under Front Wheel"); hold on;
-plot(TL,makima(dis_total,road_total_r,disturbance(1,:)),"LineWidth",1,"Color","#ff0000",'DisplayName',"\itRoad under Rear Wheel");
-plot(TL,makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,:)),"LineWidth",1,"LineStyle","--","Color","#0000ff",'DisplayName',"\itFront Wheel Center Trajectory");
-plot(TL,makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,:)),"LineWidth",1,"LineStyle","--","Color","#ff0000",'DisplayName',"\itRear Wheel Center Trajectory");
+plot(disturbance(1,:),makima(dis_total,road_total_f,disturbance(1,:)),"LineWidth",1,"Color","#0000ff",'DisplayName',"\itRoad under Front Wheel"); hold on;
+plot(disturbance(2,:),makima(dis_total,road_total_r,disturbance(1,:)),"LineWidth",1,"Color","#ff0000",'DisplayName',"\itRoad under Rear Wheel");
+plot(disturbance(1,:),makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,:)),"LineWidth",1,"LineStyle","--","Color","#0000ff",'DisplayName',"\itFront Wheel Center Trajectory");
+plot(disturbance(2,:),makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,:)),"LineWidth",1,"LineStyle","--","Color","#ff0000",'DisplayName',"\itRear Wheel Center Trajectory");
 ylabel("Displacement [m]");
 xlabel("Distance Traveled [m]");
 ylim([-0.01,0.1])
@@ -354,15 +354,20 @@ saveas(r_fig,"figs/"+conditions+"/Road_Profile-Wheel_Center_Trajectory.fig");
 
 % inputs
 u_fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
-plot(TL,u(1,:),"LineWidth",1,"Color","#0000ff",'DisplayName',"\tau\it_{f}");
-hold on;
-plot(TL,u(3,:),"LineWidth",1,"Color","#0000ff","LineStyle","--",'DisplayName',"\tau\it_{r}");
-plot(TL,u(2,:),"LineWidth",1,"Color","#0000ff",'DisplayName',"\itf_{sf}");
-plot(TL,u(4,:),"LineWidth",1,"Color","#0000ff","LineStyle","--",'DisplayName',"\itf_{sr}");
+yyaxis left
+plot(TL,u(1,:),"LineWidth",1,"Color","#0000ff",'DisplayName',"\tau\it_{f}"); hold on;
+plot(TL,u(3,:),"LineWidth",1,"Color","#0000ff","LineStyle","--",'DisplayName',"\itf_{sr}");
+ax = gca;
+ax.YAxis(1).Color = [1 1 1];
+ylabel("IWM Torque [Nm]");
+yyaxis right
+plot(TL,u(2,:),"LineWidth",1,"Color","#ff0000",'DisplayName',"\tau\it_{r}"); hold on;
+plot(TL,u(4,:),"LineWidth",1,"Color","#ff0000","LineStyle","--",'DisplayName',"\itf_{sr}");
+ax = gca;
+ax.YAxis(2).Color = [1 1 1];
 grid on;
-xlim([0,3]);
 xlabel("Time [s]");
-ylabel("Wheel Actuator Force [N]");
+ylabel("Suspension Actuators [N]");
 legend;
 fontname(u_fig,"Times New Roman");
 fontsize(u_fig,10.5,"points");
