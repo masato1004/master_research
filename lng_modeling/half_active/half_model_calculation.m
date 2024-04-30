@@ -56,7 +56,7 @@ end
 dw_list = [];
 % LOOP
 disp('Simulation Started')
-
+controller_calc_time = 0;
 tic;
 for i=1:c-1
     if mod(i,1000) == 0
@@ -241,7 +241,10 @@ for i=1:c-1
 
         simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.'];
         simdata.StageParameter = repmat([simdata.StateFcnParameter; nlmpc_config__referenceSignal(states(:,i),u_in,V,theta_init,Ts)],pHorizon+1,1);
+        controller_start = tic;
         [mv,simdata] = nlmpcmove(runner,states(:,i),u_in,simdata);
+        controller_end = toc;
+        controller_calc_time = controller_calc_time + (controller_end - controller_start);
         u(:,i+1) = mv;
     else
         u(:,i+1) = u(:,i);
@@ -264,6 +267,7 @@ for i=1:c-1
     end
 end
 toc;
+disp("Controller Calculation-Time Average: "+cc)
 
 if prev_anim
     close(video);

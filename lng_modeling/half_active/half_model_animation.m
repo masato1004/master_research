@@ -1,5 +1,5 @@
 close all;
-clc;
+% clc;
 clear frames;
 warning("off","all")
 
