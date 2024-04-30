@@ -2,7 +2,7 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,p)
     ref = p(end-13:end);
     % New Half-Car-Model cost function.
     Q = diag([1e-10 1e-3 1e-5 1e-5 1e10 1e-10 1e-10 1e05 1e05 1e-10 1e-10 1e10 1e-10 1e-10]);
-    R = diag([1e-10 1e-10 1e-10 1e-10]);
+    R = diag([1e-11 1e-11 1e-11 1e-11]);
 
     if stage == 1
         J = dmv'*R*dmv;
