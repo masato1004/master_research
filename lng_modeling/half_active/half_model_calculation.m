@@ -290,16 +290,16 @@ input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
 states_name = [
     "Longitudinal_Position", "Time [s]", "Longitudinal Position [m]";
-    "Body_Heave_Displacement", "Time [s]", "Body Heave Displacement [m]";
-    "Front_Wheel_Heave_Displacement", "Time [s]", "Front Wheel Heave Displacement [m]";
-    "Rear_Wheel_Heave_Displacement", "Time [s]", "Rear Wheel Heave Displacement [m]";
+    "Body_Vertical_Displacement", "Time [s]", "Body Vertical Displacement [m]";
+    "Front_Wheel_Vertical_Displacement", "Time [s]", "Front Wheel Vertical Displacement [m]";
+    "Rear_Wheel_Vertical_Displacement", "Time [s]", "Rear Wheel Vertical Displacement [m]";
     "Body_Pitch_Angle", "Time [s]", "Body Pitch Angle [deg]";
     "Front_Wheel_Angle", "Time [s]", "Front Wheel Angle [deg]";
     "Rear_Wheel_Angle", "Time [s]", "Rear Wheel Angle [deg]";
     "Velocity", "Time [s]", "Velocity [m/s]";
-    "Body_Heave_Velocity", "Time [s]", "Body Heave Velocity [m/s]";
-    "Front_Wheel_Heave_Velocity", "Time [s]", "Front Wheel Heave Velocity [m/s]";
-    "Rear_Wheel_Heave_Velocity", "Time [s]", "Rear Wheel Heave Velocity [m/s]";
+    "Body_Vertical_Velocity", "Time [s]", "Body Vertical Velocity [m/s]";
+    "Front_Wheel_Vertical_Velocity", "Time [s]", "Front Wheel Vertical Velocity [m/s]";
+    "Rear_Wheel_Vertical_Velocity", "Time [s]", "Rear Wheel Vertical Velocity [m/s]";
     "Body_Pitch_Angular_Velocity", "Time [s]", "Body Pitch Angular Velocity [deg/s]"
     "Front_Wheel_Angular_Velocity", "Time [s]", "Front Wheel Angular Velocity [deg]";
     "Rear_Wheel_Angular_Velocity", "Time [s]", "Rear Wheel Angular Velocity [deg]";
