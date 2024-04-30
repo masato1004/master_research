@@ -92,7 +92,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     
 
     %% set parameters through horizon
-    persistent last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r
+    persistent last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r delta_x
     
     if isempty(last_param) | last_param(1:8) ~= p(1:8)
         last_param = p;
@@ -141,9 +141,6 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     dxdt = A*x + B*u + E*current_d + G*g;
     if sum(isnan(current_d)) ~= 0
         disp(current_d)
-    end
-    if sum(u) ~= 0
-        disp(u)
     end
     dxdt(isnan(dxdt)) = 0;
 
