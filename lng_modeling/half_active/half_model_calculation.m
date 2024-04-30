@@ -318,6 +318,7 @@ states_name = [
 % saveas(r_fig,"figs/"+conditions+"/Road_Profile.fig");
 % saveas(r_fig,"jpgs/"+conditions+"/Road_Profile.jpg");
 
+%% states plot
 for i=1:height(states)
     if sum(ismember([5,6,7,12,13,14],i))
         drawer(TL,states(i,:)*(180/pi),states_name(i,:),i,conditions);
@@ -333,6 +334,43 @@ drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Bod
 drawer(TL,accelerations(2,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
 drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
 
+
+% road shape and wheel trajectory
+r_fig = figure('name',"Road-profile",'Position', [600 200 600 190]);
+plot(TL,makima(dis_total,road_total_f,disturbance(1,:)),"LineWidth",1,"Color","#0000ff",'DisplayName',"\itRoad under Front Wheel"); hold on;
+plot(TL,makima(dis_total,road_total_r,disturbance(1,:)),"LineWidth",1,"Color","#ff0000",'DisplayName',"\itRoad under Rear Wheel");
+plot(TL,makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,:)),"LineWidth",1,"LineStyle","--","Color","#0000ff",'DisplayName',"\itFront Wheel Center Trajectory");
+plot(TL,makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,:)),"LineWidth",1,"LineStyle","--","Color","#ff0000",'DisplayName',"\itRear Wheel Center Trajectory");
+ylabel("Displacement [m]");
+xlabel("Distance Traveled [m]");
+ylim([-0.01,0.1])
+legend;
+fontname(r_fig,"Times New Roman");
+fontsize(r_fig,10.5,"points");
+grid on;
+
+saveas(r_fig,"figs/"+conditions+"/Road_Profile-Wheel_Center_Trajectory.fig");
+
+
+% inputs
+u_fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
+plot(TL,u(1,:),"LineWidth",1,"Color","#0000ff",'DisplayName',"\tau\it_{f}");
+hold on;
+plot(TL,u(3,:),"LineWidth",1,"Color","#0000ff","LineStyle","--",'DisplayName',"\tau\it_{r}");
+plot(TL,u(2,:),"LineWidth",1,"Color","#0000ff",'DisplayName',"\itf_{sf}");
+plot(TL,u(4,:),"LineWidth",1,"Color","#0000ff","LineStyle","--",'DisplayName',"\itf_{sr}");
+grid on;
+xlim([0,3]);
+xlabel("Time [s]");
+ylabel("Wheel Actuator Force [N]");
+legend;
+fontname(u_fig,"Times New Roman");
+fontsize(u_fig,10.5,"points");
+
+saveas(u_fig,"figs/"+conditions+"/Actuator_Force.fig");
+
+
+% states and acceleration tile plot
 fig_tile = figure();
 for i=1:height(states)
     subplot(3,5,i)
