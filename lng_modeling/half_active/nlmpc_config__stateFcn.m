@@ -141,7 +141,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         -sin(atan(current_d(7)/current_d(5)))/r;
         -sin(atan(current_d(8)/current_d(6)))/r];
 
-    G(isnan(Gc)) = 0;
+    G(isnan(G)) = 0;
     
     dxdt = A*x + B*u + E*current_d + G*g;
     if sum(isnan(current_d)) ~= 0
