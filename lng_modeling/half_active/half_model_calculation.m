@@ -60,7 +60,8 @@ controller_calc_time = 0;
 tic;
 for i=1:c-1
     if mod(i,1000) == 0
-        disp(round(i*100/(c-1),2) + "%");
+        percentage = round(i*100/(c-1),2);
+        disp(percentage + "% --- Remaining Time: " + round((toc*100/percentage)/3600,2) + " hour");
         disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
         toc;
     end
@@ -232,7 +233,6 @@ for i=1:c-1
         end
     elseif mod(i-1, (tc/dt)) == 0 && NLMPC
         cc = (i-1)/(tc/dt)+1;                   % control count
-        disp("Control cycle: "+ cc);
         local_dis = 0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9);
         current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
         current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
@@ -241,11 +241,12 @@ for i=1:c-1
 
         simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.'];
         simdata.StageParameter = repmat([simdata.StateFcnParameter; nlmpc_config__referenceSignal(states(:,i),u_in,V,theta_init,Ts)],pHorizon+1,1);
-        controller_start = tic;
+        controller_start = toc;
         [mv,simdata] = nlmpcmove(runner,states(:,i),u_in,simdata);
         controller_end = toc;
         controller_calc_time = controller_calc_time + (controller_end - controller_start);
         u(:,i+1) = mv;
+        disp("Control cycle: "+ cc + ", Calculated Input: " + u(:,i+1)');
     else
         u(:,i+1) = u(:,i);
     end
