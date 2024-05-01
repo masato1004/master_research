@@ -61,7 +61,7 @@ tic;
 for i=1:c-1
     if mod(i,1000) == 0
         percentage = round(i*100/(c-1),2);
-        disp(percentage + "% --- Remaining Time: " + round((toc*100/percentage)/3600,2) + " hour");
+        disp(percentage + "% --- Estimated Remaining Time: " + round((toc*100/percentage)/3600,2) + " hour");
         disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
         toc;
     end
