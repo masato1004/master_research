@@ -356,12 +356,12 @@ saveas(r_fig,"figs/"+conditions+"/Road_Profile-Wheel_Center_Trajectory.fig");
 u_fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
 yyaxis left
 plot(TL,u(1,:),"LineWidth",1,"Color","#0000ff",'DisplayName',"\tau\it_{f}"); hold on;
-plot(TL,u(3,:),"LineWidth",1,"Color","#0000ff","LineStyle","--",'DisplayName',"\itf_{sf}");
+plot(TL,u(2,:),"LineWidth",1,"Color","#ff0000",'DisplayName',"\tau\it_{r}");
 ax = gca;
 ax.YAxis(1).Color = [0 0 0];
 ylabel("IWM Torque [Nm]");
 yyaxis right
-plot(TL,u(2,:),"LineWidth",1,"Color","#ff0000",'DisplayName',"\tau\it_{r}"); hold on;
+plot(TL,u(3,:),"LineWidth",1,"Color","#0000ff","LineStyle","--",'DisplayName',"\itf_{sf}"); hold on;
 plot(TL,u(4,:),"LineWidth",1,"Color","#ff0000","LineStyle","--",'DisplayName',"\itf_{sr}");
 ax = gca;
 ax.YAxis(2).Color = [0 0 0];
