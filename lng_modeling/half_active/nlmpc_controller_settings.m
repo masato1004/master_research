@@ -17,6 +17,7 @@ runner.MV(3).Min = -3000;
 runner.MV(3).Max = 3000;
 runner.MV(4).Min = -3000;
 runner.MV(4).Max = 3000;
+runner.States(8).Min = 0;
 
 
 for ct=1:pHorizon+1
