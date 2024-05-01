@@ -19,7 +19,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     
     % Copyright 2023 The MathWorks, Inc.
     %% Vehicle parameter
-    dt = 0.01;
+    dt = 0.01;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -45,9 +45,9 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
 
     g = 9.80665;
 
-    persistent A B E disc_func
+    persistent A B E
     if isempty(A)
-        A = [                      0,                          0,                   0,                   0,                              0, 0, 0,                        1,                          0,                   0,                   0,                              0, 0, 0;
+        A = [                       0,                          0,                   0,                   0,                              0, 0, 0,                        1,                          0,                   0,                   0,                              0, 0, 0;
                                     0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          1,                   0,                   0,                              0, 0, 0;
                                     0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   1,                   0,                              0, 0, 0;
                                     0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   1,                              0, 0, 0;
@@ -62,7 +62,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
                                     0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 0;
                                     0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          0,                   0,                   0,                              0, 0, 0];
         
-        B = [    0,      0,       0,        0;
+        B = [     0,      0,       0,        0;
                   0,      0,       0,        0;
                   0,      0,       0,        0;
                   0,      0,       0,        0;
@@ -77,7 +77,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
              1/I_wf,      0,       0,        0;
                   0, 1/I_wr,       0,        0];
         
-        E = [         0,           0,         0,         0,           0,           0,         0,         0;
+        E = [          0,           0,         0,         0,           0,           0,         0,         0;
                        0,           0,         0,         0,           0,           0,         0,         0;
                        0,           0,         0,         0,           0,           0,         0,         0;
                        0,           0,         0,         0,           0,           0,         0,         0;
@@ -126,7 +126,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     end
 
     
-    G = [                                    0;
+    G = [                                     0;
                                               0;
                                               0;
                                               0;
