@@ -246,7 +246,7 @@ for i=1:c-1
         controller_end = toc;
         controller_calc_time = controller_calc_time + (controller_end - controller_start);
         u(:,i+1) = mv;
-        disp("Control cycle: "+ cc + ", Calculated Input: " + u(:,i+1)');
+        disp("Control cycle: "+ cc + ", Calculated Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
     else
         u(:,i+1) = u(:,i);
     end
