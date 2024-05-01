@@ -3,7 +3,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
     r = 0.55/2;           % [m]   radius of wheel
 
     %% set parameters through horizon
-    persistent last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r delta_x
+    persistent last_param last_d last_state first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r delta_x
     if isempty(last_param) | last_param(1:8) ~= p(1:8)
         last_param = p;
         current_d = p(1:8);
@@ -13,6 +13,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
         current_wheel_traj_f = [p(99:128)];
         current_wheel_traj_r = [p(129:158)];
         first_states = x;
+        last_state = x;
         first_d = current_d;
         last_d = current_d;
     else
@@ -36,6 +37,11 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
         cineq = -1;
     else
         wb_constraints = 0.05;
-        cineq = [current_d(1)-current_d(2); current_d(2)-current_d(1)] - wb_constraints;
+        acc_constraints = 1;
+
+        cineq1 = [current_d(1)-current_d(2); current_d(2)-current_d(1)] - wb_constraints;
+        cineq2 = [(x(8)-last_state(8))/dt; (last_state(8)-x(8))/dt] - acc_constraints;
+
+        cineq = [cineq1; cineq2];
     end
 end
