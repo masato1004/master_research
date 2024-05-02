@@ -45,7 +45,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
 
     g = 9.80665;
 
-    persistent A B E
+    persistent A B E disc_func
     if isempty(A)
         A = [                       0,                          0,                   0,                   0,                              0, 0, 0,                        1,                          0,                   0,                   0,                              0, 0, 0;
                                     0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          1,                   0,                   0,                              0, 0, 0;
@@ -91,6 +91,13 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
                        0,           0,         0,         0,           0,           0,         0,         0;
                        0,           0,         0,         0,           0,           0,         0,         0;
                        0,           0,         0,         0,           0,           0,         0,         0];
+        
+        % discretization
+        disc_func = @(tau,Mat) (-A\expm(A.*(dt-tau)))*Mat;
+
+        A = expm(A.*dt);
+        B = disc_func(dt,B) - disc_func(0,B);
+        E = disc_func(dt,E) - disc_func(0,E);
     end
     
 
@@ -142,6 +149,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         -sin(atan(current_d(8)/current_d(6)))/r];
 
     G(isnan(G)) = 0;
+    G = disc_func(dt,G) - disc_func(0,G);
     
     dxdt = A*x + B*u + E*current_d + G*g;
     if sum(isnan(current_d)) ~= 0

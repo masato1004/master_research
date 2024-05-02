@@ -29,6 +29,7 @@ for ct=1:pHorizon+1
 end
 
 runner.UseMVRate = true;
+runner.Model.IsContinuousTime = false;
 
 simdata = getSimulationData(runner);
 
