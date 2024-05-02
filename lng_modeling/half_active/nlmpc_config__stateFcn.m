@@ -44,6 +44,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
+    pHorizon = 10;
 
     persistent A B E disc_func
     if isempty(A)
@@ -93,25 +94,26 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
                        0,           0,         0,         0,           0,           0,         0,         0];
         
         % discretization
-        disc_func = @(tau,Mat) (-A\expm(A.*(dt-tau)))*Mat;
+        disc_func = @(tau,Mat) (-pinv(A)*expm(A.*(dt-tau)))*Mat;
 
-        A = expm(A.*dt);
-        B = disc_func(dt,B) - disc_func(0,B);
-        E = disc_func(dt,E) - disc_func(0,E);
+        % A = expm(A.*dt);
+        % B = disc_func(dt,B) - disc_func(0,B);
+        % E = disc_func(dt,E) - disc_func(0,E);
     end
     
 
     %% set parameters through horizon
-    persistent last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r delta_x
+    persistent param_flag last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r delta_x
     
-    if isempty(last_param) | last_param(1:8) ~= p(1:8)
+    if isempty(last_param) | param_flag ~= p(end)
+        param_flag = p(end);
         last_param = p;
         current_d = p(1:8);
-        current_dis = p(9:38);
-        current_mileage_f = p(39:68);
-        current_mileage_r = p(69:98);
-        current_wheel_traj_f = [p(99:128)];
-        current_wheel_traj_r = [p(129:158)];
+        current_dis = p(9:8+pHorizon+10);
+        current_mileage_f = p(9+pHorizon+10:8+(pHorizon+10)*2);
+        current_mileage_r = p(9+(pHorizon+10)*2:8+(pHorizon+10)*3);
+        current_wheel_traj_f = [p(9+(pHorizon+10)*3:8+(pHorizon+10)*4)];
+        current_wheel_traj_r = [p(9+(pHorizon+10)*4:8+(pHorizon+10)*5)];
         first_states = x;
         first_d = current_d;
         last_d = current_d;
@@ -120,10 +122,10 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         front_wheel_rotation = delta_x(6)*r;
         rear_wheel_rotation  = delta_x(7)*r;
         
-        current_d(1) = makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
-        current_d(2) = makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
-        current_d(3) = makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1));
-        current_d(4) = makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2));
+        current_d(1) = first_d(1) + makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
+        current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
+        current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
+        current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
         current_d(5) = diff([last_d(1,1), current_d(1,1)])/dt;
         current_d(6) = diff([last_d(2,1), current_d(2,1)])/dt;
         current_d(7) = diff([last_d(3,1), current_d(3,1)])/dt;
@@ -149,9 +151,10 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         -sin(atan(current_d(8)/current_d(6)))/r];
 
     G(isnan(G)) = 0;
-    G = disc_func(dt,G) - disc_func(0,G);
+    % G = disc_func(dt,G) - disc_func(0,G);
     
     dxdt = A*x + B*u + E*current_d + G*g;
+    % dxdt = x + dxdt*dt;
     if sum(isnan(current_d)) ~= 0
         disp(current_d)
     end

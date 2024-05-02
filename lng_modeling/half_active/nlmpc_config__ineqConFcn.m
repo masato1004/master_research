@@ -24,8 +24,9 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
+    pHorizon = 10;
 
-    persistent A 
+    persistent A E disc_func
     if isempty(A)
         A = [                       0,                          0,                   0,                   0,                              0, 0, 0,                        1,                          0,                   0,                   0,                              0, 0, 0;
                                     0,                          0,                   0,                   0,                              0, 0, 0,                        0,                          1,                   0,                   0,                              0, 0, 0;
@@ -57,74 +58,113 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
         %      1/I_wf,      0,       0,        0;
         %           0, 1/I_wr,       0,        0];
         
-        % E = [          0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %      k_longf/m_b, k_longr/m_b,         0,         0, c_longf/m_b, c_longr/m_b,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0, k_wf/m_wf,         0,           0,           0, c_wf/m_wf,         0;
-        %                0,           0,         0, k_wr/m_wr,           0,           0,         0, c_wr/m_wr;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0;
-        %                0,           0,         0,         0,           0,           0,         0,         0];
+        E = [          0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+             k_longf/m_b, k_longr/m_b,         0,         0, c_longf/m_b, c_longr/m_b,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0, k_wf/m_wf,         0,           0,           0, c_wf/m_wf,         0;
+                       0,           0,         0, k_wr/m_wr,           0,           0,         0, c_wr/m_wr;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0;
+                       0,           0,         0,         0,           0,           0,         0,         0];
         
         % discretization
-        % disc_func = @(tau,Mat) (-A\expm(A.*(dt-tau)))*Mat;
+        disc_func = @(tau,Mat) (-pinv(A)*expm(A.*(dt-tau)))*Mat;
 
-        A = expm(A.*dt);
+        % A = expm(A.*dt);
         % B = disc_func(dt,B) - disc_func(0,B);
         % E = disc_func(dt,E) - disc_func(0,E);
     end
 
 
     %% set parameters through horizon
-    persistent last_param first_states current_d current_dis current_mileage_f current_mileage_r delta_x
+    persistent param_flag last_param last_state last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r delta_x current_wheel_traj_f current_wheel_traj_r
     
     if stage == 1
         cineq = -1;
+        last_param = p;
+        current_d = p(1:8);
+        current_dis = p(9:8+pHorizon+10);
+        current_mileage_f = p(9+pHorizon+10:8+(pHorizon+10)*2);
+        current_mileage_r = p(9+(pHorizon+10)*2:8+(pHorizon+10)*3);
+        current_wheel_traj_f = [p(9+(pHorizon+10)*3:8+(pHorizon+10)*4)];
+        current_wheel_traj_r = [p(9+(pHorizon+10)*4:8+(pHorizon+10)*5)];
         first_states = x;
+        first_d = current_d;
+        last_d = current_d;
+        last_state = x;
     else
-        if isempty(last_param) | last_param(1:8) ~= p(1:8)
+        if isempty(last_param) | any(x ~= last_state)
+            param_flag = p(end-14);
             last_param = p;
             current_d = p(1:8);
-            current_dis = p(9:38);
-            current_mileage_f = p(39:68);
-            current_mileage_r = p(69:98);
-            % first_states = x;
-            % current_wheel_traj_f = [p(99:128)];
-            % current_wheel_traj_r = [p(129:158)];
-            % last_state = x;
+            current_dis = p(9:8+pHorizon+10);
+            current_mileage_f = p(9+pHorizon+10:8+(pHorizon+10)*2);
+            current_mileage_r = p(9+(pHorizon+10)*2:8+(pHorizon+10)*3);
+            current_wheel_traj_f = [p(9+(pHorizon+10)*3:8+(pHorizon+10)*4)];
+            current_wheel_traj_r = [p(9+(pHorizon+10)*4:8+(pHorizon+10)*5)];
+            first_states = x;
+            first_d = current_d;
+            last_d = current_d;
             % first_d = current_d;
             % last_d = current_d;
-        end
-        next_state = A*x;
-        delta_x = next_state - first_states;
-        front_wheel_rotation = delta_x(6)*r;
-        rear_wheel_rotation  = delta_x(7)*r;
 
-        current_d(1) = makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
-        current_d(2) = makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
-        % current_d(3) = makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1));
-        % current_d(4) = makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2));
-        % current_d(5) = diff([last_d(1,1), current_d(1,1)])/dt;
-        % current_d(6) = diff([last_d(2,1), current_d(2,1)])/dt;
-        % current_d(7) = diff([last_d(3,1), current_d(3,1)])/dt;
-        % current_d(8) = diff([last_d(4,1), current_d(4,1)])/dt;
+            delta_x = x - last_state;
+            front_wheel_rotation = delta_x(6)*r;
+            rear_wheel_rotation  = delta_x(7)*r;
+    
+            current_d(1) = first_d(1) + makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
+            current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
+            current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
+            current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
+            current_d(5) = diff([last_d(1,1), current_d(1,1)])/(dt*pHorizon);
+            current_d(6) = diff([last_d(2,1), current_d(2,1)])/(dt*pHorizon);
+            current_d(7) = diff([round(last_d(3,1),5), current_d(3,1)])/(dt*pHorizon);
+            current_d(8) = diff([round(last_d(4,1),5), current_d(4,1)])/(dt*pHorizon);
+            last_state = x;
+        end
+
+        G = [                                     0;
+                                                  0;
+                                                  0;
+                                                  0;
+                                                  0;
+                                                  0;
+                                                  0;
+                                                  0;
+                                                 -1;
+                                                 -1;
+                                                 -1;
+                                                  0;
+            -sin(atan(current_d(7)/current_d(5)))/r;
+            -sin(atan(current_d(8)/current_d(6)))/r];
+
+        G(isnan(G)) = 0;
+        % G = disc_func(dt,G) - disc_func(0,G);
+
+        dxdt = A*x + E*current_d + G*g;
+        next_state = x + dxdt*dt;
         % last_d = current_d;
 
         wb_constraints = 0.05;
-        acc_constraints = 1;
+        acc_constraints = 1.5;
         pitch_constraints = 0.2;
 
         cineq1 = (current_d(1)-current_d(2))^2 - wb_constraints^2;
-        cineq2 = ((next_state(8)-x(8))/dt)^2 - acc_constraints^2;
+        cineq2 = dxdt(8)^2 - acc_constraints^2;
         cineq3 = (next_state(5)+0.01257407)^2 - pitch_constraints^2;
 
         cineq = [cineq1; cineq2; cineq3];
+        % if any(cineq > 0)
+        %     stage
+        %     next_state(8)
+        %     x(8)
+        % end
         % last_state = x;
     end
 end

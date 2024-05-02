@@ -1,5 +1,5 @@
 %% Initial conditions
-Vkm_h = 20;     % [km/h]    driving velocity
+Vkm_h = 15;     % [km/h]    driving velocity
 Vkm_m=Vkm_h/60;
 V=Vkm_m*1000/60;% [m/s]
 
@@ -26,7 +26,7 @@ dtheta_wf   = zeros(1,c); dtheta_wf(1,1) = V/r;    % [rad]     front wheel angle
 dtheta_wr   = zeros(1,c); dtheta_wr(1,1) = V/r;    % [rad]     rear wheel angle
 
 states = [
-    x_b
+    x_b;
     z_b;
     z_wf;
     z_wr;
@@ -71,4 +71,4 @@ disturbance = [
     dx__disr;
     dz__disf;
     dz__disr
-];
+    ];

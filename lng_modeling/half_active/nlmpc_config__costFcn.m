@@ -1,13 +1,20 @@
 function J = nlmpc_config__costFcn(stage,x,u,dmv,p)
+    C = logical([0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1]);
     ref = p(end-13:end);
+    ref = ref(C);
     % New Half-Car-Model cost function.
-    Q = diag([1e-10 1e01 1e-3 1e-3 1e02 1e-10 1e-10 1e20 1e03 1e-10 1e-10 1e02 1e-10 1e-10]);
-    R = diag([1e-20 1e-20 1e-20 1e-20]);
+    % Q = diag([1e-10 1e01 1e-3 1e-3 1e05 1e-10 1e-10 1e05 1e03 1e-10 1e-10 1e02 1e-20 1e-20]);
+    % R = diag([1e-20 1e-20 1e-20 1e-20]);
+    Q = diag([1e01 1e03 1e06 1e03 1e02 1e01 1e01]);
+    R = diag([1e-04 1e-04 1e-08 1e-08]);
+    if u > 1000000
+        u
+    end
 
     if stage == 1
-        J = u'*R*u;
+        J = dmv'*R*dmv;
     elseif stage == 11
-        J = (x-ref)'*2*Q*(x-ref);
+        J = (x(C)-ref)'*10*Q*(x(C)-ref);
     else
-        J = (x-ref)'*Q*(x-ref) + u'*R*u;
+        J = (x(C)-ref)'*Q*(x(C)-ref) + dmv'*R*dmv;
     end

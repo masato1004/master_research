@@ -57,224 +57,278 @@ dw_list = [];
 % LOOP
 disp('Simulation Started')
 controller_calc_time = 0;
+control_flag = false;
 
 count_loop = 1000;
 tic;
 last_toc = toc;
 for i=1:c-1
-    if mod(i,count_loop) == 0
-        percentage = round(i*100/(c-1),2);
-        one_loop = round(count_loop*100/(c-1),2);
-        disp("Controller Calculation-Time Average: "+round(controller_calc_time/cc,2));
-        disp(" ")
-        disp("-------------------------------------------------------------------------------------")
-        disp(percentage + "% --- Estimated Remaining Time: " + round(((toc-last_toc)*(100-percentage)/one_loop)/3600,2) + " hour");
-        disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
-        last_toc = toc;
-        toc;
+    
+    if ~control_flag
+        if TL(i)*V > 8
+            states(:,i) = [
+                TL(i)*V;
+                z_b_init;
+                z_wf_init;
+                z_wr_init;
+                theta_init;
+                TL(i)*V/r;
+                TL(i)*V/r;
+                V;
+                0;
+                0;
+                0;
+                0;
+                V/r;
+                V/r
+                ];
+            disturbance(:,i) = [
+                TL(i)*V;
+                TL(i)*V;
+                0;
+                0;
+                V;
+                V;
+                0;
+                0
+                ];
+            disturbance(:,i-1) = [
+                TL(i-1)*V;
+                TL(i-1)*V;
+                0;
+                0;
+                V;
+                V;
+                0;
+                0
+                ];
+            control_flag = true;
+        end
     end
-    % make road preview profile
-    if mod(i+(ts/dt-1), ts/dt) == 0
-        current_dis = r_p_prev(1,i);
-        % load road profile
-        if sensing
-            if sc <= height(listing)
-                file = load("configuration_files/"+load_dir + "/" + listing(sc).name);
-                vertices = file.vertices;
-                wf_local = previewing(vertices);
-                % wf_local(isnan(wf_local(2,:))) = data_end;
-                wf_local = rmmissing(wf_local,2);
-                data_end = wf_local(2,end);
-                % wf_local(2,:) = movmean(wf_local(2,:),width(wf_local(2,wf_local(1,:))));  % move mean with mm_ratio
-                % wf_local(2,:) = movmean(wf_local(2,:),round(mm_ratio*width(wf_local)));  % move mean with mm_ratio
-                % display("HERE"+sc);
+    if control_flag
+
+        if mod(i,count_loop) == 0
+            percentage = round(i*100/(c-1),2);
+            one_loop = round(count_loop*100/(c-1),2);
+            disp("Controller Calculation-Time Average: "+round(controller_calc_time/cc,2));
+            disp(" ")
+            disp("-------------------------------------------------------------------------------------")
+            disp(percentage + "% --- Estimated Remaining Time: " + round(((toc-last_toc)*(100-percentage)/one_loop)/3600,2) + " hour");
+            disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
+            last_toc = toc;
+            toc;
+            disp("-------------------------------------------------------------------------------------")
+        end
+        % make road preview profile
+        if mod(i+(ts/dt-1), ts/dt) == 0
+            current_dis = r_p_prev(1,i);
+            % load road profile
+            if sensing
+                if sc <= height(listing)
+                    file = load("configuration_files/"+load_dir + "/" + listing(sc).name);
+                    vertices = file.vertices;
+                    wf_local = previewing(vertices);
+                    % wf_local(isnan(wf_local(2,:))) = data_end;
+                    wf_local = rmmissing(wf_local,2);
+                    data_end = wf_local(2,end);
+                    % wf_local(2,:) = movmean(wf_local(2,:),width(wf_local(2,wf_local(1,:))));  % move mean with mm_ratio
+                    % wf_local(2,:) = movmean(wf_local(2,:),round(mm_ratio*width(wf_local)));  % move mean with mm_ratio
+                    % display("HERE"+sc);
+                else
+                    wf_local = [
+                        prev_start:tc*V:prev_end;
+                        interp1(r_p_prev(1,:),data_end*ones(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end,'linear')
+                        ];
+                end
             else
                 wf_local = [
                     prev_start:tc*V:prev_end;
-                    interp1(r_p_prev(1,:),data_end*ones(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end,'linear')
+                    makima(r_p_prev(1,:),r_p_prev(2,:),current_dis+prev_start:tc*V:current_dis+prev_end)
                     ];
             end
-        else
-            wf_local = [
-                prev_start:tc*V:prev_end;
-                makima(r_p_prev(1,:),r_p_prev(2,:),current_dis+prev_start:tc*V:current_dis+prev_end)
-                ];
-        end
-        
-        % Noise addition
-        if high_freq_noise
-            hnoise = hsd*randn(size(wf_local(2,:)));
-            wf_local(2,:) = wf_local(2,:) + hnoise;
-        end
-        if low_freq_noise
-            sig = 3-2*randi(2);
-            % lnoise = sig*lsd(wf_local(1,:))+(lsd(wf_local(1,:))./3).*randn(size(wf_local(2,:)));
-            lnoise = sig*lsd((0.03/7)*randn(),(0.005)*randn(),wf_local(1,:));
-            wf_local(2,:) = wf_local(2,:) + lnoise;
-            [~,ind] = sort(wf_local(1,:));
-            wf_local= wf_local(:,ind);
-        end
+            
+            % Noise addition
+            if high_freq_noise
+                hnoise = hsd*randn(size(wf_local(2,:)));
+                wf_local(2,:) = wf_local(2,:) + hnoise;
+            end
+            if low_freq_noise
+                sig = 3-2*randi(2);
+                % lnoise = sig*lsd(wf_local(1,:))+(lsd(wf_local(1,:))./3).*randn(size(wf_local(2,:)));
+                lnoise = sig*lsd((0.03/7)*randn(),(0.005)*randn(),wf_local(1,:));
+                wf_local(2,:) = wf_local(2,:) + lnoise;
+                [~,ind] = sort(wf_local(1,:));
+                wf_local= wf_local(:,ind);
+            end
 
-        if wa
-            Lpass = wf_local(1,1) - last_minimum;
-            last_minimum = wf_local(1,1);
-            Ltotal = wf_local(1,end) - wf_local(1,1);
-            eta = Lpass/Ltotal;
-            eta_1 = 0.5*(1-eta);
-            eta_2 = 0.5*(1+eta);
-            % WA
-            if sensing
-                wf_global = [
-                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
-                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
-                    ];
+            if wa
+                Lpass = wf_local(1,1) - last_minimum;
+                last_minimum = wf_local(1,1);
+                Ltotal = wf_local(1,end) - wf_local(1,1);
+                eta = Lpass/Ltotal;
+                eta_1 = 0.5*(1-eta);
+                eta_2 = 0.5*(1+eta);
+                % WA
+                if sensing
+                    wf_global = [
+                        wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
+                        wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
+                        ];
+
+                else
+                    wf_global = [
+                        wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-2), wf_local(1,:);
+                        wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-2), makima(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end))).*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
+                        ];
+                end
 
             else
-                wf_global = [
-                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-2), wf_local(1,:);
-                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-2), makima(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end))).*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
-                    ];
+                wf_global = [wf_global, wf_local];
+                [~,ind] = sort(wf_global(1,:));
+                wf_global=wf_global(:,ind);
             end
 
-        else
-            wf_global = [wf_global, wf_local];
-            [~,ind] = sort(wf_global(1,:));
-            wf_global=wf_global(:,ind);
+
+            % LPF
+            notnan_wfg = rmmissing(wf_global,2);
+            notnan_wfg(1,:) = notnan_wfg(1,:)./V;
+            % WA + filtfilt
+            [~,ia,~]=unique(notnan_wfg(1,:));
+            notnan_wfg = notnan_wfg(:,ia);
+            grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
+            grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
+            % disp(size(grad_time));
+            if lpf
+                grad_data1 = filtfilt(filt_des,double(grad_data1));
+            end
+            grad_data2 = gradient(grad_data1)./gradient(grad_time);
+            wf_grad = [
+                grad_time;
+                grad_data1;
+                grad_data2
+                ];
+
+            sc = sc + 1;
         end
+        % set(check_plot, "XData", wf_grad(1,:), "YData", wf_grad(3,:));
+        % drawnow;
+
+        % load current states
+        x = states(1:4,i);
+        v = states(5:8,i);
+
+        % load road profile
+        x_disf = disturbance(1,i);
+        x_disr = disturbance(2,i);
+        z_disf = disturbance(3,i);
+        z_disr = disturbance(4,i);
+        dx_disf =disturbance(5,i);
+        dx_disr =disturbance(6,i);
+        dz_disf =disturbance(7,i);
+        dz_disr =disturbance(8,i);
+        
+        % load current input
+        u_in = u(:,i);
+
+        % Apply current parameter into matrices
+        Bp = double(subs(Bmat));
+        Ep = double(subs(Emat));
+        % G  = double(subs(Gmat));
 
 
-        % LPF
-        notnan_wfg = rmmissing(wf_global,2);
-        notnan_wfg(1,:) = notnan_wfg(1,:)./V;
-        % WA + filtfilt
-        [~,ia,~]=unique(notnan_wfg(1,:));
-        notnan_wfg = notnan_wfg(:,ia);
-        grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
-        grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
-        % disp(size(grad_time));
-        if lpf
-            grad_data1 = filtfilt(filt_des,double(grad_data1));
-        end
-        grad_data2 = gradient(grad_data1)./gradient(grad_time);
-        wf_grad = [
-            grad_time;
-            grad_data1;
-            grad_data2
-            ];
-
-        sc = sc + 1;
-    end
-    % set(check_plot, "XData", wf_grad(1,:), "YData", wf_grad(3,:));
-    % drawnow;
-
-    % load current states
-    x = states(1:4,i);
-    v = states(5:8,i);
-
-    % load road profile
-    x_disf = disturbance(1,i);
-    x_disr = disturbance(2,i);
-    z_disf = disturbance(3,i);
-    z_disr = disturbance(4,i);
-    dx_disf =disturbance(5,i);
-    dx_disr =disturbance(6,i);
-    dz_disf =disturbance(7,i);
-    dz_disr =disturbance(8,i);
+        % States-Update Runge kutta
+        states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, Gmat, dt, r, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total);
+        accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
     
-    % load current input
-    u_in = u(:,i);
+        % find appropriate next input
+        if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive && ~NLMPC
+            cc = (i-1)/(tc/dt)+1;                   % list slice
+            [~,ia,~]=unique(wf_grad(1,:));
+            wf_grad = wf_grad(:,ia);
+            dw_prev = [
+                interp1(wf_grad(1,:),[0,diff(wf_grad(2,:))],[0:M].*tc,'linear');
+                dw_r(2, [0:M]+cc);
+                interp1(wf_grad(1,:),[0,diff(wf_grad(3,:))],[0:M].*tc,'linear');
+                dw_r(4, [0:M]+cc);
+                ];
+            dw_list = [dw_list,dw_prev];
 
-    % Apply current parameter into matrices
-    Bp = double(subs(Bmat));
-    Ep = double(subs(Emat));
-    % G  = double(subs(Gmat));
+            % calculate new states
+            e(:,cc) = -C*states(:,i);                        % e=r-y
+            dx(:,cc) = states(:,i) - states(:,i-(tc/dt));    % dx(k)=x(k)-x(k-1)
+            X(1:height(e),cc) = e(:,cc);                     % X=[e;dx]
+            X(height(e)+1:end,cc) = dx(:,cc);
 
+            % calculate input
+            du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
 
-    % States-Update Runge kutta
-    states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, Gmat, dt, r, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total);
-    accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
- 
-    % find appropriate next input
-    if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive && ~NLMPC
-        cc = (i-1)/(tc/dt)+1;                   % list slice
-        [~,ia,~]=unique(wf_grad(1,:));
-        wf_grad = wf_grad(:,ia);
-        dw_prev = [
-            interp1(wf_grad(1,:),[0,diff(wf_grad(2,:))],[0:M].*tc,'linear');
-            dw_r(2, [0:M]+cc);
-            interp1(wf_grad(1,:),[0,diff(wf_grad(3,:))],[0:M].*tc,'linear');
-            dw_r(4, [0:M]+cc);
-            ];
-        dw_list = [dw_list,dw_prev];
+            if cc ~= 1
+                u(:, cc+1) = u(:, cc) + du(:, cc+1);
+            else
+                u(:, cc+1) = du(:, cc+1);
+            end
+            wf_global(1,:) = wf_global(1,:) - tc*V; last_minimum = last_minimum - tc*V;
+            wf_grad(1,:) = wf_grad(1,:) - tc;
 
-        % calculate new states
-        e(:,cc) = -C*states(:,i);                        % e=r-y
-        dx(:,cc) = states(:,i) - states(:,i-(tc/dt));    % dx(k)=x(k)-x(k-1)
-        X(1:height(e),cc) = e(:,cc);                     % X=[e;dx]
-        X(height(e)+1:end,cc) = dx(:,cc);
+            if prev_anim
+                set(check_plot0, "XData", wf_local(1,:), "YData", wf_local(2,:));  % blue
+                set(check_plot, "XData", wf_global(1,:), "YData", wf_global(2,:)); % red
+                set(check_plot2, "XData", wf_grad(1,:).*V, "YData", wf_grad(2,:)); % green
+                % display(cc);
+                
+                txdata = round(TL(1,i),2);
+                str = {"Time [s]",txdata};
+                time_text.String = str;
+                % time_text.Position = [0.05, 0.05];
+                time_text.Position = [8, 0.05];
+                drawnow;
+                frame = getframe(check);
+                writeVideo(video,frame);
+            end
+        elseif mod(i-1, (tc/dt)) == 0 && NLMPC
+            cc = (i-1)/(tc/dt)+1;                   % control count
+            local_dis = 0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9);
+            current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
+            current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
+            current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(1,i));
+            current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(2,i));
 
-        % calculate input
-        du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
-
-        if cc ~= 1
-            u(:, cc+1) = u(:, cc) + du(:, cc+1);
+            reference = nlmpc_config__referenceSignal(states(:,i),u_in,V,theta_init,Ts*pHorizon);
+            simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
+            simdata.StageParameter = repmat([simdata.StateFcnParameter; reference],pHorizon+1,1);
+            simdata.TerminalState = reference;
+            % simdata.InitialGuess = [];
+            controller_start = toc;
+            [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
+            controller_end = toc;
+            controller_calc_time = controller_calc_time + (controller_end - controller_start);
+            u(:,i+1) = mv;
+            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Exit Flag: " + info.ExitFlag;
+            fprintf(2,disp_spring+"\n");
+            disp("    Cost: "+info.Cost)
+            disp("    Calculated Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
         else
-            u(:, cc+1) = du(:, cc+1);
+            u(:,i+1) = u(:,i);
         end
-        wf_global(1,:) = wf_global(1,:) - tc*V; last_minimum = last_minimum - tc*V;
-        wf_grad(1,:) = wf_grad(1,:) - tc;
 
-        if prev_anim
-            set(check_plot0, "XData", wf_local(1,:), "YData", wf_local(2,:));  % blue
-            set(check_plot, "XData", wf_global(1,:), "YData", wf_global(2,:)); % red
-            set(check_plot2, "XData", wf_grad(1,:).*V, "YData", wf_grad(2,:)); % green
-            % display(cc);
-            
-            txdata = round(TL(1,i),2);
-            str = {"Time [s]",txdata};
-            time_text.String = str;
-            % time_text.Position = [0.05, 0.05];
-            time_text.Position = [8, 0.05];
-            drawnow;
-            frame = getframe(check);
-            writeVideo(video,frame);
+        disturbance(1,i+1) = makima(mileage_f,dis_total,r*states(6,i+1));  % x_disf
+        disturbance(2,i+1) = makima(mileage_r,dis_total,r*states(7,i+1));  % x_disr
+        disturbance(3,i+1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1)),5);                                                                % z_disf
+        disturbance(4,i+1) = round(makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1)),5);                                                                % z_disr
+        if i ~= 1
+            disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
+            disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
+            disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
+            disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
+        else
+            disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
+            disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
+            disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
+            disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
         end
-    elseif mod(i-1, (tc/dt)) == 0 && NLMPC
-        cc = (i-1)/(tc/dt)+1;                   % control count
-        local_dis = 0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9);
-        current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
-        current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
-        current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(1,i));
-        current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(2,i));
 
-        simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.'];
-        simdata.StageParameter = repmat([simdata.StateFcnParameter; nlmpc_config__referenceSignal(states(:,i),u_in,V,theta_init,Ts)],pHorizon+1,1);
-        controller_start = toc;
-        [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
-        controller_end = toc;
-        controller_calc_time = controller_calc_time + (controller_end - controller_start);
-        u(:,i+1) = mv;
-        disp("Controller: "+ cc + ", Exit Flag: " + info.ExitFlag);
-        disp("    Calculated Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
-    else
-        u(:,i+1) = u(:,i);
     end
 
-    disturbance(1,i+1) = makima(mileage_f,dis_total,r*states(6,i+1));  % x_disf
-    disturbance(2,i+1) = makima(mileage_r,dis_total,r*states(7,i+1));  % x_disr
-    disturbance(3,i+1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1));                                                                % z_disf
-    disturbance(4,i+1) = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1));                                                                % z_disr
-    if i ~= 1
-        disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
-        disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
-        disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
-        disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
-    else
-        disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
-        disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
-        disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
-        disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
-    end
 end
 toc;
 disp("Controller Calculation-Time Total Average: "+round(controller_calc_time/cc,2));
