@@ -250,11 +250,12 @@ for i=1:c-1
         simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.'];
         simdata.StageParameter = repmat([simdata.StateFcnParameter; nlmpc_config__referenceSignal(states(:,i),u_in,V,theta_init,Ts)],pHorizon+1,1);
         controller_start = toc;
-        [mv,simdata] = nlmpcmove(runner,states(:,i),u_in,simdata);
+        [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
         controller_end = toc;
         controller_calc_time = controller_calc_time + (controller_end - controller_start);
         u(:,i+1) = mv;
-        disp("Control cycle: "+ cc + ", Calculated Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
+        disp("Controller: "+ cc + ", Exit Flag: " + info.ExitFlag);
+        disp("    Calculated Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
     else
         u(:,i+1) = u(:,i);
     end

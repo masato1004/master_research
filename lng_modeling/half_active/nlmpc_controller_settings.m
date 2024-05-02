@@ -4,20 +4,25 @@ pHorizon = 20; % prediction horizon (control horizon is same as this)
 runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
 
+runner.Optimization.Solver = "cgmres";
+
 runner.Model.StateFcn = 'nlmpc_config__stateFcn';
 % runner.Model.StateJacFcn = 'nlmpc_config__stateJacFcn';
 runner.Model.ParameterLength = height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2;
 
 % hard constraints
-runner.MV(1).Min = -700;
-runner.MV(1).Max =  700;
-runner.MV(2).Min = -700;
-runner.MV(2).Max =  700;
-runner.MV(3).Min = -3000;
-runner.MV(3).Max = 3000;
-runner.MV(4).Min = -3000;
-runner.MV(4).Max = 3000;
-runner.States(8).Min = 0;
+% runner.MV(1).Min = -700;
+% runner.MV(1).Max =  700;
+% runner.MV(2).Min = -700;
+% runner.MV(2).Max =  700;
+% runner.MV(3).Min = -3000;
+% runner.MV(3).Max = 3000;
+% runner.MV(4).Min = -3000;
+% runner.MV(4).Max = 3000;
+% runner.States(8).Min = 0;
+
+% runner.States(5).Min = -0.2;
+% runner.States(5).Max = 0.2;
 
 
 for ct=1:pHorizon+1
