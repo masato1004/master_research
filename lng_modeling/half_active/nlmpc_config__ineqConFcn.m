@@ -45,5 +45,6 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
         cineq3 = [x(5)+0.01257407; -x(5)-0.01257407] - pitch_constraints;
 
         cineq = [cineq1; cineq2; cineq3];
+        last_state = x;
     end
 end
