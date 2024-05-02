@@ -99,23 +99,21 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
             % last_state = x;
             first_d = current_d;
             last_d = current_d;
-        else
-            next_state = A*x;
-            delta_x = next_state - first_states;
-            front_wheel_rotation = delta_x(6)*r;
-            rear_wheel_rotation  = delta_x(7)*r;
-
-            current_d(1) = makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
-            current_d(2) = makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
-            current_d(3) = makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1));
-            current_d(4) = makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2));
-            current_d(5) = diff([last_d(1,1), current_d(1,1)])/dt;
-            current_d(6) = diff([last_d(2,1), current_d(2,1)])/dt;
-            current_d(7) = diff([last_d(3,1), current_d(3,1)])/dt;
-            current_d(8) = diff([last_d(4,1), current_d(4,1)])/dt;
-
-            last_d = current_d;
         end
+        next_state = A*x;
+        delta_x = next_state - first_states;
+        front_wheel_rotation = delta_x(6)*r;
+        rear_wheel_rotation  = delta_x(7)*r;
+
+        current_d(1) = makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
+        current_d(2) = makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
+        current_d(3) = makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1));
+        current_d(4) = makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2));
+        current_d(5) = diff([last_d(1,1), current_d(1,1)])/dt;
+        current_d(6) = diff([last_d(2,1), current_d(2,1)])/dt;
+        current_d(7) = diff([last_d(3,1), current_d(3,1)])/dt;
+        current_d(8) = diff([last_d(4,1), current_d(4,1)])/dt;
+        last_d = current_d;
 
         wb_constraints = 0.05;
         acc_constraints = 1;
