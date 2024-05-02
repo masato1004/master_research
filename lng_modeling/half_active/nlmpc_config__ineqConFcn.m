@@ -155,8 +155,8 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,p)
         acc_constraints = 1.5;
         pitch_constraints = 0.2;
 
-        cineq1 = (current_d(1)-current_d(2))^2 - wb_constraints^2;
-        cineq2 = dxdt(8)^2 - acc_constraints^2;
+        cineq1 = 100*((current_d(1)-current_d(2))^2 - wb_constraints^2);
+        cineq2 = (dxdt(8)^2 - acc_constraints^2);
         cineq3 = (next_state(5)+0.01257407)^2 - pitch_constraints^2;
 
         cineq = [cineq1; cineq2; cineq3];
