@@ -1,4 +1,4 @@
-function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
+function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
     dt = 0.01;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
@@ -74,7 +74,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
                        0,           0,         0,         0,           0,           0,         0,         0];
         
         % discretization
-        % disc_func = @(tau,Mat) (-pinv(A)*expm(A.*(dt-tau)))*Mat;
+        disc_func = @(tau,Mat) (-pinv(A)*expm(A.*(dt-tau)))*Mat;
 
         % A = expm(A.*dt);
         % B = disc_func(dt,B) - disc_func(0,B);
@@ -86,7 +86,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
     persistent ref param_flag last_param last_state last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r delta_x current_wheel_traj_f current_wheel_traj_r
     
     % if stage == 1
-    %     cineq = -1;
+    %     ceq = -1;
     %     last_param = p;
     %     current_d = p(1:8);
     %     current_dis = p(9:8+pHorizon+10);
@@ -100,7 +100,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
     %     last_state = x;
     % else
     if isempty(last_param) | any(param_flag ~= p(end-14))
-        cineq = [-1; -1];
+        ceq = [0; 0];
         ref = p(end-13:end);
         param_flag = p(end-14);
         last_param = p;
@@ -133,23 +133,24 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
         % current_acc = (x - last_state)/dt;
         last_state = x;
 
-        wb_constraints = 0.01;
+        wb_constraints = 0;
         acc_constraints = 1.5;
         pitch_constraints = 0.2;
         lng_constraints = 0.05;
         velocity_constraints = 0.05;
     
-        cineq1 = ((current_d(1)-current_d(2))^2 - wb_constraints^2 + e(1));
-        cineq2 = ((x(8)-ref(8))^2 - velocity_constraints^2 + e(2));
-        % cineq2 = (current_acc(8)^2 - acc_constraints^2 - e(2));
-        % cineq3 = stage*0.3*(next_state(5)+0.01257407)^2 - pitch_constraints^2;
-        % cineq4 = stage*3*((x(1)-current_d(1))^2 - lng_constraints^2);
-        % cineq5 = stage*3*((x(1)-current_d(2))^2 - lng_constraints^2);
+        ceq1 = ((current_d(1)-current_d(2))^2);
+        ceq2 = ((x(8)-ref(8))^2);
+        % ceq2 = ((x(8)-ref(8))^2 - velocity_constraints^2);
+        % ceq2 = (current_acc(8)^2 - acc_constraints^2 - e(2));
+        % ceq3 = stage*0.3*(next_state(5)+0.01257407)^2 - pitch_constraints^2;
+        % ceq4 = stage*3*((x(1)-current_d(1))^2 - lng_constraints^2);
+        % ceq5 = stage*3*((x(1)-current_d(2))^2 - lng_constraints^2);
     
-        cineq = [cineq1; cineq2];
+        ceq = [ceq1;ceq2];
     else
         last_state = x;
-        cineq = [-1; -1];
+        ceq = [0; 0];
     end
 
     % G = [                                     0;
@@ -176,10 +177,10 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
     % dxdt = A*x + B*u + E*current_d + G*g;
     % next_state = x + dxdt*dt;
     % last_d = current_d;
-    % if any(cineq == nan)
-    %     cineq = 0;
+    % if any(ceq == nan)
+    %     ceq = 0;
     % end
-        % if any(cineq > 0)
+        % if any(ceq > 0)
         %     stage
         %     next_state(8)
         %     x(8)

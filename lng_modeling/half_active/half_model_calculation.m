@@ -11,7 +11,7 @@ run("configuration_files/conf__simulation_conditions.m")
 
 % States definition
 run("configuration_files/conf__state_space.m")
-
+        
 % Initial conditions
 run("configuration_files/conf__initial_conditions.m")
 
@@ -65,7 +65,7 @@ last_toc = toc;
 for i=1:c-1
     
     if ~control_flag
-        if TL(i)*V > 8
+        if TL(i)*V > 8.3 
             states(:,i) = [
                 TL(i)*V;
                 z_b_init;
@@ -293,11 +293,11 @@ for i=1:c-1
             current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(1,i));
             current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(2,i));
 
-            reference = nlmpc_config__referenceSignal(states(:,i),u_in,V,theta_init,Ts*pHorizon);
+            reference = nlmpc_config__referenceSignal(states(:,i),u_in,states(:,1),Ts*pHorizon);
             simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
             simdata.StageParameter = repmat([simdata.StateFcnParameter; reference],pHorizon+1,1);
             simdata.TerminalState = reference;
-            % simdata.InitialGuess = [];
+            % reference-states(:,i)
             controller_start = toc;
             [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
             controller_end = toc;
@@ -307,6 +307,9 @@ for i=1:c-1
             fprintf(2,disp_spring+"\n");
             disp("    Cost: "+info.Cost)
             disp("    Calculated Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
+            if info.ExitFlag ~=3
+                simdata.InitialGuess = [];
+            end
         else
             u(:,i+1) = u(:,i);
         end

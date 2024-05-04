@@ -44,7 +44,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 10;
+    pHorizon = 20;
 
     persistent A B E disc_func
     if isempty(A)
@@ -105,7 +105,8 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     %% set parameters through horizon
     persistent param_flag last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r delta_x
     
-    if isempty(last_param) | param_flag ~= p(end)
+    current_d = p(1:8);
+    if isempty(last_param) | any(param_flag ~= p(end))
         param_flag = p(end);
         last_param = p;
         current_d = p(1:8);
@@ -117,7 +118,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         first_states = x;
         first_d = current_d;
         last_d = current_d;
-    else
+    elseif any(round(x,10) ~= round(first_states,10))
         delta_x = x - first_states;
         front_wheel_rotation = delta_x(6)*r;
         rear_wheel_rotation  = delta_x(7)*r;
@@ -126,14 +127,25 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
         current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
         current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
-        current_d(5) = diff([last_d(1,1), current_d(1,1)])/dt;
-        current_d(6) = diff([last_d(2,1), current_d(2,1)])/dt;
-        current_d(7) = diff([last_d(3,1), current_d(3,1)])/dt;
-        current_d(8) = diff([last_d(4,1), current_d(4,1)])/dt;
 
-        last_d = current_d;
+        duration_length_f = dt*x(13)*r/2;
+        temp_duration_f = [(current_d(1)-first_d(1))-duration_length_f,(current_d(1)-first_d(1)),(current_d(1)-first_d(1))+duration_length_f];
+        temp_displacment_f = round(makima(current_dis,current_wheel_traj_f,temp_duration_f),5);
+        temp_gradient_f = [sum(diff(temp_duration_f))/2;sum(diff(temp_displacment_f))/2];
+        duration_length_r = dt*x(14)*r/2;
+        temp_duration_r = [(current_d(2)-first_d(2))-duration_length_r,(current_d(2)-first_d(2)),(current_d(2)-first_d(2))+duration_length_r];
+        temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r),5);
+        temp_gradient_r = [sum(diff(temp_duration_r))/2;sum(diff(temp_displacment_r))/2];
+
+        current_d(5) = (x(13)*r)*(temp_gradient_f(1)/sum(temp_gradient_f));
+        current_d(6) = (x(14)*r)*(temp_gradient_r(1)/sum(temp_gradient_r));
+        current_d(7) = (x(13)*r)*(temp_gradient_f(2)/sum(temp_gradient_f));
+        current_d(8) = (x(14)*r)*(temp_gradient_r(2)/sum(temp_gradient_r));
+        % current_d(5)
+        % current_d(6)
+        % current_d(7)
+        % current_d(8)
     end
-
     
     G = [                                     0;
                                               0;
@@ -150,13 +162,23 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         -sin(atan(current_d(7)/current_d(5)))/r;
         -sin(atan(current_d(8)/current_d(6)))/r];
 
-    G(isnan(G)) = 0;
+    if any(last_d(1,1) ~= current_d(1,1))
+    else
+        G(13) = 0;
+    end
+    if any(last_d(2,1) ~= current_d(2,1))
+    else
+        G(14) = 0;
+    end
+    last_d = current_d;
+    % G(isnan(G)) = 0;
     % G = disc_func(dt,G) - disc_func(0,G);
     
     dxdt = A*x + B*u + E*current_d + G*g;
     % dxdt = x + dxdt*dt;
-    if sum(isnan(current_d)) ~= 0
-        disp(current_d)
-    end
-    dxdt(isnan(dxdt)) = 0;
+    % if sum(isnan(current_d)) ~= 0
+    %     disp(current_d)
+    % end
+    % dxdt(isnan(dxdt)) = 0;
 
+end

@@ -37,8 +37,8 @@ end
 function d = find_disturbance(wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total,current_d,new_states,dt,r)
     d(1,1) = makima(mileage_f,dis_total,r*new_states(6,1));  % x_disf
     d(2,1) = makima(mileage_r,dis_total,r*new_states(7,1));  % x_disr
-    d(3,1) = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),d(1,1));                                                                % z_disf
-    d(4,1) = makima(wheel_traj_f(1,:),wheel_traj_r(2,:),d(2,1));                                                                % z_disr
+    d(3,1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),d(1,1)),5);                                                                % z_disf
+    d(4,1) = round(makima(wheel_traj_f(1,:),wheel_traj_r(2,:),d(2,1)),5);                                                                % z_disr
     d(5,1) = diff([current_d(1,1),d(1,1)])/dt;                                         % dx_disf
     d(6,1) = diff([current_d(2,1),d(2,1)])/dt;                                         % dx_disr
     d(7,1) = diff([current_d(3,1),d(3,1)])/dt;                                         % dz_disf
