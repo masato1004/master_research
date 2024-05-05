@@ -44,7 +44,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 20;
+    pHorizon = 15;
 
     persistent A B E disc_func
     if isempty(A)
@@ -137,10 +137,10 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r),5);
         temp_gradient_r = [sum(diff(temp_duration_r))/2;sum(diff(temp_displacment_r))/2];
 
-        current_d(5) = (x(13)*r)*(temp_gradient_f(1)/sum(temp_gradient_f));
-        current_d(6) = (x(14)*r)*(temp_gradient_r(1)/sum(temp_gradient_r));
-        current_d(7) = (x(13)*r)*(temp_gradient_f(2)/sum(temp_gradient_f));
-        current_d(8) = (x(14)*r)*(temp_gradient_r(2)/sum(temp_gradient_r));
+        current_d(5) = (x(13)*r)*(temp_gradient_f(1)^2/sum(temp_gradient_f.^2));
+        current_d(6) = (x(14)*r)*(temp_gradient_r(1)^2/sum(temp_gradient_r.^2));
+        current_d(7) = (x(13)*r)*(temp_gradient_f(2)^2/sum(temp_gradient_f.^2));
+        current_d(8) = (x(14)*r)*(temp_gradient_r(2)^2/sum(temp_gradient_r.^2));
         % current_d(5)
         % current_d(6)
         % current_d(7)

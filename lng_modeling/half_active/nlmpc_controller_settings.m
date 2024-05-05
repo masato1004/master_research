@@ -1,5 +1,5 @@
 Ts = tc;       % control period
-pHorizon = 20; % prediction horizon (control horizon is same as this)
+pHorizon = 15; % prediction horizon (control horizon is same as this)
 
 runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
@@ -19,17 +19,19 @@ if solver == "fmincon"
     runner.Optimization.SolverOptions.FunctionTolerance = 1e-05; % defalt 1e-06
     runner.Optimization.SolverOptions.UseParallel = true;
     runner.Optimization.SolverOptions.FunValCheck = 'on';
+    % runner.Optimization.SolverOptions.PlotFcn = 'optimplotfval';
     % runner.Optimization.SolverOptions.PlotFcn = 'optimplotfvalconstr';
 elseif solver == "cgmres"
     % Set the solver parameters.
     runner.Optimization.SolverOptions.StabilizationParameter = 1/(runner.Ts);
-    runner.Optimization.SolverOptions.MaxIterations = 200;
-    runner.Optimization.SolverOptions.Restart = 20;
-    runner.Optimization.SolverOptions.BarrierParameter = 1e20;
-    runner.Optimization.SolverOptions.TerminationTolerance = 1e-06;
-    runner.Optimization.SolverOptions.FiniteDifferenceStepSize = 1e-6;
+    runner.Optimization.SolverOptions.MaxIterations = 50;
+    runner.Optimization.SolverOptions.Restart = 10;
+    runner.Optimization.SolverOptions.BarrierParameter = 0.8;
+    runner.Optimization.SolverOptions.TerminationTolerance = 1e-07;
+    runner.Optimization.SolverOptions.FiniteDifferenceStepSize = 1e-09;
 end
-runner.Optimization.PerturbationRatio = 1e-18;
+runner.Optimization.PerturbationRatio = 1e-07;
+runner.Optimization.UseSuboptimalSolution = true;
 
 runner.Model.StateFcn = 'nlmpc_config__stateFcn';
 runner.Model.StateJacFcn = 'nlmpc_config__stateFcnJacobian';
@@ -38,19 +40,19 @@ runner.Model.ParameterLength = 1+height(disturbance)+(pHorizon+10)*3+(pHorizon+1
 % hard constraints
 runner.UseMVRate = true;
 
-runner.ManipulatedVariables(1).Min = -400;
-runner.ManipulatedVariables(1).Max =  400;
-runner.ManipulatedVariables(2).Min = -400;
-runner.ManipulatedVariables(2).Max =  400;
+runner.ManipulatedVariables(1).Min = -800;
+runner.ManipulatedVariables(1).Max =  800;
+runner.ManipulatedVariables(2).Min = -800;
+runner.ManipulatedVariables(2).Max =  800;
 runner.ManipulatedVariables(3).Min = -3000;
 runner.ManipulatedVariables(3).Max = 3000;
 runner.ManipulatedVariables(4).Min = -3000;
 runner.ManipulatedVariables(4).Max = 3000;
 
-runner.ManipulatedVariables(1).RateMin = -50;
-runner.ManipulatedVariables(1).RateMax =  50;
-runner.ManipulatedVariables(2).RateMin = -50;
-runner.ManipulatedVariables(2).RateMax =  50;
+runner.ManipulatedVariables(1).RateMin = -600;
+runner.ManipulatedVariables(1).RateMax =  600;
+runner.ManipulatedVariables(2).RateMin = -600;
+runner.ManipulatedVariables(2).RateMax =  600;
 runner.ManipulatedVariables(3).RateMin = -500;
 runner.ManipulatedVariables(3).RateMax = 500;
 runner.ManipulatedVariables(4).RateMin = -500;
@@ -68,7 +70,7 @@ for ct=1:pHorizon+1
     runner.Stages(ct).IneqConFcn = 'nlmpc_config__ineqConFcn';
     % runner.Stages(ct).IneqConJacFcn = 'nlmpc_config__ineqConFcnJacobian';
     runner.Stages(ct).ParameterLength = 1+height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2+height(states);
-    runner.Stages(ct).SlackVariableLength = 2;
+    runner.Stages(ct).SlackVariableLength = 8;
     if ct ~= pHorizon+1
         runner.Stages(ct).EqConFcn = 'nlmpc_config__eqConFcn';
     end

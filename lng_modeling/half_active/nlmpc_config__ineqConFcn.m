@@ -24,7 +24,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 20;
+    pHorizon = 15;
 
     persistent A B E disc_func
     if isempty(A)
@@ -100,7 +100,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
     %     last_state = x;
     % else
     if isempty(last_param) | any(param_flag ~= p(end-14))
-        cineq = [-1; -1];
+        cineq = [-1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1];
         ref = p(end-13:end);
         param_flag = p(end-14);
         last_param = p;
@@ -116,40 +116,69 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
         last_state = x;
         % first_d = current_d;
         % last_d = current_d;
-    elseif any(round(x,10) ~= round(first_states,10))
+    elseif any(round(x,10) ~= round(first_states,10)) && any(stage ~=1)
         delta_x = x - first_states;
         front_wheel_rotation = delta_x(6)*r;
         rear_wheel_rotation  = delta_x(7)*r;
 
         current_d(1) = first_d(1) + makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
         current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
-        % current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
-        % current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
-        % current_d(5) = diff([last_d(1,1), current_d(1,1)])/(dt*pHorizon);
-        % current_d(6) = diff([last_d(2,1), current_d(2,1)])/(dt*pHorizon);
-        % current_d(7) = diff([round(last_d(3,1),5), current_d(3,1)])/(dt*pHorizon);
-        % current_d(8) = diff([round(last_d(4,1),5), current_d(4,1)])/(dt*pHorizon);
+        current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
+        current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
+        
+        duration_length_f = dt*x(13)*r/2;
+        temp_duration_f = [(current_d(1)-first_d(1))-duration_length_f,(current_d(1)-first_d(1)),(current_d(1)-first_d(1))+duration_length_f];
+        temp_displacment_f = round(makima(current_dis,current_wheel_traj_f,temp_duration_f),5);
+        temp_gradient_f = [sum(diff(temp_duration_f))/2;sum(diff(temp_displacment_f))/2];
+        duration_length_r = dt*x(14)*r/2;
+        temp_duration_r = [(current_d(2)-first_d(2))-duration_length_r,(current_d(2)-first_d(2)),(current_d(2)-first_d(2))+duration_length_r];
+        temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r),5);
+        temp_gradient_r = [sum(diff(temp_duration_r))/2;sum(diff(temp_displacment_r))/2];
 
-        % current_acc = (x - last_state)/dt;
+        current_d(5) = (x(13)*r)*(temp_gradient_f(1)^2/sum(temp_gradient_f.^2));
+        current_d(6) = (x(14)*r)*(temp_gradient_r(1)^2/sum(temp_gradient_r.^2));
+        current_d(7) = (x(13)*r)*(temp_gradient_f(2)^2/sum(temp_gradient_f.^2));
+        current_d(8) = (x(14)*r)*(temp_gradient_r(2)^2/sum(temp_gradient_r.^2));
+        current_acc = (x - first_states)/(dt*(stage-1));
         last_state = x;
 
-        wb_constraints = 0.01;
-        acc_constraints = 1.5;
-        pitch_constraints = 0.2;
+        wb_constraints = 0.05;
+        acc_constraints1 = -1;
+        acc_constraints2 = 1.5;
+        front_constraints1 = -0.04;
+        front_constraints2 =  0.04;
+        rear_constraints1 = -0.04;
+        rear_constraints2 =  0.04;
+        pitch_constraints1 = -0.01;
+        pitch_constraints2 = 0.01;
         lng_constraints = 0.05;
-        velocity_constraints = 0.05;
+        velocity_constraints1 = -0.05;
+        velocity_constraints2 = 0.05;
     
-        cineq1 = ((current_d(1)-current_d(2))^2 - wb_constraints^2 + e(1));
-        cineq2 = ((x(8)-ref(8))^2 - velocity_constraints^2 + e(2));
-        % cineq2 = (current_acc(8)^2 - acc_constraints^2 - e(2));
-        % cineq3 = stage*0.3*(next_state(5)+0.01257407)^2 - pitch_constraints^2;
+        cineq1 = ((current_d(1)-current_d(2)) - wb_constraints - e(1));
+        cineq2 = ((current_d(2)-current_d(1)) - wb_constraints - e(2));
+        % cineq2 = ((x(8)-ref(8))^2 - velocity_constraints^2 + e(2));
+        cineq3 = (current_acc(8) - acc_constraints1 - e(3));
+        cineq4 = (current_acc(8) - acc_constraints2 - e(4));
+        cineq5 = ((x(8)-ref(8))- velocity_constraints1 - e(5));
+        cineq6 = ((x(8)-ref(8))- velocity_constraints2 - e(6));
+        cineq7 = ((x(5)-ref(5))- pitch_constraints1 - e(7));
+        cineq8 = ((x(5)-ref(5))- pitch_constraints2 - e(8));
+        cineq9 = u-[800; 800; 3000; 3000];
+        cineq10 = -u-[800; 800; 3000; 3000];
+        % cineq6 = ((x(1)-current_d(1)) - front_constraints1 - e(4));
+        % cineq7 = ((x(1)-current_d(1)) - front_constraints2 - e(5));
+        % cineq8 = ((x(1)-current_d(2)) - rear_constraints1 - e(6));
+        % cineq9 = ((x(1)-current_d(2)) - rear_constraints2 - e(7));
+        % cineq5 = ((x(1)-current_d(1))^2 - distance_constraints^2 - e(5));
+        % cineq6 = ((x(1)-current_d(2))^2 - distance_constraints^2 - e(6));
         % cineq4 = stage*3*((x(1)-current_d(1))^2 - lng_constraints^2);
         % cineq5 = stage*3*((x(1)-current_d(2))^2 - lng_constraints^2);
     
-        cineq = [cineq1; cineq2];
+        cineq = [cineq1; cineq2; cineq3; cineq4; cineq5; cineq6; cineq7; cineq8; cineq9; cineq10];
     else
         last_state = x;
-        cineq = [-1; -1];
+        cineq = [-1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1];
     end
 
     % G = [                                     0;

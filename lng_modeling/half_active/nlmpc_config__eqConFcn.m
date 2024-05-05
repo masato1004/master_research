@@ -24,7 +24,7 @@ function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 20;
+    pHorizon = 15;
 
     persistent A B E disc_func
     if isempty(A)
@@ -123,13 +123,22 @@ function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
 
         current_d(1) = first_d(1) + makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
         current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
-        % current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
-        % current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
-        % current_d(5) = diff([last_d(1,1), current_d(1,1)])/(dt*pHorizon);
-        % current_d(6) = diff([last_d(2,1), current_d(2,1)])/(dt*pHorizon);
-        % current_d(7) = diff([round(last_d(3,1),5), current_d(3,1)])/(dt*pHorizon);
-        % current_d(8) = diff([round(last_d(4,1),5), current_d(4,1)])/(dt*pHorizon);
+        current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
+        current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
+        
+        duration_length_f = dt*x(13)*r/2;
+        temp_duration_f = [(current_d(1)-first_d(1))-duration_length_f,(current_d(1)-first_d(1)),(current_d(1)-first_d(1))+duration_length_f];
+        temp_displacment_f = round(makima(current_dis,current_wheel_traj_f,temp_duration_f),5);
+        temp_gradient_f = [sum(diff(temp_duration_f))/2;sum(diff(temp_displacment_f))/2];
+        duration_length_r = dt*x(14)*r/2;
+        temp_duration_r = [(current_d(2)-first_d(2))-duration_length_r,(current_d(2)-first_d(2)),(current_d(2)-first_d(2))+duration_length_r];
+        temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r),5);
+        temp_gradient_r = [sum(diff(temp_duration_r))/2;sum(diff(temp_displacment_r))/2];
 
+        current_d(5) = (x(13)*r)*(temp_gradient_f(1)^2/sum(temp_gradient_f.^2));
+        current_d(6) = (x(14)*r)*(temp_gradient_r(1)^2/sum(temp_gradient_r.^2));
+        current_d(7) = (x(13)*r)*(temp_gradient_f(2)^2/sum(temp_gradient_f.^2));
+        current_d(8) = (x(14)*r)*(temp_gradient_r(2)^2/sum(temp_gradient_r.^2));
         % current_acc = (x - last_state)/dt;
         last_state = x;
 
@@ -139,15 +148,17 @@ function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
         lng_constraints = 0.05;
         velocity_constraints = 0.05;
     
-        ceq1 = ((current_d(1)-current_d(2))^2);
-        ceq2 = ((x(8)-ref(8))^2);
+        ceq1 = (current_d(5)-ref(8));
+        ceq2 = (current_d(6)-ref(8));
+        % ceq3 = x(5)-ref(5);
+        % ceq4 = x(8)-ref(8);
         % ceq2 = ((x(8)-ref(8))^2 - velocity_constraints^2);
         % ceq2 = (current_acc(8)^2 - acc_constraints^2 - e(2));
         % ceq3 = stage*0.3*(next_state(5)+0.01257407)^2 - pitch_constraints^2;
         % ceq4 = stage*3*((x(1)-current_d(1))^2 - lng_constraints^2);
         % ceq5 = stage*3*((x(1)-current_d(2))^2 - lng_constraints^2);
     
-        ceq = [ceq1;ceq2];
+        ceq = [ceq1; ceq2];
     else
         last_state = x;
         ceq = [0; 0];

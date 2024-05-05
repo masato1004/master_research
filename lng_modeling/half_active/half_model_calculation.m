@@ -114,6 +114,7 @@ for i=1:c-1
             disp(" ")
             disp("-------------------------------------------------------------------------------------")
             disp(percentage + "% --- Estimated Remaining Time: " + round(((toc-last_toc)*(100-percentage)/one_loop)/3600,2) + " hour");
+            disp("    Controller Calculation-Time Total Average: "+round(controller_calc_time/cc,2));
             disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
             last_toc = toc;
             toc;
@@ -302,11 +303,14 @@ for i=1:c-1
             [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
             controller_end = toc;
             controller_calc_time = controller_calc_time + (controller_end - controller_start);
+            if info.ExitFlag <= 0
+                mv = zeros(4,1);
+            end
             u(:,i+1) = mv;
-            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Exit Flag: " + info.ExitFlag;
+            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]"+ "Exit Flag: " + info.ExitFlag;
             fprintf(2,disp_spring+"\n");
             disp("    Cost: "+info.Cost)
-            disp("    Calculated Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
+            disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
             if info.ExitFlag ~=3
                 simdata.InitialGuess = [];
             end
