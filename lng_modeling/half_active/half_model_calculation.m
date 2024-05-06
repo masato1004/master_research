@@ -65,7 +65,7 @@ last_toc = toc;
 for i=1:c-1
     
     if ~control_flag
-        if TL(i)*V > 8.3 
+        if TL(i)*V > 8.60
             states(:,i) = [
                 TL(i)*V;
                 z_b_init;
@@ -296,18 +296,24 @@ for i=1:c-1
 
             reference = nlmpc_config__referenceSignal(states(:,i),u_in,states(:,1),Ts*pHorizon);
             simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
-            simdata.StageParameter = repmat([simdata.StateFcnParameter; reference],pHorizon+1,1);
-            simdata.TerminalState = reference;
-            % reference-states(:,i)
+            simdata.StageParameter    = repmat([simdata.StateFcnParameter; reference],pHorizon+1,1);
+            simdata.TerminalState     = reference;
+            reference(5)-states(5,i)
+            % states(5,i)
             controller_start = toc;
             [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
-            controller_end = toc;
-            controller_calc_time = controller_calc_time + (controller_end - controller_start);
             if info.ExitFlag <= 0
                 mv = zeros(4,1);
             end
+
+            % onlinedata.StateFcnParameter = simdata.StateFcnParameter;
+            % onlinedata.StageParameter    = simdata.StageParameter   ;
+            % [mv, onlinedata] = nlmpcControllerMEX(states(:,i), u_in, onlinedata);
+            controller_end = toc;
+            controller_calc_time = controller_calc_time + (controller_end - controller_start);
+
             u(:,i+1) = mv;
-            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]"+ "Exit Flag: " + info.ExitFlag;
+            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]"; % + "Exit Flag: " + info.ExitFlag;
             fprintf(2,disp_spring+"\n");
             disp("    Cost: "+info.Cost)
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));

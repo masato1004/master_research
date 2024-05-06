@@ -1,0 +1,26 @@
+# ninja log v5
+17	256	7367228391804127	build/win64/mtimes.obj	38865367c7c1ece0
+7	311	7367228391804127	build/win64/nlmpcmoveCodeGeneration_terminate.obj	83c4b5cf4f591cce
+23	318	7367228391804127	build/win64/evaluateStateTrajectory.obj	8f6a220831398a25
+3	323	7367228391874218	build/win64/nlmpcmoveCodeGeneration_data.obj	fce368547f0e071e
+5	330	7367228391874218	build/win64/nlmpcmoveCodeGeneration_initialize.obj	ae6861ad41874722
+52	332	7367228391874218	build/win64/norm.obj	79b74172a3c5f3fc
+46	334	7367228391874218	build/win64/nlmpcmoveCodeGeneration_emxutil.obj	c3bfc0db17833c7a
+58	335	7367228392029373	build/win64/_coder_nlmpcmoveCodeGeneration_info.obj	a20da3ac240b60eb
+15	337	7367228392029373	build/win64/nlmpc_config__costFcnJacobian.obj	fbffb16111d1e1cb
+0	338	7367228392185784	build/win64/rt_nonfinite.obj	27fdf499926b6fa6
+20	340	7367228392185784	build/win64/makima.obj	5dd76185dae11ec7
+39	341	7367228392340938	build/win64/unpackDecisionVariables.obj	f22ed1a579114ad7
+44	343	7367228392185784	build/win64/nlmpc_config__ineqConFcn.obj	6b32baef7cb2bbdd
+31	344	7367228392340938	build/win64/nlmpc_config__stateFcn.obj	11e79346aa18123f
+55	345	7367228392029373	build/win64/_coder_nlmpcmoveCodeGeneration_mex.obj	63c971e898799835
+34	388	7367228393120555	build/win64/nlmpc_config__costFcnJacobianAD.obj	ad1ec68f95b9ed05
+29	413	7367228393275717	build/win64/mldivide.obj	d9cd8c42d0547569
+314	416	7367228393432118	build/win64/computeOptimalityMatrix.obj	63412b3a76f5da28
+260	430	7367228393432118	build/win64/c_mexapi_version.obj	96d44b98f4493b1b
+325	431	7367228393432118	build/win64/sumMatrixIncludeNaN.obj	a119f921e6523df4
+49	443	7367228393592246	build/win64/fdgmres.obj	500fc6c88904a9e6
+319	554	7367228394683220	build/win64/_coder_nlmpcmoveCodeGeneration_api.obj	fed09b5aaecffad7
+41	575	7367228394994806	build/win64/nlmpc_config__stateFcnJacobian.obj	73c398c08af275f8
+12	872	7367228397964611	build/win64/nlmpcmoveCodeGeneration.obj	bb1d2154fdb745f7
+36	1092	7367228400160110	build/win64/getHamiltonianDerivatives.obj	8c833d71f94c961f

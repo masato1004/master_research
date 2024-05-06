@@ -19,7 +19,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     
     % Copyright 2023 The MathWorks, Inc.
     %% Vehicle parameter
-    dt = 0.01;     % control period
+    dt = 0.001;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -44,7 +44,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 15;
+    pHorizon = 50;
 
     persistent A B E disc_func
     if isempty(A)
@@ -106,7 +106,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     persistent param_flag last_param last_d first_states first_d current_d current_dis current_mileage_f current_mileage_r current_wheel_traj_f current_wheel_traj_r delta_x
     
     current_d = p(1:8);
-    if isempty(last_param) | any(param_flag ~= p(end))
+    if isempty(last_param)
         param_flag = p(end);
         last_param = p;
         current_d = p(1:8);
@@ -118,33 +118,49 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         first_states = x;
         first_d = current_d;
         last_d = current_d;
-    elseif any(round(x,10) ~= round(first_states,10))
-        delta_x = x - first_states;
-        front_wheel_rotation = delta_x(6)*r;
-        rear_wheel_rotation  = delta_x(7)*r;
-        
-        current_d(1) = first_d(1) + makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
-        current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
-        current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
-        current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
+    elseif any(param_flag ~= p(end))
+        param_flag = p(end);
+        last_param = p;
+        current_d = p(1:8);
+        current_dis = p(9:8+pHorizon+10);
+        current_mileage_f = p(9+pHorizon+10:8+(pHorizon+10)*2);
+        current_mileage_r = p(9+(pHorizon+10)*2:8+(pHorizon+10)*3);
+        current_wheel_traj_f = [p(9+(pHorizon+10)*3:8+(pHorizon+10)*4)];
+        current_wheel_traj_r = [p(9+(pHorizon+10)*4:8+(pHorizon+10)*5)];
+        first_states = x;
+        first_d = current_d;
+        last_d = current_d;
+    else
+        check_x = round(x*1e10);
+        check_first_state = round(x*1e10);
+        if any(check_x ~= check_first_state)
+            delta_x = x - first_states;
+            front_wheel_rotation = delta_x(6)*r;
+            rear_wheel_rotation  = delta_x(7)*r;
+            
+            current_d(1) = first_d(1) + makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
+            current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
+            current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1))*1e05)*1e-05;
+            current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2))*1e05)*1e-05;
 
-        duration_length_f = dt*x(13)*r/2;
-        temp_duration_f = [(current_d(1)-first_d(1))-duration_length_f,(current_d(1)-first_d(1)),(current_d(1)-first_d(1))+duration_length_f];
-        temp_displacment_f = round(makima(current_dis,current_wheel_traj_f,temp_duration_f),5);
-        temp_gradient_f = [sum(diff(temp_duration_f))/2;sum(diff(temp_displacment_f))/2];
-        duration_length_r = dt*x(14)*r/2;
-        temp_duration_r = [(current_d(2)-first_d(2))-duration_length_r,(current_d(2)-first_d(2)),(current_d(2)-first_d(2))+duration_length_r];
-        temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r),5);
-        temp_gradient_r = [sum(diff(temp_duration_r))/2;sum(diff(temp_displacment_r))/2];
+            duration_length_f = dt*x(13)*r/2;
+            temp_duration_f = [(current_d(1)-first_d(1))-duration_length_f,(current_d(1)-first_d(1)),(current_d(1)-first_d(1))+duration_length_f];
+            temp_displacment_f = round(makima(current_dis,current_wheel_traj_f,temp_duration_f)*1e05)*1e-05;
+            temp_gradient_f = [sum(diff(temp_duration_f))/2;sum(diff(temp_displacment_f))/2];
+            duration_length_r = dt*x(14)*r/2;
+            temp_duration_r = [(current_d(2)-first_d(2))-duration_length_r,(current_d(2)-first_d(2)),(current_d(2)-first_d(2))+duration_length_r];
+            temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r)*1e05)*1e-05;
+            temp_gradient_r = [sum(diff(temp_duration_r))/2;sum(diff(temp_displacment_r))/2];
 
-        current_d(5) = (x(13)*r)*(temp_gradient_f(1)^2/sum(temp_gradient_f.^2));
-        current_d(6) = (x(14)*r)*(temp_gradient_r(1)^2/sum(temp_gradient_r.^2));
-        current_d(7) = (x(13)*r)*(temp_gradient_f(2)^2/sum(temp_gradient_f.^2));
-        current_d(8) = (x(14)*r)*(temp_gradient_r(2)^2/sum(temp_gradient_r.^2));
-        % current_d(5)
-        % current_d(6)
-        % current_d(7)
-        % current_d(8)
+            current_d(5) = (x(13)*r)*(temp_gradient_f(1)^2/sum(temp_gradient_f.^2));
+            current_d(6) = (x(14)*r)*(temp_gradient_r(1)^2/sum(temp_gradient_r.^2));
+            current_d(7) = (x(13)*r)*(temp_gradient_f(2)^2/sum(temp_gradient_f.^2));
+            current_d(8) = (x(14)*r)*(temp_gradient_r(2)^2/sum(temp_gradient_r.^2));
+            % current_d(5)
+            % current_d(6)
+            % current_d(7)
+            % current_d(8)
+        end
     end
     
     G = [                                     0;

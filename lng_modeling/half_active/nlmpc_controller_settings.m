@@ -1,5 +1,5 @@
 Ts = tc;       % control period
-pHorizon = 15; % prediction horizon (control horizon is same as this)
+pHorizon = 50; % prediction horizon (control horizon is same as this)
 
 runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
@@ -24,9 +24,9 @@ if solver == "fmincon"
 elseif solver == "cgmres"
     % Set the solver parameters.
     runner.Optimization.SolverOptions.StabilizationParameter = 1/(runner.Ts);
-    runner.Optimization.SolverOptions.MaxIterations = 50;
-    runner.Optimization.SolverOptions.Restart = 10;
-    runner.Optimization.SolverOptions.BarrierParameter = 0.8;
+    runner.Optimization.SolverOptions.MaxIterations = 20;
+    runner.Optimization.SolverOptions.Restart = 5;
+    runner.Optimization.SolverOptions.BarrierParameter = 1e10;
     runner.Optimization.SolverOptions.TerminationTolerance = 1e-07;
     runner.Optimization.SolverOptions.FiniteDifferenceStepSize = 1e-09;
 end
@@ -53,15 +53,15 @@ runner.ManipulatedVariables(1).RateMin = -600;
 runner.ManipulatedVariables(1).RateMax =  600;
 runner.ManipulatedVariables(2).RateMin = -600;
 runner.ManipulatedVariables(2).RateMax =  600;
-runner.ManipulatedVariables(3).RateMin = -500;
-runner.ManipulatedVariables(3).RateMax = 500;
-runner.ManipulatedVariables(4).RateMin = -500;
-runner.ManipulatedVariables(4).RateMax = 500;
+runner.ManipulatedVariables(3).RateMin = -100;
+runner.ManipulatedVariables(3).RateMax = 100;
+runner.ManipulatedVariables(4).RateMin = -100;
+runner.ManipulatedVariables(4).RateMax = 100;
 
 % runner.States(8).Min = 0;
 
-% runner.States(5).Min = -0.2;
-% runner.States(5).Max = 0.2;
+% runner.States(5).Min = deg2rad(rad2deg(theta_init)-0.2);
+% runner.States(5).Max = deg2rad(rad2deg(theta_init)+0.2);
 
 
 for ct=1:pHorizon+1
@@ -70,10 +70,10 @@ for ct=1:pHorizon+1
     runner.Stages(ct).IneqConFcn = 'nlmpc_config__ineqConFcn';
     % runner.Stages(ct).IneqConJacFcn = 'nlmpc_config__ineqConFcnJacobian';
     runner.Stages(ct).ParameterLength = 1+height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2+height(states);
-    runner.Stages(ct).SlackVariableLength = 8;
-    if ct ~= pHorizon+1
-        runner.Stages(ct).EqConFcn = 'nlmpc_config__eqConFcn';
-    end
+    runner.Stages(ct).SlackVariableLength = 3;
+    % if ct ~= pHorizon+1
+    %     runner.Stages(ct).EqConFcn = 'nlmpc_config__eqConFcn';
+    % end
 end
 
 runner = generateJacobianFunction(runner,"state");
@@ -92,5 +92,9 @@ simdata.StageParameter = repmat([simdata.StateFcnParameter; nlmpc_config__refere
 % simdata.InitialGuess = [];
 validateFcns(runner,states(:,1),u(:,1),simdata);
 disp('validate done.')
+
+% [coredata, onlinedata] = getCodeGenerationData(runner, states(:,1), u(:,1), StateFcnParameter=simdata.StateFcnParameter, StageParameter=simdata.StageParameter);
+% % !del ./nlmpcControllerMEX.mexw64;
+% buildMEX(runner, "nlmpcControllerMEX", coredata, onlinedata);
 
 % options = nlmpcmoveopt;

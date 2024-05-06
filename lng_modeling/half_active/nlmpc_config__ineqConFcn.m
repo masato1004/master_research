@@ -1,5 +1,5 @@
 function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
-    dt = 0.01;     % control period
+    dt = 0.001;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -24,7 +24,7 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 15;
+    pHorizon = 50;
 
     persistent A B E disc_func
     if isempty(A)
@@ -99,8 +99,8 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
     %     last_d = current_d;
     %     last_state = x;
     % else
-    if isempty(last_param) | any(param_flag ~= p(end-14))
-        cineq = [-1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1];
+    if isempty(last_param)
+        cineq = [-1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1];
         ref = p(end-13:end);
         param_flag = p(end-14);
         last_param = p;
@@ -116,23 +116,40 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
         last_state = x;
         % first_d = current_d;
         % last_d = current_d;
-    elseif any(round(x,10) ~= round(first_states,10)) && any(stage ~=1)
+    elseif any(param_flag ~= p(end-14))
+        cineq = [-1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1];
+        ref = p(end-13:end);
+        param_flag = p(end-14);
+        last_param = p;
+        current_d = p(1:8);
+        current_dis = p(9:8+pHorizon+10);
+        current_mileage_f = p(9+pHorizon+10:8+(pHorizon+10)*2);
+        current_mileage_r = p(9+(pHorizon+10)*2:8+(pHorizon+10)*3);
+        current_wheel_traj_f = [p(9+(pHorizon+10)*3:8+(pHorizon+10)*4)];
+        current_wheel_traj_r = [p(9+(pHorizon+10)*4:8+(pHorizon+10)*5)];
+        first_states = x;
+        first_d = current_d;
+        last_d = current_d;
+        last_state = x;
+        % first_d = current_d;
+        % last_d = current_d;
+    elseif any(round(x*1e10) ~= round(first_states*1e10)) && any(stage ~=1)
         delta_x = x - first_states;
         front_wheel_rotation = delta_x(6)*r;
         rear_wheel_rotation  = delta_x(7)*r;
 
         current_d(1) = first_d(1) + makima(current_mileage_f,current_dis,front_wheel_rotation);  % x_disf
         current_d(2) = first_d(2) + makima(current_mileage_r,current_dis,rear_wheel_rotation);  % x_disr
-        current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1)),5);
-        current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2)),5);
+        current_d(3) = round(makima(current_dis,current_wheel_traj_f,current_d(1)-first_d(1))*1e05)*1e-05;
+        current_d(4) = round(makima(current_dis,current_wheel_traj_r,current_d(2)-first_d(2))*1e05)*1e-05;
         
         duration_length_f = dt*x(13)*r/2;
         temp_duration_f = [(current_d(1)-first_d(1))-duration_length_f,(current_d(1)-first_d(1)),(current_d(1)-first_d(1))+duration_length_f];
-        temp_displacment_f = round(makima(current_dis,current_wheel_traj_f,temp_duration_f),5);
+        temp_displacment_f = round(makima(current_dis,current_wheel_traj_f,temp_duration_f)*1e05)*1e-05;
         temp_gradient_f = [sum(diff(temp_duration_f))/2;sum(diff(temp_displacment_f))/2];
         duration_length_r = dt*x(14)*r/2;
         temp_duration_r = [(current_d(2)-first_d(2))-duration_length_r,(current_d(2)-first_d(2)),(current_d(2)-first_d(2))+duration_length_r];
-        temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r),5);
+        temp_displacment_r = round(makima(current_dis,current_wheel_traj_r,temp_duration_r)*1e05)*1e-05;
         temp_gradient_r = [sum(diff(temp_duration_r))/2;sum(diff(temp_displacment_r))/2];
 
         current_d(5) = (x(13)*r)*(temp_gradient_f(1)^2/sum(temp_gradient_f.^2));
@@ -143,29 +160,31 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
         last_state = x;
 
         wb_constraints = 0.05;
-        acc_constraints1 = -1;
-        acc_constraints2 = 1.5;
-        front_constraints1 = -0.04;
-        front_constraints2 =  0.04;
+        acc_constraints1 = 0.2;
+        acc_constraints2 = 0.2;
+        front_constraints = 0.04;
         rear_constraints1 = -0.04;
         rear_constraints2 =  0.04;
-        pitch_constraints1 = -0.01;
-        pitch_constraints2 = 0.01;
+        pitch_constraints = deg2rad(0.2);
         lng_constraints = 0.05;
-        velocity_constraints1 = -0.05;
+        velocity_constraints = 0.05;
         velocity_constraints2 = 0.05;
     
-        cineq1 = ((current_d(1)-current_d(2)) - wb_constraints - e(1));
-        cineq2 = ((current_d(2)-current_d(1)) - wb_constraints - e(2));
+        cineq1 = ((current_d(1)-current_d(2)) - wb_constraints); %  - e(1)
+        cineq2 = ((current_d(2)-current_d(1)) - wb_constraints); %  - e(2)
+        cineq3 = 10*(current_d(5)-ref(8)) - front_constraints - e(1);
+        cineq4 = 10*(ref(8)-current_d(5)) - front_constraints - e(1);
+        cineq5 = 10*(current_d(6)-ref(8)) - front_constraints - e(2);
+        cineq6 = 10*(ref(8)-current_d(6)) - front_constraints - e(2);
         % cineq2 = ((x(8)-ref(8))^2 - velocity_constraints^2 + e(2));
-        cineq3 = (current_acc(8) - acc_constraints1 - e(3));
-        cineq4 = (current_acc(8) - acc_constraints2 - e(4));
-        cineq5 = ((x(8)-ref(8))- velocity_constraints1 - e(5));
-        cineq6 = ((x(8)-ref(8))- velocity_constraints2 - e(6));
-        cineq7 = ((x(5)-ref(5))- pitch_constraints1 - e(7));
-        cineq8 = ((x(5)-ref(5))- pitch_constraints2 - e(8));
-        cineq9 = u-[800; 800; 3000; 3000];
-        cineq10 = -u-[800; 800; 3000; 3000];
+        % cineq3 = (current_acc(8) - acc_constraints1- e(1)); % - e(1)
+        % cineq4 = (-current_acc(8) - acc_constraints2- e(2)); % - e(2)
+        cineqV1 = ((x(8)-ref(8)) - velocity_constraints - e(3));
+        cineqV2 = ((ref(8)-x(8)) - velocity_constraints - e(3));
+        cineq7 = 100*((x(5)-ref(5)) - pitch_constraints); %  - e(1)
+        cineq8 = 100*((ref(5)-x(5)) - pitch_constraints); %  - e(2)
+        cineq9 = u-[1000; 1000; 3000; 3000];
+        cineq10 = -u-[1000; 1000; 3000; 3000];
         % cineq6 = ((x(1)-current_d(1)) - front_constraints1 - e(4));
         % cineq7 = ((x(1)-current_d(1)) - front_constraints2 - e(5));
         % cineq8 = ((x(1)-current_d(2)) - rear_constraints1 - e(6));
@@ -175,10 +194,10 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
         % cineq4 = stage*3*((x(1)-current_d(1))^2 - lng_constraints^2);
         % cineq5 = stage*3*((x(1)-current_d(2))^2 - lng_constraints^2);
     
-        cineq = [cineq1; cineq2; cineq3; cineq4; cineq5; cineq6; cineq7; cineq8; cineq9; cineq10];
+        cineq = [cineq1; cineq2; cineq3; cineq4; cineq5; cineq6; cineq7; cineq8; cineqV1; cineqV2; cineq9; cineq10];
     else
         last_state = x;
-        cineq = [-1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1];
+        cineq = [-1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1; -1];
     end
 
     % G = [                                     0;
