@@ -1,5 +1,5 @@
 function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
-    dt = 0.001;     % control period
+    dt = 0.005;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -24,7 +24,7 @@ function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 50;
+    pHorizon = 25;
 
     persistent A B E disc_func
     if isempty(A)

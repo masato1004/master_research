@@ -3,12 +3,12 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
     ref = p(end-13:end);
     er = x-ref;
     % New Half-Car-Model cost function.
-    Q = diag([1e-10 1e06 1e-3 1e-3 1e08 1e-10 1e-10 1e08 1e02 1e-10 1e-10 1e02 1e-20 1e-20]);
+    Q = diag([1e-10 1e06 1e-3 1e-3 1e05 1e-10 1e-10 1e06 1e02 1e-10 1e-10 1e02 1e02 1e02]);
     % R = diag([1e-20 1e-20 1e-20 1e-20]);
     % Q = diag([1e02 1e05 1e10 1e03 1e04 1e-10 1e-10]);
-    R = diag([1e-05 1e-05 1e-08 1e-08]);
+    R = diag([1e05 1e05 1e03 1e03]);
     dR = diag([1e-04 1e-04 1e-02 1e-02]);
-    Rs = diag([1e01 1e01 1e01]);
+    Rs = diag([1e06]);
     pHorizon = 50;
 
     % if stage == 1
@@ -21,4 +21,4 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
     % if any(u > 5000) 
     %     J = J*J;
     % end
-    J = er'*0.5*Q*er + u'*0.5*R*u + e'*0.5*Rs*e; % ((pHorizon+1 -stage)*Rs./pHorizon)
+    J = er'*0.5*stage*Q*er + u'*0.5*R*u + e'*0.5*Rs*e; % ((pHorizon+1 -stage)*Rs./pHorizon) 

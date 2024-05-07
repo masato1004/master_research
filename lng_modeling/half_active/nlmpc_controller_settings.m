@@ -1,5 +1,5 @@
 Ts = tc;       % control period
-pHorizon = 50; % prediction horizon (control horizon is same as this)
+pHorizon = 25; % prediction horizon (control horizon is same as this)
 
 runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
@@ -24,9 +24,9 @@ if solver == "fmincon"
 elseif solver == "cgmres"
     % Set the solver parameters.
     runner.Optimization.SolverOptions.StabilizationParameter = 1/(runner.Ts);
-    runner.Optimization.SolverOptions.MaxIterations = 20;
-    runner.Optimization.SolverOptions.Restart = 5;
-    runner.Optimization.SolverOptions.BarrierParameter = 1e10;
+    runner.Optimization.SolverOptions.MaxIterations = 100;
+    runner.Optimization.SolverOptions.Restart = 10;
+    runner.Optimization.SolverOptions.BarrierParameter = 1e03;
     runner.Optimization.SolverOptions.TerminationTolerance = 1e-07;
     runner.Optimization.SolverOptions.FiniteDifferenceStepSize = 1e-09;
 end
@@ -40,23 +40,23 @@ runner.Model.ParameterLength = 1+height(disturbance)+(pHorizon+10)*3+(pHorizon+1
 % hard constraints
 runner.UseMVRate = true;
 
-runner.ManipulatedVariables(1).Min = -800;
-runner.ManipulatedVariables(1).Max =  800;
-runner.ManipulatedVariables(2).Min = -800;
-runner.ManipulatedVariables(2).Max =  800;
+runner.ManipulatedVariables(1).Min = -700;
+runner.ManipulatedVariables(1).Max =  700;
+runner.ManipulatedVariables(2).Min = -700;
+runner.ManipulatedVariables(2).Max =  700;
 runner.ManipulatedVariables(3).Min = -3000;
 runner.ManipulatedVariables(3).Max = 3000;
 runner.ManipulatedVariables(4).Min = -3000;
 runner.ManipulatedVariables(4).Max = 3000;
 
-runner.ManipulatedVariables(1).RateMin = -600;
-runner.ManipulatedVariables(1).RateMax =  600;
-runner.ManipulatedVariables(2).RateMin = -600;
-runner.ManipulatedVariables(2).RateMax =  600;
-runner.ManipulatedVariables(3).RateMin = -100;
-runner.ManipulatedVariables(3).RateMax = 100;
-runner.ManipulatedVariables(4).RateMin = -100;
-runner.ManipulatedVariables(4).RateMax = 100;
+runner.ManipulatedVariables(1).RateMin = -600/4;
+runner.ManipulatedVariables(1).RateMax =  600/4;
+runner.ManipulatedVariables(2).RateMin = -600/4;
+runner.ManipulatedVariables(2).RateMax =  600/4;
+runner.ManipulatedVariables(3).RateMin = -500;
+runner.ManipulatedVariables(3).RateMax = 500;
+runner.ManipulatedVariables(4).RateMin = -500;
+runner.ManipulatedVariables(4).RateMax = 500;
 
 % runner.States(8).Min = 0;
 
@@ -70,7 +70,7 @@ for ct=1:pHorizon+1
     runner.Stages(ct).IneqConFcn = 'nlmpc_config__ineqConFcn';
     % runner.Stages(ct).IneqConJacFcn = 'nlmpc_config__ineqConFcnJacobian';
     runner.Stages(ct).ParameterLength = 1+height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2+height(states);
-    runner.Stages(ct).SlackVariableLength = 3;
+    runner.Stages(ct).SlackVariableLength = 1;
     % if ct ~= pHorizon+1
     %     runner.Stages(ct).EqConFcn = 'nlmpc_config__eqConFcn';
     % end

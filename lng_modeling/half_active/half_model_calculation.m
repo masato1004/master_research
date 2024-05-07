@@ -65,7 +65,7 @@ last_toc = toc;
 for i=1:c-1
     
     if ~control_flag
-        if TL(i)*V > 8.60
+        if TL(i)*V > 8.5
             states(:,i) = [
                 TL(i)*V;
                 z_b_init;
@@ -309,11 +309,12 @@ for i=1:c-1
             % onlinedata.StateFcnParameter = simdata.StateFcnParameter;
             % onlinedata.StageParameter    = simdata.StageParameter   ;
             % [mv, onlinedata] = nlmpcControllerMEX(states(:,i), u_in, onlinedata);
+
             controller_end = toc;
             controller_calc_time = controller_calc_time + (controller_end - controller_start);
 
             u(:,i+1) = mv;
-            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]"; % + "Exit Flag: " + info.ExitFlag;
+            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;%+ ",Exit Flag: " + info.ExitFlag;
             fprintf(2,disp_spring+"\n");
             disp("    Cost: "+info.Cost)
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));

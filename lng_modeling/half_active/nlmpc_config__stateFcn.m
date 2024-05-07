@@ -19,7 +19,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     
     % Copyright 2023 The MathWorks, Inc.
     %% Vehicle parameter
-    dt = 0.001;     % control period
+    dt = 0.005;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -44,7 +44,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 50;
+    pHorizon = 25;
 
     persistent A B E disc_func
     if isempty(A)
@@ -132,7 +132,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         last_d = current_d;
     else
         check_x = round(x*1e10);
-        check_first_state = round(x*1e10);
+        check_first_state = round(first_states*1e10);
         if any(check_x ~= check_first_state)
             delta_x = x - first_states;
             front_wheel_rotation = delta_x(6)*r;
