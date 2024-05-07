@@ -1,5 +1,36 @@
 function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
-    dt = 0.005;     % control period
+    %
+    % x: (1) Longitudinal Position
+    %    (2) Body Vertical Displacement
+    %    (3) Front Wheel Vertical Displacement
+    %    (4) Rear Wheel Vertical Displacement
+    %    (5) Body Pitch Angle
+    %    (6) Front Wheel Angle
+    %    (7) Rear Wheel Angle
+    %    (8) Velocity
+    %    (9) Body Vertical Velocity
+    %    (10) Front Wheel Vertical Velocity
+    %    (11) Rear Wheel Vertical Velocity
+    %    (12) Body Pitch Angular Velocity
+    %    (13) Front Wheel Angular Velocity
+    %    (14) Rear Wheel Angular Velocity
+    %
+    % u: (1) front torque
+    %    (2) rear torque
+    %    (3) front sus
+    %    (4) rear sus
+    %
+    % d: (1) longitudinal position of front wheel center
+    %    (2) longitudinal position of rear wheel center
+    %    (3) vertical position of front wheel center
+    %    (4) vertical position of rear wheel center
+    %    (5) gradient of longitudinal position of front wheel center
+    %    (6) gradient of longitudinal position of rear wheel center
+    %    (7) gradient of vertical position of front wheel center
+    %    (8) gradient of vertical position of rear wheel center
+    %
+    
+    dt = 0.01;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -24,7 +55,7 @@ function ceq = nlmpc_config__eqConFcn(stage,x,u,dmv,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 25;
+    pHorizon = 5;
 
     persistent A B E disc_func
     if isempty(A)

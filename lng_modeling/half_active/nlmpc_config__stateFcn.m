@@ -1,25 +1,38 @@
 function dxdt = nlmpc_config__stateFcn(x,u,p)
-    % In a 2D environment with standard XY axis, the vehicle is a circular disc
-    % (20 meters in diamater).  Two thrusts are to the left and right of the
-    % center.  Tilting (theta) is defined as positive to left and negative to
-    % the right (0 means robot is vertical).
     %
-    % x: (1) x position of the center of gravity in m
-    %    (2) y position of the center of gravity in m
-    %    (3) theta (tilt with respect to the center of gravity) in radian
-    %    (4) dxdt
-    %    (5) dydt
-    %    (6) dthetadt
+    % x: (1) Longitudinal Position
+    %    (2) Body Vertical Displacement
+    %    (3) Front Wheel Vertical Displacement
+    %    (4) Rear Wheel Vertical Displacement
+    %    (5) Body Pitch Angle
+    %    (6) Front Wheel Angle
+    %    (7) Rear Wheel Angle
+    %    (8) Velocity
+    %    (9) Body Vertical Velocity
+    %    (10) Front Wheel Vertical Velocity
+    %    (11) Rear Wheel Vertical Velocity
+    %    (12) Body Pitch Angular Velocity
+    %    (13) Front Wheel Angular Velocity
+    %    (14) Rear Wheel Angular Velocity
     %
-    % u: (1) thrust on the left, in Newton
-    %    (2) thrust on the right, in Newton
+    % u: (1) front torque
+    %    (2) rear torque
+    %    (3) front sus
+    %    (4) rear sus
     %
-    % The continuous-time model is valid only if the vehicle above or at the
-    % ground (y>=10).
+    % d: (1) longitudinal position of front wheel center
+    %    (2) longitudinal position of rear wheel center
+    %    (3) vertical position of front wheel center
+    %    (4) vertical position of rear wheel center
+    %    (5) gradient of longitudinal position of front wheel center
+    %    (6) gradient of longitudinal position of rear wheel center
+    %    (7) gradient of vertical position of front wheel center
+    %    (8) gradient of vertical position of rear wheel center
+    %
     
     % Copyright 2023 The MathWorks, Inc.
     %% Vehicle parameter
-    dt = 0.005;     % control period
+    dt = 0.01;     % control period
     m_b = 960;     % [kg]      body mass
     m_wf = 40;       % [kg]      wheel mass
     m_wr = m_wf;       % [kg]      wheel mass
@@ -44,7 +57,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 25;
+    pHorizon = 5;
 
     persistent A B E disc_func
     if isempty(A)
@@ -107,14 +120,14 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     
     current_d = p(1:8);
     if isempty(last_param)
-        param_flag = p(end);
+        param_flag = p(end);  % number of iteration
         last_param = p;
-        current_d = p(1:8);
-        current_dis = p(9:8+pHorizon+10);
-        current_mileage_f = p(9+pHorizon+10:8+(pHorizon+10)*2);
-        current_mileage_r = p(9+(pHorizon+10)*2:8+(pHorizon+10)*3);
-        current_wheel_traj_f = [p(9+(pHorizon+10)*3:8+(pHorizon+10)*4)];
-        current_wheel_traj_r = [p(9+(pHorizon+10)*4:8+(pHorizon+10)*5)];
+        current_d = p(1:8);  % current_disturbance
+        current_dis = p(9:8+pHorizon+10);   % wheel trajectory constraints
+        current_mileage_f = p(9+pHorizon+10:8+(pHorizon+10)*2);   % wheel trajectory constraints
+        current_mileage_r = p(9+(pHorizon+10)*2:8+(pHorizon+10)*3);   % wheel trajectory constraints
+        current_wheel_traj_f = [p(9+(pHorizon+10)*3:8+(pHorizon+10)*4)];   % wheel trajectory constraints
+        current_wheel_traj_r = [p(9+(pHorizon+10)*4:8+(pHorizon+10)*5)];   % wheel trajectory constraints
         first_states = x;
         first_d = current_d;
         last_d = current_d;
@@ -178,6 +191,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         -sin(atan(current_d(7)/current_d(5)))/r;
         -sin(atan(current_d(8)/current_d(6)))/r];
 
+    % avoid nan
     if any(last_d(1,1) ~= current_d(1,1))
     else
         G(13) = 0;
@@ -186,15 +200,9 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     else
         G(14) = 0;
     end
+
     last_d = current_d;
-    % G(isnan(G)) = 0;
-    % G = disc_func(dt,G) - disc_func(0,G);
     
     dxdt = A*x + B*u + E*current_d + G*g;
-    % dxdt = x + dxdt*dt;
-    % if sum(isnan(current_d)) ~= 0
-    %     disp(current_d)
-    % end
-    % dxdt(isnan(dxdt)) = 0;
 
 end

@@ -65,7 +65,7 @@ last_toc = toc;
 for i=1:c-1
     
     if ~control_flag
-        if TL(i)*V > 8.5
+        if TL(i)*V > 8.5   % ----------strat from near the bump-----------
             states(:,i) = [
                 TL(i)*V;
                 z_b_init;
@@ -298,10 +298,11 @@ for i=1:c-1
             simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
             simdata.StageParameter    = repmat([simdata.StateFcnParameter; reference],pHorizon+1,1);
             simdata.TerminalState     = reference;
-            reference(5)-states(5,i)
+            % reference(5)-states(5,i)
             % states(5,i)
             controller_start = toc;
             [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
+            size(simdata.InitialGuess)
             if info.ExitFlag <= 0
                 mv = zeros(4,1);
             end

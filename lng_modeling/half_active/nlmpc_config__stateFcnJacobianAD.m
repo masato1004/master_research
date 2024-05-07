@@ -9,7 +9,7 @@ function [obj, grad] = nlmpc_config__stateFcnJacobianAD(inputVariables, extraPar
 %   EXTRAPARAMS, PARAMS) はさらに、現在の点における目的関数の gradient の値 GRAD
 %   を計算します。
 %
-%   2024/05/07 12:52:45 に prob2struct により自動生成
+%   2024/05/07 17:38:17 に prob2struct により自動生成
 
 %#codegen
 %#internal
@@ -61,7 +61,7 @@ if nargout > 1
     xjac = zeros(14, 14);
     arg25 = eye(14);
     arg26 = optim.coder.problemdef.gradients.mtimes.MtimesRightAdjoint(arg23, [8 1], arg25);
-    arg27 = zeros(184, 14);
+    arg27 = zeros(84, 14);
     arg27(1:8,:) = arg26;
     ujac = ujac + optim.coder.problemdef.gradients.mtimes.MtimesRightAdjoint(arg21, [4 1], arg25);
     xjac = xjac + optim.coder.problemdef.gradients.mtimes.MtimesRightAdjoint(arg20, [14 1], arg25);
@@ -69,18 +69,18 @@ if nargout > 1
     arg29 = arg28(14,:);
     arg30 = (((-optim.coder.problemdef.gradients.divide.DivideLeftJacobian(arg16)*arg29).*cos(arg14(:)))./(1+arg13(:).^2));
     arg31 = optim.coder.problemdef.gradients.divide.DivideRightJacobian(arg11, arg12)*arg30;
-    arg32 = zeros(184, 14);
+    arg32 = zeros(84, 14);
     arg32(6,:) = arg31;
     arg33 = optim.coder.problemdef.gradients.divide.DivideLeftJacobian(arg12)*arg30;
-    arg34 = zeros(184, 14);
+    arg34 = zeros(84, 14);
     arg34(8,:) = arg33;
     arg35 = arg28(13,:);
     arg36 = (((-optim.coder.problemdef.gradients.divide.DivideLeftJacobian(arg8)*arg35).*cos(arg6(:)))./(1+arg5(:).^2));
     arg37 = optim.coder.problemdef.gradients.divide.DivideRightJacobian(arg3, arg4)*arg36;
-    arg38 = zeros(184, 14);
+    arg38 = zeros(84, 14);
     arg38(5,:) = arg37;
     arg39 = optim.coder.problemdef.gradients.divide.DivideLeftJacobian(arg4)*arg36;
-    arg40 = zeros(184, 14);
+    arg40 = zeros(84, 14);
     arg40(7,:) = arg39;
     arg41(uidx,:) = ujac;
     arg41(xidx,:) = xjac;

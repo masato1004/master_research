@@ -1,5 +1,5 @@
 Ts = tc;       % control period
-pHorizon = 25; % prediction horizon (control horizon is same as this)
+pHorizon = 5; % prediction horizon (control horizon is same as this)
 
 runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
@@ -26,7 +26,7 @@ elseif solver == "cgmres"
     runner.Optimization.SolverOptions.StabilizationParameter = 1/(runner.Ts);
     runner.Optimization.SolverOptions.MaxIterations = 100;
     runner.Optimization.SolverOptions.Restart = 10;
-    runner.Optimization.SolverOptions.BarrierParameter = 1e03;
+    runner.Optimization.SolverOptions.BarrierParameter = 5e02;
     runner.Optimization.SolverOptions.TerminationTolerance = 1e-07;
     runner.Optimization.SolverOptions.FiniteDifferenceStepSize = 1e-09;
 end
@@ -70,7 +70,7 @@ for ct=1:pHorizon+1
     runner.Stages(ct).IneqConFcn = 'nlmpc_config__ineqConFcn';
     % runner.Stages(ct).IneqConJacFcn = 'nlmpc_config__ineqConFcnJacobian';
     runner.Stages(ct).ParameterLength = 1+height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2+height(states);
-    runner.Stages(ct).SlackVariableLength = 1;
+    runner.Stages(ct).SlackVariableLength = 4;
     % if ct ~= pHorizon+1
     %     runner.Stages(ct).EqConFcn = 'nlmpc_config__eqConFcn';
     % end
