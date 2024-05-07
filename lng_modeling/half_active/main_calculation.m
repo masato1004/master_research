@@ -302,7 +302,6 @@ for i=1:c-1
             % states(5,i)
             controller_start = toc;
             [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
-            size(simdata.InitialGuess)
             if info.ExitFlag <= 0
                 mv = zeros(4,1);
             end

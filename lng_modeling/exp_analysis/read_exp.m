@@ -41,22 +41,22 @@ drawer(f,P1,"Frequency [Hz]","One-sided spectrum"+newline+"|P1(f)|",fs,'FFT');
 % drawer(x,y,xlabel,ylabel,fontsize,filename)
 % centroid
 fs = 10;
-drawer(time(idx)-start_time,-1*centroid_x(idx),"Time [s]","Centroid Longitudinal"+newline+"Acceleration [m/s^2]",fs,'centroid_x');
-drawer(time(idx)-start_time,-1*centroid_y(idx),"Time [s]","Centroid Vertical"+newline+"Acceleration [m/s^2]",fs,'centroid_y');
+drawer(time(idx)-start_time+1.38,-1*centroid_x(idx),"Time [s]","Centroid Longitudinal"+newline+"Acceleration [m/s^2]",fs,'centroid_x');
+drawer(time(idx)-start_time+1.38,-1*centroid_y(idx),"Time [s]","Centroid Vertical"+newline+"Acceleration [m/s^2]",fs,'centroid_y');
 
 % wheel longitudinal
-drawer(time(idx)-start_time,-1*frwheel_x(idx),"Time [s]","Front Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'frwheel_x');
-drawer(time(idx)-start_time,-1*rrwheel_x(idx),"Time [s]","Rear Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'rrwheel_x');
+drawer(time(idx)-start_time+1.38,-1*frwheel_x(idx),"Time [s]","Front Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'frwheel_x');
+drawer(time(idx)-start_time+1.38,-1*rrwheel_x(idx),"Time [s]","Rear Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'rrwheel_x');
 
 % wheel vertical
-drawer(time(idx)-start_time,frwheel_z(idx),"Time [s]","Front Right Wheel"+newline+"Vertical"+newline+"Acceleration [m/s^2]",fs,'frwheel_z');
+drawer(time(idx)-start_time+1.38,frwheel_z(idx),"Time [s]","Front Right Wheel"+newline+"Vertical"+newline+"Acceleration [m/s^2]",fs,'frwheel_z');
 
 % floor
-drawer(time(idx)-start_time,-1*floor_x(idx),"Time [s]","Floor Longitudinal"+newline+"Acceleration [m/s^2]",fs,'floor_x');
-drawer(time(idx)-start_time,floor_z(idx),"Time [s]","Floor Vertical"+newline+"Acceleration [m/s^2]",fs,'floor_z');
+drawer(time(idx)-start_time+1.38,-1*floor_x(idx),"Time [s]","Floor Longitudinal"+newline+"Acceleration [m/s^2]",fs,'floor_x');
+drawer(time(idx)-start_time+1.38,floor_z(idx),"Time [s]","Floor Vertical"+newline+"Acceleration [m/s^2]",fs,'floor_z');
 
 % velocity
-drawer(time(idx)-start_time,velocity(idx),"Time [s]","Driving Velocity"+newline+"Acceleration [m/s^2]",fs,'velocity');
+drawer(time(idx)-start_time+1.38,velocity(idx),"Time [s]","Driving Velocity"+newline+"Acceleration [m/s^2]",fs,'velocity');
 
 %% find peaks
 current_time = time(idx);

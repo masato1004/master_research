@@ -30,7 +30,7 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
     %    (8) gradient of vertical position of rear wheel center
     %
     
-    
+
     % C = logical([0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1]);
     
     % New Half-Car-Model cost function.
@@ -52,7 +52,7 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
     ref = p(end-13:end);
     er = x-ref;
 
-    Q = diag([1e-10 1e06 1e-3 1e-3 1e05 1e-10 1e-10 1e07 1e02 1e-10 1e-10 1e02 1e02 1e02]);
+    Q = diag([1e-10 1e06 1e-3 1e-3 1e05 1e-10 1e-10 1e07 1e02 1e-10 1e-10 1e02 1e-04 1e-04]);
     R = diag([1e08 1e08 1e03 1e03]);
     Rs = diag([1e07 1e07 1e07 1e07]);
     pHorizon = 5;
