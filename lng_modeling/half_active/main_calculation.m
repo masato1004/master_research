@@ -239,6 +239,9 @@ for i=1:c-1
 
         % States-Update Runge kutta
         states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, Gmat, dt, r, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total);
+        if feedforward
+            states(13:14,i+1) = [ideal_omega_f(i); ideal_omega_r(i)];
+        end
         accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
     
         % find appropriate next input
@@ -296,10 +299,10 @@ for i=1:c-1
 
             state_function_parameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
 
-            [tau_f, tau_r] = nlmpc_config__torque_reference_signal(states(13,i), states(14,i), V, state_function_parameter, zeros(2,1), pHorizon, tc, r, I_wf, I_wr);
+            % [tau_f, tau_r] = nlmpc_config__torque_reference_signal(states(13,i), states(14,i), V, state_function_parameter, zeros(2,1), pHorizon, tc, r, I_wf, I_wr);
 
             if feedforward
-                u(:,i+1) = [tau_f; tau_r; 0; 0];
+                % u(:,i+1) = [tau_f; tau_r; 0; 0];
                 disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
                 fprintf(2,disp_spring+"\n");
             elseif NLMPC

@@ -58,3 +58,26 @@ dw_fr = [0, 0, 0, 0; diff(w_fr')]';         % preview road profile differencial
 
 
 %% Feedforward settings
+ideal_xdis_list = (0:c-1)*dt*V;
+ideal_zdis_list_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),ideal_xdis_list);
+ideal_zdis_list_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),ideal_xdis_list);
+
+ideal_omega_f = sqrt(V^2 + (diff([0,ideal_zdis_list_f])./dt).^2)./r;
+ideal_omega_r = sqrt(V^2 + (diff([0,ideal_zdis_list_r])./dt).^2)./r;
+
+% alpha_fk1 = (omega_fk1-omega_fk)/dt;
+% alpha_rk1 = (omega_rk1-omega_rk)/dt;
+
+% % calculate next torque
+% dx_disf =current_d(5);
+% dx_disr =current_d(6);
+% dz_disf =current_d(7);
+% dz_disr =current_d(8);
+
+% tau_f = I_wf*(alpha_fk1 + (dz_disf*g)/(dx_disf*r*(dz_disf^2/dx_disf^2 + 1)^(1/2)));
+% tau_r = I_wr*(alpha_rk1 + (dz_disr*g)/(dx_disr*r*(dz_disr^2/dx_disr^2 + 1)^(1/2)));
+
+
+% if feedforward
+%     u(1:2,:) = [ideal_omega_f; ideal_omega_r];
+% end
