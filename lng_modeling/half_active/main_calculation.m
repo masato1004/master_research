@@ -343,15 +343,21 @@ for i=1:c-1
         disturbance(3,i+1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1)),5);                                                                % z_disf
         disturbance(4,i+1) = round(makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1)),5);                                                                % z_disr
         if i ~= 1
-            disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
-            disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
-            disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
-            disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
+            dis_grad = gradient(disturbance(1:4,i-1:i+1))./dt;
+            disturbance(5:8,i+1) = dis_grad(:,2);
+
+            % disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
+            % disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
+            % disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
+            % disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
         else
-            disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
-            disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
-            disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
-            disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
+            dis_grad = gradient(disturbance(1:4,i-1:i))./dt;
+            disturbance(5:8,i+1) = dis_grad(:,2);
+
+            % disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
+            % disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
+            % disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
+            % disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
         end
 
     end
@@ -430,8 +436,8 @@ drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time 
 r_fig = figure('name',"Road-profile",'Position', [600 200 600 190]);
 plot(disturbance(1,:),makima(dis_total,road_total_f,disturbance(1,:)),"LineWidth",1,"Color","#0000ff",'DisplayName',"Road under Front Wheel"); hold on;
 plot(disturbance(2,:),makima(dis_total,road_total_r,disturbance(1,:)),"LineWidth",1,"Color","#ff0000",'DisplayName',"Road under Rear Wheel");
-plot(disturbance(1,:),makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,:)),"LineWidth",1,"LineStyle","--","Color","#0000ff",'DisplayName',"Front Wheel Center Trajectory");
-plot(disturbance(2,:),makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,:)),"LineWidth",1,"LineStyle","--","Color","#ff0000",'DisplayName',"Rear Wheel Center Trajectory");
+plot(disturbance(1,:),makima(wheel_traj_f(1,:),wheel_traj_f(2,:)+r,disturbance(1,:)),"LineWidth",1,"LineStyle","--","Color","#0000ff",'DisplayName',"Front Wheel Center Trajectory");
+plot(disturbance(2,:),makima(wheel_traj_r(1,:),wheel_traj_r(2,:)+r,disturbance(2,:)),"LineWidth",1,"LineStyle","--","Color","#ff0000",'DisplayName',"Rear Wheel Center Trajectory");
 ylabel("Displacement [m]");
 xlabel("Distance Traveled [m]");
 ylim([-0.01,0.1])

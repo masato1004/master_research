@@ -62,8 +62,8 @@ ideal_xdis_list = (0:c-1)*dt*V;
 ideal_zdis_list_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),ideal_xdis_list);
 ideal_zdis_list_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),ideal_xdis_list);
 
-ideal_omega_f = sqrt(V^2 + (diff([0,ideal_zdis_list_f])./dt).^2)./r;
-ideal_omega_r = sqrt(V^2 + (diff([0,ideal_zdis_list_r])./dt).^2)./r;
+ideal_omega_f = sqrt(V^2 + (gradient(ideal_zdis_list_f)./dt).^2)./r;
+ideal_omega_r = sqrt(V^2 + (gradient(ideal_zdis_list_r)./dt).^2)./r;
 
 % alpha_fk1 = (omega_fk1-omega_fk)/dt;
 % alpha_rk1 = (omega_rk1-omega_rk)/dt;
