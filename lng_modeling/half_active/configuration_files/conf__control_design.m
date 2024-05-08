@@ -58,12 +58,26 @@ dw_fr = [0, 0, 0, 0; diff(w_fr')]';         % preview road profile differencial
 
 
 %% Feedforward settings
-ideal_xdis_list = (0:c-1)*dt*V;
-ideal_zdis_list_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),ideal_xdis_list);
-ideal_zdis_list_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),ideal_xdis_list);
+detailed_dt = 1e-05;
+detailed_dis = 0:V*detailed_dt:max_distance;
+detailed_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),detailed_dis);
+detailed_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),detailed_dis);
+rp = [
+    detailed_dis;
+    detailed_wheel_traj_f;
+    detailed_wheel_traj_r;
+    gradient(detailed_wheel_traj_f)./detailed_dt
+    gradient(detailed_wheel_traj_r)./detailed_dt
+];
 
-ideal_omega_f = sqrt(V^2 + (gradient(ideal_zdis_list_f)./dt).^2)./r;
-ideal_omega_r = sqrt(V^2 + (gradient(ideal_zdis_list_r)./dt).^2)./r;
+ideal_xdis_list = (0:c-1)*dt*V;
+ideal_zdis_list_f = makima(rp(1,:),rp(2,:),ideal_xdis_list);
+ideal_zdis_list_r = makima(rp(1,:),rp(3,:),ideal_xdis_list);
+ideal_gradient_zis_f = makima(rp(1,:),rp(4,:),ideal_xdis_list);
+ideal_gradient_zis_r = makima(rp(1,:),rp(5,:),ideal_xdis_list);
+
+ideal_omega_f = sqrt(V^2 + ideal_gradient_zis_f.^2)./r;
+ideal_omega_r = sqrt(V^2 + ideal_gradient_zis_r.^2)./r;
 
 % alpha_fk1 = (omega_fk1-omega_fk)/dt;
 % alpha_rk1 = (omega_rk1-omega_rk)/dt;
