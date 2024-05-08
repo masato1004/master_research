@@ -1,5 +1,6 @@
-function [tau_f tau_r] = function(omega_fk, omega_rk, Vref, state_param, first_d, pHorizon, dt, r, I_wf, I_wr)
+function [tau_f tau_r] = nlmpc_config__torque_reference_signal(omega_fk, omega_rk, Vref, state_param, first_d, pHorizon, dt, r, I_wf, I_wr)
     % plant parameters
+    g = 9.80665;
     % r = 0.55/2;
     % m_wf = 40;       % [kg]      wheel mass
     % m_wr = m_wf;       % [kg]      wheel mass
@@ -42,18 +43,18 @@ function [tau_f tau_r] = function(omega_fk, omega_rk, Vref, state_param, first_d
     % next_d(8) = (omega_rk*r)*(temp_gradient_r(2)^2/sum(temp_gradient_r.^2));
 
     % calculate ideal rotational acceleration
-    omega_fk1 = sqrt(Vref^2 + temp_gradient_f(2,1)^2);
-    omega_rk1 = sqrt(Vref^2 + temp_gradient_r(2,1)^2);
+    omega_fk1 = sqrt(Vref^2 + temp_gradient_f(2,1)^2)/r;
+    omega_rk1 = sqrt(Vref^2 + temp_gradient_r(2,1)^2)/r;
 
     alpha_fk1 = (omega_fk1-omega_fk)/dt;
     alpha_rk1 = (omega_rk1-omega_rk)/dt;
 
     % calculate next torque
-    dx_disf =current_d(5,i);
-    dx_disr =current_d(6,i);
-    dz_disf =current_d(7,i);
-    dz_disr =current_d(8,i);
+    dx_disf =current_d(5);
+    dx_disr =current_d(6);
+    dz_disf =current_d(7);
+    dz_disr =current_d(8);
 
-    tau_f = I_wf*(alpha_fk1 + (dz_disf*g)/(dx_disf*r*(dz_disf^2/dx_disf^2 + 1)^(1/2)))
-    tau_r = I_wr*(alpha_rk1 + (dz_disr*g)/(dx_disr*r*(dz_disr^2/dx_disr^2 + 1)^(1/2)))
+    tau_f = I_wf*(alpha_fk1 + (dz_disf*g)/(dx_disf*r*(dz_disf^2/dx_disf^2 + 1)^(1/2)));
+    tau_r = I_wr*(alpha_rk1 + (dz_disr*g)/(dx_disr*r*(dz_disr^2/dx_disr^2 + 1)^(1/2)));
 end

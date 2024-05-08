@@ -21,7 +21,7 @@ run("configuration_files/conf__rpf_settings.m")
 % Control design
 run("configuration_files/conf__control_design.m")
 
-if NLMPC
+if NLMPC || feedforward
     % nlmpc settings
     run("nlmpc_controller_settings.m")
 end
@@ -288,15 +288,15 @@ for i=1:c-1
             end
         elseif mod(i-1, (tc/dt)) == 0 && any([NLMPC feedforward])
             cc = (i-1)/(tc/dt)+1;                   % control count
-            local_dis = 0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9);
-            current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
-            current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
-            current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(1,i));
-            current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(2,i));
+            local_dis = 0:tc*states(8,i):tc*states(8,i)*(pHorizon+9);
+            current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
+            current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
+            current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(1,i));
+            current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(2,i));
 
             state_function_parameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
 
-            [tau_f tau_r] = function(states(13,i), states(13,i), V, state_function_parameter, 0, pHorizon, dt, r, I_wf, I_wr);
+            [tau_f, tau_r] = nlmpc_config__torque_reference_signal(states(13,i), states(14,i), V, state_function_parameter, zeros(2,1), pHorizon, tc, r, I_wf, I_wr);
 
             if feedforward
                 u(:,i+1) = [tau_f; tau_r; 0; 0];
