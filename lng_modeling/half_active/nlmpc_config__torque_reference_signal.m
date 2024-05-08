@@ -1,10 +1,10 @@
-function [tau_f tau_r] = function(omega_fk, omega_rk, Vref, state_param, first_d, pHorizon, dt, r)
+function [tau_f tau_r] = function(omega_fk, omega_rk, Vref, state_param, first_d, pHorizon, dt, r, I_wf, I_wr)
     % plant parameters
-    r = 0.55/2;
-    m_wf = 40;       % [kg]      wheel mass
-    m_wr = m_wf;       % [kg]      wheel mass
-    I_wf = (m_wf*r^2)/2;     % [kgm^2]   wheel inertia moment
-    I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
+    % r = 0.55/2;
+    % m_wf = 40;       % [kg]      wheel mass
+    % m_wr = m_wf;       % [kg]      wheel mass
+    % I_wf = (m_wf*r^2)/2;     % [kgm^2]   wheel inertia moment
+    % I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     % load current parameters
     param_flag = state_param(end);

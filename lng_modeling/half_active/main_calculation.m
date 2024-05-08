@@ -242,7 +242,7 @@ for i=1:c-1
         accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
     
         % find appropriate next input
-        if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~passive && ~NLMPC
+        if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~any([passive NLMPC feedforward])
             cc = (i-1)/(tc/dt)+1;                   % list slice
             [~,ia,~]=unique(wf_grad(1,:));
             wf_grad = wf_grad(:,ia);
@@ -286,7 +286,7 @@ for i=1:c-1
                 frame = getframe(check);
                 writeVideo(video,frame);
             end
-        elseif mod(i-1, (tc/dt)) == 0 && NLMPC
+        elseif mod(i-1, (tc/dt)) == 0 && any([NLMPC feedforward])
             cc = (i-1)/(tc/dt)+1;                   % control count
             local_dis = 0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9);
             current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:Ts*states(8,i):Ts*states(8,i)*(pHorizon+9));
@@ -294,33 +294,43 @@ for i=1:c-1
             current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(1,i));
             current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):Ts*states(8,i):Ts*states(8,i)*(pHorizon+9)+disturbance(2,i));
 
-            reference = nlmpc_config__referenceSignal(states(:,i),u_in,states(:,1),Ts*pHorizon);
-            simdata.StateFcnParameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
-            simdata.StageParameter    = repmat([simdata.StateFcnParameter; reference],pHorizon+1,1);
-            simdata.TerminalState     = reference;
-            % reference(5)-states(5,i)
-            % states(5,i)
-            controller_start = toc;
-            [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
-            if info.ExitFlag <= 0
-                mv = zeros(4,1);
+            state_function_parameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
+
+            [tau_f tau_r] = function(states(13,i), states(13,i), V, state_function_parameter, 0, pHorizon, dt, r, I_wf, I_wr);
+
+            if feedforward
+                u(:,i+1) = [tau_f; tau_r; 0; 0];
+                disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
+                fprintf(2,disp_spring+"\n");
+            elseif NLMPC
+                reference = nlmpc_config__referenceSignal(states(:,i),u_in,states(:,1),Ts*pHorizon);
+                simdata.StateFcnParameter = state_function_parameter;
+                simdata.StageParameter    = repmat([state_function_parameter; reference],pHorizon+1,1);
+                simdata.TerminalState     = reference;
+                % reference(5)-states(5,i)
+                % states(5,i)
+                controller_start = toc;
+                [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
+                if info.ExitFlag <= 0
+                    mv = zeros(4,1);
+                end
+
+                % onlinedata.StateFcnParameter = simdata.StateFcnParameter;
+                % onlinedata.StageParameter    = simdata.StageParameter   ;
+                % [mv, onlinedata] = nlmpcControllerMEX(states(:,i), u_in, onlinedata);
+
+                controller_end = toc;
+                controller_calc_time = controller_calc_time + (controller_end - controller_start);
+
+                u(:,i+1) = mv;
+                disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;%+ ",Exit Flag: " + info.ExitFlag;
+                fprintf(2,disp_spring+"\n");
+                disp("    Cost: "+info.Cost)
+                if info.ExitFlag ~=3
+                    simdata.InitialGuess = [];
+                end
             end
-
-            % onlinedata.StateFcnParameter = simdata.StateFcnParameter;
-            % onlinedata.StageParameter    = simdata.StageParameter   ;
-            % [mv, onlinedata] = nlmpcControllerMEX(states(:,i), u_in, onlinedata);
-
-            controller_end = toc;
-            controller_calc_time = controller_calc_time + (controller_end - controller_start);
-
-            u(:,i+1) = mv;
-            disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;%+ ",Exit Flag: " + info.ExitFlag;
-            fprintf(2,disp_spring+"\n");
-            disp("    Cost: "+info.Cost)
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
-            if info.ExitFlag ~=3
-                simdata.InitialGuess = [];
-            end
         else
             u(:,i+1) = u(:,i);
         end
