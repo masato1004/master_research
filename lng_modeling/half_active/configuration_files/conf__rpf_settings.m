@@ -80,6 +80,8 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 
 load("mileage.mat");
 
+mileage = 
+
 r_p = [
     road_total_f;
     road_total_r;
