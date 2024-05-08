@@ -57,5 +57,4 @@ w_fr = [
 dw_fr = [0, 0, 0, 0; diff(w_fr')]';         % preview road profile differencial
 
 
-%% MPC setting
-nlobj = nlmpc(14,4,4);
+%% Feedforward settings

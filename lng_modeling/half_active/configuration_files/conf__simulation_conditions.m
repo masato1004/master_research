@@ -19,6 +19,7 @@ LQR_rprev       = false;
 fprev_rprev     = false;
 LQR_fprev_rprev = false;
 NLMPC = true;
+feedforward = false;
 
 % road profile
 sensing = false;
@@ -64,8 +65,8 @@ else
     smoothing_method= smoothing_name(smoothing_logi)
 end
 
-ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","_nlmpc_"];
-logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev, NLMPC];
+ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","_nlmpc_","_feedforward_"];
+logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev, NLMPC, feedforward];
 control = ctrl_names(logi_ctrl)
 
 shape_names = ["_sensing2_","_paper_","_bump_","_sin_","_step_","_manhole_","_jari_"];
