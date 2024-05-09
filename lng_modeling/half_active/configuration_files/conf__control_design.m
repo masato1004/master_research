@@ -76,8 +76,12 @@ ideal_zdis_list_r = makima(rp(1,:),rp(3,:),ideal_xdis_list);
 ideal_gradient_zis_f = makima(rp(1,:),rp(4,:),ideal_xdis_list);
 ideal_gradient_zis_r = makima(rp(1,:),rp(5,:),ideal_xdis_list);
 
-ideal_omega_f = sqrt(V^2 + ideal_gradient_zis_f.^2)./r;
-ideal_omega_r = sqrt(V^2 + ideal_gradient_zis_r.^2)./r;
+% ideal_omega_f = sqrt(V^2 + ideal_gradient_zis_f.^2)./r;
+% ideal_omega_r = sqrt(V^2 + ideal_gradient_zis_r.^2)./r;
+
+% movmean
+ideal_omega_f = movmean(sqrt(V^2 + ideal_gradient_zis_f.^2)./r,60);
+ideal_omega_r = movmean(sqrt(V^2 + ideal_gradient_zis_r.^2)./r,60);
 
 % alpha_fk1 = (omega_fk1-omega_fk)/dt;
 % alpha_rk1 = (omega_rk1-omega_rk)/dt;

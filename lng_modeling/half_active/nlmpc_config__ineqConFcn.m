@@ -192,8 +192,8 @@ function cineq = nlmpc_config__ineqConFcn(stage,x,u,dmv,e,p)
 
         wb_constraints = 0.10;
         zb_constraints = 0.05;
-        acc_constraints1 = 0.2;
-        acc_constraints2 = 0.2;
+        acc_constraints1 = 1.5;
+        acc_constraints2 = 1.5;
         front_constraints = 0.04;
         rear_constraints1 = -0.04;
         rear_constraints2 =  0.04;

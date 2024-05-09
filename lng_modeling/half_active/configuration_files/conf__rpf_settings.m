@@ -28,55 +28,55 @@ dis_total_r = 0:max_distance/(preT/dt):max_distance-start_disturbance-(L_f+L_r);
 load("configuration_files/wheel_traj-"+shape+".mat");
 
 %% Calculate wheel trajectory with inverse offset method
-inv_offset_f = [];
-inv_offset_r = [];
-disp('Calculating inverse offset...')
-for i = 1:1:width(dis_total)
-    current_road_f = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
-    current_road_f = current_road_f(1:5:end);
-    half_circle_f = [current_road_f; sqrt(r^2 - (current_road_f-dis_total(i)).^2)+road_total_f(i)-r];
-    inv_offset_f = [inv_offset_f, half_circle_f];
+% inv_offset_f = [];
+% inv_offset_r = [];
+% disp('Calculating inverse offset...')
+% for i = 1:1:width(dis_total)
+%     current_road_f = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
+%     current_road_f = current_road_f(1:5:end);
+%     half_circle_f = [current_road_f; sqrt(r^2 - (current_road_f-dis_total(i)).^2)+road_total_f(i)-r];
+%     inv_offset_f = [inv_offset_f, half_circle_f];
 
-    current_road_r = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
-    current_road_r = current_road_r(1:5:end);
-    half_circle_r = [current_road_r; sqrt(r^2 - (current_road_r-dis_total(i)).^2)+road_total_r(i)-r];
-    inv_offset_r = [inv_offset_r, half_circle_r];
-end
-save("inverse_offset-"+shape, "inv_offset_f", "inv_offset_r")
-disp('Done Calculating inverse offset.')
+%     current_road_r = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
+%     current_road_r = current_road_r(1:5:end);
+%     half_circle_r = [current_road_r; sqrt(r^2 - (current_road_r-dis_total(i)).^2)+road_total_r(i)-r];
+%     inv_offset_r = [inv_offset_r, half_circle_r];
+% end
+% save("inverse_offset-"+shape, "inv_offset_f", "inv_offset_r")
+% disp('Done Calculating inverse offset.')
 
-wheel_traj_f = [];
-wheel_traj_r= [];
-disp('Calculating wheel trajectory...')
-load("inverse_offset-"+shape+".mat")
-for i = 1:20:width(dis_total)
-    if i == 1
-        current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i) | inv_offset_f(1,:)==dis_total(i+1)))];
-        current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
-    elseif i == width(dis_total)
-        current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i-1) | inv_offset_f(1,:)==dis_total(i)))];
-        current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i)))];
-    else
-        current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i-1) | inv_offset_f(1,:)==dis_total(i) | inv_offset_f(1,:)==dis_total(i+1)))];
-        current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
-    end
-    wheel_traj_f = [wheel_traj_f, current_traj_f];
-    wheel_traj_r = [wheel_traj_r, current_traj_r];
-end
-wheel_traj_f = [dis_total; makima(wheel_traj_f(1,:),wheel_traj_f(2,:),dis_total)];
-wheel_traj_r = [dis_total; makima(wheel_traj_r(1,:),wheel_traj_r(2,:),dis_total)];
-save("wheel_traj-"+shape, "wheel_traj_f", "wheel_traj_r")
-disp('Done Calculating wheel trajectory.')
+% wheel_traj_f = [];
+% wheel_traj_r= [];
+% disp('Calculating wheel trajectory...')
+% load("inverse_offset-"+shape+".mat")
+% for i = 1:10:width(dis_total)
+%     if i == 1
+%         current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i) | inv_offset_f(1,:)==dis_total(i+1)))];
+%         current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
+%     elseif i == width(dis_total)
+%         current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i-1) | inv_offset_f(1,:)==dis_total(i)))];
+%         current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i)))];
+%     else
+%         current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i-1) | inv_offset_f(1,:)==dis_total(i) | inv_offset_f(1,:)==dis_total(i+1)))];
+%         current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i-1) | inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
+%     end
+%     wheel_traj_f = [wheel_traj_f, current_traj_f];
+%     wheel_traj_r = [wheel_traj_r, current_traj_r];
+% end
+% wheel_traj_f = [dis_total; makima(wheel_traj_f(1,:),wheel_traj_f(2,:),dis_total)];
+% wheel_traj_r = [dis_total; makima(wheel_traj_r(1,:),wheel_traj_r(2,:),dis_total)];
+% save("wheel_traj-"+shape, "wheel_traj_f", "wheel_traj_r")
+% disp('Done Calculating wheel trajectory.')
 
-disp('Calculating wheel mileage...')
-wheel_traj_f(2,abs(wheel_traj_f(2,:)) < 0.000005) = 0;
-wheel_traj_r(2,abs(wheel_traj_r(2,:)) < 0.000005) = 0;
-mileage_f = 0;
-mileage_r = 0;
-for k = 2:width(wheel_traj_f)
-    mileage_f = [mileage_f, sum(sqrt(diff(wheel_traj_f(1,1:k)).^2+diff(wheel_traj_f(2,1:k)).^2))];
-    mileage_r = [mileage_r, sum(sqrt(diff(wheel_traj_r(1,1:k)).^2+diff(wheel_traj_r(2,1:k)).^2))];
-end
+% disp('Calculating wheel mileage...')
+% wheel_traj_f(2,abs(wheel_traj_f(2,:)) < 0.000005) = 0;
+% wheel_traj_r(2,abs(wheel_traj_r(2,:)) < 0.000005) = 0;
+% mileage_f = 0;
+% mileage_r = 0;
+% for k = 2:width(wheel_traj_f)
+%     mileage_f = [mileage_f, sum(sqrt(diff(wheel_traj_f(1,1:k)).^2+diff(wheel_traj_f(2,1:k)).^2))];
+%     mileage_r = [mileage_r, sum(sqrt(diff(wheel_traj_r(1,1:k)).^2+diff(wheel_traj_r(2,1:k)).^2))];
+% end
 % save('mileage','mileage_f','mileage_r');
 % disp('Done Calculating wheel mileage.')
 

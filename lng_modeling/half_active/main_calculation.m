@@ -230,6 +230,7 @@ for i=1:c-1
         
         % load current input
         u_in = u(:,i);
+        % u_in = zeros(4,1);
 
         % Apply current parameter into matrices
         Bp = double(subs(Bmat));
@@ -239,10 +240,32 @@ for i=1:c-1
 
         % States-Update Runge kutta
         states(:,i+1) = runge(states(:,i), u_in, disturbance(:,i), g, Ap, Bp, Ep, Gmat, dt, r, wheel_traj_f,wheel_traj_r,mileage_f,mileage_r,dis_total);
-        if feedforward
-            states(13:14,i+1) = [ideal_omega_f(i); ideal_omega_r(i)];
-        end
+        % if feedforward
+        %     states(13:14,i+1) = [ideal_omega_f(i+1); ideal_omega_r(i+1)];
+        % end
         accelerations(:,i) = [states(8,i+1)-states(8,i);states(9,i+1)-states(9,i);states(12,i+1)-states(12,i)]./dt;
+        
+        disturbance(1,i+1) = makima(mileage_f,dis_total,r*states(6,i+1));  % x_disf
+        disturbance(2,i+1) = makima(mileage_r,dis_total,r*states(7,i+1));  % x_disr
+        disturbance(3,i+1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1)),5);                                                                % z_disf
+        disturbance(4,i+1) = round(makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1)),5);                                                                % z_disr
+        if i ~= 1
+            dis_grad = gradient(disturbance(1:4,i-1:i+1))./dt;
+            disturbance(5:8,i+1) = dis_grad(:,2);
+
+            % disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
+            % disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
+            % disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
+            % disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
+        else
+            dis_grad = gradient(disturbance(1:4,i-1:i))./dt;
+            disturbance(5:8,i+1) = dis_grad(:,2);
+
+            % disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
+            % disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
+            % disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
+            % disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
+        end
     
         % find appropriate next input
         if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~any([passive NLMPC feedforward])
@@ -291,21 +314,30 @@ for i=1:c-1
             end
         elseif mod(i-1, (tc/dt)) == 0 && any([NLMPC feedforward])
             cc = (i-1)/(tc/dt)+1;                   % control count
-            local_dis = 0:tc*states(8,i):tc*states(8,i)*(pHorizon+9);
-            current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
-            current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
-            current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(1,i));
-            current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(2,i));
-
-            state_function_parameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
-
-            % [tau_f, tau_r] = nlmpc_config__torque_reference_signal(states(13,i), states(14,i), V, state_function_parameter, zeros(2,1), pHorizon, tc, r, I_wf, I_wr);
-
             if feedforward
-                % u(:,i+1) = [tau_f; tau_r; 0; 0];
+                local_dis = 0:tc*states(8,i+1):tc*states(8,i+1)*(pHorizon+9);
+                current_mileage_f = makima(dis_total-disturbance(1,i+1),mileage_f-makima(dis_total,mileage_f,disturbance(1,i+1)),0:tc*states(8,i+1):tc*states(8,i+1)*(pHorizon+9));
+                current_mileage_r = makima(dis_total-disturbance(2,i+1),mileage_r-makima(dis_total,mileage_r,disturbance(2,i+1)),0:tc*states(8,i+1):tc*states(8,i+1)*(pHorizon+9));
+                current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1):tc*states(8,i+1):tc*states(8,i+1)*(pHorizon+9)+disturbance(1,i+1));
+                current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1):tc*states(8,i+1):tc*states(8,i+1)*(pHorizon+9)+disturbance(2,i+1));
+    
+                state_function_parameter = [disturbance(:,i+1);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
+    
+                [tau_f, tau_r] = nlmpc_config__torque_reference_signal(states(13,i+1), states(14,i+1), [ideal_omega_f(i+1+(tc/dt)); ideal_omega_r(i+1+(tc/dt))], state_function_parameter, zeros(2,1), pHorizon, tc, r, I_wf, I_wr, control);
+                % [tau_f, tau_r] = nlmpc_config__torque_reference_signal(states(13,i+1), states(14,i+1), V, state_function_parameter, zeros(2,1), pHorizon, tc, r, I_wf, I_wr, "_nlmpc_");
+                u(:,i+1) = [tau_f; tau_r; 0; 0];
+                % states(13:14,i+1) = [ideal_omega_f(i+1); ideal_omega_r(i+1)];
                 disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
                 fprintf(2,disp_spring+"\n");
             elseif NLMPC
+                local_dis = 0:tc*states(8,i):tc*states(8,i)*(pHorizon+9);
+                current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
+                current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
+                current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(1,i));
+                current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(2,i));
+
+                state_function_parameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
+                
                 reference = nlmpc_config__referenceSignal(states(:,i),u_in,states(:,1),Ts*pHorizon);
                 simdata.StateFcnParameter = state_function_parameter;
                 simdata.StageParameter    = repmat([state_function_parameter; reference],pHorizon+1,1);
@@ -338,27 +370,6 @@ for i=1:c-1
             u(:,i+1) = u(:,i);
         end
 
-        disturbance(1,i+1) = makima(mileage_f,dis_total,r*states(6,i+1));  % x_disf
-        disturbance(2,i+1) = makima(mileage_r,dis_total,r*states(7,i+1));  % x_disr
-        disturbance(3,i+1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1)),5);                                                                % z_disf
-        disturbance(4,i+1) = round(makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1)),5);                                                                % z_disr
-        if i ~= 1
-            dis_grad = gradient(disturbance(1:4,i-1:i+1))./dt;
-            disturbance(5:8,i+1) = dis_grad(:,2);
-
-            % disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
-            % disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
-            % disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
-            % disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
-        else
-            dis_grad = gradient(disturbance(1:4,i-1:i))./dt;
-            disturbance(5:8,i+1) = dis_grad(:,2);
-
-            % disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
-            % disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
-            % disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
-            % disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
-        end
 
     end
 
