@@ -110,10 +110,13 @@ for i=1:c-1
         if mod(i,count_loop) == 0
             percentage = round(i*100/(c-1),2);
             one_loop = round(count_loop*100/(c-1),2);
+            last_duration = (toc-last_toc);
+            eta_h = round((last_duration*(100-percentage)/one_loop)/3600);
+            eta_m = round(((last_duration*(100-percentage)/one_loop)/60)-eta_h*60);
             disp("Controller Calculation-Time Average: "+round(controller_calc_time/cc,2));
             disp(" ")
             disp("-------------------------------------------------------------------------------------")
-            disp(percentage + "% --- Estimated Remaining Time: " + round(((toc-last_toc)*(100-percentage)/one_loop)/3600,2) + " hour");
+            disp(percentage + "% --- ETA: " + eta_h + "h" + eta_m + "m");
             disp("    Controller Calculation-Time Total Average: "+round(controller_calc_time/cc,2));
             disp("    " + round(TL(i),2)+"[s], " + round(states(1,i),2) + "[m], " + round(states(8,i),2) + "[m/s]");
             last_toc = toc;
