@@ -9,7 +9,7 @@ function [obj, grad] = nlmpc_config__stateFcnJacobianAD(inputVariables, extraPar
 %   EXTRAPARAMS, PARAMS) はさらに、現在の点における目的関数の gradient の値 GRAD
 %   を計算します。
 %
-%   2024/05/14 13:48:15 に prob2struct により自動生成
+%   2024/05/14 14:03:21 に prob2struct により自動生成
 
 %#codegen
 %#internal
