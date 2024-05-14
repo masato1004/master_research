@@ -1,5 +1,5 @@
 close all;
-clc;
+% clc;
 clear frames;
 warning("off","all")
 
@@ -127,7 +127,7 @@ end
 video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = (1/dt)/mod_m;
 open(video);
-for s=2:c/2
+for s=2:c
     if mod(s,mod_m) == 0
         cc = s/(mod_m/10);
 %         TL(1,s)

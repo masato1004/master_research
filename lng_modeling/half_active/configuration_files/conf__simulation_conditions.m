@@ -12,13 +12,14 @@ wa  = false;
 lpf = false;
 
 % control method
-passive = true;
+passive = false;
 LQR     = false;
 rprev   = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
 LQR_fprev_rprev = false;
 NLMPC = false;
+feedforward = true;
 
 % road profile
 sensing = false;
@@ -30,10 +31,10 @@ manhole = false;
 jari    = false;
 
 %% simulation parameter
-T   = 10;          % [s]       total simulation time
+T   = 5;          % [s]       total simulation time
 dt  = 0.0001;     % [s]       delta time
 TL  = 0:dt:T;     % time list ([s])
-tc  = 0.01;       % control cycle
+tc  = 0.001;       % control cycle
 fs  = 50;         % sampling frequence
 ts  = 1/fs;       % sampling cycle
 cc  = 1;          % control cycle counter
@@ -64,8 +65,8 @@ else
     smoothing_method= smoothing_name(smoothing_logi)
 end
 
-ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","_nlmpc_"];
-logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
+ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","_nlmpc_","_feedforward_"];
+logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev, NLMPC, feedforward];
 control = ctrl_names(logi_ctrl)
 
 shape_names = ["_sensing2_","_paper_","_bump_","_sin_","_step_","_manhole_","_jari_"];

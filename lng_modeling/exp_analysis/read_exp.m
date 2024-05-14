@@ -1,6 +1,6 @@
 %% load experiment data from csv
 close all;
-filename = '20240123_drvie-data.csv';
+filename = '20240123_drvie-data-15.csv';
 opts = detectImportOptions(filename);
 preview(filename,opts)
 % opts.SelectedVariableNames = [1:4];
@@ -16,8 +16,10 @@ floor_z = exp_datas(:,8);
 velocity = exp_datas(:,9);
 
 %% index
-idx = time>-1;
-idx = time>36 & time<39;
+start_time = 36;
+end_time = 39;
+% idx = time>-1;
+idx = time>start_time & time<end_time;
 
 %% fft
 idx = time>36.95 & time<37.23;
@@ -39,22 +41,22 @@ drawer(f,P1,"Frequency [Hz]","One-sided spectrum"+newline+"|P1(f)|",fs,'FFT');
 % drawer(x,y,xlabel,ylabel,fontsize,filename)
 % centroid
 fs = 10;
-drawer(time(idx),-1*centroid_x(idx),"Time [s]","Centroid Longitudinal"+newline+"Acceleration [m/s^2]",fs,'centroid_x');
-drawer(time(idx),-1*centroid_y(idx),"Time [s]","Centroid Vertical"+newline+"Acceleration [m/s^2]",fs,'centroid_y');
+drawer(time(idx)-start_time+1.38,-1*centroid_x(idx),"Time [s]","Centroid Longitudinal"+newline+"Acceleration [m/s^2]",fs,'centroid_x');
+drawer(time(idx)-start_time+1.38,-1*centroid_y(idx),"Time [s]","Centroid Vertical"+newline+"Acceleration [m/s^2]",fs,'centroid_y');
 
 % wheel longitudinal
-drawer(time(idx),-1*frwheel_x(idx),"Time [s]","Front Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'frwheel_x');
-drawer(time(idx),-1*rrwheel_x(idx),"Time [s]","Rear Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'rrwheel_x');
+drawer(time(idx)-start_time+1.38,-1*frwheel_x(idx),"Time [s]","Front Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'frwheel_x');
+drawer(time(idx)-start_time+1.38,-1*rrwheel_x(idx),"Time [s]","Rear Right Wheel"+newline+"Longitudinal"+newline+"Acceleration [m/s^2]",fs,'rrwheel_x');
 
 % wheel vertical
-drawer(time(idx),frwheel_z(idx),"Time [s]","Front Right Wheel"+newline+"Vertical"+newline+"Acceleration [m/s^2]",fs,'frwheel_z');
+drawer(time(idx)-start_time+1.38,frwheel_z(idx),"Time [s]","Front Right Wheel"+newline+"Vertical"+newline+"Acceleration [m/s^2]",fs,'frwheel_z');
 
 % floor
-drawer(time(idx),-1*floor_x(idx),"Time [s]","Floor Longitudinal"+newline+"Acceleration [m/s^2]",fs,'floor_x');
-drawer(time(idx),floor_z(idx),"Time [s]","Floor Vertical"+newline+"Acceleration [m/s^2]",fs,'floor_z');
+drawer(time(idx)-start_time+1.38,-1*floor_x(idx),"Time [s]","Floor Longitudinal"+newline+"Acceleration [m/s^2]",fs,'floor_x');
+drawer(time(idx)-start_time+1.38,floor_z(idx),"Time [s]","Floor Vertical"+newline+"Acceleration [m/s^2]",fs,'floor_z');
 
 % velocity
-drawer(time(idx),velocity(idx),"Time [s]","Driving Velocity"+newline+"Acceleration [m/s^2]",fs,'velocity');
+drawer(time(idx)-start_time+1.38,velocity(idx),"Time [s]","Driving Velocity"+newline+"Acceleration [m/s^2]",fs,'velocity');
 
 %% find peaks
 current_time = time(idx);

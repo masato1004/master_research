@@ -1,15 +1,17 @@
-dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
+warning("off","all");
+preT = 10;
+dis = 0:preT*V/(preT/dt):preT*V;                                                       % distance time line ([m])
 start_disturbance = 9;                                                        % the start distance of disturbance ([m])
 
 max_z0 = 0.025;                                                                % [m] max road displacement
 ld = 0.25;
 const = 6;                                                                    % amplitude
 max_distance = 100;                                                           % [m] driving mileage
-dis_total = 0:max_distance/(T/dt):max_distance;                               % distance list for road profile ([m])
-dis_total_f = 0:max_distance/(T/dt):max_distance-start_disturbance;                           % distance list for front road profile ([m])
-dis_total_r = 0:max_distance/(T/dt):max_distance-start_disturbance-(L_f+L_r);                 % distance list for rear road profile ([m])
+dis_total = 0:max_distance/(preT/dt):max_distance;                               % distance list for road profile ([m])
+dis_total_f = 0:max_distance/(preT/dt):max_distance-start_disturbance;                           % distance list for front road profile ([m])
+dis_total_r = 0:max_distance/(preT/dt):max_distance-start_disturbance-(L_f+L_r);                 % distance list for rear road profile ([m])
 
-[road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_maker(shape,TL,T,dt,V,L_f,L_r,dis,start_disturbance,max_z0,ld,const,max_distance,dis_total,dis_total_f,dis_total_r);
+[road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_maker(shape,TL,preT,dt,V,L_f,L_r,dis,start_disturbance,max_z0,ld,const,max_distance,dis_total,dis_total_f,dis_total_r);
 
 % if sensing
 %     r_p_f = interp1(road_total_f(:,1)',road_total_f(:,2)',dis,'linear');                                   % front road profile
@@ -29,7 +31,7 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 % inv_offset_f = [];
 % inv_offset_r = [];
 % disp('Calculating inverse offset...')
-% for i = 1:5:width(dis_total)
+% for i = 1:1:width(dis_total)
 %     current_road_f = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
 %     current_road_f = current_road_f(1:5:end);
 %     half_circle_f = [current_road_f; sqrt(r^2 - (current_road_f-dis_total(i)).^2)+road_total_f(i)-r];
@@ -40,12 +42,14 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 %     half_circle_r = [current_road_r; sqrt(r^2 - (current_road_r-dis_total(i)).^2)+road_total_r(i)-r];
 %     inv_offset_r = [inv_offset_r, half_circle_r];
 % end
+% save("inverse_offset-"+shape, "inv_offset_f", "inv_offset_r")
 % disp('Done Calculating inverse offset.')
 
 % wheel_traj_f = [];
 % wheel_traj_r= [];
 % disp('Calculating wheel trajectory...')
-% for i = 1:5:width(dis_total)
+% load("inverse_offset-"+shape+".mat")
+% for i = 1:10:width(dis_total)
 %     if i == 1
 %         current_traj_f = [dis_total(i); max(inv_offset_f(2,inv_offset_f(1,:)==dis_total(i) | inv_offset_f(1,:)==dis_total(i+1)))];
 %         current_traj_r = [dis_total(i); max(inv_offset_r(2,inv_offset_r(1,:)==dis_total(i) | inv_offset_r(1,:)==dis_total(i+1)))];
@@ -64,16 +68,20 @@ load("configuration_files/wheel_traj-"+shape+".mat");
 % save("wheel_traj-"+shape, "wheel_traj_f", "wheel_traj_r")
 % disp('Done Calculating wheel trajectory.')
 
-disp('Calculating wheel mileage...')
-wheel_traj_f(2,abs(wheel_traj_f(2,:)) < 0.000005) = 0;
-wheel_traj_r(2,abs(wheel_traj_r(2,:)) < 0.000005) = 0;
-mileage_f = 0;
-mileage_r = 0;
-for k = 2:width(wheel_traj_f)
-    mileage_f = [mileage_f, sum(sqrt(diff(wheel_traj_f(1,1:k)).^2+diff(wheel_traj_f(2,1:k)).^2))];
-    mileage_r = [mileage_r, sum(sqrt(diff(wheel_traj_r(1,1:k)).^2+diff(wheel_traj_r(2,1:k)).^2))];
-end
-disp('Done Calculating wheel mileage.')
+% disp('Calculating wheel mileage...')
+% wheel_traj_f(2,abs(wheel_traj_f(2,:)) < 0.000005) = 0;
+% wheel_traj_r(2,abs(wheel_traj_r(2,:)) < 0.000005) = 0;
+% mileage_f = 0;
+% mileage_r = 0;
+% for k = 2:width(wheel_traj_f)
+%     mileage_f = [mileage_f, sum(sqrt(diff(wheel_traj_f(1,1:k)).^2+diff(wheel_traj_f(2,1:k)).^2))];
+%     mileage_r = [mileage_r, sum(sqrt(diff(wheel_traj_r(1,1:k)).^2+diff(wheel_traj_r(2,1:k)).^2))];
+% end
+% save('mileage','mileage_f','mileage_r');
+% disp('Done Calculating wheel mileage.')
+
+load("mileage.mat");
+
 
 r_p = [
     road_total_f;

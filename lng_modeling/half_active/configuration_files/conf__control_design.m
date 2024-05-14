@@ -57,5 +57,45 @@ w_fr = [
 dw_fr = [0, 0, 0, 0; diff(w_fr')]';         % preview road profile differencial
 
 
-%% MPC setting
-nlobj = nlmpc(14,4,4);
+%% Feedforward settings
+detailed_dt = 1e-05;
+detailed_dis = 0:V*detailed_dt:max_distance;
+detailed_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),detailed_dis);
+detailed_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),detailed_dis);
+rp = [
+    detailed_dis;
+    detailed_wheel_traj_f;
+    detailed_wheel_traj_r;
+    gradient(detailed_wheel_traj_f)./detailed_dt
+    gradient(detailed_wheel_traj_r)./detailed_dt
+];
+
+ideal_xdis_list = (0:c-1)*dt*V;
+ideal_zdis_list_f = makima(rp(1,:),rp(2,:),ideal_xdis_list);
+ideal_zdis_list_r = makima(rp(1,:),rp(3,:),ideal_xdis_list);
+ideal_gradient_zis_f = makima(rp(1,:),rp(4,:),ideal_xdis_list);
+ideal_gradient_zis_r = makima(rp(1,:),rp(5,:),ideal_xdis_list);
+
+% ideal_omega_f = sqrt(V^2 + ideal_gradient_zis_f.^2)./r;
+% ideal_omega_r = sqrt(V^2 + ideal_gradient_zis_r.^2)./r;
+
+% movmean
+ideal_omega_f = movmean(sqrt(V^2 + ideal_gradient_zis_f.^2)./r,60);
+ideal_omega_r = movmean(sqrt(V^2 + ideal_gradient_zis_r.^2)./r,60);
+
+% alpha_fk1 = (omega_fk1-omega_fk)/dt;
+% alpha_rk1 = (omega_rk1-omega_rk)/dt;
+
+% % calculate next torque
+% dx_disf =current_d(5);
+% dx_disr =current_d(6);
+% dz_disf =current_d(7);
+% dz_disr =current_d(8);
+
+% tau_f = I_wf*(alpha_fk1 + (dz_disf*g)/(dx_disf*r*(dz_disf^2/dx_disf^2 + 1)^(1/2)));
+% tau_r = I_wr*(alpha_rk1 + (dz_disr*g)/(dx_disr*r*(dz_disr^2/dx_disr^2 + 1)^(1/2)));
+
+
+% if feedforward
+%     u(1:2,:) = [ideal_omega_f; ideal_omega_r];
+% end

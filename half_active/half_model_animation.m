@@ -31,7 +31,7 @@ road_profile = plot(TL(1,1)*V-1.4:6.2/500:TL(1,1)*V+10,road,"Color","black",Line
 hold on;
 
 % first draw of body
-img = imread('march_body.png'); 
+img = imread('march.png'); 
 y_bias = 270;
 x_bias = 415;
 img_h = height(img);
