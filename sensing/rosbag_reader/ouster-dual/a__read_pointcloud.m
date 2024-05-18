@@ -28,7 +28,7 @@ translation = [0 0 0];
 tform_lidar = rigidtform3d(rotagl,translation);
 
 %% Load bag file
-[file,path] = uigetfile("D:/nissan/*.bag");
+[file,path] = uigetfile("E:/nissan/*.bag");
 bag = rosbag(string(path) + string(file));
 
 %% Read topicks of pointcloud
@@ -84,9 +84,9 @@ f_oust_rounded = round(f_oust,round_num);
 r_oust_rounded = round(r_oust,round_num);
 zedt_rounded   = round(zedt,round_num);
 
-% calculate the number of datas paied attended
-start_sec = 35;
-end_sec = 41;
+% Settings for calculate the number of datas been paied attended
+start_sec = 133;
+end_sec = 140;
 start_idx = int32(start_sec/dt);
 end_idx = int32(end_sec/dt);
 front_pass_data_num = sum(f_oust_rounded < time_list(start_idx));
@@ -115,7 +115,12 @@ if make_video
     v.FrameRate = 10;
     open(v);
 end
-% for i = start_idx:length(time_list)
+
+%% Loop
+front_found_pcd = false;
+rear_found_pcd = false;
+last_f_ospc = 0;
+last_r_ospc = 0;
 for i = start_idx:end_idx
     
     % zed camera
@@ -133,11 +138,12 @@ for i = start_idx:end_idx
 
         zed_data_num = zed_data_num + 1;
         zedt_dnum = zedt_dnum + 1;
-        % drawnow
+        drawnow
     end
 
     % Front ploint clouds
     if abs(time_list(i) - f_oust_rounded(f_oust_dnum)) < dt
+            front_found_pcd = true;
             % disp ouster-front pointcloud
             f_ospc_read = readXYZ(f_ousMsgs{f_data_num});
             % f_ospc = pointCloud(f_ospc_read(f_ospc_read(:,2)<=1.2 & f_ospc_read(:,2)>=-7 & f_ospc_read(:,1)>=-2 & f_ospc_read(:,1)<=2,:,:));
@@ -156,31 +162,29 @@ for i = start_idx:end_idx
                 ylim([-50,50]);
             end
             
-            if f_oust_dnum >= 2
-                delete(f_ouspc_show);
-            end
-            % f_ospc = pctransform(f_ospc,tform_cam2wheel);
-            subplot(1,2,2);
-            f_ouspc_show = pcshow(f_ospc); hold on;
-            xlim([0,9]);
-            % scatter3(f_ospc.Location(:,1),f_ospc.Location(:,2),f_ospc.Location(:,3),1.5,f_ospc.Location(:,3)','filled'); hold on;
-            % camproj('perspective')
-            % axis equal
-            xlabel("\itX \rm[m]");
-            ylabel("\itY \rm[m]");
-            zlabel("\itZ \rm[m]");
+            % if f_oust_dnum >= 2
+            %     delete(f_ouspc_show);
+            % end
+            % % f_ospc = pctransform(f_ospc,tform_cam2wheel);
+            % subplot(1,2,2);
+            % f_ouspc_show = pcshow(f_ospc); hold on;
+            % xlim([0,9]);
+            % xlabel("\itX \rm[m]");
+            % ylabel("\itY \rm[m]");
+            % zlabel("\itZ \rm[m]");
 
             f_data_num = f_data_num + 1;
             f_oust_dnum = f_oust_dnum + 1;
-            view(-90,40)
+            % view(-90,40)
             
-            fontname(gcf,"Times New Roman");
-            fontsize(gca,16,"points");
+            % fontname(gcf,"Times New Roman");
+            % fontsize(gca,16,"points");
             % drawnow
     end
 
     % Roof point clouds
     if abs(time_list(i) - r_oust_rounded(r_oust_dnum)) < dt
+            rear_found_pcd = true;
             % disp ouster-roof pointcloud
             r_ospc_read = readXYZ(r_ousMsgs{r_data_num}); % 130 -> bar
             % r_ospc = pointCloud(r_ospc_read(r_ospc_read(:,1)>=1.5 & r_ospc_read(:,1)<=8.5 & r_ospc_read(:,2)>=-2 & r_ospc_read(:,2)<=2,:,:));
@@ -202,30 +206,53 @@ for i = start_idx:end_idx
                 ylim([-50,50]);
             end
 
-            if r_oust_dnum >= 2
-                delete(r_ouspc_show);
-            end
-            % r_ospc = pctransform(r_ospc,tform_cam2wheel);
-            subplot(1,2,2);
-            r_ouspc_show = pcshow(r_ospc); hold on;
-            xlim([0,9]);
-            % scatter3(r_ospc.Location(:,1),r_ospc.Location(:,2),r_ospc.Location(:,3),1.5,r_ospc.Location(:,3)','filled'); hold on;
-            % camproj('perspective')
-            % axis equal
-            xlabel("\itX \rm[m]");
-            ylabel("\itY \rm[m]");
-            zlabel("\itZ \rm[m]");
+            % if r_oust_dnum >= 2
+            %     delete(r_ouspc_show);
+            % end
+            % % r_ospc = pctransform(r_ospc,tform_cam2wheel);
+            % subplot(1,2,2);
+            % r_ouspc_show = pcshow(r_ospc); hold on;
+            % xlim([0,9]);
+            % xlabel("\itX \rm[m]");
+            % ylabel("\itY \rm[m]");
+            % zlabel("\itZ \rm[m]");
 
             r_data_num = r_data_num + 1;
             r_oust_dnum = r_oust_dnum + 1;
-            view(-90,40)
+            % view(-90,40)
 
-            fontname(gcf,"Times New Roman");
-            fontsize(gca,16,"points");
+            % fontname(gcf,"Times New Roman");
+            % fontsize(gca,16,"points");
+
             % set(gcf,'color','w');
             % set(gca,'color','w');
             % set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
-            drawnow
+    end
+    if front_found_pcd & rear_found_pcd & any([f_ospc~=last_f_ospc, r_ospc~=last_r_ospc])
+        if f_oust_dnum >= 2
+            delete(f_ouspc_show);
+        end
+        % f_ospc = pctransform(f_ospc,tform_cam2wheel);
+        subplot(1,2,2);
+        f_ouspc_show = pcshow(f_ospc); hold on;
+
+        if r_oust_dnum >= 2
+            delete(r_ouspc_show);
+        end
+        % r_ospc = pctransform(r_ospc,tform_cam2wheel);
+        subplot(1,2,2);
+        r_ouspc_show = pcshow(r_ospc); hold on;
+        xlim([0,9]);
+        view(-90,40)
+        xlabel("\itX \rm[m]");
+        ylabel("\itY \rm[m]");
+        zlabel("\itZ \rm[m]");
+        fontname(gcf,"Times New Roman");
+        fontsize(gca,16,"points");
+
+        drawnow
+        last_f_ospc = f_ospc;
+        last_r_ospc = r_ospc;
     end
     disp(round(time_list(i)-time_list(1),2)+"[s]--"+ f_data_num + " " + r_data_num);
     if make_video && mod(time_list(i)-time_list(1),dt*10) == 0
