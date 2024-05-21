@@ -104,7 +104,7 @@ r_oust_dnum = 1;
 zedt_dnum = 1;
 
 all_around = false;
-make_video = true;
+make_video = false;
 
 if make_video
     save_dir = "video";
@@ -229,16 +229,16 @@ for i = start_idx:end_idx
             % set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
     end
     if front_found_pcd & rear_found_pcd & any([f_ospc~=last_f_ospc, r_ospc~=last_r_ospc])
-        if f_oust_dnum >= 2
+        if f_oust_dnum >= 3
             delete(f_ouspc_show);
+        end
+        if r_oust_dnum >= 3
+            delete(r_ouspc_show);
         end
         % f_ospc = pctransform(f_ospc,tform_cam2wheel);
         subplot(1,2,2);
         f_ouspc_show = pcshow(f_ospc); hold on;
 
-        if r_oust_dnum >= 2
-            delete(r_ouspc_show);
-        end
         % r_ospc = pctransform(r_ospc,tform_cam2wheel);
         subplot(1,2,2);
         r_ouspc_show = pcshow(r_ospc); hold on;
