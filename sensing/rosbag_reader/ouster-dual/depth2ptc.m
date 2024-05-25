@@ -9,5 +9,5 @@ intrinsics       = cameraIntrinsics(focalLength,principalPoint,imageSize);
 depthScaleFactor = 65535/20;
 maxCameraDepth   = 20;
 
-ptCloud = pcfromdepth(depthImage,depthScaleFactor,intrinsics,ColorImage=colorImage)
-pchsow(ptCloud);
+ptCloud = pcfromdepth(depthImage,depthScaleFactor,intrinsics,ColorImage=colorImage);
+pcshow(ptCloud);
