@@ -41,6 +41,8 @@ tform = rigidtform3d([-90 0 -90],[0 0 0]);
 ptCloud = pctransform(ptCloud,tform);
 pcshow(ptCloud);
 
+pcin=pointCloud(reshape(ptCloud.Location,[],3));
 downptCloud = pcdownsample(ptCloud,'gridAverage',0.50);
-[ptCloud, plaen_mesh, plane_tform] = fitplane(ptCloud,downptCloud,0.01);
+[ptCloud, plaen_mesh, plane_tform] = fitplane(pcin,downptCloud,0.01);
+ptCloud = pctransform(ptCloud,r_tform_cam2wheel);
 pcshow(reshape(ptCloud.Location,[],3),reshape(colorImage,[],3));
