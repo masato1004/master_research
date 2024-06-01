@@ -29,6 +29,7 @@ unreal_engine/*
 *.asv
 *.ply
 *.mat
+*.txt
 *.DS_Store
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
