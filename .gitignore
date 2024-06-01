@@ -30,6 +30,7 @@ unreal_engine/*
 *.ply
 *.mat
 *.txt
+*.emf
 *.DS_Store
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
