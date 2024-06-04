@@ -65,8 +65,8 @@ disp("Successfuly loaded '/zed2i/zed_node/rgb/image_rect_color/compressed' .")
 %% show
 disp("start");
 figure("Position",[100 100 1600 900]);
-ax_img = subplot(1,2,1);
-ax_pcd = subplot(1,2,2);
+ax_img = subplot(2,1,1);
+% ax_pcd = subplot(1,2,2);
 gridStep = 0.05;
 
 % define start and end time
@@ -104,7 +104,7 @@ r_oust_dnum = 1;
 zedt_dnum = 1;
 
 all_around = false;
-make_video = false;
+make_video = true;
 
 if make_video
     save_dir = "video";
@@ -236,13 +236,22 @@ for i = start_idx:end_idx
             delete(r_ouspc_show);
         end
         % f_ospc = pctransform(f_ospc,tform_cam2wheel);
-        subplot(1,2,2);
+        subplot(2,2,3);
         f_ouspc_show = pcshow(f_ospc); hold on;
+        xlim([0,9]);
+        title("Front LiDAR")
+        view(-90,40)
+        xlabel("\itX \rm[m]");
+        ylabel("\itY \rm[m]");
+        zlabel("\itZ \rm[m]");
+        fontname(gcf,"Times New Roman");
+        fontsize(gca,16,"points");
 
         % r_ospc = pctransform(r_ospc,tform_cam2wheel);
-        subplot(1,2,2);
+        subplot(2,2,4);
         r_ouspc_show = pcshow(r_ospc); hold on;
         xlim([0,9]);
+        title("Roof LiDAR")
         view(-90,40)
         xlabel("\itX \rm[m]");
         ylabel("\itY \rm[m]");

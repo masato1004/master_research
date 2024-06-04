@@ -1,4 +1,4 @@
-% close all;
+close all;
 
 % dataset="val_selection_cropped/";
 dataset="val_selection_cropped_fixed_supervisor/";
@@ -6,6 +6,7 @@ dataset="val_selection_cropped_fixed_supervisor/";
 % results="unpretrained_unfixed_supervisor/results/";
 % results="unpretrained_fixed_supervisor/results/";
 results="pretrained_fixed_supervisor/results/";
+% results="conventional_model/results/";
 
 list_predicted_imgs = dir(results+"*.png");
 list_rawlidar_imgs = dir(dataset+"velodyne_raw/*.png");
@@ -25,14 +26,14 @@ while flag
         flag=false;
     end
 end
-file_num=210;
+file_num=143;
 
 rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
 colorImage_read = imread(dataset+"image/"+list_color_imgs(file_num).name);
 groundtruth_read = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
 
-depthImage_read = groundtruth_read;
+depthImage_read = predictedImage_read;
 
 depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);
@@ -108,8 +109,8 @@ ptloc(ptloc(:,3)>0.5,3)=0;
 ptCloud=pointCloud(ptloc);
 % colorImage_new = reshape(colorImage,[],3);
 temp_fig = figure("Position",[100,100,250,200]);
-pcshow(reshape(ptCloud.Location,[],3));
-% pcshow(reshape(ptCloud.Location,[],3),reshape(colorImage,[],3));
+% pcshow(reshape(ptCloud.Location,[],3));
+pcshow(reshape(ptCloud.Location,[],3),reshape(colorImage,[],3));
 % ptCloud=ptCloud_new;
 xlabel("\itX \rm[m]");
 ylabel("\itY \rm[m]");
@@ -175,9 +176,9 @@ f_dis_total_p = [f_dis_total, f_prev_profile(1,:)];
 [f_dis_total_p,~] = sort(f_dis_total_p);
 f_correct_road_p = interp1(f_dis_total,road_total,f_dis_total_p);
 f_sc = scatter(f_prev_profile(1,:),f_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#0000ff","DisplayName","Predicted Data"); hold on;  % picked up points
-% raw_sc = scatter(raw_prev_profile(1,:),raw_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#00aa00","DisplayName","Raw Data"); hold on;  % picked up points
+raw_sc = scatter(raw_prev_profile(1,:),raw_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#00aa00","DisplayName","Raw Data"); hold on;  % picked up points
 f_correct_road = plot(f_dis_total_p,f_correct_road_p,"LineWidth",2,"Color","#aaaaaa","DisplayName","Actual Road"); hold on;
-f_pl = plot(f_prev_profile(1,:),movmean(f_prev_profile(2,:),mean_data_num),"LineWidth",2,"LineStyle",":","Color","#ff0000","DisplayName","Moving Average"); % moving average
+% f_pl = plot(f_prev_profile(1,:),movmean(f_prev_profile(2,:),mean_data_num),"LineWidth",2,"LineStyle",":","Color","#ff0000","DisplayName","Moving Average"); % moving average
 
 grid on;
 xlim([range_min,range_max]);
