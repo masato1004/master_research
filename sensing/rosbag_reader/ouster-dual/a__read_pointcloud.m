@@ -1,32 +1,4 @@
 warning('off','all');
-%% load tf from calibration file
-f_tf = readmatrix("calibration_file_zed_nissan_front.csv");
-r_tf = readmatrix("calibration_file_zed_nissan_roof.csv");
-f_rotm = quat2rotm([f_tf(7),f_tf(4:6)]);
-r_rotm = quat2rotm([r_tf(7),r_tf(4:6)]);
-f_translation = [f_tf(1),f_tf(2),f_tf(3)];
-r_translation = [r_tf(1),r_tf(2),r_tf(3)];
-f_tform = rigidtform3d(f_rotm,f_translation);
-r_tform = rigidtform3d(r_rotm,r_translation);
-
-% translat with position parameter from cad
-rotate_angle_cam2wheel = [0 0 0];
-f_translation_cam2wheel = [0 1 0]; % from cad
-r_translation_cam2wheel = [-1 0 0]; % from cad
-f_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,f_translation_cam2wheel);
-r_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,r_translation_cam2wheel);
-
-% calculate tfrom
-f_tform.A = f_tform.A * f_tform_cam2wheel.A;
-r_tform.A = r_tform.A * r_tform_cam2wheel.A;
-
-%% lidar inclination
-zed_inc_z = 2; % [deg]
-zed_inc_y = 14.0375;
-rotagl = [0,zed_inc_y,zed_inc_z];
-translation = [0 0 0];
-tform_lidar = rigidtform3d(rotagl,translation);
-
 %% Load bag file
 [file,path] = uigetfile("E:/nissan/*.bag");
 bag = rosbag(string(path) + string(file));
@@ -62,6 +34,34 @@ disp("Successfuly loaded '/zed2i/zed_node/rgb/image_rect_color/compressed' .")
 
 %% ros zed2i pointcloud topic
 
+%% load tf from calibration file
+f_tf = readmatrix("calibration_file_zed_nissan_front.csv");
+r_tf = readmatrix("calibration_file_zed_nissan_roof.csv");
+f_rotm = quat2rotm([f_tf(7),f_tf(4:6)]);
+r_rotm = quat2rotm([r_tf(7),r_tf(4:6)]);
+f_translation = [f_tf(1),f_tf(2),f_tf(3)];
+r_translation = [r_tf(1)+0.15,r_tf(2),r_tf(3)];
+f_tform = rigidtform3d(f_rotm,f_translation);
+r_tform = rigidtform3d(r_rotm,r_translation);
+
+% translat with position parameter from cad
+rotate_angle_cam2wheel = [0 0 0];
+f_translation_cam2wheel = [0 1 0]; % from cad
+r_translation_cam2wheel = [-1 0 0]; % from cad
+f_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,f_translation_cam2wheel);
+r_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,r_translation_cam2wheel);
+
+% calculate tfrom
+f_tform.A = f_tform.A * f_tform_cam2wheel.A;
+r_tform.A = r_tform.A * r_tform_cam2wheel.A;
+
+%% lidar inclination
+zed_inc_z = 2; % [deg]
+zed_inc_y = 14.0375;
+rotagl = [0,zed_inc_y,zed_inc_z];
+translation = [0 0 0];
+tform_lidar = rigidtform3d(rotagl,translation);
+
 %% show
 disp("start");
 figure("Position",[100 100 1600 900]);
@@ -85,8 +85,8 @@ r_oust_rounded = round(r_oust,round_num);
 zedt_rounded   = round(zedt,round_num);
 
 % Settings for calculate the number of datas been paied attended
-start_sec = 133;
-end_sec = 140;
+start_sec = 51;
+end_sec = 53;
 start_idx = int32(start_sec/dt);
 end_idx = int32(end_sec/dt);
 front_pass_data_num = sum(f_oust_rounded < time_list(start_idx));
@@ -104,7 +104,7 @@ r_oust_dnum = 1;
 zedt_dnum = 1;
 
 all_around = false;
-make_video = true;
+make_video = false;
 
 if make_video
     save_dir = "video";

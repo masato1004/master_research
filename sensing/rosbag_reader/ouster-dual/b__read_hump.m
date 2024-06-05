@@ -2,10 +2,10 @@ close all;
 warning('off','all');
 
 %% setting for channel 
-channel = 32; % 128, 64, 32
+channel = 128; % 128, 64, 32
 
 %% set infomations
-msg_nums = [2748 2750];
+msg_nums = [1022 1023];
 gridStep = 0.05;
 
 % install params
