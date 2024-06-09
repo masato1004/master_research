@@ -31,6 +31,8 @@ unreal_engine/*
 *.mat
 *.txt
 *.emf
+*.tar
+*.pth
 *.DS_Store
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
