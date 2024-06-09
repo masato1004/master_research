@@ -1,7 +1,7 @@
 function [modified_data, plane_mesh, tform] = fitplane(data,downsampled_data,threshold)
     %% PCFITPLANE
     max_distance = threshold;  % [m]
-    model = pcfitplane(downsampled_data,max_distance,MaxNumTrials=500);
+    [model,~,~] = pcfitplane(downsampled_data,max_distance,MaxNumTrials=10000);
     new_ver = data.Location;
     X_max = max(new_ver(:,1),[],'all');
     X_min = min(new_ver(:,1),[],'all');
@@ -37,5 +37,5 @@ function [modified_data, plane_mesh, tform] = fitplane(data,downsampled_data,thr
     % Lift the road up for camera-height by mesh
     modified_data = ptOut.Location;
     modified_data(:,3) = modified_data(:,3) - mean(plane.Location(:,3));
-    modified_data = pointCloud(modified_data);
+    modified_data = pointCloud(modified_data,"Color",ptOut.Color);
 end
