@@ -261,7 +261,7 @@ for i=1:c-1
             % disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
             % disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
         else
-            dis_grad = gradient(disturbance(1:4,i-1:i))./dt;
+            dis_grad = gradient(disturbance(1:4,i:i+1))./dt;
             disturbance(5:8,i+1) = dis_grad(:,2);
 
             % disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
@@ -338,13 +338,22 @@ for i=1:c-1
                 current_mileage_r = makima(dis_total-disturbance(2,i),mileage_r-makima(dis_total,mileage_r,disturbance(2,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
                 current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(1,i));
                 current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):tc*states(8,i):tc*states(8,i)*(pHorizon+9)+disturbance(2,i));
+                detailed_wheel_traj_f = [disturbance(1,i):dt*states(8,i):dt*states(8,i)*(pHorizon+9)+disturbance(1,i);makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i):dt*states(8,i):dt*states(8,i)*(pHorizon+9)+disturbance(1,i))];
+                detailed_wheel_traj_r = [disturbance(2,i):dt*states(8,i):dt*states(8,i)*(pHorizon+9)+disturbance(2,i);makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i):dt*states(8,i):dt*states(8,i)*(pHorizon+9)+disturbance(2,i))];
 
                 state_function_parameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
                 
-                reference = nlmpc_config__referenceSignal(states(:,i),u_in,states(:,1),Ts*pHorizon);
+                reference = func__referenceSignal(states(:,i),u_in,states(:,1),Ts,pHorizon,detailed_wheel_traj_f,detailed_wheel_traj_r,V,r);
                 simdata.StateFcnParameter = state_function_parameter;
-                simdata.StageParameter    = repmat([state_function_parameter; reference],pHorizon+1,1);
-                simdata.TerminalState     = reference;
+
+                sp = zeros(sp_length*(pHorizon+1),1);
+                for ct=1:pHorizon+1
+                    sp(sp_length*(ct-1)+1:(sp_length)*ct,1) = [simdata.StateFcnParameter; reference(:,ct)];
+                end
+                simdata.StageParameter    = sp;
+                % simdata.StageParameter    = repmat([state_function_parameter; reference(:,end)],pHorizon+1,1);
+
+                simdata.TerminalState     = reference(:,end);
                 % reference(5)-states(5,i)
                 % states(5,i)
                 controller_start = toc;

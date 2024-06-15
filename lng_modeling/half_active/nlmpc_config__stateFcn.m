@@ -57,7 +57,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 5;
+    pHorizon = 10;
 
     persistent A B E disc_func
     if isempty(A)

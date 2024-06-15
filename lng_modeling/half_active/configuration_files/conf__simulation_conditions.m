@@ -18,8 +18,8 @@ rprev   = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
 LQR_fprev_rprev = false;
-NLMPC = false;
-feedforward = true;
+NLMPC = true;
+feedforward = false;
 
 % road profile
 sensing = false;

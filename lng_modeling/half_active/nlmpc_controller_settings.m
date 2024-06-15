@@ -1,5 +1,5 @@
 Ts = tc;       % control period
-pHorizon = 5; % prediction horizon (control horizon is same as this)
+pHorizon = 10; % prediction horizon (control horizon is same as this)
 
 runner = nlmpcMultistage(pHorizon, height(states), height(u));
 runner.Ts = Ts;
@@ -63,13 +63,13 @@ runner.ManipulatedVariables(4).RateMax = 500;
 % runner.States(5).Min = deg2rad(rad2deg(theta_init)-0.2);
 % runner.States(5).Max = deg2rad(rad2deg(theta_init)+0.2);
 
-
+sp_length = runner.Model.ParameterLength+height(states);
 for ct=1:pHorizon+1
     runner.Stages(ct).CostFcn = 'nlmpc_config__costFcn';
     runner.Stages(ct).CostJacFcn = 'nlmpc_config__costFcnJacobian';
     runner.Stages(ct).IneqConFcn = 'nlmpc_config__ineqConFcn';
     % runner.Stages(ct).IneqConJacFcn = 'nlmpc_config__ineqConFcnJacobian';
-    runner.Stages(ct).ParameterLength = 1+height(disturbance)+(pHorizon+10)*3+(pHorizon+10)*2+height(states);
+    runner.Stages(ct).ParameterLength = sp_length;
     runner.Stages(ct).SlackVariableLength = 4;
     % if ct ~= pHorizon+1
     %     runner.Stages(ct).EqConFcn = 'nlmpc_config__eqConFcn';
@@ -87,8 +87,16 @@ current_mileage_f = makima(dis_total-disturbance(1,1),mileage_f-makima(dis_total
 current_mileage_r = makima(dis_total-disturbance(2,1),mileage_r-makima(dis_total,mileage_r,disturbance(2,1)),0:Ts*states(8,1):Ts*states(8,1)*(pHorizon+9));
 current_wheel_traj_f = makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,1):Ts*states(8,1):Ts*states(8,1)*(pHorizon+9)+disturbance(1,1));
 current_wheel_traj_r = makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,1):Ts*states(8,1):Ts*states(8,1)*(pHorizon+9)+disturbance(2,1));
+detailed_wheel_traj_f = [disturbance(1,1):dt*states(8,1):dt*states(8,1)*(pHorizon+9)+disturbance(1,1);makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,1):dt*states(8,1):dt*states(8,1)*(pHorizon+9)+disturbance(1,1))];
+detailed_wheel_traj_r = [disturbance(2,1):dt*states(8,1):dt*states(8,1)*(pHorizon+9)+disturbance(2,1);makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,1):dt*states(8,1):dt*states(8,1)*(pHorizon+9)+disturbance(2,1))];
+reference = func__referenceSignal(states(:,1),u(:,1),states(:,1),Ts,pHorizon,detailed_wheel_traj_f,detailed_wheel_traj_r,V,r);
 simdata.StateFcnParameter = [disturbance(:,1);[0:Ts*states(8,1):Ts*states(8,1)*(pHorizon+9)].';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';1];
-simdata.StageParameter = repmat([simdata.StateFcnParameter; nlmpc_config__referenceSignal(states(:,1),u(:,1),states(:,1),Ts)],pHorizon+1,1);
+sp = zeros(sp_length*(pHorizon+1),1);
+for i=1:pHorizon+1
+    sp(sp_length*(i-1)+1:(sp_length)*i,1) = [simdata.StateFcnParameter; reference(:,i)];
+end
+simdata.StageParameter = sp;
+% simdata.StageParameter = repmat([simdata.StateFcnParameter; ],pHorizon+1,1);
 % simdata.InitialGuess = [];
 validateFcns(runner,states(:,1),u(:,1),simdata);
 disp('validate done.')

@@ -51,8 +51,9 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
         disturbance_total_r = max_z0*0.5+max_z0*sin(const*dis_total_r-pi/2)/2;        % road disturbance for rear wheel ([m])
         road_total_f = [zeros(1,int32(T*start_disturbance/(dt*max_distance))), disturbance_total_f];  % converting front disturbance and buffer ([m])
         road_total_r = [zeros(1,int32(T*(start_disturbance+L_f+L_r)/(dt*max_distance))+1), disturbance_total_r];  % converting rear disturbance and buffer ([m])
-        
-        ld = 0; max_z0 = max_z0; frequency = (const/(2*pi))*V
+        road_total_r=road_total_r(1,1:end-1);
+
+        dis_length=0; ld = 0; max_z0 = max_z0; frequency = (const/(2*pi))*V
 
     % step
     elseif shape == "_step_"
@@ -79,8 +80,9 @@ function [road_total_f,road_total_r,ld,frequency,max_z0,dis_length] = road_prof_
         disturbance_total_r = makima(jari_total,road_total,0:max_distance/(T/dt):max_distance-3-(L_f+L_r));
         road_total_f = [zeros(1,int32(T*3/(dt*max_distance))), disturbance_total_f];  % converting front disturbance and buffer ([m])
         road_total_r = [zeros(1,int32(T*(3+L_f+L_r)/(dt*max_distance))+1), disturbance_total_r];  % converting rear disturbance and buffer ([m])
-
-        frequency = 0; max_z0 = 0; ld = 0;
+        road_total_r=road_total_r(1,1:end-1);
+        
+        frequency = 0; max_z0 = 0; ld = 0; dis_length=0;
     end
 
 end

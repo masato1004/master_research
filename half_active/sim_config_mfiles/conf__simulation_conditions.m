@@ -22,8 +22,8 @@ LQR_fprev_rprev = false;
 % road profile
 sensing = false;
 paper   = false;
-bump   = true;
-sin_wave = false;
+bump   = false;
+sin_wave = true;
 step    = false;
 manhole = false;
 jari    = false;
