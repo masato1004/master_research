@@ -49,10 +49,8 @@ B=[
     -p1*xi
     ];
 
-C=[
-    1 0 0 0;
-    0 1 0 0
-    ];
+C=diag([1,1,0,0]);
+C(sum(C,2)==0,:)=[];  % eliminate rows filled with 0 不要な行の削除
 
 D=zeros(height(C),1);
 
@@ -62,7 +60,7 @@ E=B;
 x = [zeros(4,TL_width)];
 y = [zeros(rank(C),TL_width)];
 u = [zeros(1,TL_width)];
-d = [2*ones(1,TL_width)];
+d = [ones(1,TL_width)];
 
 x(:,1) = [x0;theta0;dx0;dtheta0];  % 初期値の代入
 
@@ -84,44 +82,59 @@ Bd = disc_func(control_dt,B) - disc_func(0,B);
 
 % ===LQR 離散時間最適レギュレータ===
 %         x1 x2 x3 x4
-Q = diag([100000, 5, 1, 1]);
+Q = diag([10, 5, 1, 1]);
 R = diag([1]);
 [K_lqr,S,P] = lqr(A,B,Q,R,[]);
 pole(ss(A-B*K_lqr,B,C,D))
 % bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
 % ===Servo 離散時間最適サーボ系===
+x_inf = [0.5;0;0;0];
+u_inf = -d(end);
 r = zeros(height(C),TL_width);  % 目標値（0で一定）
-e = zeros(height(C),TL_width);  % エラーリストの初期化
+r = repmat(C*x_inf,[1,TL_width]);  % 目標値（0で一定）
+w = zeros(height(C),TL_width);  % エラーリストの初期化
+e = r-C*x;  % エラーリストの初期化
+x_ex = [x;w];
 
 % Expanded system 拡大系の定義
 phi = [
-    % A, zeros(height(A),height(C));
-    % -C, zeros(height(C),height(C))
-    Ad, zeros(height(A),height(C));
-    -C*Ad, zeros(height(C),height(C))
+    A, zeros(height(A),height(C));
+    -C, zeros(height(C),height(C))
+    % Ad, zeros(height(Ad),height(C));
+    % -C*Ad, eye(height(C),height(C))
     ];
 G = [
-    % B;
-    % zeros(height(C),width(B))
-    Bd;
-    -C*Bd
+    B;
+    zeros(height(C),width(B))
+    % Bd;
+    % -C*Bd
 ];
+
+H = [
+    zeros(height(A),height(C));
+    eye(height(C))
+];
+
 psi = [
     C, zeros(height(C),height(C))
 ];
+eta = [
+    E;
+    -D
+];
 
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_servo = diag([1e-04, 1e02, 1e-04, 1e-04, 1, 1e-04]);
-R_servo = diag([1e-04]);
-[K_servo,S,P] = dlqr(phi,G,Q_servo,R_servo,[]);
+Q_servo = diag([1, 1, 1, 1, 6, 4]);
+R_servo = diag([1]);
+[K_servo,S,P] = lqr(phi,G,Q_servo,R_servo,[]);
 
-% P_11 = S(1:height(x),1:height(x));
-% P_12 = S(1:height(x),end-(height(e)-1):end);
-% P_22 = S(end-(height(e)-1):end,end-(height(e)-1):end);
-% F_a=-R_servo\(B')*P_11;
-% G_a=-R_servo\(B')*P_12;
-% H_a=([-F_a+G_a\(P_22)*(P_12') eye(height(C))])*pinv([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+P_11 = S(1:height(A),1:height(B));
+P_12 = S(1:height(A),end-(height(e)-1):end);
+P_22 = S(end-(height(e)-1):end,end-(width(P_12)-1):end);
+F_a=-K_servo(:,1:height(x));
+G_a=-K_servo(:,height(x)+1:end);
+H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 %% Simulation Loop
 % modeling error モデル化誤差の再現（60kg 乗員5名）
@@ -140,15 +153,19 @@ for i = 1:TL_width-1
             if LQR
                 u(:,i) = -K_lqr*x(:,i);
             elseif servo
-                u(:,i) = -K_servo*[x(:,i); e(:,i)];% + H_a*r(:,i);
+                % e(:,i) = r(:,i) - y(:,i);
+                u(:,i) = -K_servo*(x_ex(:,i)) - G_a*x_ex(height(A)+1:end,1) - (G_a/P_22)*(P_12')*x_ex(1:height(A),1) + H_a*r(:,i);
+                % u(:,i) = -K_servo*[x(:,i)-[0.5;0;0;0]; e(:,i-1)] - G_a*e(:,1) - (G_a/P_22)*(P_12')*x(:,1) + H_a*r(:,i) + u_inf;
             end
         elseif i-1 ~= 0
+            % e(:,i) = e(:,i-1);
             u(:,i) = u(:,i-1);
         end
     end
 
     % update states ルンゲクッタ法による状態量の更新
-    x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), A, B, E, dt);
+    x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, G, eta, H, dt);
+    x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), [], A, B, E, [], dt);
 end
 
 % calculate squared error 最適レギュレータの評価関数の中身
@@ -157,7 +174,7 @@ e_squared = sum(e.^2,2)
 u_squared = sum(u.^2,2)
 
 %% Drawing 図の描画
-states_name = ["\itz","\it\theta","d\itz\rmd\itt","d\it\theta\rmd\itt"];
+states_name = ["\itx","\it\theta","d\itx\rmd\itt","d\it\theta\rmd\itt"];
 inputs_name = ["\itu\rm(\itt\rm)"];
 disturbance_name = ["\itd\rm(\itt\rm)"];
 
@@ -200,10 +217,10 @@ condition = "_controller-"+controller(controller_bool);
 saveas(fig,"fig/"+condition);
 
 %% Animation アニメーションによる挙動の確認
-x_cart1 = x(1,:)';
+x_cart1 = x_ex(1,:)';
 y_cart1 = zeros(size(x_cart1));
-x_p = L*sin(x(2,:)');
-y_p = L*cos(x(2,:)');
+x_p = L*sin(x_ex(2,:)');
+y_p = L*cos(x_ex(2,:)');
 u = zeros(size(x_cart1));
 % t = t';
 figure("name","Cart Pole")

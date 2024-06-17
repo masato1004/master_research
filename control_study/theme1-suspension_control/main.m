@@ -18,8 +18,8 @@ road_hgeit = 0.08;   % [m]   凹凸の高さ
 
 % controller
 passive = false;
-LQR = true;
-servo = false;
+LQR = false;
+servo = true;
 
 %% Model Definition モデルの定義
 syms L_f L_r k_sf k_sr c_sf c_sr m_b I_b
@@ -112,13 +112,13 @@ e = zeros(height(C),TL_width);  % エラーリストの初期化
 
 % Expanded system 拡大系の定義
 phi = [
-    Ad, zeros(height(Ad),height(C));
+    A, zeros(height(Ad),height(C));
     -C, zeros(height(C),height(C))
     % Ad, zeros(height(Ad),height(C));
     % -C*Ad, zeros(height(C),height(C))
     ];
 G = [
-    Bd;
+    B;
     zeros(height(C),width(Bd))
     % Bd;
     % -C*Bd
@@ -128,16 +128,16 @@ psi = [
 ];
 
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_servo = diag([1, 1, 1, 1, 1e10, 1]);
-R_servo = diag([1e-5 1e-5]);
-[K_servo,S,P] = dlqr(phi,G,Q_servo,R_servo,[]);
+Q_servo = diag([1e-2, 1e-2, 1e-2, 1e-2, 1e1, 1e-2]);
+R_servo = diag([1e-2 1e-2]);
+[K_servo,S,P] = lqr(phi,G,Q_servo,R_servo,[]);
 
-P_11 = S(1:height(x),1:height(x));
-P_12 = S(1:height(x),end-(height(e)-1):end);
-P_22 = S(end-(height(e)-1):end,end-(height(e)-1):end);
+P_11 = S(1:height(A),1:height(B));
+P_12 = S(1:height(A),end-(height(e)-1):end);
+P_22 = S(end-(height(A)-1):end,end-(width(P_12)-1):end);
 F_a=-R_servo\(B')*P_11;
 G_a=-R_servo\(B')*P_12;
-H_a=([-F_a+G_a\(P_22)*(P_12') eye(height(C))])*pinv([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+H_a=([-F_a+G_a/(P_22)*(P_12') eye(height(C))])*pinv([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 %% Simulation Loop
 % modeling error モデル化誤差の再現（60kg 乗員5名）
