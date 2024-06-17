@@ -1,12 +1,13 @@
 close all;
 clear;
+
 %% Define simlation condition シミュレーション条件
 % loop parameters
-T = 10;
-dt = 1e-04;
-TL = 0:dt:T;
-TL_width = width(TL);
-control_dt = dt;
+T = 10;                 % シミュレーション時間
+dt = 1e-04;             % シミュレーション時間幅
+TL = 0:dt:T;            % 時間リスト作成
+TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
+control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
 
 % environmental parmeters
 Vkmh = 50;
@@ -16,8 +17,8 @@ road_frequency = 6;  % [Hz]  車速から凹凸の幅を決定
 road_hgeit = 0.08;   % [m]   凹凸の高さ
 
 % controller
-passive = true;
-LQR = false;
+passive = false;
+LQR = true;
 servo = false;
 
 %% Model Definition モデルの定義
@@ -39,7 +40,7 @@ B = [
     ];
 
 %         x1 x2 x3 x4
-C = diag([0, 0, 1, 1]);  % 1 or 0
+C = diag([1, 0, 0, 1]);  % 1 or 0
 C(sum(C,2)==0,:)=[];  % eliminate rows filled with 0 不要な行の削除
 
 D = [];
@@ -81,14 +82,14 @@ d = r_p;  % [z_f; z_r; dz_f; dz_r] 路面プロファイルの定義
 
 %% Model Analysis モデルの解析
 state_name = {"x","\theta","dxdt","d\thetadt"};
+output_name = state_name(logical(sum(C,1)));
 input_name = {"sus_{front}","sus_{rear}"};
 disturbance_name = {"z_{disf}","z_{disr}","dzdt_{disf}","dzdt_{disr}"};
-sys_vcl = ss(A,B,C,D,"OutputName",state_name(logical(sum(C,1))),"InputName",input_name);  % continuous time 連続時間システム
+sys_vcl = ss(A,B,C,D,"OutputName",output_name,"InputName",input_name);  % continuous time 連続時間システム
 tf_vcl = tf(sys_vcl)
 pole(sys_vcl)
 bode(sys_vcl)
-bode(ss(A,E,C,D,"OutputName",state_name(logical(sum(C,1))),"InputName",disturbance_name))
-fontsize(gcf,15,"points");
+% bode(ss(A,E,C,D,"OutputName",output_name,"InputName",disturbance_name))
 
 %% Controller Design 制御系設計
 % discretization 行列の離散化
@@ -97,18 +98,19 @@ disc_func = @(tau,Mat) (-A\expm(A.*(control_dt-tau)))*Mat;
 Ad = expm(A.*control_dt);
 Bd = disc_func(control_dt,B) - disc_func(0,B);
 
-% LQR 離散時間最適レギュレータ
+% ===LQR 離散時間最適レギュレータ===
 %         x1 x2 x3 x4
 Q = diag([1e01, 1, 1, 1e11]);
 R = diag([1e-02 1e-02]);
 [K_lqr,S,P] = lqr(A,B,Q,R,[]);
 pole(ss(A-B*K_lqr,E,C,D))
-% bode(ss(A-B*K_lqr,E,C,D))
+% bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
-% Servo 離散時間最適サーボ系
-r = zeros(height(C),TL_width);
-e = zeros(height(C),TL_width);
+% ===Servo 離散時間最適サーボ系===
+r = zeros(height(C),TL_width);  % 目標値（0で一定）
+e = zeros(height(C),TL_width);  % エラーリストの初期化
 
+% Expanded system 拡大系の定義
 phi = [
     Ad, zeros(height(Ad),height(C));
     -C, zeros(height(C),height(C))
@@ -138,12 +140,13 @@ G_a=-R_servo\(B')*P_12;
 H_a=([-F_a+G_a\(P_22)*(P_12') eye(height(C))])*pinv([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 %% Simulation Loop
-% m_b = m_b+120;
-% A = double(subs(A));
-% B = double(subs(B));
+% modeling error モデル化誤差の再現（60kg 乗員5名）
+m_b = m_b+300;
+A = double(subs(A));
+B = double(subs(B));
 for i = 1:TL_width-1
 
-    % observation
+    % observation 観測値の取得と誤算の算出
     y(:,i) = C*x(:,i);
     e(:,i) = r(:,i) - y(:,i);
 
@@ -160,26 +163,30 @@ for i = 1:TL_width-1
         end
     end
 
-    % update states
+    % update states ルンゲクッタ法による状態量の更新
     x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), A, B, E, dt);
 end
+
+% calculate squared error 最適レギュレータの評価関数の中身
 x_squared = sum(x.^2,2)
 e_squared = sum(e.^2,2)
 u_squared = sum(u.^2,2)
 
-%% drawing
+%% Drawing 図の描画
 states_name = ["\itz","\it\theta","d\itz\rmd\itt","d\it\theta\rmd\itt"];
 inputs_name = ["Front", "Rear"];
 
 fig = figure('name',"Simulation Results");
+% drawing states
 subplot(311);
-plot(TL,x,"LineWidth",2); %,"Color","#0000ff"
+plot(TL,x,"LineWidth",2); %,"Color","#000000~ffffff"
 grid on;
 xlabel("Time [s]");
 ylabel("States Value");
 legend(states_name);
 xlim([0,3])
 
+% drawing road inputs
 subplot(312);
 plot(TL,d(1:2,:),"LineWidth",2);
 grid on;
@@ -188,6 +195,7 @@ ylabel("Road Disturbance");
 legend(inputs_name);
 xlim([0,3])
 
+% drawing control inputs
 subplot(313);
 plot(TL,u,"LineWidth",2);
 grid on;
@@ -196,14 +204,16 @@ ylabel("Control Input Value");
 legend(inputs_name);
 xlim([0,3])
 
+% font
 fontname(fig,"Times New Roman");
 fontsize(fig,10,"points");
 
+% save figure
 controller_bool = [passive,LQR,servo];
 controller = ["passive","lqr","servo"];
 condition = "V-"+Vkmh+"_roadshape-"+road_shape+"_controller-"+controller(controller_bool);
 saveas(fig,"fig/"+condition);
 
-%% animation
+%% Animation アニメーションによる挙動の確認
 save_name = condition;
 % run("appendix__animation.m")
