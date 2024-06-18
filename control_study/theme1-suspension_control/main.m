@@ -7,7 +7,7 @@ T = 10;                 % シミュレーション時間
 dt = 1e-04;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
-control_dt = dt*10;        % 制御周期（デフォルト：シミュレーション時間幅）
+control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
 
 % environmental parmeters
 Vkmh = 50;
@@ -217,4 +217,4 @@ saveas(fig,"fig/"+condition);
 
 %% Animation アニメーションによる挙動の確認
 save_name = condition;
-% run("appendix__animation.m")
+run("appendix__animation.m")
