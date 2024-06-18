@@ -11,7 +11,7 @@ TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数
 control_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
-x0 = -1;                % カート初期位置
+x0 = -0.5;                % カート初期位置
 theta0 = 0;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
@@ -51,7 +51,7 @@ M = 0.2;    % Mass of cart
 m=0.023;    % Mass of pendulum
 J=3.20e-4;	% Inertia moment
 L=0.2;		% Length
-mu=2.74e-5;	% Damping coefficient
+mu=2.74e-4;	% Damping coefficient
 zeta=240;   % Physical parameter of DC motor
 xi=90;		% Physical parameter of DC motor
 g=9.81;     % Gravity accel.
@@ -90,10 +90,10 @@ Ad = sys_cart_d.A;      % 離散システム行列
 Bd = sys_cart_d.B;      % 離散入力係数行列
 
 
-% ===LQR 離散時間最適レギュレータ===
+% ===LQR 最適レギュレータ===
 %         x1 x2 x3 x4
-Q_lqr = diag([3, 5, 1, 1]);                        % 状態量重み
-R_lqr = diag([1e-01]);                                  % 入力重み
+Q_lqr = diag([2, 3, 1, 1]);                        % 状態量重み
+R_lqr = diag([1]);                                  % 入力重み
 % [K_lqr,S_lqr,P_lqr] = lqr(A,B,Q_lqr,R_lqr,[]);      % 連続時間最適レギュレータ
 [K_lqr,S_lqr,P_lqr] = dlqr(Ad,Bd,Q_lqr,R_lqr,[]);   % 離散時間最適レギュレータ
 pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータを用いた際のシステムの極
@@ -103,7 +103,7 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 % bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
 
-% ===Servo 離散時間最適サーボ系===
+% ===Servo 最適サーボ系===
 x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
@@ -144,9 +144,9 @@ eta = [
 sys_ex = ss(phi,gamma,psi,[]);
 sys_ex_d = c2d(sys_ex,control_dt);
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_servo = diag([1e-01, 1, 1, 1, 6, 4]);
-R_servo = diag([0.01]);
-[K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
+% Q_servo = diag([1e-01, 1, 1, 1, 6, 4]);
+% R_servo = diag([0.01]);
+% [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
 % Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
 % R_servo = diag([1e-04]);
 % [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],control_dt);
@@ -167,18 +167,10 @@ H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))]
 y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
-Q_kalman = diag([1e-04, 1e-04, 1e-04, 1e-06]);
-R_kalman = diag([1e-03, 1e-03]);
+Q_kalman = diag([1e-04, 1e-03, 1e-04, 1e-03]);
+R_kalman = diag([1e-02, 1e-02]);
 P_kalman = 0.001*ones(size(A));
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
-% FOR SERVO
-% y_noised = [zeros(height(C),TL_width)];
-% x_hat = x_ex;
-% y_hat = [zeros(height(C),TL_width)];
-% Q_kalman = diag([0.01, 0.01, 0.000000001, 0.000000001, 0.01, 0.01]);
-% R_kalman = diag([0.001, 0.001]);
-% P_kalman = 0.000000001*ones(size(phi));
-% L_kalman = P_kalman * psi' / (psi * P_kalman * psi' + R_kalman); % カルマンゲイン
 
 %% Simulation Loop
 % modeling error モデル化誤差の再現
@@ -196,32 +188,21 @@ for i = 1:TL_width-1
     if ~passive
         if mod(i-1, control_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
 
-            if LQR
-                % add noise to obserbation
-                y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));
-                
-                % KalmanFilter カルマンフィルタで状態推定
-                x_hat(:,i) = Ad * x_hat(:,i-1) + Bd * u(:,i-1);                         % 予測ステップ
-                P_kalman = Ad * P_kalman * Ad' + Q_kalman;
-    
-                L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman);              % カルマンゲイン
-                x_hat(:,i) = x_hat(:,i) + L_kalman * (y_noised(:,i) - C * x_hat(:,i));  % 更新ステップ
-                P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
+            % add noise to obserbation
+            y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));
+            
+            % KalmanFilter カルマンフィルタで状態推定
+            x_hat(:,i) = Ad * x_hat(:,i-1) + Bd * u(:,i-1);                         % 予測ステップ
+            P_kalman = Ad * P_kalman * Ad' + Q_kalman;
 
+            L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman);              % カルマンゲイン
+            x_hat(:,i) = x_hat(:,i) + L_kalman * (y_noised(:,i) - C * x_hat(:,i));  % 更新ステップ
+            P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
+
+            if LQR
                 % u(:,i) = -K_lqr*x(:,i);
                 u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
-                % add noise to obserbation
-                y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));
-                
-                % KalmanFilter カルマンフィルタで状態推定
-                x_hat(:,i) = Ad * x_hat(:,i-1) + Bd * u(:,i-1);                         % 予測ステップ
-                P_kalman = Ad * P_kalman * Ad' + Q_kalman;
-    
-                L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman);              % カルマンゲイン
-                x_hat(:,i) = x_hat(:,i) + L_kalman * (y_noised(:,i) - C * x_hat(:,i));  % 更新ステップ
-                P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
-
                 x_ex(1:height(x),i) = x_hat(:,i);
                 u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(A),1) - G_a*x_ex(height(A)+1:end,1);  % optimal input
             end
@@ -262,7 +243,7 @@ subplot(312);
 plot(TL,d,"LineWidth",2);
 grid on;
 xlabel("Time [s]");
-ylabel("Road Disturbance");
+ylabel("Disturbance");
 legend(disturbance_name);
 % xlim([0,3])
 
@@ -285,6 +266,15 @@ controller = ["passive","lqr","servo"];
 condition = "_controller-"+controller(controller_bool);
 saveas(fig,"fig/"+condition);
 
+% check states estimation by kalman filter
+fig_kalman = figure('name',"States Estimation Results");
+% drawing states
+plot(TL,x_hat,"LineWidth",2); %,"Color","#000000~ffffff"
+grid on;
+xlabel("Time [s]");
+ylabel("Estimated Value");
+legend(states_name);
+
 %% Animation アニメーションによる挙動の確認
 x_cart1 = x(1,:)';
 y_cart1 = zeros(size(x_cart1));
@@ -297,7 +287,7 @@ hold on; grid on;
 hh3 = rectangle('Position',[x_cart1(1,1)-0.1 y_cart1(1,1)-0.15 0.2 0.15],'EdgeColor',[1 0 0]);
 hh4 = plot([x_cart1(1,1),x_p(1,1)],[0,y_p(1,1)], Marker=".",MarkerSize=20,LineWidth=2);
 axis equal
-axis([-10*L 10*L -10*L 10*L])
+axis([-5*L 5*L -5*L 5*L])
 ht = title("Time: "+round(TL(1),1)+" s"); % String arrays introduced in R2016b
 xlabel("\itx \rm[m]")
 fontname(gcf,"Times New Roman");

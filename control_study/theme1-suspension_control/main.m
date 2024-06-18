@@ -3,23 +3,23 @@ clear;
 
 %% Define simlation condition シミュレーション条件
 % loop parameters
-T = 10;                 % シミュレーション時間
-dt = 1e-04;             % シミュレーション時間幅
-TL = 0:dt:T;            % 時間リスト作成
-TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
-control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
+T = 10;                         % シミュレーション時間
+dt = 1e-04;                     % シミュレーション時間幅
+TL = 0:dt:T;                    % 時間リスト作成
+TL_width = width(TL);           % 時間リストの長さ取得（リストの要素数）
+control_dt = dt;                % 制御周期（デフォルト：シミュレーション時間幅）
 
 % environmental parmeters
 Vkmh = 50;
-V = Vkmh*1000/3600;  % [m/s]  velocity
-road_shape = "_jari_"  % _unevenness_, _sin_, (_jari_)
-road_frequency = 6;  % [Hz]  車速から凹凸の幅を決定
-road_hgeit = 0.08;   % [m]   凹凸の高さ
+V = Vkmh*1000/3600;             % [m/s]  velocity
+road_shape = "_unevenness_"     % 単一起伏：_unevenness_, sin波形状：_sin_, (実際の路面を想定したプロファイル：_jari_)
+road_frequency = 6;             % [Hz]  車速とこの値から凹凸の幅を決定
+road_height = 0.08;              % [m]   凹凸の最大高さ
 
 % controller
-passive = false;
-LQR = true;
-servo = false;
+passive = false;        % パッシブシミュレーション
+LQR = true;            % LQR
+servo = false;           % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
 syms L_f L_r k_sf k_sr c_sf c_sr m_b I_b
@@ -40,7 +40,7 @@ Bmat = [
     ];
 
 %         x1 x2 x3 x4
-C = diag([1, 0, 0, 1]);  % 1 or 0
+C = diag([0, 1, 1, 0]);  % 1 or 0
 C(sum(C,2)==0,:)=[];  % eliminate rows filled with 0 不要な行の削除
 
 D = [];
@@ -53,19 +53,19 @@ Emat = [
     ];
 
 % define model parameter
-g = 9.80665;    % [m/s^2]   gravity
+g = 9.80665;                % [m/s^2]   gravity
 
-L_f  = 1.47;    % [m]       front length
-L_r  = 1.3;     % [m]       rear length
-wb   = L_f+L_r; % [m]       wheel base
+L_f  = 1.47;                % [m]       front length
+L_r  = 1.3;                 % [m]       rear length
+wb   = L_f+L_r;             % [m]       wheel base
 
-k_sf = 30000;   % [N/m]     front spring stiffness
-k_sr = 27000;   % [N/m]     rear spring stiffness
-c_sf = 3500;    % [N/(m/s)] front damping
-c_sr = 3200;    % [N/(m/s)] rear damping
+k_sf = 30000;               % [N/m]     front spring stiffness
+k_sr = 27000;               % [N/m]     rear spring stiffness
+c_sf = 3500;                % [N/(m/s)] front damping
+c_sr = 3200;                % [N/(m/s)] rear damping
 
-m_b  = 1000;    % [N]      Body weight
-I_b  = (m_b)*(wb/2)^2;  % [kgm^2]     Inertia
+m_b  = 1000;                % [N]       Body weight
+I_b  = (m_b)*(wb/2)^2;      % [kgm^2]   Inertia Moment
 
 % Assignment symbolic variables シンボリック変数の代入
 A = double(subs(Amat));
@@ -77,7 +77,7 @@ x = [zeros(4,TL_width)];
 y = [zeros(rank(C),TL_width)];
 u = [zeros(2,TL_width)];
 
-run("config__rpf_settings") % 路面形状を作る（今回は中身は関係ありません。）
+run("appendix__rpf_settings") % 路面形状を作るファイルの実行（今回は中身は関係ありません。）
 d = r_p;  % [z_f; z_r; dz_f; dz_r] 路面プロファイルの定義
 
 %% Model Analysis モデルの解析
@@ -85,7 +85,7 @@ state_name = {"x","\theta","dxdt","d\thetadt"};
 output_name = state_name(logical(sum(C,1)));
 input_name = {"sus_{front}","sus_{rear}"};
 disturbance_name = {"z_{disf}","z_{disr}","dzdt_{disf}","dzdt_{disr}"};
-sys_vcl = ss(A,B,C,D,"OutputName",output_name,"InputName",input_name);  % continuous time 連続時間システム
+sys_vcl = ss(A,B,C,D,"OutputName",output_name,"InputName",input_name);  % continuous time system 連続時間システム
 tf_vcl = tf(sys_vcl)
 pole(sys_vcl)
 bode(sys_vcl)
@@ -93,17 +93,17 @@ bode(sys_vcl)
 
 %% Controller Design 制御系設計
 % discretization 行列の離散化
-sys_vcl_d = c2d(sys_vcl,control_dt);
+sys_vcl_d = c2d(sys_vcl,control_dt);  % discrete time system 離散時間システム
 Ad = sys_vcl_d.A;
 Bd = sys_vcl_d.B;
 
 % ===LQR 離散時間最適レギュレータ===
 %         x1 x2 x3 x4
-Q = diag([1e01, 1, 1, 1e11]);
-R = diag([1e-02 1e-02]);
-[K_lqr,S,P] = lqr(A,B,Q,R,[]);
-% [K_lqr,S,P] = dlqr(Ad,Bd,Q,R,[]);
-pole(ss(A-B*K_lqr,E,C,D))
+Q = diag([1e01, 1, 1, 1e11]);       % 状態量重み
+R = diag([1e-02 1e-02]);            % 入力重み
+[K_lqr,S,P] = lqr(A,B,Q,R,[]);      % 連続時間最適レギュレータ
+% [K_lqr,S,P] = dlqr(Ad,Bd,Q,R,[]);   % 離散時間最適レギュレータ
+pole(ss(A-B*K_lqr,E,C,D))           % 最適制御有りのシステムの極
 % bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
 % ===Servo 離散時間最適サーボ系===
@@ -114,14 +114,10 @@ e = zeros(height(C),TL_width);  % エラーリストの初期化
 phi = [
     Ad, zeros(height(Ad),height(C));
     -C, zeros(height(C),height(C))
-    % Ad, zeros(height(Ad),height(C));
-    % -C*Ad, zeros(height(C),height(C))
     ];
 G = [
     Bd;
     zeros(height(C),width(Bd))
-    % Bd;
-    % -C*Bd
 ];
 psi = [
     C, zeros(height(C),height(C))
@@ -139,12 +135,23 @@ F_a=-K_servo(:,1:height(x));
 G_a=-K_servo(:,height(x)+1:end);
 H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
+% ===Kalman Filter カルマンフィルタの設計===
+% FOR LQR
+y_noised = [zeros(height(C),TL_width)];
+x_hat = x;
+y_hat = [zeros(height(C),TL_width)];
+Q_kalman = diag([1e-07, 1e-07, 1e-06, 1e-07]);
+R_kalman = diag([1e-04, 1e-04]);
+P_kalman = 0.001*ones(size(A));
+L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
+
 %% Simulation Loop
-% modeling error モデル化誤差の再現（60kg 乗員5名）
-m_b = m_b+300;
+% modeling error モデル化誤差の再現（6kg 乗員5名）
+m_b = m_b+60*5;
 A = double(subs(Amat));
 B = double(subs(Bmat));
 E = double(subs(Emat));
+
 for i = 1:TL_width-1
 
     % observation 観測値の取得と誤算の算出
@@ -154,8 +161,21 @@ for i = 1:TL_width-1
     % calculate input
     if ~passive
         if mod(i-1, control_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
+
+            % add noise to obserbation
+            y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));               % 観測ノイズの再現
+            
+            % KalmanFilter カルマンフィルタで状態推定
+            x_hat(:,i) = Ad * x_hat(:,i-1) + Bd * u(:,i-1);                         % 予測ステップ
+            P_kalman = Ad * P_kalman * Ad' + Q_kalman;
+
+            L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman);              % カルマンゲイン
+            x_hat(:,i) = x_hat(:,i) + L_kalman * (y_noised(:,i) - C * x_hat(:,i));  % 更新ステップ
+            P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
+
             if LQR
                 u(:,i) = -K_lqr*x(:,i);
+                % u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
                 u(:,i) = -K_servo*[x(:,i); e(:,i-1)] + H_a*r(:,i);
             end
@@ -165,7 +185,7 @@ for i = 1:TL_width-1
     end
 
     % update states ルンゲクッタ法による状態量の更新
-    x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), A, B, E, dt);
+    x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), [], A, B, E, [], dt);
 end
 
 % calculate squared error 最適レギュレータの評価関数の中身
@@ -215,6 +235,16 @@ controller = ["passive","lqr","servo"];
 condition = "V-"+Vkmh+"_roadshape-"+road_shape+"_controller-"+controller(controller_bool);
 saveas(fig,"fig/"+condition);
 
+% check states estimation by kalman filter
+fig_kalman = figure('name',"States Estimation Results");
+% drawing states
+plot(TL,x_hat,"LineWidth",2); %,"Color","#000000~ffffff"
+grid on;
+xlabel("Time [s]");
+ylabel("Estimated Value");
+legend(states_name);
+xlim([0,3])
+
 %% Animation アニメーションによる挙動の確認
 save_name = condition;
-run("appendix__animation.m")
+% run("appendix__animation.m")
