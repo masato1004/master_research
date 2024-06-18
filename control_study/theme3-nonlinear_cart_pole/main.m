@@ -7,8 +7,8 @@ T = 10;                 % シミュレーション時間
 dt = 1e-04;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
-control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
-% control_dt = dt*100;        % 制御周期（デフォルト：シミュレーション時間幅）
+% control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
+control_dt = dt*100;        % 制御周期（デフォルト：シミュレーション時間幅）
 
 % initial value
 x0 = -1;
@@ -18,8 +18,8 @@ dtheta0 = 0;
 
 % controller
 passive = false;
-LQR = true;
-servo = false;
+LQR = false;
+servo = true;
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
@@ -65,7 +65,7 @@ E = double(subs(Emat));
 
 % define states vector 状態ベクトル、出力ベクトル、入力ベクトルの定義、外乱ベクトル
 x = [zeros(4,TL_width)];
-y = [zeros(height(C),TL_width)];
+y = [zeros(rank(C),TL_width)];
 u = [zeros(1,TL_width)];
 d = [ones(1,TL_width)];
 
@@ -86,20 +86,12 @@ sys_cart_d = c2d(sys_cart,control_dt);
 Ad = sys_cart_d.A;
 Bd = sys_cart_d.B;
 
-% ===Kalman Filter カルマンフィルタの設計===
-y_noised = [zeros(height(C),TL_width)];
-x_hat = [zeros(4,TL_width)];
-y_hat = [zeros(height(C),TL_width)];
-Q_kalman = 0.05;
-R_kalman = diag([0.05, 0.05]);
-[kalmf,L_kalman,P_kalman] = kalman(sys_cart,Q_kalman,R_kalman);
-
 % ===LQR 離散時間最適レギュレータ===
 %         x1 x2 x3 x4
-Q_lqr = diag([10, 5, 1, 1]);
-R_lqr = diag([1]);
-[K_lqr,S_lqr,P_lqr] = lqr(A,B,Q_lqr,R_lqr,[]);
-% [K_lqr,S,P] = dlqr(Ad,Bd,Q_lqr,R_lqr,[]);
+Q = diag([10, 5, 1, 1]);
+R = diag([1]);
+[K_lqr,S,P] = lqr(A,B,Q,R,[]);
+% [K_lqr,S,P] = dlqr(Ad,Bd,Q,R,[]);
 pole(ss(A-B*K_lqr,B,C,D))
 % bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
@@ -116,7 +108,7 @@ phi = [
     A, zeros(height(A),height(C));
     -C, zeros(height(C),height(C))
     ];
-gamma = [
+G = [
     B;
     zeros(height(C),width(B))
 ];
@@ -135,16 +127,16 @@ eta = [
 ];
 
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_servo = diag([1e-01, 1, 1, 1, 6, 4]);
-R_servo = diag([0.01]);
-[K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
-% Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
-% R_servo = diag([1e-04]);
-% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],control_dt);
+% Q_servo = diag([1, 1, 1, 1, 6, 4]);
+% R_servo = diag([0.01]);
+% [K_servo,S,P] = lqr(phi,G,Q_servo,R_servo,[]);
+Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
+R_servo = diag([1e-04]);
+[K_servo,S,P] = lqrd(phi,G,Q_servo,R_servo,[],control_dt);
 
-P_11 = P_servo(1:height(A),1:height(B));
-P_12 = P_servo(1:height(A),end-(height(e)-1):end);
-P_22 = P_servo(end-(height(e)-1):end,end-(width(P_12)-1):end);
+P_11 = S(1:height(A),1:height(B));
+P_12 = S(1:height(A),end-(height(e)-1):end);
+P_22 = S(end-(height(e)-1):end,end-(width(P_12)-1):end);
 F_a=-K_servo(:,1:height(x));
 G_a=-K_servo(:,height(x)+1:end);
 H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
@@ -164,19 +156,6 @@ for i = 1:TL_width-1
     % calculate input
     if ~passive
         if mod(i-1, control_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
-            % add noise to obserbation
-            y_noised(:,i) = y(:,i) + sqrt(0.05)*randn(size(y(:,i)));
-            
-            % KalmanFilter カルマンフィルタで状態推定
-            % KalmanFilter
-            x_hat(:,i+1) = Ad * x_hat(:,i) + Bd * u(:,i); % 予測ステップ
-            P_kalman = Ad * P_kalman * Ad' + Q_kalman;
-
-            L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
-            x_hat(:,i) = x_hat(:,i) + L_kalman * (y_noised(:,i) - C * x_hat(:,i)); % 更新ステップ
-            P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
-
-
             if LQR
                 u(:,i) = -K_lqr*x(:,i);
             elseif servo
@@ -187,14 +166,12 @@ for i = 1:TL_width-1
         elseif i-1 ~= 0
             % e(:,i) = e(:,i-1);
             u(:,i) = u(:,i-1);
-            x_hat(:,i+1) = x_hat(:,i);
         end
     end
 
     % update states ルンゲクッタ法による状態量の更新
-    x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, dt);
+    x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, G, eta, H, dt);
     x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), [], A, B, E, [], dt);
-    
 end
 
 % calculate squared error 最適レギュレータの評価関数の中身

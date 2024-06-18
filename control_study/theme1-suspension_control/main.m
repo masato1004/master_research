@@ -7,7 +7,7 @@ T = 10;                 % シミュレーション時間
 dt = 1e-04;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
-control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
+control_dt = dt*10;        % 制御周期（デフォルト：シミュレーション時間幅）
 
 % environmental parmeters
 Vkmh = 50;
@@ -18,21 +18,21 @@ road_hgeit = 0.08;   % [m]   凹凸の高さ
 
 % controller
 passive = false;
-LQR = false;
-servo = true;
+LQR = true;
+servo = false;
 
 %% Model Definition モデルの定義
 syms L_f L_r k_sf k_sr c_sf c_sr m_b I_b
 
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
-A = [
+Amat = [
                              0,                              0,                          1,                              0;
                              0,                              0,                          0,                              1;
             -(k_sf + k_sr)/m_b,     -(L_f*k_sf - L_r*k_sr)/m_b,         -(c_sf + c_sr)/m_b,     -(L_f*c_sf - L_r*c_sr)/m_b;
     -(L_f*k_sf - L_r*k_sr)/I_b, -(k_sf*L_f^2 + k_sr*L_r^2)/I_b, -(L_f*c_sf - L_r*c_sr)/I_b, -(c_sf*L_f^2 + c_sr*L_r^2)/I_b
     ];
 
-B = [
+Bmat = [
           0,        0;
           0,        0;
       1/m_b,    1/m_b;
@@ -45,7 +45,7 @@ C(sum(C,2)==0,:)=[];  % eliminate rows filled with 0 不要な行の削除
 
 D = [];
 
-E = [
+Emat = [
                  0,               0,              0,               0;
                  0,               0,              0,               0;
           k_sf/m_b,        k_sr/m_b,       c_sf/m_b,        c_sr/m_b;
@@ -68,9 +68,9 @@ m_b  = 1000;    % [N]      Body weight
 I_b  = (m_b)*(wb/2)^2;  % [kgm^2]     Inertia
 
 % Assignment symbolic variables シンボリック変数の代入
-A = double(subs(A));
-B = double(subs(B));
-E = double(subs(E));
+A = double(subs(Amat));
+B = double(subs(Bmat));
+E = double(subs(Emat));
 
 % define states vector 状態ベクトル、出力ベクトル、入力ベクトルの定義
 x = [zeros(4,TL_width)];
@@ -93,16 +93,16 @@ bode(sys_vcl)
 
 %% Controller Design 制御系設計
 % discretization 行列の離散化
-disc_func = @(tau,Mat) (-A\expm(A.*(control_dt-tau)))*Mat;
-
-Ad = expm(A.*control_dt);
-Bd = disc_func(control_dt,B) - disc_func(0,B);
+sys_vcl_d = c2d(sys_vcl,control_dt);
+Ad = sys_vcl_d.A;
+Bd = sys_vcl_d.B;
 
 % ===LQR 離散時間最適レギュレータ===
 %         x1 x2 x3 x4
 Q = diag([1e01, 1, 1, 1e11]);
 R = diag([1e-02 1e-02]);
 [K_lqr,S,P] = lqr(A,B,Q,R,[]);
+% [K_lqr,S,P] = dlqr(Ad,Bd,Q,R,[]);
 pole(ss(A-B*K_lqr,E,C,D))
 % bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
@@ -112,13 +112,13 @@ e = zeros(height(C),TL_width);  % エラーリストの初期化
 
 % Expanded system 拡大系の定義
 phi = [
-    A, zeros(height(Ad),height(C));
+    Ad, zeros(height(Ad),height(C));
     -C, zeros(height(C),height(C))
     % Ad, zeros(height(Ad),height(C));
     % -C*Ad, zeros(height(C),height(C))
     ];
 G = [
-    B;
+    Bd;
     zeros(height(C),width(Bd))
     % Bd;
     % -C*Bd
@@ -130,20 +130,21 @@ psi = [
 %               x1 x2 x3 x4 e1 e2 e3 e4
 Q_servo = diag([1e-2, 1e-2, 1e-2, 1e-2, 1e1, 1e-2]);
 R_servo = diag([1e-2 1e-2]);
-[K_servo,S,P] = lqr(phi,G,Q_servo,R_servo,[]);
+[K_servo,S,P] = dlqr(phi,G,Q_servo,R_servo,[]);
 
 P_11 = S(1:height(A),1:height(B));
 P_12 = S(1:height(A),end-(height(e)-1):end);
-P_22 = S(end-(height(A)-1):end,end-(width(P_12)-1):end);
-F_a=-R_servo\(B')*P_11;
-G_a=-R_servo\(B')*P_12;
-H_a=([-F_a+G_a/(P_22)*(P_12') eye(height(C))])*pinv([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+P_22 = S(end-(height(e)-1):end,end-(width(P_12)-1):end);
+F_a=-K_servo(:,1:height(x));
+G_a=-K_servo(:,height(x)+1:end);
+H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 %% Simulation Loop
 % modeling error モデル化誤差の再現（60kg 乗員5名）
 m_b = m_b+300;
-A = double(subs(A));
-B = double(subs(B));
+A = double(subs(Amat));
+B = double(subs(Bmat));
+E = double(subs(Emat));
 for i = 1:TL_width-1
 
     % observation 観測値の取得と誤算の算出
