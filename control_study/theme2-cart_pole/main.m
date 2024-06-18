@@ -90,8 +90,8 @@ Bd = sys_cart_d.B;
 y_noised = [zeros(height(C),TL_width)];
 x_hat = [zeros(4,TL_width)];
 y_hat = [zeros(height(C),TL_width)];
-Q_kalman = 0.05;
-R_kalman = diag([0.05, 0.05]);
+Q_kalman = 0.001;
+R_kalman = diag([0.001, 0.001]);
 [kalmf,L_kalman,P_kalman] = kalman(sys_cart,Q_kalman,R_kalman);
 
 % ===LQR 離散時間最適レギュレータ===
@@ -165,7 +165,7 @@ for i = 1:TL_width-1
     if ~passive
         if mod(i-1, control_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
             % add noise to obserbation
-            y_noised(:,i) = y(:,i) + sqrt(0.05)*randn(size(y(:,i)));
+            y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));
             
             % KalmanFilter カルマンフィルタで状態推定
             % KalmanFilter
