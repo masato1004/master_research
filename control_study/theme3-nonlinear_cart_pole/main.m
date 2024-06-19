@@ -3,8 +3,8 @@ clear;
 
 %% Define simlation condition シミュレーション条件
 % loop parameters
-T = 10;                 % シミュレーション時間
-dt = 1e-02;             % シミュレーション時間幅
+T = 20;                 % シミュレーション時間
+dt = 1e-03;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
 ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
@@ -12,15 +12,15 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 
 % initial value
 x0 = -0;                % カート初期位置
-theta0 = 0.05;             % 振子初期角度
+theta0 = pi;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
 
 % controller
 passive = false;        % パッシブシミュレーション
 LQR = false;            % LQR
-servo = false;           % 積分型最適サーボ系
-servo2dof = true;           % 積分型最適サーボ系
+servo = true;           % 積分型最適サーボ系
+servo2dof = false;           % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
@@ -124,7 +124,7 @@ x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（
 % r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
 r_cart = r;
-% r(1,:) = (pi/4)*sin(2*TL);   % 目標値（任意の値で一定）
+r_cart(1,:) = sin(TL./6*pi.*TL);   % 目標値（任意の値で一定）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
@@ -182,7 +182,7 @@ H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))]
 % ===積分型最適サーボ系（振上げ時）===
 %               x1 x2 x3 x4 e1 e2 e3 e4
 Q_cart = diag([5,1,5]);
-R_cart = diag([1e-03]);
+R_cart = diag([1e-02]);
 [K_cart,P_cart,~] = lqr(phi(logical([1,0,1,0,1,0]),logical([1,0,1,0,1,0])),gamma(logical([1,0,1,0,1,0]),:),Q_cart,R_cart,[]);
 % Q_cart = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
 % R_cart = diag([1e-04]);
@@ -403,7 +403,7 @@ x_p = L*sin(x(2,:)');
 y_p = L*cos(x(2,:)');
 u = zeros(size(x_cart1));
 % t = t';
-figure("name","Cart Pole")
+fig_cart = figure("name","Cart Pole");
 hold on; grid on;
 hh3 = rectangle('Position',[x_cart1(1,1)-0.1 y_cart1(1,1)-0.15 0.2 0.15],'EdgeColor',[1 0 0]);
 hh4 = plot([x_cart1(1,1),x_p(1,1)],[0,y_p(1,1)], Marker=".",MarkerSize=20,LineWidth=2);
@@ -411,12 +411,22 @@ axis equal
 axis([-10*L 10*L -10*L 10*L])
 ht = title("Time: "+round(TL(1),1)+" s"); % String arrays introduced in R2016b
 xlabel("\itx \rm[m]")
-fontname(gcf,"Times New Roman");
-fontsize(gcf,10,"points");
-for i = 1:TL_width
+fontname(fig_cart,"Times New Roman");
+fontsize(fig_cart,10,"points");
+
+frame_rate = 40;
+newimg = zeros(371,1140,3);
+videoname = "video/"+condition;
+video = VideoWriter(videoname,'MPEG-4');
+video.FrameRate = frame_rate;
+open(video);
+for i = 1:(1/frame_rate)/dt:TL_width
     set(hh3(1),pos=[x_cart1(i,1)-0.1 y_cart1(i,1)-0.15 0.2 0.15])
     set(hh4(1),XData=[x_cart1(i,1),x_cart1(i,1)+x_p(i,1)],YData=[0,y_p(i,1)])
     set(ht,String="Time: "+round(TL(i),1)+" s")
-    xlim([x_cart1(i,1)-2,x_cart1(i,1)+2])
+    % xlim([x_cart1(i,1)-2,x_cart1(i,1)+2])
     drawnow
+    frame = getframe(fig_cart);
+    writeVideo(video,frame);
 end
+close(video);

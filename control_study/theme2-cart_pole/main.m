@@ -11,15 +11,16 @@ TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数
 ctrl_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
-x0 = -0.5;                % カート初期位置
-theta0 = 0;             % 振子初期角度
+x0 = 0;                % カート初期位置
+theta0 = 0.05;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
 
 % controller
 passive = false;        % パッシブシミュレーション
 LQR = false;            % LQR
-servo = true;           % 積分型最適サーボ系
+following = true;       % 最適追従系
+servo = false;          % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
@@ -107,7 +108,7 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
-r(1,:) = sin(3*TL);   % 目標値（任意の値で一定）
+% r(1,:) = sin(3*TL);   % 目標値（任意の値で一定）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
@@ -166,9 +167,9 @@ H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))]
 
 % 最適追従系
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_2deg = diag([3, 6, 1e-01, 1e-01]);
-R_2deg = diag([1e-03]);
-[K_2deg,P_2deg,~] = lqr(A,B,Q_2deg,R_2deg,[]);
+Q_follow = diag([5, 6, 1e-01, 1e-01]);
+R_follow = diag([1e-01]);
+[K_follow,P_follow,~] = lqr(A,B,Q_follow,R_follow,[]);
 % Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
 % R_servo = diag([1e-04]);
 % [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
@@ -179,7 +180,7 @@ R_2deg = diag([1e-03]);
 % P_11 = P_servo(1:height(A),1:height(B));
 % P_12 = P_servo(1:height(A),end-(height(e)-1):end);
 % P_22 = P_servo(end-(height(e)-1):end,end-(width(P_12)-1):end);
-F_0=-K_2deg;
+F_0=-K_follow;
 % G_a=-K_servo(:,height(x)+1:end);
 H_0=([-F_a eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
@@ -227,6 +228,9 @@ for i = 1:TL_width-1
             elseif servo
                 % x_ex(1:height(x),i) = x_hat(:,i)
                 u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+            elseif following
+                u(:,i) = -K_follow*x(:,i) + H_0*r(:,i);
+                % u(:,i) = -K_follow*x_hat(:,i) + H_0*r(:,i);
             end
         elseif i-1 ~= 0
             % e(:,i) = e(:,i-1);
@@ -283,8 +287,8 @@ fontname(fig,"Times New Roman");
 fontsize(fig,10,"points");
 
 % save figure
-controller_bool = [passive,LQR,servo];
-controller = ["passive","lqr","servo"];
+controller_bool = [passive,LQR,servo,following];
+controller = ["passive","lqr","servo","optimal_following"];
 condition = "_controller-"+controller(controller_bool);
 saveas(fig,"fig/"+condition);
 
@@ -296,6 +300,9 @@ grid on;
 xlabel("Time [s]");
 ylabel("Estimated Value");
 legend(states_name);
+% font
+fontname(fig_kalman,"Times New Roman");
+fontsize(fig_kalman,10,"points");
 
 %% Animation アニメーションによる挙動の確認
 x_cart1 = x(1,:)';

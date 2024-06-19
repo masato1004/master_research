@@ -7,18 +7,19 @@ T = 10;                         % シミュレーション時間
 dt = 1e-04;                     % シミュレーション時間幅
 TL = 0:dt:T;                    % 時間リスト作成
 TL_width = width(TL);           % 時間リストの長さ取得（リストの要素数）
-ctrl_dt = dt;                % 制御周期（デフォルト：シミュレーション時間幅）
+ctrl_dt = dt;                   % 制御周期（デフォルト：シミュレーション時間幅）
+% ctrl_dt = dt*100;                % 制御周期（デフォルト：シミュレーション時間幅）  
 
 % environmental parmeters
-Vkmh = 50;
+Vkmh = 60;
 V = Vkmh*1000/3600;             % [m/s]  velocity
 road_shape = "_unevenness_"     % 単一起伏：_unevenness_, sin波形状：_sin_, (実際の路面を想定したプロファイル：_jari_)
-road_frequency = 6;             % [Hz]  車速とこの値から凹凸の幅を決定
+road_frequency = 3;             % [Hz]  車速とこの値から凹凸の幅を決定
 road_height = 0.08;              % [m]   凹凸の最大高さ
 
 % controller
-passive = false;        % パッシブシミュレーション
-LQR = true;            % LQR
+passive = true;        % パッシブシミュレーション
+LQR = false;            % LQR
 servo = false;           % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
@@ -40,7 +41,7 @@ Bmat = [
     ];
 
 %         x1 x2 x3 x4
-C = diag([0, 1, 1, 0]);  % 1 or 0
+C = diag([1,1, 1, 1]);  % 1 or 0
 C(sum(C,2)==0,:)=[];  % eliminate rows filled with 0 不要な行の削除
 
 D = [];
@@ -53,8 +54,6 @@ Emat = [
     ];
 
 % define model parameter
-g = 9.80665;                % [m/s^2]   gravity
-
 L_f  = 1.47;                % [m]       front length
 L_r  = 1.3;                 % [m]       rear length
 wb   = L_f+L_r;             % [m]       wheel base
@@ -86,6 +85,7 @@ output_name = state_name(logical(sum(C,1)));
 input_name = {"sus_{front}","sus_{rear}"};
 disturbance_name = {"z_{disf}","z_{disr}","dzdt_{disf}","dzdt_{disr}"};
 sys_vcl = ss(A,B,C,D,"OutputName",output_name,"InputName",input_name);  % continuous time system 連続時間システム
+rank(ctrb(A,B))
 tf_vcl = tf(sys_vcl)
 pole(sys_vcl)
 bode(sys_vcl)
@@ -97,36 +97,39 @@ sys_vcl_d = c2d(sys_vcl,ctrl_dt);  % discrete time system 離散時間システ�
 Ad = sys_vcl_d.A;
 Bd = sys_vcl_d.B;
 
-% ===LQR 離散時間最適レギュレータ===
+% ===LQR 最適レギュレータ===
 %         x1 x2 x3 x4
 Q = diag([1e01, 1, 1, 1e11]);       % 状態量重み
 R = diag([1e-02 1e-02]);            % 入力重み
 [K_lqr,S,P] = lqr(A,B,Q,R,[]);      % 連続時間最適レギュレータ
 % [K_lqr,S,P] = dlqr(Ad,Bd,Q,R,[]);   % 離散時間最適レギュレータ
 pole(ss(A-B*K_lqr,E,C,D))           % 最適制御有りのシステムの極
-% bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
+% bode(ss(A-B*K_lqr,E,C,D,"OutputName",output_name,"InputName",disturbance_name))
 
-% ===Servo 離散時間最適サーボ系===
+% ===Servo 最適サーボ系===
 r = zeros(height(C),TL_width);  % 目標値（0で一定）
 e = zeros(height(C),TL_width);  % エラーリストの初期化
 
 % Expanded system 拡大系の定義
 phi = [
-    Ad, zeros(height(Ad),height(C));
+    A, zeros(height(A),height(C));
     -C, zeros(height(C),height(C))
     ];
-G = [
-    Bd;
-    zeros(height(C),width(Bd))
+gamma = [
+    B;
+    zeros(height(C),width(B))
 ];
 psi = [
     C, zeros(height(C),height(C))
 ];
 
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_servo = diag([1e-2, 1e-2, 1e-2, 1e-2, 1e1, 1e-2]);
-R_servo = diag([1e-2 1e-2]);
-[K_servo,S,P] = dlqr(phi,G,Q_servo,R_servo,[]);
+Q_servo = diag([1e-01, 3, 1e-02, 1, 1, 3]);
+R_servo = diag([1e-3 1e-3]);
+[K_servo,S,P] = lqr(phi,gamma,Q_servo,R_servo,[]);
+% Q_servo = diag([1e-2, 1e-2, 1e-2, 1e-2, 1e1, 1e-2]);
+% R_servo = diag([1e-2 1e-2]);
+% [K_servo,S,P] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
 
 P_11 = S(1:height(A),1:height(B));
 P_12 = S(1:height(A),end-(height(e)-1):end);
@@ -190,7 +193,6 @@ end
 
 % calculate squared error 最適レギュレータの評価関数の中身
 x_squared = sum(x.^2,2)
-e_squared = sum(e.^2,2)
 u_squared = sum(u.^2,2)
 
 %% Drawing 図の描画
