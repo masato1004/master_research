@@ -11,7 +11,7 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 % ctrl_dt = dt*10;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
-x0 = -0.0;                % カート初期位置
+x0 = -0;                % カート初期位置
 theta0 = 0.05;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
@@ -73,12 +73,15 @@ ddtheta = @(x, theta, dx, dtheta, ddx) (-m*L*ddx*cos(theta) + m*g*L*sin(theta) -
 A = double(subs(Amat));
 B = double(subs(Bmat));
 E = double(subs(Emat));
+A_cart = A(logical([1,0,1,0]),logical([1,0,1,0]));
+B_cart = B(logical([1,0,1,0]),:);
+E_cart = E(logical([1,0,1,0]),:);
 
 % define states vector 状態ベクトル、出力ベクトル、入力ベクトルの定義、外乱ベクトル
 x = [zeros(4,TL_width)];
 y = [zeros(height(C),TL_width)];
 u = [zeros(1,TL_width)];
-d = [5*ones(1,TL_width)];
+d = [zeros(1,TL_width)];
 
 x(:,1) = [x0;theta0;dx0;dtheta0];  % 初期状態量の代入
 
@@ -118,9 +121,10 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 % Expanded system 拡大系の定義
 % 拡大系システム行列
 x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
-r = zeros(height(C),TL_width);      % 目標値（0で一定）
+% r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
-r(1,:) = sin(3*TL);   % 目標値（任意の値で一定）
+r_cart = r;
+% r(1,:) = (pi/4)*sin(2*TL);   % 目標値（任意の値で一定）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
@@ -158,7 +162,7 @@ sys_ex_d = c2d(sys_ex,ctrl_dt);  % discrete time expanded system 離散時間拡
 
 % ===積分型最適サーボ系===
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_servo = diag([1e-01, 6, 1e-01, 1e-01, 3, 3]);
+Q_servo = diag([1e-01, 6, 1e-01, 1e-01, 3, 4]);
 R_servo = diag([1e-03]);
 [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
 % Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
@@ -175,10 +179,29 @@ F_a=-K_servo(:,1:height(x));
 G_a=-K_servo(:,height(x)+1:end);
 H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
+% ===積分型最適サーボ系（振上げ時）===
+%               x1 x2 x3 x4 e1 e2 e3 e4
+Q_cart = diag([5,1,5]);
+R_cart = diag([1e-03]);
+[K_cart,P_cart,~] = lqr(phi(logical([1,0,1,0,1,0]),logical([1,0,1,0,1,0])),gamma(logical([1,0,1,0,1,0]),:),Q_cart,R_cart,[]);
+% Q_cart = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
+% R_cart = diag([1e-04]);
+% [K_cart,P_cart,~] = lqrd(phi,gamma,Q_cart,R_cart,[],ctrl_dt);
+% Q_cart = diag([1e-06, 1e-06, 1e-03, 1e-03, 1e-02, 1e-02]);
+% R_cart = diag([1e-05]);
+% [K_cart,P_cart,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_cart,R_cart,[]);
+
+P_11_cart = P_cart(1:height(A_cart),1:height(B_cart));
+P_12_cart = P_cart(1:height(A_cart),end-(height(e(1,:))-1):end);
+P_22_cart = P_cart(end-(height(e(1,:))-1):end,end-(width(P_12_cart)-1):end);
+F_a_cart = -K_cart(:,1:height(A_cart));
+G_a_cart = -K_cart(:,height(A_cart)+1:end);
+H_a_cart = ([-F_a_cart+(G_a_cart/P_22_cart)*(P_12_cart') eye(width(B_cart))])/([A_cart B_cart; [1 0] zeros(height(1),width(B_cart))])*[zeros(height(A_cart),height(1));eye(height(1))];
+
 % ===2自由度積分型最適サーボ系===
 %               x1 x2 x3 x4 e1 e2 e3 e4
-W = diag([3e-01, 1e12]);
-Q_2dof = diag([3, 6, 1e-01, 1e-01]);
+W = diag([1e-01, 2e12]);
+Q_2dof = diag([3, 7, 1e-02, 1e-02]);
 R_2dof = diag([1e-03]);
 [K_2dof,P_2dof,~] = lqr(A,B,Q_2dof,R_2dof,[]);
 
@@ -207,6 +230,7 @@ L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイ�
 % M = M*1.3;
 % A = double(subs(Amat));
 % B = double(subs(Bmat));
+change_control = false;
 for i = 1:TL_width-1
 
     % observation 観測値の取得と誤算の算出
@@ -237,9 +261,24 @@ for i = 1:TL_width-1
                 u(:,i) = -K_lqr*x(:,i);
                 % u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
-                % x_ex(1:height(x),i) = x(:,i);
+                x_ex(1:height(x),i) = x(:,i);
                 % x_ex(1:height(x),i) = x_hat(:,i);
-                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+
+                if x_ex(2,i) > 2*pi
+                    x_ex(2,i) = mod(x_ex(2,i),2*pi);
+                elseif x_ex(2,i) > pi
+                    x_ex(2,i) = -2*pi + x_ex(2,i);
+                end
+                if x_ex(2,i) < pi/6 && x_ex(2,i) > -pi/6 && ~change_control
+                        change_control = true;
+                end
+
+                if change_control
+                    u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+                else
+                    u(:,i) = -K_cart*(x_ex(logical([1,0,1,0,1,0]),i)) + H_a_cart*r_cart(1,i) - (G_a_cart/P_22_cart)*(P_12_cart')*x_ex(logical([1,0,1,0,0,0]),1) - G_a_cart*x_ex(logical([0,0,0,0,1,0]),1);  % optimal input
+                end
+
             elseif servo2dof
                 x_ex(1:height(x),i) = x(:,i);
                 % x_ex(1:height(x),i) = x_hat(:,i);

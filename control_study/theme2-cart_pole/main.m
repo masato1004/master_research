@@ -67,7 +67,7 @@ E = double(subs(Emat));
 x = [zeros(4,TL_width)];
 y = [zeros(height(C),TL_width)];
 u = [zeros(1,TL_width)];
-d = [ones(1,TL_width)];
+d = [zeros(1,TL_width)];
 
 x(:,1) = [x0;theta0;dx0;dtheta0];  % 初期状態量の代入
 
@@ -107,6 +107,7 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
+r(1,:) = sin(3*TL);   % 目標値（任意の値で一定）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
@@ -163,7 +164,7 @@ F_a=-K_servo(:,1:height(x));
 G_a=-K_servo(:,height(x)+1:end);
 H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
-% 2自由度最適サーボ系
+% 最適追従系
 %               x1 x2 x3 x4 e1 e2 e3 e4
 Q_2deg = diag([3, 6, 1e-01, 1e-01]);
 R_2deg = diag([1e-03]);
@@ -224,7 +225,7 @@ for i = 1:TL_width-1
                 % u(:,i) = -K_lqr*x(:,i);
                 u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
-                x_ex(1:height(x),i) = x_hat(:,i);
+                % x_ex(1:height(x),i) = x_hat(:,i)
                 u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
             end
         elseif i-1 ~= 0
