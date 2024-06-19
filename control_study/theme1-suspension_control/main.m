@@ -7,7 +7,7 @@ T = 10;                         % シミュレーション時間
 dt = 1e-04;                     % シミュレーション時間幅
 TL = 0:dt:T;                    % 時間リスト作成
 TL_width = width(TL);           % 時間リストの長さ取得（リストの要素数）
-control_dt = dt;                % 制御周期（デフォルト：シミュレーション時間幅）
+ctrl_dt = dt;                % 制御周期（デフォルト：シミュレーション時間幅）
 
 % environmental parmeters
 Vkmh = 50;
@@ -93,7 +93,7 @@ bode(sys_vcl)
 
 %% Controller Design 制御系設計
 % discretization 行列の離散化
-sys_vcl_d = c2d(sys_vcl,control_dt);  % discrete time system 離散時間システム
+sys_vcl_d = c2d(sys_vcl,ctrl_dt);  % discrete time system 離散時間システム
 Ad = sys_vcl_d.A;
 Bd = sys_vcl_d.B;
 
@@ -160,7 +160,7 @@ for i = 1:TL_width-1
 
     % calculate input
     if ~passive
-        if mod(i-1, control_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
+        if mod(i-1, ctrl_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
 
             % add noise to obserbation
             y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));               % 観測ノイズの再現

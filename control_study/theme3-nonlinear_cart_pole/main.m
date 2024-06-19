@@ -3,15 +3,15 @@ clear;
 
 %% Define simlation condition シミュレーション条件
 % loop parameters
-T = 20;                 % シミュレーション時間
+T = 10;                 % シミュレーション時間
 dt = 1e-02;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
-control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
-% control_dt = dt*10;    % 制御周期（シミュレーション周期の100倍）
+ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
+% ctrl_dt = dt*10;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
-x0 = -0.5;                % カート初期位置
+x0 = -0.0;                % カート初期位置
 theta0 = 0.05;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
@@ -19,7 +19,8 @@ dtheta0 = 0;            % 振子初期角速度
 % controller
 passive = false;        % パッシブシミュレーション
 LQR = false;            % LQR
-servo = true;           % 積分型最適サーボ系
+servo = false;           % 積分型最適サーボ系
+servo2dof = true;           % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
@@ -40,12 +41,13 @@ Bmat=[
     -p1*xi
     ];
 
-C=diag([1,1,0,0]);
+Cmat=diag([1,1,0,0]);
+C=Cmat;
 C(sum(C,2)==0,:)=[];  % eliminate rows filled with 0 不要な行の削除
 
 D=zeros(height(C),1);
 
-E=[
+Emat=[
     0;
     0;
     1/(M+m);
@@ -56,7 +58,7 @@ M = 0.2;    % Mass of cart
 m=0.023;    % Mass of pendulum
 J=3.20e-4;	% Inertia moment
 L=0.2;		% Length
-mu=2.74e-4;	% Damping coefficient
+mu=2.74e-5;	% Damping coefficient
 zeta=240;   % Physical parameter of DC motor
 xi=90;		% Physical parameter of DC motor
 g=9.81;     % Gravity accel.
@@ -70,12 +72,13 @@ ddtheta = @(x, theta, dx, dtheta, ddx) (-m*L*ddx*cos(theta) + m*g*L*sin(theta) -
 % Assignment symbolic variables シンボリック変数の代入
 A = double(subs(Amat));
 B = double(subs(Bmat));
+E = double(subs(Emat));
 
 % define states vector 状態ベクトル、出力ベクトル、入力ベクトルの定義、外乱ベクトル
 x = [zeros(4,TL_width)];
 y = [zeros(height(C),TL_width)];
 u = [zeros(1,TL_width)];
-d = [zeros(1,TL_width)];
+d = [5*ones(1,TL_width)];
 
 x(:,1) = [x0;theta0;dx0;dtheta0];  % 初期状態量の代入
 
@@ -93,7 +96,7 @@ pole(sys_cart)
 
 %% Controller Design 制御系設計
 % discretization 行列の離散化
-sys_cart_d = c2d(sys_cart,control_dt);
+sys_cart_d = c2d(sys_cart,ctrl_dt);
 Ad = sys_cart_d.A;      % 離散システム行列
 Bd = sys_cart_d.B;      % 離散入力係数行列
 
@@ -111,16 +114,17 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 % bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
 
-% ===Servo 最適サーボ系===
+% Servo 最適サーボ系
+% Expanded system 拡大系の定義
+% 拡大系システム行列
 x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
+r(1,:) = sin(3*TL);   % 目標値（任意の値で一定）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
 
-% Expanded system 拡大系の定義
-% 拡大系システム行列
 phi = [
     A, zeros(height(A),height(C));
     -C, zeros(height(C),height(C))
@@ -150,17 +154,19 @@ eta = [
 ];
 
 sys_ex = ss(phi,gamma,psi,[]);
-sys_ex_d = c2d(sys_ex,control_dt);
+sys_ex_d = c2d(sys_ex,ctrl_dt);  % discrete time expanded system 離散時間拡大系システム
+
+% ===積分型最適サーボ系===
 %               x1 x2 x3 x4 e1 e2 e3 e4
-% Q_servo = diag([1e-01, 1, 1, 1, 6, 4]);
-% R_servo = diag([0.01]);
-% [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
+Q_servo = diag([1e-01, 6, 1e-01, 1e-01, 3, 3]);
+R_servo = diag([1e-03]);
+[K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
 % Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
 % R_servo = diag([1e-04]);
-% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],control_dt);
-Q_servo = diag([1e-06, 1e-06, 1e-03, 1e-03, 1e-02, 1e-02]);
-R_servo = diag([1e-05]);
-[K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
+% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
+% Q_servo = diag([1e-06, 1e-06, 1e-03, 1e-03, 1e-02, 1e-02]);
+% R_servo = diag([1e-05]);
+% [K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
 
 P_11 = P_servo(1:height(A),1:height(B));
 P_12 = P_servo(1:height(A),end-(height(e)-1):end);
@@ -169,6 +175,22 @@ F_a=-K_servo(:,1:height(x));
 G_a=-K_servo(:,height(x)+1:end);
 H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
+% ===2自由度積分型最適サーボ系===
+%               x1 x2 x3 x4 e1 e2 e3 e4
+W = diag([3e-01, 1e12]);
+Q_2dof = diag([3, 6, 1e-01, 1e-01]);
+R_2dof = diag([1e-03]);
+[K_2dof,P_2dof,~] = lqr(A,B,Q_2dof,R_2dof,[]);
+
+F_0 = -K_2dof;
+F_1 = -C/(A+B*F_0);
+F_2 = -R_2dof\(F_1*B)';
+G   = F_2*W;
+H_0 = ([-F_a eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+
+% Q_z = W*F_1*B/R_2dof*B'*F_1'*W;
+% Q_servo2dof = [Cmat' F_1'; zeros(height(Q_z),width(Cmat')) eye(size(Q_z))]*[Q_2dof zeros(height(Q_2dof),width(Q_z)); zeros(height(Q_z),width(Q_2dof)) Q_z]*[Cmat zeros(height(Cmat),height(F_1)); F_1 eye(height(F_1))];
+% [K_servo2dof,P_servo2dof,~] = lqr(phi,gamma,Q_servo2dof,R_servo,[]);
 
 % ===Kalman Filter カルマンフィルタの設計===
 % FOR LQR
@@ -189,11 +211,16 @@ for i = 1:TL_width-1
 
     % observation 観測値の取得と誤算の算出
     y(:,i) = C*x(:,i);
-    e(:,i) = r(:,i) - y(:,i);
+    if i ~= 1
+        e(:,i) = r(:,i) - y(:,i) - e(:,i-1);
+    else
+        e(:,i) = r(:,i) - y(:,i);
+    end
+
 
     % calculate input
     if ~passive
-        if mod(i-1, control_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
+        if mod(i-1, ctrl_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
 
             % add noise to obserbation
             y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));
@@ -207,11 +234,17 @@ for i = 1:TL_width-1
             P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
 
             if LQR
-                % u(:,i) = -K_lqr*x(:,i);
-                u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
+                u(:,i) = -K_lqr*x(:,i);
+                % u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
+                % x_ex(1:height(x),i) = x(:,i);
                 % x_ex(1:height(x),i) = x_hat(:,i);
-                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(A),1) - G_a*x_ex(height(A)+1:end,1);  % optimal input
+                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+            elseif servo2dof
+                x_ex(1:height(x),i) = x(:,i);
+                % x_ex(1:height(x),i) = x_hat(:,i);
+                u(:,i) = F_0*x_ex(1:height(x),i) + H_0*r(:,i) + G*(x_ex(height(x)+1:end,i) + F_1*x_ex(1:height(x),i) - F_1*x(:,1) - w(:,1));  % optimal input
+                % u(:,i) = F_0*x(:,i) + H_0*r(:,i) + G*(e(:,i-1) + F_1*x(:,i) - F_1*x(:,1) - w(:,1));  % optimal input
             end
         elseif i-1 ~= 0
             % e(:,i) = e(:,i-1);
@@ -264,7 +297,6 @@ for i = 1:TL_width-1
         ];
 
     x(:,i+1) = x(:,i) + (RK*[1; 2; 2; 1])/6;
-    % x_ex(1:height(x),i+1) = x(:,i+1);
 end
 
 % calculate squared error 最適レギュレータの評価関数の中身
@@ -309,8 +341,8 @@ fontname(fig,"Times New Roman");
 fontsize(fig,10,"points");
 
 % save figure
-controller_bool = [passive,LQR,servo];
-controller = ["passive","lqr","servo"];
+controller_bool = [passive,LQR,servo,servo2dof];
+controller = ["passive","lqr","servo","2dof-servo"];
 condition = "_controller-"+controller(controller_bool);
 saveas(fig,"fig/"+condition);
 
@@ -322,6 +354,8 @@ grid on;
 xlabel("Time [s]");
 ylabel("Estimated Value");
 legend(states_name);
+fontname(fig,"Times New Roman");
+fontsize(fig,10,"points");
 
 %% Animation アニメーションによる挙動の確認
 x_cart1 = x(1,:)';
@@ -344,5 +378,6 @@ for i = 1:TL_width
     set(hh3(1),pos=[x_cart1(i,1)-0.1 y_cart1(i,1)-0.15 0.2 0.15])
     set(hh4(1),XData=[x_cart1(i,1),x_cart1(i,1)+x_p(i,1)],YData=[0,y_p(i,1)])
     set(ht,String="Time: "+round(TL(i),1)+" s")
+    xlim([x_cart1(i,1)-2,x_cart1(i,1)+2])
     drawnow
 end

@@ -7,8 +7,8 @@ T = 10;                 % シミュレーション時間
 dt = 1e-04;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
-% control_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
-control_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
+% ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
+ctrl_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
 x0 = -0.5;                % カート初期位置
@@ -51,7 +51,7 @@ M = 0.2;    % Mass of cart
 m=0.023;    % Mass of pendulum
 J=3.20e-4;	% Inertia moment
 L=0.2;		% Length
-mu=2.74e-4;	% Damping coefficient
+mu=2.74e-5;	% Damping coefficient
 zeta=240;   % Physical parameter of DC motor
 xi=90;		% Physical parameter of DC motor
 g=9.81;     % Gravity accel.
@@ -85,7 +85,7 @@ pole(sys_cart)
 
 %% Controller Design 制御系設計
 % discretization 行列の離散化
-sys_cart_d = c2d(sys_cart,control_dt);
+sys_cart_d = c2d(sys_cart,ctrl_dt);
 Ad = sys_cart_d.A;      % 離散システム行列
 Bd = sys_cart_d.B;      % 離散入力係数行列
 
@@ -142,14 +142,16 @@ eta = [
 ];
 
 sys_ex = ss(phi,gamma,psi,[]);
-sys_ex_d = c2d(sys_ex,control_dt);
+sys_ex_d = c2d(sys_ex,ctrl_dt);  % 離散時間拡大系システム
+
+% 積分型最適サーボ系
 %               x1 x2 x3 x4 e1 e2 e3 e4
 % Q_servo = diag([1e-01, 1, 1, 1, 6, 4]);
 % R_servo = diag([0.01]);
 % [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
 % Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
 % R_servo = diag([1e-04]);
-% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],control_dt);
+% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
 Q_servo = diag([1e-04, 1e-04, 1e-01, 1e-02, 1e-01, 1e-01]);
 R_servo = diag([1e-04]);
 [K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
@@ -161,14 +163,33 @@ F_a=-K_servo(:,1:height(x));
 G_a=-K_servo(:,height(x)+1:end);
 H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
+% 2自由度最適サーボ系
+%               x1 x2 x3 x4 e1 e2 e3 e4
+Q_2deg = diag([3, 6, 1e-01, 1e-01]);
+R_2deg = diag([1e-03]);
+[K_2deg,P_2deg,~] = lqr(A,B,Q_2deg,R_2deg,[]);
+% Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
+% R_servo = diag([1e-04]);
+% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
+% Q_servo = diag([1e-06, 1e-06, 1e-03, 1e-03, 1e-02, 1e-02]);
+% R_servo = diag([1e-05]);
+% [K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
+
+% P_11 = P_servo(1:height(A),1:height(B));
+% P_12 = P_servo(1:height(A),end-(height(e)-1):end);
+% P_22 = P_servo(end-(height(e)-1):end,end-(width(P_12)-1):end);
+F_0=-K_2deg;
+% G_a=-K_servo(:,height(x)+1:end);
+H_0=([-F_a eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+
 
 % ===Kalman Filter カルマンフィルタの設計===
 % FOR LQR
 y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
-Q_kalman = diag([1e-04, 1e-03, 1e-04, 1e-03]);
-R_kalman = diag([1e-02, 1e-02]);
+Q_kalman = diag([1e-04, 1e-05, 1e-02, 1e-01]);
+R_kalman = diag([1e-01, 1e-01]);
 P_kalman = 0.001*ones(size(A));
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 
@@ -186,7 +207,7 @@ for i = 1:TL_width-1
 
     % calculate input
     if ~passive
-        if mod(i-1, control_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
+        if mod(i-1, ctrl_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
 
             % add noise to obserbation
             y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));
@@ -204,7 +225,7 @@ for i = 1:TL_width-1
                 u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
                 x_ex(1:height(x),i) = x_hat(:,i);
-                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(A),1) - G_a*x_ex(height(A)+1:end,1);  % optimal input
+                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
             end
         elseif i-1 ~= 0
             % e(:,i) = e(:,i-1);
