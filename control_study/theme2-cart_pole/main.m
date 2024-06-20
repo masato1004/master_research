@@ -19,8 +19,8 @@ dtheta0 = 0;            % 振子初期角速度
 % controller
 passive = false;        % パッシブシミュレーション
 LQR = false;            % LQR
-following = true;       % 最適追従系
-servo = false;          % 積分型最適サーボ系
+following = false;       % 最適追従系
+servo = true;          % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
@@ -170,18 +170,8 @@ H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))]
 Q_follow = diag([5, 6, 1e-01, 1e-01]);
 R_follow = diag([1e-01]);
 [K_follow,P_follow,~] = lqr(A,B,Q_follow,R_follow,[]);
-% Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
-% R_servo = diag([1e-04]);
-% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
-% Q_servo = diag([1e-06, 1e-06, 1e-03, 1e-03, 1e-02, 1e-02]);
-% R_servo = diag([1e-05]);
-% [K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
 
-% P_11 = P_servo(1:height(A),1:height(B));
-% P_12 = P_servo(1:height(A),end-(height(e)-1):end);
-% P_22 = P_servo(end-(height(e)-1):end,end-(width(P_12)-1):end);
 F_0=-K_follow;
-% G_a=-K_servo(:,height(x)+1:end);
 H_0=([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 
@@ -192,7 +182,11 @@ x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
 Q_kalman = diag([1e-04, 1e-05, 1e-02, 1e-01]);
 R_kalman = diag([1e-01, 1e-01]);
-P_kalman = 0.001*ones(size(A));
+sigma_v = 0.1;
+sigma_w = 0.1;
+% Q_kalman = sigma_v^2*(B)*(B');
+% R_kalman = sigma_w^2;
+P_kalman = 0.01*ones(size(A));
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 
 %% Simulation Loop
@@ -226,7 +220,7 @@ for i = 1:TL_width-1
                 % u(:,i) = -K_lqr*x(:,i);
                 u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
-                % x_ex(1:height(x),i) = x_hat(:,i)
+                x_ex(1:height(x),i) = x_hat(:,i);
                 u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
             elseif following
                 u(:,i) = -K_follow*x(:,i) + H_0*r(:,i);
