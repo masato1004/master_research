@@ -3,7 +3,7 @@ clear;
 
 %% Define simlation condition シミュレーション条件
 % loop parameters
-T = 20;                 % シミュレーション時間
+T = 15;                 % シミュレーション時間
 dt = 1e-03;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
@@ -12,15 +12,15 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 
 % initial value
 x0 = -0;                % カート初期位置
-theta0 = pi;             % 振子初期角度
+theta0 = pi/7;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
 
 % controller
 passive = false;        % パッシブシミュレーション
 LQR = false;            % LQR
-servo = true;           % 積分型最適サーボ系
-servo2dof = false;           % 積分型最適サーボ系
+servo = false;           % 積分型最適サーボ系
+servo2dof = true;           % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
@@ -120,11 +120,12 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 % Servo 最適サーボ系
 % Expanded system 拡大系の定義
 % 拡大系システム行列
-x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
+x_inf = [-0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 % r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
+r(1,:) = x0+2*sin(3*TL);   % 目標値（任意の値で一定）
 r_cart = r;
-r_cart(1,:) = sin(TL./6*pi.*TL);   % 目標値（任意の値で一定）
+r_cart(1,:) = x0+sin(TL./6*pi.*TL);   % 目標値（任意の値で一定）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
@@ -200,16 +201,16 @@ H_a_cart = ([-F_a_cart+(G_a_cart/P_22_cart)*(P_12_cart') eye(width(B_cart))])/([
 
 % ===2自由度積分型最適サーボ系===
 %               x1 x2 x3 x4 e1 e2 e3 e4
-W = diag([1e-01, 2e12]);
-Q_2dof = diag([3, 7, 1e-02, 1e-02]);
-R_2dof = diag([1e-03]);
+W = diag([1e-03, 2e8]);
+Q_2dof = diag([3, 2, 1e01, 1e-02]);
+R_2dof = diag([1e-02]);
 [K_2dof,P_2dof,~] = lqr(A,B,Q_2dof,R_2dof,[]);
 
 F_0 = -K_2dof;
 F_1 = -C/(A+B*F_0);
 F_2 = -R_2dof\(F_1*B)';
 G   = F_2*W;
-H_0 = ([-F_a eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+H_0 = ([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 % Q_z = W*F_1*B/R_2dof*B'*F_1'*W;
 % Q_servo2dof = [Cmat' F_1'; zeros(height(Q_z),width(Cmat')) eye(size(Q_z))]*[Q_2dof zeros(height(Q_2dof),width(Q_z)); zeros(height(Q_z),width(Q_2dof)) Q_z]*[Cmat zeros(height(Cmat),height(F_1)); F_1 eye(height(F_1))];
@@ -282,8 +283,22 @@ for i = 1:TL_width-1
             elseif servo2dof
                 x_ex(1:height(x),i) = x(:,i);
                 % x_ex(1:height(x),i) = x_hat(:,i);
-                u(:,i) = F_0*x_ex(1:height(x),i) + H_0*r(:,i) + G*(x_ex(height(x)+1:end,i) + F_1*x_ex(1:height(x),i) - F_1*x(:,1) - w(:,1));  % optimal input
-                % u(:,i) = F_0*x(:,i) + H_0*r(:,i) + G*(e(:,i-1) + F_1*x(:,i) - F_1*x(:,1) - w(:,1));  % optimal input
+
+                if x_ex(2,i) > 2*pi
+                    x_ex(2,i) = mod(x_ex(2,i),2*pi);
+                elseif x_ex(2,i) > pi
+                    x_ex(2,i) = -2*pi + x_ex(2,i);
+                end
+                if x_ex(2,i) < pi/6 && x_ex(2,i) > -pi/6 && ~change_control
+                        change_control = true;
+                end
+
+                if change_control
+                    u(:,i) = F_0*x_ex(1:height(x),i) + H_0*r(:,i) + G*(x_ex(height(x)+1:end,i) + F_1*x_ex(1:height(x),i) - F_1*x(:,1) - w(:,1));  % optimal input
+                else
+                    u(:,i) = -K_cart*(x_ex(logical([1,0,1,0,1,0]),i)) + H_a_cart*r_cart(1,i) - (G_a_cart/P_22_cart)*(P_12_cart')*x_ex(logical([1,0,1,0,0,0]),1) - G_a_cart*x_ex(logical([0,0,0,0,1,0]),1);  % optimal input
+                end
+                
             end
         elseif i-1 ~= 0
             % e(:,i) = e(:,i-1);

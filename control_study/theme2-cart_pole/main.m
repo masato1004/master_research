@@ -182,7 +182,7 @@ R_follow = diag([1e-01]);
 % P_22 = P_servo(end-(height(e)-1):end,end-(width(P_12)-1):end);
 F_0=-K_follow;
 % G_a=-K_servo(:,height(x)+1:end);
-H_0=([-F_a eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+H_0=([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 
 % ===Kalman Filter カルマンフィルタの設計===
