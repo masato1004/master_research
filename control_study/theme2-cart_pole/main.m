@@ -180,12 +180,12 @@ H_0=([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),
 y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
-Q_kalman = diag([1e-04, 1e-05, 1e-02, 1e-01]);
-R_kalman = diag([1e-01, 1e-01]);
-sigma_v = 0.1;
-sigma_w = 0.1;
-% Q_kalman = sigma_v^2*(B)*(B');
-% R_kalman = sigma_w^2;
+Q_kalman = diag([1e-07, 1e-07, 1e-03, 1e-03]);
+R_kalman = diag([1e-00, 1e02]);
+sigma_v = 8e-11;
+sigma_w = 9e-15;
+Q_kalman = sigma_v^2*(B)*(B');
+R_kalman = sigma_w^2;
 P_kalman = 0.01*ones(size(A));
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 
@@ -220,8 +220,8 @@ for i = 1:TL_width-1
                 % u(:,i) = -K_lqr*x(:,i);
                 u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
-                x_ex(1:height(x),i) = x_hat(:,i);
-                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+                % u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+                u(:,i) = -K_servo*([x_hat(:,i);x_ex(height(x)+1:end,i)]) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
             elseif following
                 u(:,i) = -K_follow*x(:,i) + H_0*r(:,i);
                 % u(:,i) = -K_follow*x_hat(:,i) + H_0*r(:,i);
@@ -319,5 +319,6 @@ for i = 1:50:TL_width
     set(hh3(1),pos=[x_cart1(i,1)-0.1 y_cart1(i,1)-0.15 0.2 0.15])
     set(hh4(1),XData=[x_cart1(i,1),x_cart1(i,1)+x_p(i,1)],YData=[0,y_p(i,1)])
     set(ht,String="Time: "+round(TL(i),1)+" s")
+    xlim([x_cart1(i,1)-1, x_cart1(i,1)+1])
     drawnow
 end
