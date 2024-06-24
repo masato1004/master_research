@@ -12,7 +12,7 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 
 % initial value
 x0 = -0.5;                % カート初期位置
-theta0 = -pi/1.5;             % 振子初期角度
+theta0 = 2*pi-pi/3;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
 
@@ -123,7 +123,7 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 x_inf = [1; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 % r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
-r(1,:) = x_inf(1)+1*sin(1*pi*TL);   % 目標値（任意の値で一定）
+% r(1,:) = x_inf(1)+1*sin(1*pi*TL);   % 目標値（任意の値で一定）
 % r(2,:) = 0.05*sin(3*TL);   % 目標値（任意の値で一定）
 r_cart = r;
 r_cart(1,:) = x0+sin((TL./9)*pi.*TL);   % 目標値（任意の値で一定）
