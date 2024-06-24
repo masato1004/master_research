@@ -19,7 +19,7 @@ groundtruth_imgs = dir(dataset+"groundtruth_depth/*.png");
 %% read datas
 close all;
 
-file_name = "1708412808.709314.png";
+file_name = "1708412721.496111.png";
 file_num = 0;
 flag = true;
 while flag
@@ -32,14 +32,16 @@ while flag
         flag=false;
     end
 end
-file_num=182;
+% file_num=180;
+file_num=175;
+% file_num=208;
 
 rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
 colorImage_read = imread(dataset+"image/"+list_color_imgs(file_num).name);
 groundtruth_read = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
 
-depthImage_read = rawlidarImage_read;
+depthImage_read = predictedImage_read;
 
 depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);
@@ -59,7 +61,11 @@ colorImage_original_size=uint8(ones(1080, 1920, 3));
 start_x = 353-1;
 start_y = 449-1;
 rect_width = 1216-1;
-rect_height = 352-1;
+rect_height = 264-1;
+% start_x = 353-1;
+% start_y = 449-1;
+% rect_width = 1216-1;
+% rect_height = 352-1;
 depthImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width) = depthImage_read;
 groundtruth_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = groundtruth_read;
 colorImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = colorImage_read;
@@ -103,13 +109,24 @@ groundtruthpcin=pointCloud(reshape(groundtruthptCloud.Location,[],3),Color=resha
 % downptCloud = pcdownsample(rawptCloud,'gridAverage',0.05);
 % downptCloud = pcdownsample(ptCloud,'gridAverage',0.1);
 % downptCloud = pointCloud(downptCloud.Location(downptCloud.Location(:,1)<7&downptCloud.Location(:,1)>0&downptCloud.Location(:,2)<3&downptCloud.Location(:,2)>-3,:,:));
-eliminate_idx = pcin.Location(:,1)<7&pcin.Location(:,1)>0&pcin.Location(:,2)<3&pcin.Location(:,2)>-3;
-downptCloud = pointCloud(pcin.Location(eliminate_idx,:,:),Color=pcin.Color(eliminate_idx,:,:));
+downpc = pcin;
+eliminate_idx = downpc.Location(:,1)<9&downpc.Location(:,1)>2.5&downpc.Location(:,2)<2&downpc.Location(:,2)>-2;
+downptCloud = pointCloud(downpc.Location(eliminate_idx,:,:),Color=downpc.Color(eliminate_idx,:,:));
+% downptCloud = pcdownsample(downptCloud,'gridAverage',0.001);
 
-[ptCloud, plaen_mesh, plane_tform] = fitplane(downptCloud,downptCloud,0.005);
+pcin_eliminate_idx = pcin.Location(:,1)>0.5;
+pcin = pointCloud(pcin.Location(pcin_eliminate_idx,:,:),Color=pcin.Color(pcin_eliminate_idx,:,:));
+raw_eliminate_idx = rawpcin.Location(:,1)>0.5;
+rawpcin = pointCloud(rawpcin.Location(raw_eliminate_idx,:,:),Color=rawpcin.Color(raw_eliminate_idx,:,:));
+gt_eliminate_idx = groundtruthpcin.Location(:,1)>0.5;
+groundtruthpcin = pointCloud(groundtruthpcin.Location(gt_eliminate_idx,:,:),Color=groundtruthpcin.Color(gt_eliminate_idx,:,:));
+
+[ptCloud, plaen_mesh, plane_tform] = fitplane(pcin,downptCloud,0.008);
 [rawptCloud, rawplaen_mesh, rawplane_tform] = fitplane(rawpcin,downptCloud,0.005);
+[gtptCloud, gtplaen_mesh, gtplane_tform] = fitplane(groundtruthpcin,downptCloud,0.005);
 ptCloud = pctransform(ptCloud,r_tform_cam2wheel);
 rawptCloud = pctransform(rawptCloud,r_tform_cam2wheel);
+gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
 
 % ptloc=ptCloud.Location;
 % ptloc(ptloc(:,1)<0,1)=2;
@@ -146,7 +163,7 @@ mean_data_num = [20, 20]; % 60, 60
 %% correct road surface profile
 max_z0 = 0.025;                                                                % [m] max road displacement
 ld = [0.05 0.15 0.05];
-start_disturbance = 3; % 2.96                                                                  % amplitude
+start_disturbance = 3.75; % 2.96                                                                  % amplitude
 max_distance = 30;                                                           % [m] driving mileage
 f_dis_total = [0,start_disturbance,start_disturbance+ld(1),start_disturbance+sum(ld(1:2)),start_disturbance+sum(ld),max_distance];
 r_dis_total =  [0,start_disturbance,start_disturbance+ld(1),start_disturbance+sum(ld(1:2)),start_disturbance+sum(ld),max_distance];
@@ -174,6 +191,18 @@ raw_correct_road_p = interp1(f_dis_total,road_total,raw_dis_total_p);
 % raw_sc = scatter(raw_prev_profile(1,:),raw_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#00ff00","DisplayName","Raw Data"); hold on;  % picked up points
 % raw_correct_road = plot(raw_dis_total_p,raw_correct_road_p,"LineWidth",2,"Color","#aaaaaa","DisplayName","Actual Road"); hold on;
 % raw_pl = plot(raw_prev_profile(1,:),movmean(raw_prev_profile(2,:),mean_data_num),"LineWidth",2,"LineStyle",":","Color","#ff0000","DisplayName","Moving Average"); % moving average
+
+% gt
+gt_ospc = gtptCloud;
+gt_line = gt_ospc.Location(gt_ospc.Location(:,2)>=p_min & gt_ospc.Location(:,2)<=p_max & gt_ospc.Location(:,1)<=range_max & gt_ospc.Location(:,1)>=range_min,:,:);
+% gt_line = gt_ospc.Location(gt_ospc.Location(:,1)>=-0.075 & gt_ospc.Location(:,1)<=0.075 & gt_ospc.Location(:,2)<=7 & gt_ospc.Location(:,2)>=5.06,:,:);
+[~,gt_ind] = sort(gt_line(:,1));
+gt_prev_profile=gt_line(gt_ind,[true false true])';
+gt_dis_total_p = [f_dis_total, gt_prev_profile(1,:)];
+[gt_dis_total_p,~] = sort(gt_dis_total_p);
+gt_correct_road_p = interp1(f_dis_total,road_total,gt_dis_total_p);
+% gt_sc = scatter(gt_prev_profile(1,:),gt_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#00ff00","DisplayName","Ground Truth Data"); hold on;  % picked up points
+% gt_pl = plot(gt_prev_profile(1,:),movmean(gt_prev_profile(2,:),mean_data_num),"LineWidth",2,"LineStyle",":","Color","#ff0000","DisplayName","Moving Average"); % moving average
 
 % prediction
 f_ospc = ptCloud;
