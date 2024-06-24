@@ -7,8 +7,8 @@ T = 10;                 % シミュレーション時間
 dt = 1e-04;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
-ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
-% ctrl_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
+% ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション時間幅）
+ctrl_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
 x0 = 0;                % カート初期位置
@@ -148,15 +148,15 @@ sys_ex_d = c2d(sys_ex,ctrl_dt);  % 離散時間拡大系システム
 
 % 積分型最適サーボ系
 %               x1 x2 x3 x4 e1 e2 e3 e4
-Q_servo = diag([3, 3, 1, 1, 6, 4]);
-R_servo = diag([1e-02]);
-[K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
+% Q_servo = diag([3, 3, 1, 1, 6, 4]);
+% R_servo = diag([1e-02]);
+% [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
 % Q_servo = diag([1e-02, 1e-02, 1e-04, 1e-04, 1e-02, 1e-02]);
 % R_servo = diag([1e-04]);
 % [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
-% Q_servo = diag([1e-04, 1e-04, 1e-01, 1e-02, 1e-01, 1e-01]);
-% R_servo = diag([1e-04]);
-% [K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
+Q_servo = diag([1e-04, 1e-04, 1e-01, 1e-02, 1e-01, 1e-01]);
+R_servo = diag([1e-04]);
+[K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
 
 P_11 = P_servo(1:height(A),1:height(B));
 P_12 = P_servo(1:height(A),end-(height(e)-1):end);
@@ -180,13 +180,14 @@ H_0=([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),
 y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
+x_ex_hat = [x_hat; r-C*x_hat];
 % Q_kalman = diag([1e-07, 1e-07, 1e-03, 1e-03]);
 % R_kalman = diag([1e-00, 1e02]);
 sigma_v = 1e-04;
-sigma_w = 9e-10;
+sigma_w = 9e-11;
 Q_kalman = sigma_v^2*(B)*(B');
 R_kalman = sigma_w^2;
-P_kalman = 1*ones(size(A));
+P_kalman = 0.001*ones(size(A));
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 
 %% Simulation Loop
@@ -220,8 +221,12 @@ for i = 1:TL_width-1
                 % u(:,i) = -K_lqr*x(:,i);
                 u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
-                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+                x_ex_hat(1:height(x),i) = x_hat(:,i);
+                % u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
                 % u(:,i) = -K_servo*([x_hat(:,i);x_ex(height(x)+1:end,i)]) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+                
+                u(:,i) = -K_servo*(x_ex_hat(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex_hat(1:height(x),1) - G_a*x_ex_hat(height(x)+1:end,1);  % optimal input
+                x_ex_hat(:,i+1) = func__rungekutta(x_ex_hat(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, ctrl_dt);  % カルマンフィルタの見ている世界
             elseif following
                 % u(:,i) = -K_follow*x(:,i) + H_0*r(:,i);
                 u(:,i) = -K_follow*x_hat(:,i) + H_0*r(:,i);
@@ -230,6 +235,7 @@ for i = 1:TL_width-1
             % e(:,i) = e(:,i-1);
             u(:,i) = u(:,i-1);          % ゼロ次ホールド
             x_hat(:,i) = x_hat(:,i-1);
+            x_ex_hat(:,i+1) = x_ex_hat(:,i);
         end
     end
 

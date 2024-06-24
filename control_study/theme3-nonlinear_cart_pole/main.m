@@ -3,7 +3,7 @@ clear;
 
 %% Define simlation condition シミュレーション条件
 % loop parameters
-T = 15;                 % シミュレーション時間
+T = 20;                 % シミュレーション時間
 dt = 1e-03;             % シミュレーション時間幅
 TL = 0:dt:T;            % 時間リスト作成
 TL_width = width(TL);   % 時間リストの長さ取得（リストの要素数）
@@ -11,8 +11,8 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 % ctrl_dt = dt*10;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
-x0 = -0;                % カート初期位置
-theta0 = pi/7;             % 振子初期角度
+x0 = -0.5;                % カート初期位置
+theta0 = -pi/1.5;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
 
@@ -120,12 +120,13 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 % Servo 最適サーボ系
 % Expanded system 拡大系の定義
 % 拡大系システム行列
-x_inf = [-0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
+x_inf = [1; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 % r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
-r(1,:) = x0+2*sin(3*TL);   % 目標値（任意の値で一定）
+r(1,:) = x_inf(1)+1*sin(1*pi*TL);   % 目標値（任意の値で一定）
+% r(2,:) = 0.05*sin(3*TL);   % 目標値（任意の値で一定）
 r_cart = r;
-r_cart(1,:) = x0+sin(TL./6*pi.*TL);   % 目標値（任意の値で一定）
+r_cart(1,:) = x0+sin((TL./9)*pi.*TL);   % 目標値（任意の値で一定）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
@@ -202,7 +203,7 @@ H_a_cart = ([-F_a_cart+(G_a_cart/P_22_cart)*(P_12_cart') eye(width(B_cart))])/([
 % ===2自由度積分型最適サーボ系===
 %               x1 x2 x3 x4 e1 e2 e3 e4
 W = diag([1e-03, 2e8]);
-Q_2dof = diag([3, 2, 1e01, 1e-02]);
+Q_2dof = diag([1e01, 1e02, 1e01, 1e-02]);
 R_2dof = diag([1e-02]);
 [K_2dof,P_2dof,~] = lqr(A,B,Q_2dof,R_2dof,[]);
 
@@ -295,6 +296,7 @@ for i = 1:TL_width-1
 
                 if change_control
                     u(:,i) = F_0*x_ex(1:height(x),i) + H_0*r(:,i) + G*(x_ex(height(x)+1:end,i) + F_1*x_ex(1:height(x),i) - F_1*x(:,1) - w(:,1));  % optimal input
+                    % u(:,i) = F_0*x_hat(:,i) + H_0*r(:,i) + G*(x_ex(height(x)+1:end,i) + F_1*x_ex(1:height(x),i) - F_1*x(:,1) - w(:,1));  % optimal input
                 else
                     u(:,i) = -K_cart*(x_ex(logical([1,0,1,0,1,0]),i)) + H_a_cart*r_cart(1,i) - (G_a_cart/P_22_cart)*(P_12_cart')*x_ex(logical([1,0,1,0,0,0]),1) - G_a_cart*x_ex(logical([0,0,0,0,1,0]),1);  % optimal input
                 end
@@ -308,6 +310,9 @@ for i = 1:TL_width-1
     end
     
     % update states ルンゲクッタ法による状態量の更新
+    if ~change_control
+        r(1,i) = r_cart(1,i);
+    end
     x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, dt);  % 拡大系状態量更新
     % x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), [], A, B, E, [], dt);                   % 状態量更新
    
@@ -429,7 +434,7 @@ xlabel("\itx \rm[m]")
 fontname(fig_cart,"Times New Roman");
 fontsize(fig_cart,10,"points");
 
-frame_rate = 40;
+frame_rate = 20;
 newimg = zeros(371,1140,3);
 videoname = "video/"+condition;
 video = VideoWriter(videoname,'MPEG-4');
