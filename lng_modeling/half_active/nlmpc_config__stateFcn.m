@@ -203,6 +203,6 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
 
     last_d = current_d;
     
-    dxdt = A*x + B*u + E*current_d + G*g;
+    dxdt = A*x + B*u + E*current_d;% + G*g;
 
 end

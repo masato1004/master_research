@@ -12,13 +12,13 @@ wa  = false;
 lpf = false;
 
 % control method
-passive = false;
+passive = true;
 LQR     = false;
 rprev   = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
 LQR_fprev_rprev = false;
-NLMPC = true;
+NLMPC = false;
 feedforward = false;
 
 % road profile

@@ -11,7 +11,7 @@ run("configuration_files/conf__simulation_conditions.m")
 
 % States definition
 run("configuration_files/conf__state_space.m")
-        
+
 % Initial conditions
 run("configuration_files/conf__initial_conditions.m")
 
@@ -65,7 +65,7 @@ last_toc = toc;
 for i=1:c-1
     
     if ~control_flag
-        if TL(i)*V > 8.5   % ----------strat from near the bump-----------
+        if TL(i)*V > 8.9   % ----------strat from near the bump-----------
             states(:,i) = [
                 TL(i)*V;
                 z_b_init;
@@ -344,6 +344,7 @@ for i=1:c-1
                 state_function_parameter = [disturbance(:,i);local_dis.';current_mileage_f.';current_mileage_r.';current_wheel_traj_f.';current_wheel_traj_r.';i];
                 
                 reference = func__referenceSignal(states(:,i),u_in,states(:,1),Ts,pHorizon,detailed_wheel_traj_f,detailed_wheel_traj_r,V,r);
+                % [reference(:,1), states(:,i)]
                 simdata.StateFcnParameter = state_function_parameter;
 
                 sp = zeros(sp_length*(pHorizon+1),1);
@@ -358,6 +359,7 @@ for i=1:c-1
                 % states(5,i)
                 controller_start = toc;
                 [mv,simdata,info] = nlmpcmove(runner,states(:,i),u_in,simdata);
+                mv(3:4,1) = [0; 0];
                 if info.ExitFlag <= 0
                     mv = zeros(4,1);
                 end

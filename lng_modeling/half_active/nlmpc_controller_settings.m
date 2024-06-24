@@ -12,7 +12,7 @@ if solver == "fmincon"
     runner.Optimization.SolverOptions.Algorithm = 'interior-point';
     runner.Optimization.SolverOptions.SpecifyObjectiveGradient = true;
     runner.Optimization.SolverOptions.SpecifyConstraintGradient = true;
-    runner.Optimization.SolverOptions.MaxFunctionEvaluations = 5000;
+    % runner.Optimization.SolverOptions.MaxFunctionEvaluations = 5000;
     runner.Optimization.SolverOptions.ConstraintTolerance = 1e-02; % defalt 1e-06
     runner.Optimization.SolverOptions.OptimalityTolerance = 1e-03; % defalt 1e-06
     runner.Optimization.SolverOptions.StepTolerance = 1e-06; % defalt 1e-10
@@ -24,8 +24,8 @@ if solver == "fmincon"
 elseif solver == "cgmres"
     % Set the solver parameters.
     runner.Optimization.SolverOptions.StabilizationParameter = 1/(runner.Ts);
-    runner.Optimization.SolverOptions.MaxIterations = 100;
-    runner.Optimization.SolverOptions.Restart = 10;
+    runner.Optimization.SolverOptions.MaxIterations = 1000;
+    runner.Optimization.SolverOptions.Restart = 100;
     runner.Optimization.SolverOptions.BarrierParameter = 5e02;
     runner.Optimization.SolverOptions.TerminationTolerance = 1e-07;
     runner.Optimization.SolverOptions.FiniteDifferenceStepSize = 1e-09;
@@ -49,10 +49,10 @@ runner.ManipulatedVariables(3).Max = 3000;
 runner.ManipulatedVariables(4).Min = -3000;
 runner.ManipulatedVariables(4).Max = 3000;
 
-runner.ManipulatedVariables(1).RateMin = -600/4;
-runner.ManipulatedVariables(1).RateMax =  600/4;
-runner.ManipulatedVariables(2).RateMin = -600/4;
-runner.ManipulatedVariables(2).RateMax =  600/4;
+runner.ManipulatedVariables(1).RateMin = -600/2;
+runner.ManipulatedVariables(1).RateMax =  600/2;
+runner.ManipulatedVariables(2).RateMin = -600/2;
+runner.ManipulatedVariables(2).RateMax =  600/2;
 runner.ManipulatedVariables(3).RateMin = -500;
 runner.ManipulatedVariables(3).RateMax = 500;
 runner.ManipulatedVariables(4).RateMin = -500;
