@@ -183,11 +183,11 @@ y_hat = [zeros(height(C),TL_width)];
 x_ex_hat = [x_hat; r-C*x_hat];
 Q_kalman = diag([1e-07, 1e-07, 1e-03, 1e-03]);
 R_kalman = diag([1e-00, 1e02]);
-sigma_v = 1e-03;
-sigma_w = 1e-03;
+sigma_v = 1e-02;
+sigma_w = 1e-02;
 Q_kalman = sigma_v^2*(B)*(B');
 R_kalman = sigma_w^2;
-P_kalman = 1e-03*eye(size(A));
+P_kalman = 1e-02*eye(size(A));
 P_kalman = Ad * P_kalman * Ad' + Q_kalman;
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極

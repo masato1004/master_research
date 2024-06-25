@@ -12,9 +12,9 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 
 % initial value
 x0 = -0.5;                % カート初期位置
-theta0 = pi/3;             % 振子初期角度
+theta0 = pi;             % 振子初期角度
 dx0 = 0;                % カート初期速度
-dtheta0 = 0;            % 振子初期角速度
+dtheta0 = -pi;            % 振子初期角速度
 
 % controller
 passive = false;        % パッシブシミュレーション
