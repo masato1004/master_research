@@ -181,14 +181,16 @@ y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
 x_ex_hat = [x_hat; r-C*x_hat];
-% Q_kalman = diag([1e-07, 1e-07, 1e-03, 1e-03]);
-% R_kalman = diag([1e-00, 1e02]);
-sigma_v = 1e-04;
-sigma_w = 9e-11;
+Q_kalman = diag([1e-07, 1e-07, 1e-03, 1e-03]);
+R_kalman = diag([1e-00, 1e02]);
+sigma_v = 1e-03;
+sigma_w = 1e-03;
 Q_kalman = sigma_v^2*(B)*(B');
 R_kalman = sigma_w^2;
-P_kalman = 0.001*ones(size(A));
+P_kalman = 1e-03*eye(size(A));
+P_kalman = Ad * P_kalman * Ad' + Q_kalman;
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
+pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極
 
 %% Simulation Loop
 % modeling error モデル化誤差の再現
@@ -207,7 +209,7 @@ for i = 1:TL_width-1
         if mod(i-1, ctrl_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
 
             % add noise to obserbation
-            y_noised(:,i) = y(:,i) + sqrt(0.001)*randn(size(y(:,i)));
+            y_noised(:,i) = y(:,i) + sqrt(1e-03)*randn(size(y(:,i)));
             
             % KalmanFilter カルマンフィルタで状態推定
             x_hat(:,i) = Ad * x_hat(:,i-1) + Bd * u(:,i-1);                         % 予測ステップ
@@ -216,6 +218,8 @@ for i = 1:TL_width-1
             L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman);              % カルマンゲイン
             x_hat(:,i) = x_hat(:,i) + L_kalman * (y_noised(:,i) - C * x_hat(:,i));  % 更新ステップ
             P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
+
+            pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極
 
             if LQR
                 % u(:,i) = -K_lqr*x(:,i);
