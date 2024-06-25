@@ -187,7 +187,7 @@ sigma_v = 1e-02;
 sigma_w = 1e-02;
 Q_kalman = sigma_v^2*(B)*(B');
 R_kalman = sigma_w^2;
-P_kalman = 1e-02*eye(size(A));
+P_kalman = 1e-03*eye(size(A));
 P_kalman = Ad * P_kalman * Ad' + Q_kalman;
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極
@@ -209,7 +209,7 @@ for i = 1:TL_width-1
         if mod(i-1, ctrl_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
 
             % add noise to obserbation
-            y_noised(:,i) = y(:,i) + sqrt(1e-03)*randn(size(y(:,i)));
+            y_noised(:,i) = y(:,i) + sqrt(1e-02)*randn(size(y(:,i)));
             
             % KalmanFilter カルマンフィルタで状態推定
             x_hat(:,i) = Ad * x_hat(:,i-1) + Bd * u(:,i-1);                         % 予測ステップ

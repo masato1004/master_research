@@ -14,7 +14,7 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 x0 = -0.5;                % カート初期位置
 theta0 = pi;             % 振子初期角度
 dx0 = 0;                % カート初期速度
-dtheta0 = -pi;            % 振子初期角速度
+dtheta0 = 0;            % 振子初期角速度
 
 % controller
 passive = false;        % パッシブシミュレーション
@@ -66,7 +66,7 @@ g=9.81;     % Gravity accel.
 p1=m*L/(J+m*L*L); p2=mu/(J+m*L*L);
 
 % Acceleration function for non-linear sim
-ddx = @(x, theta, dx, dtheta,u) (((-m*L*cos(theta)*(m*g*L*sin(theta)-mu*dtheta)/(J+m*L^2)) + (m*L*(dtheta^2)*sin(theta)) -mu*dx)+u) / ((M+m)-((m^2)*(L^2)*(cos(theta)^2)/(J+m*L^2)));
+ddx = @(x, theta, dx, dtheta,u,d) (((-m*L*cos(theta)*(m*g*L*sin(theta)-mu*dtheta)/(J+m*L^2)) + (m*L*(dtheta^2)*sin(theta)) -mu*dx)+u) / ((M+m)-((m^2)*(L^2)*(cos(theta)^2)/(J+m*L^2))) + d/(M+m);
 ddtheta = @(x, theta, dx, dtheta, ddx) (-m*L*ddx*cos(theta) + m*g*L*sin(theta) - mu*dtheta)/(J+m*L^2);
 
 % Assignment symbolic variables シンボリック変数の代入
@@ -202,7 +202,7 @@ H_a_cart = ([-F_a_cart+(G_a_cart/P_22_cart)*(P_12_cart') eye(width(B_cart))])/([
 
 % ===2自由度積分型最適サーボ系===
 %               x1 x2 x3 x4 e1 e2 e3 e4
-W = diag([1e-03, 2e8]);
+W = diag([1e-02, 2e08]);
 Q_2dof = diag([1e01, 1e02, 1e01, 1e-02]);
 R_2dof = diag([1e-02]);
 [K_2dof,P_2dof,~] = lqr(A,B,Q_2dof,R_2dof,[]);
@@ -320,25 +320,25 @@ for i = 1:TL_width-1
     % Runge Kutta
     kx1 = dt*x(3,i);
     kt1 = dt*x(4,i);
-    DDX = ddx(x(1,i), x(2,i), x(3,i), x(4,i),u(:,i));
+    DDX = ddx(x(1,i), x(2,i), x(3,i), x(4,i),u(:,i),d(:,i));
     lx1 = dt*DDX;
     lt1 = dt*ddtheta(x(1,i), x(2,i), x(3,i), x(4,i), DDX);
     
     kx2 = dt*(x(3,i)+lx1/2);
     kt2 = dt*(x(4,i)+lt1/2);
-    DDX = ddx(x(1,i)+kx1/2, x(2,i)+kt1/2, x(3,i)+lx1/2, x(4,i)+lt1/2,u(:,i));
+    DDX = ddx(x(1,i)+kx1/2, x(2,i)+kt1/2, x(3,i)+lx1/2, x(4,i)+lt1/2,u(:,i),d(:,i));
     lx2 = dt*DDX;
     lt2 = dt*ddtheta(x(1,i)+kx1/2, x(2,i)+kt1/2, x(3,i)+lx1/2, x(4,i)+lt1/2, DDX);
 
     kx3 = dt*(x(3,i)+lx2/2);
     kt3 = dt*(x(4,i)+lt2/2);
-    DDX = ddx(x(1,i)+kx2/2, x(2,i)+kt2/2, x(3,i)+lx2/2, x(4,i)+lt2/2,u(:,i));
+    DDX = ddx(x(1,i)+kx2/2, x(2,i)+kt2/2, x(3,i)+lx2/2, x(4,i)+lt2/2,u(:,i),d(:,i));
     lx3 = dt*DDX;
     lt3 = dt*ddtheta(x(1,i)+kx2/2, x(2,i)+kt2/2, x(3,i)+lx2/2, x(4,i)+lt2/2, DDX);
 
     kx4 = dt*(x(3,i)+lx3/2);
     kt4 = dt*(x(4,i)+lt3/2);
-    DDX = ddx(x(1,i)+kx3/2, x(2,i)+kt3/2, x(3,i)+lx3/2, x(4,i)+lt3/2,u(:,i));
+    DDX = ddx(x(1,i)+kx3/2, x(2,i)+kt3/2, x(3,i)+lx3/2, x(4,i)+lt3/2,u(:,i),d(:,i));
     lx4 = dt*DDX;
     lt4 = dt*ddtheta(x(1,i)+kx3, x(2,i)+kt3, x(3,i)+lx3, x(4,i)+lt3, DDX);
 
