@@ -12,7 +12,7 @@ ctrl_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
 x0 = 0;                % カート初期位置
-theta0 = 0.05;             % 振子初期角度
+theta0 = pi/8;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
 
@@ -68,7 +68,7 @@ E = double(subs(Emat));
 x = [zeros(4,TL_width)];
 y = [zeros(height(C),TL_width)];
 u = [zeros(1,TL_width)];
-d = [zeros(1,TL_width)];
+d = [-ones(1,TL_width)];
 
 x(:,1) = [x0;theta0;dx0;dtheta0];  % 初期状態量の代入
 
@@ -181,13 +181,13 @@ y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
 x_ex_hat = [x_hat; r-C*x_hat];
-Q_kalman = diag([1e-07, 1e-07, 1e-03, 1e-03]);
-R_kalman = diag([1e-00, 1e02]);
+% Q_kalman = diag([1e-07, 1e-07, 1e-03, 1e-03]);
+% R_kalman = diag([1e-00, 1e02]);
 sigma_v = 1e-02;
 sigma_w = 1e-02;
 Q_kalman = sigma_v^2*(B)*(B');
 R_kalman = sigma_w^2;
-P_kalman = 1e-03*eye(size(A));
+P_kalman = 1e-02*ones(size(A));
 P_kalman = Ad * P_kalman * Ad' + Q_kalman;
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極
@@ -219,17 +219,16 @@ for i = 1:TL_width-1
             x_hat(:,i) = x_hat(:,i) + L_kalman * (y_noised(:,i) - C * x_hat(:,i));  % 更新ステップ
             P_kalman = (eye(size(L_kalman,1)) - L_kalman * C) * P_kalman;
 
-            pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極
+            pole(ss((A-L_kalman*C),B,C,D)); % オブザーバ（カルマンフィルタ）の極
 
             if LQR
                 % u(:,i) = -K_lqr*x(:,i);
                 u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
             elseif servo
-                x_ex_hat(1:height(x),i) = x_hat(:,i);
-                % u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
-                % u(:,i) = -K_servo*([x_hat(:,i);x_ex(height(x)+1:end,i)]) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
+                u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
                 
-                u(:,i) = -K_servo*(x_ex_hat(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex_hat(1:height(x),1) - G_a*x_ex_hat(height(x)+1:end,1);  % optimal input
+                % x_ex_hat(1:height(x),i) = x_hat(:,i);
+                % u(:,i) = -K_servo*(x_ex_hat(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex_hat(1:height(x),1) - G_a*x_ex_hat(height(x)+1:end,1);  % optimal input
                 x_ex_hat(:,i+1) = func__rungekutta(x_ex_hat(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, ctrl_dt);  % カルマンフィルタの見ている世界
             elseif following
                 % u(:,i) = -K_follow*x(:,i) + H_0*r(:,i);
@@ -329,6 +328,6 @@ for i = 1:50:TL_width
     set(hh3(1),pos=[x_cart1(i,1)-0.1 y_cart1(i,1)-0.15 0.2 0.15])
     set(hh4(1),XData=[x_cart1(i,1),x_cart1(i,1)+x_p(i,1)],YData=[0,y_p(i,1)])
     set(ht,String="Time: "+round(TL(i),1)+" s")
-    xlim([x_cart1(i,1)-1, x_cart1(i,1)+1])
+    % xlim([x_cart1(i,1)-1, x_cart1(i,1)+1])
     drawnow
 end

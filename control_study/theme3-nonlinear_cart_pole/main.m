@@ -11,7 +11,7 @@ ctrl_dt = dt;        % 制御周期（デフォルト：シミュレーション
 % ctrl_dt = dt*10;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
-x0 = -0.5;                % カート初期位置
+x0 = -0.0;                % カート初期位置
 theta0 = pi;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
@@ -163,7 +163,7 @@ sys_ex = ss(phi,gamma,psi,[]);
 sys_ex_d = c2d(sys_ex,ctrl_dt);  % discrete time expanded system 離散時間拡大系システム
 
 % ===積分型最適サーボ系===
-%               x1 x2 x3 x4 e1 e2 e3 e4
+%               x1 x2 x3 x4 e1 e2
 Q_servo = diag([1e-01, 6, 1e-01, 1e-01, 3, 4]);
 R_servo = diag([1e-03]);
 [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
@@ -182,8 +182,8 @@ G_a=-K_servo(:,height(x)+1:end);
 H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
 % ===積分型最適サーボ系（振上げ時）===
-%               x1 x2 x3 x4 e1 e2 e3 e4
-Q_cart = diag([5,1,5]);
+%              x1 x3 e1
+Q_cart = diag([5, 1, 5]);
 R_cart = diag([1e-02]);
 [K_cart,P_cart,~] = lqr(phi(logical([1,0,1,0,1,0]),logical([1,0,1,0,1,0])),gamma(logical([1,0,1,0,1,0]),:),Q_cart,R_cart,[]);
 % Q_cart = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
@@ -201,7 +201,6 @@ G_a_cart = -K_cart(:,height(A_cart)+1:end);
 H_a_cart = ([-F_a_cart+(G_a_cart/P_22_cart)*(P_12_cart') eye(width(B_cart))])/([A_cart B_cart; [1 0] zeros(height(1),width(B_cart))])*[zeros(height(A_cart),height(1));eye(height(1))];
 
 % ===2自由度積分型最適サーボ系===
-%               x1 x2 x3 x4 e1 e2 e3 e4
 W = diag([1e-02, 2e08]);
 Q_2dof = diag([1e01, 1e02, 1e01, 1e-02]);
 R_2dof = diag([1e-02]);
@@ -213,12 +212,7 @@ F_2 = -R_2dof\(F_1*B)';
 G   = F_2*W;
 H_0 = ([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
 
-% Q_z = W*F_1*B/R_2dof*B'*F_1'*W;
-% Q_servo2dof = [Cmat' F_1'; zeros(height(Q_z),width(Cmat')) eye(size(Q_z))]*[Q_2dof zeros(height(Q_2dof),width(Q_z)); zeros(height(Q_z),width(Q_2dof)) Q_z]*[Cmat zeros(height(Cmat),height(F_1)); F_1 eye(height(F_1))];
-% [K_servo2dof,P_servo2dof,~] = lqr(phi,gamma,Q_servo2dof,R_servo,[]);
-
 % ===Kalman Filter カルマンフィルタの設計===
-% FOR LQR
 y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
