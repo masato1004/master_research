@@ -20,7 +20,8 @@ dtheta0 = 0;            % 振子初期角速度
 passive = false;        % パッシブシミュレーション
 LQR = false;            % LQR
 following = false;       % 最適追従系
-servo = true;          % 積分型最適サーボ系
+servo = false;          % 積分型最適サーボ系
+servo2dof = true;       % 2自由度積分型最適サーボ系
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)
@@ -68,7 +69,7 @@ E = double(subs(Emat));
 x = [zeros(4,TL_width)];
 y = [zeros(height(C),TL_width)];
 u = [zeros(1,TL_width)];
-d = [-ones(1,TL_width)];
+d = [3*ones(1,TL_width)];
 
 x(:,1) = [x0;theta0;dx0;dtheta0];  % 初期状態量の代入
 
@@ -108,7 +109,7 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
-% r(1,:) = sin(3*TL);   % 目標値（任意の値で一定）
+% r(1,:) = sin(3*TL);                 % 目標値（時変の任意の値）
 w = zeros(height(C),TL_width);      % エラーリストの初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
@@ -116,7 +117,7 @@ x_ex = [x;w];                       % 拡大系の定義
 % Expanded system 拡大系の定義
 % 拡大系システム行列
 phi = [
-    A, zeros(height(A),height(C));
+    A, zeros(height(A),height(C));  % zerosやeye,ones等でサイズを指定するときは「マジックナンバー」を避ける（その数値が何を指しているのかわからないような記述の仕方）
     -C, zeros(height(C),height(C))
     ];
 
@@ -144,39 +145,60 @@ eta = [
 ];
 
 sys_ex = ss(phi,gamma,psi,[]);
-sys_ex_d = c2d(sys_ex,ctrl_dt);  % 離散時間拡大系システム
+sys_ex_d = c2d(sys_ex,ctrl_dt);  % 拡大系離散時間システム
 
-% 積分型最適サーボ系
-%               x1 x2 x3 x4 e1 e2 e3 e4
-% Q_servo = diag([3, 3, 1, 1, 6, 4]);
-% R_servo = diag([1e-02]);
-% [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
-% Q_servo = diag([1e-02, 1e-02, 1e-04, 1e-04, 1e-02, 1e-02]);
-% R_servo = diag([1e-04]);
-% [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
-Q_servo = diag([1e-04, 1e-04, 1e-01, 1e-02, 1e-01, 1e-01]);
-R_servo = diag([1e-04]);
-[K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
+% ===積分型最適サーボ系===
+if servo
+    % 連続時間--ctrl_dt = dt
+    %                 x1     x2     x3     x4     e1     e2
+    % Q_servo = diag([3e-01, 3e-01, 1e-01, 1e-01, 6e-01, 4e-01]);
+    % R_servo = diag([1e-03]);
+    % [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
 
-P_11 = P_servo(1:height(A),1:height(B));
-P_12 = P_servo(1:height(A),end-(height(e)-1):end);
-P_22 = P_servo(end-(height(e)-1):end,end-(width(P_12)-1):end);
-F_a=-K_servo(:,1:height(x));
-G_a=-K_servo(:,height(x)+1:end);
-H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+    % 離散時間--ctrl_dt = dt*100
+    % Q_servo = diag([1e-02, 1e-02, 1e-04, 1e-04, 1e-02, 1e-02]);
+    % R_servo = diag([1e-04]);
+    % [K_servo,P_servo,~] = lqrd(phi,gamma,Q_servo,R_servo,[],ctrl_dt);
 
-% 最適追従系
-%               x1 x2 x3 x4 e1 e2 e3 e4
-Q_follow = diag([5, 6, 1e-01, 1e-01]);
-R_follow = diag([1]);
-[K_follow,P_follow,~] = lqr(A,B,Q_follow,R_follow,[]);
+    % 離散時間--ctrl_dt = dt*100
+    Q_servo = diag([1e-04, 1e-04, 1e-01, 1e-02, 1e-01, 1e-01]);
+    R_servo = diag([1e-04]);
+    [K_servo,P_servo,~] = dlqr(sys_ex_d.A,sys_ex_d.B,Q_servo,R_servo,[]);
 
-F_0=-K_follow;
-H_0=([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+    P_11 = P_servo(1:height(A),1:height(B));
+    P_12 = P_servo(1:height(A),end-(height(e)-1):end);
+    P_22 = P_servo(end-(height(e)-1):end,end-(width(P_12)-1):end);
+    F_a=-K_servo(:,1:height(x));
+    G_a=-K_servo(:,height(x)+1:end);
+    H_a=([-F_a+(G_a/P_22)*(P_12') eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];  % 目標値フィードフォワードゲイン
+
+% ===最適追従系===
+elseif following
+    %                x1 x2 x3     x4
+    Q_follow = diag([5, 6, 1e-01, 1e-01]);
+    R_follow = diag([1]);
+    [K_follow,P_follow,~] = lqr(A,B,Q_follow,R_follow,[]);
+
+    F_0=-K_follow;
+    H_0=([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+
+% ===2自由度積分型最適サーボ系===
+elseif servo2dof
+    W = diag([1e04, 1e03]);
+    %              x1    x2    x3    x4
+    Q_2dof = diag([1e03, 1e02, 1e01, 1e-02]);
+    R_2dof = diag([1]);
+    [K_2dof,P_2dof,~] = lqr(A,B,Q_2dof,R_2dof,[]);
+
+    F_0 = -K_2dof;
+    F_1 = C/(A+B*F_0);
+    F_2 = -R_2dof\(B'*F_1');
+    G   = F_2*W;
+    H_0 = ([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
+end
 
 
 % ===Kalman Filter カルマンフィルタの設計===
-% FOR LQR
 y_noised = [zeros(height(C),TL_width)];
 x_hat = x;
 y_hat = [zeros(height(C),TL_width)];
@@ -186,18 +208,13 @@ x_ex_hat = [x_hat; r-C*x_hat];
 sigma_v = 1e-02;
 sigma_w = 1e-02;
 Q_kalman = sigma_v^2*(B)*(B');
-R_kalman = sigma_w^2;
+R_kalman = diag([sigma_w^2,sigma_w^2]);
 P_kalman = 1e-02*ones(size(A));
 P_kalman = Ad * P_kalman * Ad' + Q_kalman;
-L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
-pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極
+% L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
+% pole(ss((A-L_kalman*C),B,C,D)) % オブザーバ（カルマンフィルタ）の極
 
 %% Simulation Loop
-% modeling error モデル化誤差の再現
-% M = M*1.3;
-% A = double(subs(Amat));
-% B = double(subs(Bmat));
-% E = double(subs(Emat));
 for i = 1:TL_width-1
 
     % observation 観測値の取得と誤算の算出
@@ -209,7 +226,7 @@ for i = 1:TL_width-1
         if mod(i-1, ctrl_dt/dt) == 0 && i-1 ~=0  % 制御周期且つi-1が存在する
 
             % add noise to obserbation
-            y_noised(:,i) = y(:,i) + sqrt(1e-02)*randn(size(y(:,i)));
+            y_noised(:,i) = y(:,i) + sqrt(1e-03)*randn(size(y(:,i)));
             
             % KalmanFilter カルマンフィルタで状態推定
             x_hat(:,i) = Ad * x_hat(:,i-1) + Bd * u(:,i-1);                         % 予測ステップ
@@ -221,30 +238,44 @@ for i = 1:TL_width-1
 
             pole(ss((A-L_kalman*C),B,C,D)); % オブザーバ（カルマンフィルタ）の極
 
-            if LQR
-                % u(:,i) = -K_lqr*x(:,i);
-                u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
-            elseif servo
+            if LQR  % LQR
+                u(:,i) = -K_lqr*x(:,i);
+
+                % カルマンフィルタによる状態推定値を使用する場合
+                % u(:,i) = -K_lqr*x_hat(:,i);  % optimal input
+
+            elseif servo  % 積分型最適サーボ系
                 u(:,i) = -K_servo*(x_ex(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex(1:height(x),1) - G_a*x_ex(height(x)+1:end,1);  % optimal input
                 
+                % カルマンフィルタによる状態推定値を使用する場合
                 % x_ex_hat(1:height(x),i) = x_hat(:,i);
                 % u(:,i) = -K_servo*(x_ex_hat(:,i)) + H_a*r(:,i) - (G_a/P_22)*(P_12')*x_ex_hat(1:height(x),1) - G_a*x_ex_hat(height(x)+1:end,1);  % optimal input
-                x_ex_hat(:,i+1) = func__rungekutta(x_ex_hat(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, ctrl_dt);  % カルマンフィルタの見ている世界
-            elseif following
-                % u(:,i) = -K_follow*x(:,i) + H_0*r(:,i);
-                u(:,i) = -K_follow*x_hat(:,i) + H_0*r(:,i);
+                % x_ex_hat(:,i+1) = func__rungekutta(x_ex_hat(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, ctrl_dt);  % カルマンフィルタの見ている世界（wの部分に関しても推定値によって得なければならない）
+
+            elseif following  % 最適追従系
+                u(:,i) = -K_follow*x(:,i) + H_0*r(:,i);
+
+                % カルマンフィルタによる状態推定値を使用する場合
+                % u(:,i) = -K_follow*x_hat(:,i) + H_0*r(:,i);
+
+            elseif servo2dof  % 2自由度積分型最適サーボ系
+                u(:,i) = F_0*x_ex(1:height(x),i) + H_0*r(:,i) + G*(x_ex(height(x)+1:end,i) + F_1*x_ex(1:height(x),i) - F_1*x(:,1) - w(:,1));  % optimal input
+
+                % カルマンフィルタによる状態推定を使用する場合
+                % x_ex_hat(1:height(x),i) = x_hat(:,i);
+                % u(:,i) = F_0*x_ex_hat(1:height(x),i) + H_0*r(:,i) + G*(x_ex_hat(height(x)+1:end,i) + F_1*x_ex_hat(1:height(x),i) - F_1*x(:,1) - w(:,1));  % optimal input
+                % x_ex_hat(:,i+1) = func__rungekutta(x_ex_hat(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, ctrl_dt);  % カルマンフィルタの見ている世界（wの部分に関しても推定値によって得なければならない）
             end
         elseif i-1 ~= 0
-            % e(:,i) = e(:,i-1);
-            u(:,i) = u(:,i-1);          % ゼロ次ホールド
-            x_hat(:,i) = x_hat(:,i-1);
-            x_ex_hat(:,i+1) = x_ex_hat(:,i);
+            u(:,i) = u(:,i-1);                  % ゼロ次ホールド
+            x_hat(:,i) = x_hat(:,i-1);          % 制御周期以外の状態推定値もゼロ次ホールド
+            x_ex_hat(:,i+1) = x_ex_hat(:,i);    % 制御周期以外の拡大系状態推定値もゼロ次ホールド
         end
     end
 
     % update states ルンゲクッタ法による状態量の更新
-    x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, dt);  % 拡大系状態量更新
-    x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), [], A, B, E, [], dt);                   % 状態量更新
+    x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, dt);  % 拡大系状態量更新（カルマンフィルタ未使用時用）
+    x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), [], A, B, E, [], dt);                   % 状態量更新（シミュレーション用）
     
 end
 
@@ -290,8 +321,8 @@ fontname(fig,"Times New Roman");
 fontsize(fig,10,"points");
 
 % save figure
-controller_bool = [passive,LQR,servo,following];
-controller = ["passive","lqr","servo","optimal_following"];
+controller_bool = [passive,LQR,servo,following,servo2dof];
+controller = ["passive","lqr","servo","optimal_following","servo2dof"];
 condition = "_controller-"+controller(controller_bool);
 saveas(fig,"fig/"+condition);
 

@@ -207,7 +207,7 @@ R_2dof = diag([1e-02]);
 [K_2dof,P_2dof,~] = lqr(A,B,Q_2dof,R_2dof,[]);
 
 F_0 = -K_2dof;
-F_1 = -C/(A+B*F_0);
+F_1 = C/(A+B*F_0);
 F_2 = -R_2dof\(F_1*B)';
 G   = F_2*W;
 H_0 = ([-F_0 eye(width(B))])/([A B;C zeros(height(C),width(B))])*[zeros(height(A),height(C));eye(height(C))];
