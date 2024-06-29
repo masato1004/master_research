@@ -59,60 +59,60 @@ disp('Simulation Started')
 controller_calc_time = 0;
 control_flag = false;
 
-count_loop = 1000;
+count_loop = 100;
 tic;
 last_toc = toc;
 for i=1:c-1
     
-    if ~control_flag
-        if TL(i)*V > 8.9   % ----------strat from near the bump-----------
-            states(:,i) = [
-                TL(i)*V;
-                z_b_init;
-                z_wf_init;
-                z_wr_init;
-                theta_init;
-                TL(i)*V/r;
-                TL(i)*V/r;
-                V;
-                0;
-                0;
-                0;
-                0;
-                V/r;
-                V/r
-                ];
-            disturbance(:,i) = [
-                TL(i)*V;
-                TL(i)*V;
-                0;
-                0;
-                V;
-                V;
-                0;
-                0
-                ];
-            disturbance(:,i-1) = [
-                TL(i-1)*V;
-                TL(i-1)*V;
-                0;
-                0;
-                V;
-                V;
-                0;
-                0
-                ];
-            control_flag = true;
-        end
-    end
-    if control_flag
+    % if ~control_flag
+    %     if TL(i)*V > 8.9   % ----------strat from near the bump-----------
+    %         states(:,i) = [
+    %             TL(i)*V;
+    %             z_b_init;
+    %             z_wf_init;
+    %             z_wr_init;
+    %             theta_init;
+    %             TL(i)*V/r;
+    %             TL(i)*V/r;
+    %             V;
+    %             0;
+    %             0;
+    %             0;
+    %             0;
+    %             V/r;
+    %             V/r
+    %             ];
+    %         disturbance(:,i) = [
+    %             TL(i)*V;
+    %             TL(i)*V;
+    %             0;
+    %             0;
+    %             V;
+    %             V;
+    %             0;
+    %             0
+    %             ];
+    %         disturbance(:,i-1) = [
+    %             TL(i-1)*V;
+    %             TL(i-1)*V;
+    %             0;
+    %             0;
+    %             V;
+    %             V;
+    %             0;
+    %             0
+    %             ];
+    %         control_flag = true;
+    %     end
+    % end
+    % if control_flag
 
         if mod(i,count_loop) == 0
             percentage = round(i*100/(c-1),2);
             one_loop = round(count_loop*100/(c-1),2);
             last_duration = (toc-last_toc);
-            eta_h = round((last_duration*(100-percentage)/one_loop)/3600);
-            eta_m = round(((last_duration-eta_h*3600)*(100-percentage)/one_loop)/60);
+            eta_h = fix((last_duration*(100-percentage)/one_loop)/3600);
+            eta_m = round((last_duration*(100-percentage)/one_loop-eta_h*3600)/60);
             disp("Controller Calculation-Time Average: "+round(controller_calc_time/cc,2));
             disp(" ")
             disp("-------------------------------------------------------------------------------------")
@@ -271,7 +271,7 @@ for i=1:c-1
         end
     
         % find appropriate next input
-        if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~any([passive NLMPC feedforward])
+        if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~any([passive NLMPC feedforward, skyhook])
             cc = (i-1)/(tc/dt)+1;                   % list slice
             [~,ia,~]=unique(wf_grad(1,:));
             wf_grad = wf_grad(:,ia);
@@ -330,8 +330,8 @@ for i=1:c-1
                 % [tau_f, tau_r] = nlmpc_config__torque_reference_signal(states(13,i+1), states(14,i+1), V, state_function_parameter, zeros(2,1), pHorizon, tc, r, I_wf, I_wr, "_nlmpc_");
                 u(:,i+1) = [tau_f; tau_r; 0; 0];
                 % states(13:14,i+1) = [ideal_omega_f(i+1); ideal_omega_r(i+1)];
-                disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
-                fprintf(2,disp_spring+"\n");
+                disp_string = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
+                fprintf(2,disp_string+"\n");
             elseif NLMPC
                 local_dis = 0:tc*states(8,i):tc*states(8,i)*(pHorizon+9);
                 current_mileage_f = makima(dis_total-disturbance(1,i),mileage_f-makima(dis_total,mileage_f,disturbance(1,i)),0:tc*states(8,i):tc*states(8,i)*(pHorizon+9));
@@ -372,20 +372,26 @@ for i=1:c-1
                 controller_calc_time = controller_calc_time + (controller_end - controller_start);
 
                 u(:,i+1) = mv;
-                disp_spring = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;%+ ",Exit Flag: " + info.ExitFlag;
-                fprintf(2,disp_spring+"\n");
+                disp_string = "Controller: "+ cc + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;%+ ",Exit Flag: " + info.ExitFlag;
+                fprintf(2,disp_string+"\n");
                 disp("    Cost: "+info.Cost)
                 if info.ExitFlag ~=3
                     simdata.InitialGuess = [];
                 end
             end
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
+        elseif mod(i-1, (tc/dt)) == 0 && skyhook
+            tau_f = (c_sky*r/cos(atan(disturbance(7,i)/disturbance(5,i))))*(V-disturbance(5,i));
+            tau_r = (c_sky*r/cos(atan(disturbance(8,i)/disturbance(6,i))))*(V-disturbance(6,i));
+            u(1:2,i+1) = [tau_f; tau_r];
+            disp_string = "Torques: front-"+ round(tau_f,1) + "/rear-" + round(tau_r,1) + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
+            fprintf(2,disp_string+"\n");
         else
             u(:,i+1) = u(:,i);
         end
 
 
-    end
+    % end
 
 end
 toc;
