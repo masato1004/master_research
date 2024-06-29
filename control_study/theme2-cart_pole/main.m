@@ -12,7 +12,7 @@ ctrl_dt = dt*100;    % 制御周期（シミュレーション周期の100倍）
 
 % initial value
 x0 = 0;                % カート初期位置
-theta0 = pi/8;             % 振子初期角度
+theta0 = pi/7;             % 振子初期角度
 dx0 = 0;                % カート初期速度
 dtheta0 = 0;            % 振子初期角速度
 
@@ -117,7 +117,7 @@ x_ex = [x;w];                       % 拡大系の定義
 % Expanded system 拡大系の定義
 % 拡大系システム行列
 phi = [
-    A, zeros(height(A),height(C));  % zerosやeye,ones等でサイズを指定するときは「マジックナンバー」を避ける（その数値が何を指しているのかわからないような記述の仕方）
+    A, zeros(height(A),height(C));  % zerosやeye,ones等でサイズを指定するときは「マジックナンバー」を可能な限り避ける（その数値が何を指しているのかわからないような記述の仕方）
     -C, zeros(height(C),height(C))
     ];
 
