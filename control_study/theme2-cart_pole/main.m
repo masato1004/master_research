@@ -106,15 +106,17 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 
 
 % ===Servo 最適サーボ系===
+% 安定化目標値
 x_inf = [0.5; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
 % r(1,:) = sin(3*TL);                 % 目標値（時変の任意の値）
-w = zeros(height(C),TL_width);      % エラーリストの初期化
+
+% Expanded system 拡大系の定義
+w = zeros(height(C),TL_width);      % 補償器の初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
 
-% Expanded system 拡大系の定義
 % 拡大系システム行列
 phi = [
     A, zeros(height(A),height(C));  % zerosやeye,ones等でサイズを指定するときは「マジックナンバー」を可能な限り避ける（その数値が何を指しているのかわからないような記述の仕方）

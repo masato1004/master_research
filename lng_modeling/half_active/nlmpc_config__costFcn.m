@@ -55,9 +55,9 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
     Q = diag([1e-10 1e02 1e-3 1e-3 1e03 1e05 1e05 1e02 1e02 1e-10 1e-10 1e02 1e05 1e05]);
     R = diag([1e-05 1e-05 0 0]);
     Rd = diag([1e-02 1e-02 0 0]);
-    Rs = diag([1e07 1e07 1e07 1e07]);
+    Rs = diag([1e00 1e00]);
     pHorizon = 10;
 
     % ercost = er'*0.5*Q(C,C)*er
     % inputcost = u'*0.5*R*u
-    J = er'*0.5*Q(C,C)*((pHorizon+1) - stage)*er + u'*0.5*R*u + dmv'*0.5*Rd*dmv;% + e'*0.5*Rs*e;% % ((pHorizon+1 -stage)*Rs./pHorizon) 
+    J = er'*0.5*Q(C,C)*er + u'*0.5*R*u + dmv'*0.5*Rd*dmv + e'*0.5*Rs*e;% % ((pHorizon+1 -stage)*Rs./pHorizon) 

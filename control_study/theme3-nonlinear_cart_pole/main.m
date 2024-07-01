@@ -117,20 +117,23 @@ pole(ss(A-B*K_lqr,B,C,D))                           % 最適レギュレータ�
 % bode(ss(A-B*K_lqr,E,C,D,"OutputName"output_name,"InputName",disturbance_name))
 
 
-% Servo 最適サーボ系
-% Expanded system 拡大系の定義
-% 拡大系システム行列
+% ===Servo 最適サーボ系===
+% 安定化目標値
 x_inf = [1; 0; 0; 0];             % 無限時間で達成したい状態量（目標状態）
 % r = zeros(height(C),TL_width);      % 目標値（0で一定）
 r = repmat(C*x_inf,[1,TL_width]);   % 目標値（任意の値で一定）
 % r(1,:) = x_inf(1)+1*sin(1*pi*TL);   % 目標値（任意の値で一定）
-% r(2,:) = 0.05*sin(3*TL);   % 目標値（任意の値で一定）
+
+% 振り上げ用目標値（カートのみ着目）
 r_cart = r;
 r_cart(1,:) = x0+sin((TL./9)*pi.*TL);   % 目標値（任意の値で一定）
-w = zeros(height(C),TL_width);      % エラーリストの初期化
+
+% Expanded system 拡大系の定義
+w = zeros(height(C),TL_width);      % 補償器の初期化
 e = r-C*x;                          % エラーリストの初期化
 x_ex = [x;w];                       % 拡大系の定義
 
+% 拡大系システム行列
 phi = [
     A, zeros(height(A),height(C));
     -C, zeros(height(C),height(C))
@@ -162,7 +165,7 @@ eta = [
 sys_ex = ss(phi,gamma,psi,[]);
 sys_ex_d = c2d(sys_ex,ctrl_dt);  % discrete time expanded system 離散時間拡大系システム
 
-% ===積分型最適サーボ系===
+% ===積分型最適サーボ系（安定化時）===
 %               x1 x2 x3 x4 e1 e2
 Q_servo = diag([1e-01, 6, 1e-01, 1e-01, 3, 4]);
 R_servo = diag([1e-03]);
@@ -222,10 +225,6 @@ P_kalman = 0.01*ones(size(A));
 L_kalman = P_kalman * C' / (C * P_kalman * C' + R_kalman); % カルマンゲイン
 
 %% Simulation Loop
-% modeling error モデル化誤差の再現
-% M = M*1.3;
-% A = double(subs(Amat));
-% B = double(subs(Bmat));
 change_control = false;
 for i = 1:TL_width-1
 
@@ -302,13 +301,14 @@ for i = 1:TL_width-1
             x_hat(:,i) = x_hat(:,i-1);
         end
     end
-    
-    % update states ルンゲクッタ法による状態量の更新
+
+    % 振り上げ時の目標値代入
     if ~change_control
         r(1,i) = r_cart(1,i);
     end
-    x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, dt);  % 拡大系状態量更新
-    % x(:,i+1) = func__rungekutta(x(:,i), u(:,i), d(:,i), [], A, B, E, [], dt);                   % 状態量更新
+    
+    % update states ルンゲクッタ法による状態量の更新
+    x_ex(:,i+1) = func__rungekutta(x_ex(:,i), u(:,i), d(:,i), r(:,i), phi, gamma, eta, H, dt);  % 拡大系状態量更新（補償器の次時刻状態算出のため）
    
     % 非線形シミュレーション
     % Runge Kutta
@@ -336,12 +336,6 @@ for i = 1:TL_width-1
     lx4 = dt*DDX;
     lt4 = dt*ddtheta(x(1,i)+kx3, x(2,i)+kt3, x(3,i)+lx3, x(4,i)+lt3, DDX);
 
-    % RK = [
-    %     kx1, kt1, lz1, lt1;
-    %     kx2, kt2, lz2, lt2;
-    %     kx3, kt3, lz3, lt3;
-    %     kx4, kt4, lz4, lt4;
-    %     ];
     RK = [
         kx1, kx2, kx3, kx4;
         kt1, kt2, kt3, kt4;
@@ -428,19 +422,22 @@ xlabel("\itx \rm[m]")
 fontname(fig_cart,"Times New Roman");
 fontsize(fig_cart,10,"points");
 
-frame_rate = 20;
-newimg = zeros(371,1140,3);
-videoname = "video/"+condition;
-video = VideoWriter(videoname,'MPEG-4');
-video.FrameRate = frame_rate;
-open(video);
+% save 保存する場合
+% frame_rate = 20;
+% newimg = zeros(371,1140,3);
+% videoname = "video/"+condition;
+% video = VideoWriter(videoname,'MPEG-4');
+% video.FrameRate = frame_rate;
+% open(video);
 for i = 1:(1/frame_rate)/dt:TL_width
     set(hh3(1),pos=[x_cart1(i,1)-0.1 y_cart1(i,1)-0.15 0.2 0.15])
     set(hh4(1),XData=[x_cart1(i,1),x_cart1(i,1)+x_p(i,1)],YData=[0,y_p(i,1)])
     set(ht,String="Time: "+round(TL(i),1)+" s")
-    % xlim([x_cart1(i,1)-2,x_cart1(i,1)+2])
+    % xlim([x_cart1(i,1)-2,x_cart1(i,1)+2])  % カートを常に中心に映す場合
     drawnow
-    frame = getframe(fig_cart);
-    writeVideo(video,frame);
+
+    % save 保存する場合
+    % frame = getframe(fig_cart);
+    % writeVideo(video,frame);
 end
-close(video);
+% close(video);

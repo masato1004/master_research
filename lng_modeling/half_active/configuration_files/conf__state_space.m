@@ -48,7 +48,7 @@ I_b = m_b*(wb/2)^2;      % [kgm^2]   body inertia moment
 I_wf = (m_wf*r^2)/2;     % [kgm^2]   wheel inertia moment
 I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 S = 0.2;     % slip ratio
-c_sky = 6000;
+c_sky = 6500;
 
 % environmental parameter
 g = 9.80665;

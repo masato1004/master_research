@@ -24,8 +24,8 @@ if solver == "fmincon"
 elseif solver == "cgmres"
     % Set the solver parameters.
     runner.Optimization.SolverOptions.StabilizationParameter = 1/(runner.Ts);
-    runner.Optimization.SolverOptions.MaxIterations = 1000;
-    runner.Optimization.SolverOptions.Restart = 100;
+    runner.Optimization.SolverOptions.MaxIterations = 10;
+    runner.Optimization.SolverOptions.Restart = 20;
     runner.Optimization.SolverOptions.BarrierParameter = 5e02;
     runner.Optimization.SolverOptions.TerminationTolerance = 1e-07;
     runner.Optimization.SolverOptions.FiniteDifferenceStepSize = 1e-09;
@@ -70,7 +70,7 @@ for ct=1:pHorizon+1
     runner.Stages(ct).IneqConFcn = 'nlmpc_config__ineqConFcn';
     % runner.Stages(ct).IneqConJacFcn = 'nlmpc_config__ineqConFcnJacobian';
     runner.Stages(ct).ParameterLength = sp_length;
-    runner.Stages(ct).SlackVariableLength = 4;
+    runner.Stages(ct).SlackVariableLength = 2;
     % if ct ~= pHorizon+1
     %     runner.Stages(ct).EqConFcn = 'nlmpc_config__eqConFcn';
     % end

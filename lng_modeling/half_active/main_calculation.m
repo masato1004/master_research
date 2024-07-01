@@ -112,7 +112,7 @@ for i=1:c-1
             one_loop = round(count_loop*100/(c-1),2);
             last_duration = (toc-last_toc);
             eta_h = fix((last_duration*(100-percentage)/one_loop)/3600);
-            eta_m = round((last_duration*(100-percentage)/one_loop-eta_h*3600)/60);
+            eta_m = round((last_duration*(100-percentage)/one_loop-eta_h*3600)/60,1);
             disp("Controller Calculation-Time Average: "+round(controller_calc_time/cc,2));
             disp(" ")
             disp("-------------------------------------------------------------------------------------")
