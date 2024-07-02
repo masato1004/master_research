@@ -80,9 +80,10 @@ Gmat = [
 
 %% Load parameters into matrices
 Ap = double(subs(Amat));
-Bp = subs(Bmat);
-Ep = subs(Emat);
+Bp = double(subs(Bmat));
+Ep = double(subs(Emat));
 C  = double(subs(Cmat));
+C(sum(C,2)==0,:)=[];
 
 % -sin(atan(dz_disf/dx_disf))^2 - sin(atan(dz_disr/dx_disr))^2
 % - g*sin(atan(dz_disf/dx_disf))
@@ -90,29 +91,32 @@ C  = double(subs(Cmat));
 % ((1-S)*r*(tau_r/I_wr) )*cos(atan(dz_disr/dx_disr)) 
 
 %% Discretization
-% disc_func = @(tau,Mat) (-Ap\expm(Ap.*(tc-tau)))*Mat;
+disc_func = @(tau,Mat) (-pinv(Ap)*expm(Ap.*(tc-tau)))*Mat;
 
-% A = expm(Ap.*tc);
-% B = disc_func(tc,Bp) - disc_func(0,Bp);
-% E = disc_func(tc,Ep) - disc_func(0,Ep);
+A = expm(Ap.*tc);
+B = disc_func(tc,Bp) - disc_func(0,Bp);
+E = disc_func(tc,Ep) - disc_func(0,Ep);
 
-% CA = C*A;
-% CB = C*B;
-% CE = C*E;
+sussys_idx = logical([0,1,1,1,1,0,0,0,1,1,1,1,0,0]);
+C_pre = C(:,sussys_idx);
+C_pre(sum(C_pre,2)==0,:)=[];
+CA = C_pre*A(sussys_idx,sussys_idx);
+CB = C_pre*B(sussys_idx,3:end);
+CE = C_pre*E(sussys_idx,logical([0,0,1,1,0,0,1,1]));
 
 % % dx(k) = x(k) - x(k-1)
 % % X(k) = phi*dx(k) + G*du(k) + Gd*dw(k)
-% phi = [
-%     eye(height(CA)), -CA;
-%     zeros(width(CA),height(CA)), A
-%     ];
+phi = [
+    eye(height(CA)), -CA;
+    zeros(width(CA),height(CA)), A(sussys_idx,sussys_idx)
+    ];
 
-% G = [
-%     -CB;
-%     B
-%     ];
+G = [
+    -CB;
+    B(sussys_idx,3:end)
+    ];
 
-% Gd = [
-%     -CE;
-%     E
-%     ];
+Gd = [
+    -CE;
+    E(sussys_idx,logical([0,0,1,1,0,0,1,1]))
+    ];

@@ -384,8 +384,15 @@ for i=1:c-1
             tau_f = (c_sky*r/cos(atan(disturbance(7,i)/disturbance(5,i))))*(V-disturbance(5,i));
             tau_r = (c_sky*r/cos(atan(disturbance(8,i)/disturbance(6,i))))*(V-disturbance(6,i));
             u(1:2,i+1) = [tau_f; tau_r];
+
+            for pre=1:M+1
+                FDW = FDW + Fdj(:,:,pre)*dw_prev(:, pre);
+            end
+            u(3:4,i+1) = FDW;
+
             disp_string = "Torques: front-"+ round(tau_f,1) + "/rear-" + round(tau_r,1) + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
             fprintf(2,disp_string+"\n");
+            disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
         else
             u(:,i+1) = u(:,i);
         end
@@ -462,6 +469,8 @@ drawer(TL,accelerations(1,:),["Body_Longitudinal_Acceleration", "Time [s]", "Bod
 drawer(TL,accelerations(2,:),["Body_Vertical_Acceleration", "Time [s]", "Body Vertical Acceleration [m/s^2]"],i+2,conditions);
 drawer(TL,accelerations(3,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time [s]", "Body Pitch Angular Acceleration [deg/s^2]"],i+3,conditions);
 
+% longitudinal related difference between wheel and body
+drawer(TL,disturbance(1,:)-states(1,:),["Longitudinal_Difference", "Time [s]", "Body-Wheel"+newline+"Longitudinal Distance [m]"],i+1,conditions);
 
 % road shape and wheel trajectory
 r_fig = figure('name',"Road-profile",'Position', [600 200 600 190]);
