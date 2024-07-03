@@ -380,17 +380,72 @@ for i=1:c-1
                 end
             end
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
-        elseif mod(i-1, (tc/dt)) == 0 && skyhook
-            tau_f = (c_sky*r/cos(atan(disturbance(7,i)/disturbance(5,i))))*(V-disturbance(5,i));
-            tau_r = (c_sky*r/cos(atan(disturbance(8,i)/disturbance(6,i))))*(V-disturbance(6,i));
-            u(1:2,i+1) = [tau_f; tau_r];
+        elseif mod(i, (tc/dt)) == 0 && skyhook
+            w_prev = zeros(4,Md+1);
+            prev_disturbance = zeros(height(disturbance),Md+1);
 
-            for pre=1:M+1
+            current_states = states(trqsys_idx,i+1);
+            prev_disturbance(:,1) = disturbance(:,i+1);
+            
+            x_disf  = prev_disturbance(1,1);
+            x_disr  = prev_disturbance(2,1);
+            z_disf  = prev_disturbance(3,1);
+            z_disr  = prev_disturbance(4,1);
+            dx_disf = prev_disturbance(5,1);
+            dx_disr = prev_disturbance(6,1);
+            dz_disf = prev_disturbance(7,1);
+            dz_disr = prev_disturbance(8,1);
+
+            prev_idx = logical([0,0,1,1,0,0,1,1]);
+            w_prev(:,1) = prev_disturbance(prev_idx,1);
+
+            % Model Predictive Previewing
+            FDW = zeros(2,1);
+            for pre=1:Md+1
+
+                tau_f = (c_sky*r/cos(atan(dz_disf/dx_disf)))*(V-dx_disf);
+                tau_r = (c_sky*r/cos(atan(dz_disr/dx_disr)))*(V-dx_disr);
+
+                G = double(subs(Gmat));
+                current_states = A_tq*current_states + B_tq*[tau_f; tau_r] + E_tq*[x_disf; x_disr; dx_disf; dx_disr] + G(trqsys_idx,:)*g;
+
+                if pre == 1
+                    u(1:2,i+1) = round([tau_f; tau_r],5);
+                    dw_prev(:,pre) = w_prev(:,pre)-disturbance(prev_idx,i);
+                elseif pre >= 2
+                    dw_prev(:,pre) = w_prev(:,pre)-w_prev(:,pre-1);
+                end
                 FDW = FDW + Fdj(:,:,pre)*dw_prev(:, pre);
-            end
-            u(3:4,i+1) = FDW;
 
-            disp_string = "Torques: front-"+ round(tau_f,1) + "/rear-" + round(tau_r,1) + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
+                % update preview data
+                if pre <= Md
+                    prev_disturbance(1,pre+1) = makima(mileage_f,dis_total,r*current_states(2));           % x_disf
+                    prev_disturbance(2,pre+1) = makima(mileage_r,dis_total,r*current_states(3));           % x_disr
+                    prev_disturbance(3,pre+1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),prev_disturbance(1,pre+1)),5);   % z_dixf
+                    prev_disturbance(4,pre+1) = round(makima(wheel_traj_r(1,:),wheel_traj_r(2,:),prev_disturbance(2,pre+1)),5);   % z_dixr
+                    if pre ~= 1
+                        dis_grad = gradient(prev_disturbance(1:4,pre-1:pre+1))./tc;
+                        prev_disturbance(5:8,pre+1) = dis_grad(:,2);
+                    else
+                        dis_grad = gradient(prev_disturbance(1:4,pre:pre+1))./tc;
+                        prev_disturbance(5:8,pre+1) = dis_grad(:,2);
+                    end
+                    x_disf  = prev_disturbance(1,pre+1);
+                    x_disr  = prev_disturbance(2,pre+1);
+                    z_disf  = prev_disturbance(3,pre+1);
+                    z_disr  = prev_disturbance(4,pre+1);
+                    dx_disf = prev_disturbance(5,pre+1);
+                    dx_disr = prev_disturbance(6,pre+1);
+                    dz_disf = prev_disturbance(7,pre+1);
+                    dz_disr = prev_disturbance(8,pre+1);
+                    w_prev(:,pre+1) = prev_disturbance(prev_idx,pre+1);
+                end
+            end
+            x_ex = [-C_sus*(round(states(sussys_idx,i+1)-states(sussys_idx,1),4)); round(states(sussys_idx,i+1)-states(sussys_idx,i+1-(tc/dt)),5)];
+            du = Fx*x_ex + FDW;
+            u(3:4,i+1) = u(3:4,i) + du;
+
+            disp_string = "Torques: front-"+ round(u(1,i+1),1) + "/rear-" + round(u(2,i+1),1) + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
             fprintf(2,disp_string+"\n");
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
         else

@@ -12,7 +12,7 @@ wa  = false;
 lpf = false;
 
 % control method
-passive = true;
+passive = false;
 LQR     = false;
 rprev   = false;
 LQR_rprev       = false;
@@ -20,7 +20,7 @@ fprev_rprev     = false;
 LQR_fprev_rprev = false;
 NLMPC = false;
 feedforward = false;
-skyhook = false;
+skyhook = true;
 
 % road profile
 sensing = false;

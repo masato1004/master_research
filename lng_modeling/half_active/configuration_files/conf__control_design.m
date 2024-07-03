@@ -17,15 +17,15 @@ Q = diag([1e-06, 1e+05, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+06])
 H = diag([1e-03,1e-03]);
 
 [P, K, ~] = idare(phi, G, Q, H, [], []);   % u = -Kx
-F = -K;                                      % u = Fx
+Fx = -K;                                      % u = Fx
 
 % % preview controler
 % % preview parameter
-M = 43;                        % preview step
+Md = 43;                        % preview step
 FDW = zeros(2, c_ctrl);
-Fd = @(j) -(H + G'*P*G)\G'*(((phi+G*F)')^(j))*P*Gd;       % function for Fd(j)
-Fdj = zeros(2, height(r_p), M+1);                 % feedforward gain vector list
-for j = 0:M
+Fd = @(j) -(H + G'*P*G)\G'*(((phi+G*Fx)')^(j))*P*Gd;       % function for Fd(j)
+Fdj = zeros(2, height(r_p), Md+1);                 % feedforward gain vector list
+for j = 0:Md
     Fdj(:,:,j+1)=Fd(j);
 end
 

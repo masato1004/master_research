@@ -48,7 +48,7 @@ I_b = m_b*(wb/2)^2;      % [kgm^2]   body inertia moment
 I_wf = (m_wf*r^2)/2;     % [kgm^2]   wheel inertia moment
 I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 S = 0.2;     % slip ratio
-c_sky = 6500;
+c_sky = 10000;
 
 % environmental parameter
 g = 9.80665;
@@ -97,12 +97,17 @@ A = expm(Ap.*tc);
 B = disc_func(tc,Bp) - disc_func(0,Bp);
 E = disc_func(tc,Ep) - disc_func(0,Ep);
 
+trqsys_idx = logical([1,0,0,0,0,1,1,1,0,0,0,0,1,1]);
+A_tq = A(trqsys_idx,trqsys_idx);
+B_tq = B(trqsys_idx,1:2);
+E_tq = E(trqsys_idx,logical([1,1,0,0,1,1,0,0]));
+
 sussys_idx = logical([0,1,1,1,1,0,0,0,1,1,1,1,0,0]);
-C_pre = C(:,sussys_idx);
-C_pre(sum(C_pre,2)==0,:)=[];
-CA = C_pre*A(sussys_idx,sussys_idx);
-CB = C_pre*B(sussys_idx,3:end);
-CE = C_pre*E(sussys_idx,logical([0,0,1,1,0,0,1,1]));
+C_sus = C(:,sussys_idx);
+C_sus(sum(C_sus,2)==0,:)=[];
+CA = C_sus*A(sussys_idx,sussys_idx);
+CB = C_sus*B(sussys_idx,3:end);
+CE = C_sus*E(sussys_idx,logical([0,0,1,1,0,0,1,1]));
 
 % % dx(k) = x(k) - x(k-1)
 % % X(k) = phi*dx(k) + G*du(k) + Gd*dw(k)
