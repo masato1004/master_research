@@ -64,48 +64,48 @@ tic;
 last_toc = toc;
 for i=1:c-1
     
-    % if ~control_flag
-    %     if TL(i)*V > 8.9   % ----------strat from near the bump-----------
-    %         states(:,i) = [
-    %             TL(i)*V;
-    %             z_b_init;
-    %             z_wf_init;
-    %             z_wr_init;
-    %             theta_init;
-    %             TL(i)*V/r;
-    %             TL(i)*V/r;
-    %             V;
-    %             0;
-    %             0;
-    %             0;
-    %             0;
-    %             V/r;
-    %             V/r
-    %             ];
-    %         disturbance(:,i) = [
-    %             TL(i)*V;
-    %             TL(i)*V;
-    %             0;
-    %             0;
-    %             V;
-    %             V;
-    %             0;
-    %             0
-    %             ];
-    %         disturbance(:,i-1) = [
-    %             TL(i-1)*V;
-    %             TL(i-1)*V;
-    %             0;
-    %             0;
-    %             V;
-    %             V;
-    %             0;
-    %             0
-    %             ];
-    %         control_flag = true;
-    %     end
-    % end
-    % if control_flag
+    if ~control_flag
+        if TL(i)*V > 8.75   % ----------strat from near the bump-----------
+            states(:,1:i) = [
+                TL(1:i)*V;
+                repmat(z_b_init,[1,i]);
+                repmat(z_wf_init,[1,i]);
+                repmat(z_wr_init,[1,i]);
+                repmat(theta_init,[1,i]);
+                TL(1:i)*V/r;
+                TL(1:i)*V/r;
+                repmat(V,[1,i]);
+                zeros(1,i);
+                zeros(1,i);
+                zeros(1,i);
+                zeros(1,i);
+                repmat(V/r,[1,i]);
+                repmat(V/r,[1,i])
+                ];
+            disturbance(:,1:i) = [
+                TL(1:i)*V;
+                TL(1:i)*V;
+                zeros(1,i);
+                zeros(1,i);
+                repmat(V,[1,i]);
+                repmat(V,[1,i]);
+                zeros(1,i);
+                zeros(1,i)
+                ];
+            % disturbance(:,i-1) = [
+            %     TL(i-1)*V;
+            %     TL(i-1)*V;
+            %     0;
+            %     0;
+            %     V;
+            %     V;
+            %     0;
+            %     0
+            %     ];
+            control_flag = true;
+        end
+    end
+    if control_flag
 
         if mod(i,count_loop) == 0
             percentage = round(i*100/(c-1),2);
@@ -381,6 +381,8 @@ for i=1:c-1
             end
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
         elseif mod(i, (tc/dt)) == 0 && skyhook
+            cc = (i-1)/(tc/dt)+1;                   % control count
+
             w_prev = zeros(4,Md+1);
             prev_disturbance = zeros(height(disturbance),Md+1);
 
@@ -401,17 +403,18 @@ for i=1:c-1
 
             % Model Predictive Previewing
             FDW = zeros(2,1);
+            controller_start = toc;
             for pre=1:Md+1
 
                 tau_f = (c_sky*r/cos(atan(dz_disf/dx_disf)))*(V-dx_disf);
                 tau_r = (c_sky*r/cos(atan(dz_disr/dx_disr)))*(V-dx_disr);
 
                 G = double(subs(Gmat));
-                current_states = A_tq*current_states + B_tq*[tau_f; tau_r] + E_tq*[x_disf; x_disr; dx_disf; dx_disr] + G(trqsys_idx,:)*g;
+                current_states = A_tq*current_states + B_tq*[tau_f; tau_r] + E_tq*[x_disf; x_disr; dx_disf; dx_disr]; % + G(trqsys_idx,:)*g;
 
                 if pre == 1
                     u(1:2,i+1) = round([tau_f; tau_r],5);
-                    dw_prev(:,pre) = w_prev(:,pre)-disturbance(prev_idx,i);
+                    dw_prev(:,pre) = w_prev(:,pre)-disturbance(prev_idx,i+1-(tc/dt));
                 elseif pre >= 2
                     dw_prev(:,pre) = w_prev(:,pre)-w_prev(:,pre-1);
                 end
@@ -441,9 +444,12 @@ for i=1:c-1
                     w_prev(:,pre+1) = prev_disturbance(prev_idx,pre+1);
                 end
             end
-            x_ex = [-C_sus*(round(states(sussys_idx,i+1)-states(sussys_idx,1),4)); round(states(sussys_idx,i+1)-states(sussys_idx,i+1-(tc/dt)),5)];
+            x_ex = [C_sus*states(sussys_idx,1)-C_sus*states(sussys_idx,i+1); round(states(sussys_idx,i+1)-states(sussys_idx,i+1-(tc/dt)),5)];
             du = Fx*x_ex + FDW;
             u(3:4,i+1) = u(3:4,i) + du;
+            
+            controller_end = toc;
+            controller_calc_time = controller_calc_time + (controller_end - controller_start);
 
             disp_string = "Torques: front-"+ round(u(1,i+1),1) + "/rear-" + round(u(2,i+1),1) + ", Driving Mileage: " + round(disturbance(1,i),2) + "[m], Velocity: " + round(states(8,i),2) + "[m/s]" ;
             fprintf(2,disp_string+"\n");
@@ -453,7 +459,7 @@ for i=1:c-1
         end
 
 
-    % end
+    end
 
 end
 toc;

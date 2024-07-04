@@ -12,9 +12,9 @@ X = [
     dx
     ];        % new states vector
 
-% LQR
-Q = diag([1e-06, 1e+05, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+06]);       % all_pitch
-H = diag([1e-03,1e-03]);
+% error system ricatti
+Q = diag([1e04, 1e+07, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+06]);       % all_pitch
+H = diag([5e-04,5e-04]);
 
 [P, K, ~] = idare(phi, G, Q, H, [], []);   % u = -Kx
 Fx = -K;                                      % u = Fx

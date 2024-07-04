@@ -167,7 +167,7 @@ sys_ex_d = c2d(sys_ex,ctrl_dt);  % discrete time expanded system 離散時間拡
 
 % ===積分型最適サーボ系（安定化時）===
 %               x1 x2 x3 x4 e1 e2
-Q_servo = diag([1e-01, 6, 1e-01, 1e-01, 3, 4]);
+Q_servo = diag([3e-01, 3e-01, 1e-01, 1e-01, 6e-01, 4e-01]);
 R_servo = diag([1e-03]);
 [K_servo,P_servo,~] = lqr(phi,gamma,Q_servo,R_servo,[]);
 % Q_servo = diag([1e-02, 1e-03, 1e-03, 1e-03, 1e-01, 1e-01]);
@@ -423,7 +423,7 @@ fontname(fig_cart,"Times New Roman");
 fontsize(fig_cart,10,"points");
 
 % save 保存する場合
-% frame_rate = 20;
+frame_rate = 100;
 % newimg = zeros(371,1140,3);
 % videoname = "video/"+condition;
 % video = VideoWriter(videoname,'MPEG-4');
