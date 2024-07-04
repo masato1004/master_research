@@ -444,7 +444,7 @@ for i=1:c-1
                     w_prev(:,pre+1) = prev_disturbance(prev_idx,pre+1);
                 end
             end
-            x_ex = [C_sus*states(sussys_idx,1)-C_sus*states(sussys_idx,i+1); round(states(sussys_idx,i+1)-states(sussys_idx,i+1-(tc/dt)),5)];
+            x_ex = [C_sus*states(sussys_idx,1)-C_sus*states(sussys_idx,i+1); states(sussys_idx,i+1)-states(sussys_idx,i+1-(tc/dt))];
             du = Fx*x_ex + FDW;
             u(3:4,i+1) = u(3:4,i) + du;
             
