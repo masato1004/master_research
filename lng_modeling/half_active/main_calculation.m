@@ -413,9 +413,15 @@ for i=1:c-1
                 current_states = A_tq*current_states + B_tq*[tau_f; tau_r] + E_tq*[x_disf; x_disr; dx_disf; dx_disr]; % + G(trqsys_idx,:)*g;
 
                 if pre == 1
+                    % ------------if conventional preview---------------
+                    % w_prev(:,pre) = makima(dis_total,r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+
                     u(1:2,i+1) = round([tau_f; tau_r],5);
                     dw_prev(:,pre) = w_prev(:,pre)-disturbance(prev_idx,i+1-(tc/dt));
                 elseif pre >= 2
+                    % ------------if conventional preview---------------
+                    % w_prev(:,pre) = makima(dis_total,r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+
                     dw_prev(:,pre) = w_prev(:,pre)-w_prev(:,pre-1);
                 end
                 FDW = FDW + Fdj(:,:,pre)*dw_prev(:, pre);
@@ -442,6 +448,7 @@ for i=1:c-1
                     dz_disf = prev_disturbance(7,pre+1);
                     dz_disr = prev_disturbance(8,pre+1);
                     w_prev(:,pre+1) = prev_disturbance(prev_idx,pre+1);
+
                 end
             end
             x_ex = [C_sus*states(sussys_idx,1)-C_sus*states(sussys_idx,i+1); states(sussys_idx,i+1)-states(sussys_idx,i+1-(tc/dt))];
