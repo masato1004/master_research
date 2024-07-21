@@ -1,3 +1,8 @@
+%% rpf noising
+noised_road_total_f = awgn(movmean(road_total_f,301),0.01,'measured');
+noised_road_total_r = awgn(movmean(road_total_r,301),0.01,'measured');
+
+
 %% Calculate wheel trajectory with inverse offset method
 noised_inv_offset_f = [];
 noised_inv_offset_r = [];
@@ -5,12 +10,12 @@ disp('Calculating inverse offset from noised data...')
 for i = 1:1:width(dis_total)
     current_road_f = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
     current_road_f = current_road_f(1:5:end);
-    half_circle_f = [current_road_f; sqrt(r^2 - (current_road_f-dis_total(i)).^2)+road_total_f(i)-r];
+    half_circle_f = [current_road_f; sqrt(r^2 - (current_road_f-dis_total(i)).^2)+noised_road_total_f(i)-r];
     noised_inv_offset_f = [noised_inv_offset_f, half_circle_f];
 
     current_road_r = dis_total(dis_total > dis_total(i)-r & dis_total < dis_total(i)+r);
     current_road_r = current_road_r(1:5:end);
-    half_circle_r = [current_road_r; sqrt(r^2 - (current_road_r-dis_total(i)).^2)+road_total_r(i)-r];
+    half_circle_r = [current_road_r; sqrt(r^2 - (current_road_r-dis_total(i)).^2)+noised_road_total_r(i)-r];
     noised_inv_offset_r = [noised_inv_offset_r, half_circle_r];
 end
 save("noised_inverse_offset-"+shape, "noised_inv_offset_f", "noised_inv_offset_r")
