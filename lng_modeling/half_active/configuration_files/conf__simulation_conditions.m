@@ -6,6 +6,7 @@ prev_anim = false;
 % add noise or not
 high_freq_noise = false;
 low_freq_noise  = false;
+noised_traj = true;
 
 % spatial smoothing method
 wa  = false;
@@ -46,8 +47,8 @@ lsd = @(a,b,x) x.*a + b;     % standard deviation of additional low freq noise
 
 
 %% conbine settings
-noise_name = ["_high-freq-noise_" "_low-freq-noise_"];
-noise_logi = [high_freq_noise low_freq_noise];
+noise_name = ["_high-freq-noise_" "_low-freq-noise_" "_trajectory_from_noised_rpf_"];
+noise_logi = [high_freq_noise low_freq_noise noised_traj];
 if width(noise_name(noise_logi)) == 2
     added_noise = "_high-low-freq-noise_";
 elseif width(noise_name(noise_logi)) == 0

@@ -18,6 +18,9 @@ run("configuration_files/conf__initial_conditions.m")
 % Road profile settings
 run("configuration_files/conf__rpf_settings.m")
 
+% Noised Road profile settings
+run("configuration_files/conf__noised_rpf_settings.m")
+
 % Control design
 run("configuration_files/conf__control_design.m")
 
@@ -397,11 +400,33 @@ for i=1:c-1
             dx_disr = prev_disturbance(6,1);
             dz_disf = prev_disturbance(7,1);
             dz_disr = prev_disturbance(8,1);
+            if noised_traj
+                prev_disturbance(3,1) = round(makima(noised_wheel_traj_f(1,:),noised_wheel_traj_f(2,:),prev_disturbance(1,1)),5);   % z_dixf
+                prev_disturbance(4,1) = round(makima(noised_wheel_traj_r(1,:),noised_wheel_traj_r(2,:),prev_disturbance(2,1)),5);   % z_dixr
+                if pre ~= 1
+                    dis_grad = gradient(prev_disturbance(1:4,pre-1:1))./tc;
+                    prev_disturbance(5:8,1) = dis_grad(:,2);
+                else
+                    dis_grad = gradient(prev_disturbance(1:4,pre:1))./tc;
+                    prev_disturbance(5:8,1) = dis_grad(:,2);
+                end
+            end
 
             prev_idx = logical([0,0,1,1,0,0,1,1]);
             w_prev(:,1) = prev_disturbance(prev_idx,1);
 
             % Model Predictive Previewing
+            if noised_traj
+                prev_mileage_f = noised_mileage_f;
+                prev_mileage_r = noised_mileage_r;
+                prev_wheel_traj_f = noised_wheel_traj_f;
+                prev_wheel_traj_r = noised_wheel_traj_r;
+            else
+                prev_mileage_f = mileage_f;
+                prev_mileage_r = mileage_r;
+                prev_wheel_traj_f = wheel_traj_f;
+                prev_wheel_traj_r = wheel_traj_r;
+            end
             FDW = zeros(2,1);
             controller_start = toc;
             for pre=1:Md+1
@@ -414,13 +439,21 @@ for i=1:c-1
 
                 if pre == 1
                     % ------------if conventional preview---------------
-                    % w_prev(:,pre) = makima(dis_total,r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+                    if noised_traj
+                        % w_prev(:,pre) = makima(dis_total,noised_r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+                    else
+                        % w_prev(:,pre) = makima(dis_total,r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+                    end
 
                     u(1:2,i+1) = round([tau_f; tau_r],5);
                     dw_prev(:,pre) = w_prev(:,pre)-disturbance(prev_idx,i+1-(tc/dt));
                 elseif pre >= 2
                     % ------------if conventional preview---------------
-                    % w_prev(:,pre) = makima(dis_total,r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+                    if noised_traj
+                        % w_prev(:,pre) = makima(dis_total,noised_r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+                    else
+                        % w_prev(:,pre) = makima(dis_total,r_p,prev_disturbance(1,1)+states(8,i+1)*(pre-1)*tc);
+                    end
 
                     dw_prev(:,pre) = w_prev(:,pre)-w_prev(:,pre-1);
                 end
@@ -428,10 +461,10 @@ for i=1:c-1
 
                 % update preview data
                 if pre <= Md
-                    prev_disturbance(1,pre+1) = makima(mileage_f,dis_total,r*current_states(2));           % x_disf
-                    prev_disturbance(2,pre+1) = makima(mileage_r,dis_total,r*current_states(3));           % x_disr
-                    prev_disturbance(3,pre+1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),prev_disturbance(1,pre+1)),5);   % z_dixf
-                    prev_disturbance(4,pre+1) = round(makima(wheel_traj_r(1,:),wheel_traj_r(2,:),prev_disturbance(2,pre+1)),5);   % z_dixr
+                    prev_disturbance(1,pre+1) = makima(prev_mileage_f,dis_total,r*current_states(2));           % x_disf
+                    prev_disturbance(2,pre+1) = makima(prev_mileage_r,dis_total,r*current_states(3));           % x_disr
+                    prev_disturbance(3,pre+1) = round(makima(prev_wheel_traj_f(1,:),prev_wheel_traj_f(2,:),prev_disturbance(1,pre+1)),5);   % z_dixf
+                    prev_disturbance(4,pre+1) = round(makima(prev_wheel_traj_r(1,:),prev_wheel_traj_r(2,:),prev_disturbance(2,pre+1)),5);   % z_dixr
                     if pre ~= 1
                         dis_grad = gradient(prev_disturbance(1:4,pre-1:pre+1))./tc;
                         prev_disturbance(5:8,pre+1) = dis_grad(:,2);
