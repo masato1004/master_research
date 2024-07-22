@@ -68,7 +68,7 @@ last_toc = toc;
 for i=1:c-1
     
     if ~control_flag
-        if TL(i)*V > 8.75   % ----------strat from near the bump-----------
+        if TL(i)*V > -1   % ----------strat from near the bump-----------
             states(:,1:i) = [
                 TL(1:i)*V;
                 repmat(z_b_init,[1,i]);
@@ -255,23 +255,13 @@ for i=1:c-1
         disturbance(2,i+1) = makima(mileage_r,dis_total,r*states(7,i+1));  % x_disr
         disturbance(3,i+1) = round(makima(wheel_traj_f(1,:),wheel_traj_f(2,:),disturbance(1,i+1)),5);                                                                % z_disf
         disturbance(4,i+1) = round(makima(wheel_traj_r(1,:),wheel_traj_r(2,:),disturbance(2,i+1)),5);                                                                % z_disr
-        if i ~= 1
-            dis_grad = gradient(disturbance(1:4,i-1:i+1))./dt;
-            disturbance(5:8,i+1) = dis_grad(:,2);
+        dis_grad = gradient(disturbance(1:4,i:i+1))./dt;
+        disturbance(5:8,i+1) = dis_grad(:,2);
 
-            % disturbance(5,i+1) = (diff(disturbance(1,i-1:i))/dt + diff(disturbance(1,i:i+1))/dt)/2;                                         % dx_disf
-            % disturbance(6,i+1) = (diff(disturbance(2,i-1:i))/dt + diff(disturbance(2,i:i+1))/dt)/2;                                         % dx_disr
-            % disturbance(7,i+1) = (diff(disturbance(3,i-1:i))/dt + diff(disturbance(3,i:i+1))/dt)/2;                                         % dz_disf
-            % disturbance(8,i+1) = (diff(disturbance(4,i-1:i))/dt + diff(disturbance(4,i:i+1))/dt)/2;                                         % dz_disr
-        else
-            dis_grad = gradient(disturbance(1:4,i:i+1))./dt;
-            disturbance(5:8,i+1) = dis_grad(:,2);
-
-            % disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
-            % disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
-            % disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
-            % disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
-        end
+        % disturbance(5,i+1) = diff(disturbance(1,i:i+1))/dt;                                         % dx_disf
+        % disturbance(6,i+1) = diff(disturbance(2,i:i+1))/dt;                                         % dx_disr
+        % disturbance(7,i+1) = diff(disturbance(3,i:i+1))/dt;                                         % dz_disf
+        % disturbance(8,i+1) = diff(disturbance(4,i:i+1))/dt;                                         % dz_disr
     
         % find appropriate next input
         if mod(i-1, (tc/dt)) == 0 && i ~= 1 && ~any([passive NLMPC feedforward, skyhook])
@@ -384,38 +374,6 @@ for i=1:c-1
             end
             disp("    Applied Input: " + u(1,i+1) + ", " + u(2,i+1) + ", " + u(3,i+1) + ", " + u(4,i+1));
         elseif mod(i, (tc/dt)) == 0 && skyhook
-            cc = (i-1)/(tc/dt)+1;                   % control count
-
-            w_prev = zeros(4,Md+1);
-            prev_disturbance = zeros(height(disturbance),Md+1);
-
-            current_states = states(trqsys_idx,i+1);
-            prev_disturbance(:,1) = disturbance(:,i+1);
-            
-            x_disf  = prev_disturbance(1,1);
-            x_disr  = prev_disturbance(2,1);
-            z_disf  = prev_disturbance(3,1);
-            z_disr  = prev_disturbance(4,1);
-            dx_disf = prev_disturbance(5,1);
-            dx_disr = prev_disturbance(6,1);
-            dz_disf = prev_disturbance(7,1);
-            dz_disr = prev_disturbance(8,1);
-            if noised_traj
-                prev_disturbance(3,1) = round(makima(noised_wheel_traj_f(1,:),noised_wheel_traj_f(2,:),prev_disturbance(1,1)),5);   % z_dixf
-                prev_disturbance(4,1) = round(makima(noised_wheel_traj_r(1,:),noised_wheel_traj_r(2,:),prev_disturbance(2,1)),5);   % z_dixr
-                if pre ~= 1
-                    dis_grad = gradient(prev_disturbance(1:4,pre-1:1))./tc;
-                    prev_disturbance(5:8,1) = dis_grad(:,2);
-                else
-                    dis_grad = gradient(prev_disturbance(1:4,pre:1))./tc;
-                    prev_disturbance(5:8,1) = dis_grad(:,2);
-                end
-            end
-
-            prev_idx = logical([0,0,1,1,0,0,1,1]);
-            w_prev(:,1) = prev_disturbance(prev_idx,1);
-
-            % Model Predictive Previewing
             if noised_traj
                 prev_mileage_f = noised_mileage_f;
                 prev_mileage_r = noised_mileage_r;
@@ -427,6 +385,36 @@ for i=1:c-1
                 prev_wheel_traj_f = wheel_traj_f;
                 prev_wheel_traj_r = wheel_traj_r;
             end
+
+            cc = (i-1)/(tc/dt)+1;                   % control count
+
+            w_prev = zeros(4,Md+1);
+            prev_disturbance = zeros(height(disturbance),Md+1);
+
+            current_states = states(trqsys_idx,i+1);
+            prev_disturbance(:,1) = disturbance(:,i+1);
+            last_disturbance = disturbance(:,i);
+            
+            x_disf  = prev_disturbance(1,1);
+            x_disr  = prev_disturbance(2,1);
+            z_disf  = prev_disturbance(3,1);
+            z_disr  = prev_disturbance(4,1);
+            dx_disf = prev_disturbance(5,1);
+            dx_disr = prev_disturbance(6,1);
+            dz_disf = prev_disturbance(7,1);
+            dz_disr = prev_disturbance(8,1);
+            % if noised_traj
+            %     prev_disturbance(3,1) = round(makima(noised_wheel_traj_f(1,:),noised_wheel_traj_f(2,:),prev_disturbance(1,1)),5);   % z_dixf
+            %     prev_disturbance(4,1) = round(makima(noised_wheel_traj_r(1,:),noised_wheel_traj_r(2,:),prev_disturbance(2,1)),5);   % z_dixr
+                
+            %     dis_grad = gradient([last_disturbance(1:4),prev_disturbance(1:4,1)])./tc;
+            %     prev_disturbance(5:8,1) = dis_grad(:,2);
+            % end
+
+            prev_idx = logical([0,0,1,1,0,0,1,1]);
+            w_prev(:,1) = prev_disturbance(prev_idx,1);
+
+            % Model Predictive Previewing
             FDW = zeros(2,1);
             controller_start = toc;
             for pre=1:Md+1
@@ -465,13 +453,9 @@ for i=1:c-1
                     prev_disturbance(2,pre+1) = makima(prev_mileage_r,dis_total,r*current_states(3));           % x_disr
                     prev_disturbance(3,pre+1) = round(makima(prev_wheel_traj_f(1,:),prev_wheel_traj_f(2,:),prev_disturbance(1,pre+1)),5);   % z_dixf
                     prev_disturbance(4,pre+1) = round(makima(prev_wheel_traj_r(1,:),prev_wheel_traj_r(2,:),prev_disturbance(2,pre+1)),5);   % z_dixr
-                    if pre ~= 1
-                        dis_grad = gradient(prev_disturbance(1:4,pre-1:pre+1))./tc;
-                        prev_disturbance(5:8,pre+1) = dis_grad(:,2);
-                    else
-                        dis_grad = gradient(prev_disturbance(1:4,pre:pre+1))./tc;
-                        prev_disturbance(5:8,pre+1) = dis_grad(:,2);
-                    end
+                    dis_grad = gradient(prev_disturbance(1:4,pre:pre+1))./tc;
+                    prev_disturbance(5:8,pre+1) = dis_grad(:,2);
+
                     x_disf  = prev_disturbance(1,pre+1);
                     x_disr  = prev_disturbance(2,pre+1);
                     z_disf  = prev_disturbance(3,pre+1);

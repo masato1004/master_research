@@ -424,11 +424,11 @@ fontsize(fig_cart,10,"points");
 
 % save 保存する場合
 frame_rate = 100;
-% newimg = zeros(371,1140,3);
-% videoname = "video/"+condition;
-% video = VideoWriter(videoname,'MPEG-4');
-% video.FrameRate = frame_rate;
-% open(video);
+newimg = zeros(371,1140,3);
+videoname = "video/"+condition;
+video = VideoWriter(videoname,'MPEG-4');
+video.FrameRate = frame_rate;
+open(video);
 for i = 1:(1/frame_rate)/dt:TL_width
     set(hh3(1),pos=[x_cart1(i,1)-0.1 y_cart1(i,1)-0.15 0.2 0.15])
     set(hh4(1),XData=[x_cart1(i,1),x_cart1(i,1)+x_p(i,1)],YData=[0,y_p(i,1)])
@@ -437,7 +437,7 @@ for i = 1:(1/frame_rate)/dt:TL_width
     drawnow
 
     % save 保存する場合
-    % frame = getframe(fig_cart);
-    % writeVideo(video,frame);
+    frame = getframe(fig_cart);
+    writeVideo(video,frame);
 end
-% close(video);
+close(video);

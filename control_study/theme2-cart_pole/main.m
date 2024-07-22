@@ -357,7 +357,7 @@ ht = title("Time: "+round(TL(1),1)+" s"); % String arrays introduced in R2016b
 xlabel("\itx \rm[m]")
 fontname(gcf,"Times New Roman");
 fontsize(gcf,10,"points");
-for i = 1:50:TL_width
+for i = 1:30:TL_width
     set(hh3(1),pos=[x_cart1(i,1)-0.1 y_cart1(i,1)-0.15 0.2 0.15])
     set(hh4(1),XData=[x_cart1(i,1),x_cart1(i,1)+x_p(i,1)],YData=[0,y_p(i,1)])
     set(ht,String="Time: "+round(TL(i),1)+" s")

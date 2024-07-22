@@ -57,13 +57,13 @@ load("noised_r_p");
 % disp('Calculating wheel mileage...')
 % noised_wheel_traj_f(2,abs(noised_wheel_traj_f(2,:)) < 0.000005) = 0;
 % noised_wheel_traj_r(2,abs(noised_wheel_traj_r(2,:)) < 0.000005) = 0;
-% mileage_f = 0;
-% mileage_r = 0;
+% noised_mileage_f = 0;
+% noised_mileage_r = 0;
 % for k = 2:width(noised_wheel_traj_f)
-%     mileage_f = [mileage_f, sum(sqrt(diff(noised_wheel_traj_f(1,1:k)).^2+diff(noised_wheel_traj_f(2,1:k)).^2))];
-%     mileage_r = [mileage_r, sum(sqrt(diff(noised_wheel_traj_r(1,1:k)).^2+diff(noised_wheel_traj_r(2,1:k)).^2))];
+%     noised_mileage_f = [noised_mileage_f, sum(sqrt(diff(noised_wheel_traj_f(1,1:k)).^2+diff(noised_wheel_traj_f(2,1:k)).^2))];
+%     noised_mileage_r = [noised_mileage_r, sum(sqrt(diff(noised_wheel_traj_r(1,1:k)).^2+diff(noised_wheel_traj_r(2,1:k)).^2))];
 % end
-% save('noised_mileage','mileage_f','mileage_r');
+% save('noised_mileage','noised_mileage_f','noised_mileage_r');
 % disp('Done Calculating wheel mileage.')
 
 %% Load wheel trajectory
