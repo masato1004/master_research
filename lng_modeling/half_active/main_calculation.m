@@ -505,9 +505,9 @@ pitchacc_integral = trapz(TL(1,TL>(start_disturbance-1)/V&TL<(start_disturbance+
 input_max = max(abs(u(1,:)));
 input_integral = trapz(control_TL(control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V),abs(rad2deg(double(u(1,control_TL>(start_disturbance-1)/V&control_TL<(start_disturbance+ld+1)/V)))));
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
 %                          Drawing figures                          %
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%
 states_name = [
     "Longitudinal_Position", "Time [s]", "Longitudinal Position [m]";
     "Body_Vertical_Displacement", "Time [s]", "Body Vertical Displacement [m]";
