@@ -6,31 +6,31 @@ prev_anim = false;
 % add noise or not
 high_freq_noise = false;
 low_freq_noise  = false;
-noised_traj = true;
+noised_traj     = true;
 
 % spatial smoothing method
 wa  = false;
 lpf = false;
 
 % control method
-passive = false;
-LQR     = false;
-rprev   = false;
+passive         = false;
+LQR             = false;
+rprev           = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
 LQR_fprev_rprev = false;
-NLMPC = false;
-feedforward = false;
-skyhook = true;
+NLMPC           = false;
+feedforward     = false;
+skyhook         = true;
 
 % road profile
-sensing = false;
-paper   = false;
-bump   = true;
+sensing  = false;
+paper    = false;
+bump     = true;
 sin_wave = false;
-step    = false;
-manhole = false;
-jari    = false;
+step     = false;
+manhole  = false;
+jari     = false;
 
 %% simulation parameter
 T   = 5;          % [s]       total simulation time

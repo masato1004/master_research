@@ -1,8 +1,8 @@
 %% rpf noising
 % road_total_f(isnan(road_total_f))=0;
 % road_total_r(isnan(road_total_r))=0;
-% noised_road_total_f = awgn(movmean(road_total_f,301),0.01,'measured');
-% noised_road_total_r = awgn(movmean(road_total_r,301),0.01,'measured');
+% noised_road_total_f = awgn(movmean(road_total_f,301),10,pow2db(0.0001));
+% noised_road_total_r = awgn(movmean(road_total_r,301),10,pow2db(0.0001));
 % noised_r_p = [
 %     noised_road_total_f;
 %     noised_road_total_r;

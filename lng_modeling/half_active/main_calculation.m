@@ -560,7 +560,7 @@ drawer(TL,disturbance(1,:)-states(1,:),["Longitudinal_Difference", "Time [s]", "
 % road shape and wheel trajectory
 r_fig = figure('name',"Road-profile",'Position', [600 200 600 190]);
 plot(disturbance(1,:),makima(dis_total,road_total_f,disturbance(1,:)),"LineWidth",1,"Color","#0000ff",'DisplayName',"Road under Front Wheel"); hold on;
-plot(disturbance(2,:),makima(dis_total,road_total_r,disturbance(1,:)),"LineWidth",1,"Color","#ff0000",'DisplayName',"Road under Rear Wheel");
+plot(disturbance(2,:),makima(dis_total,road_total_r,disturbance(2,:)),"LineWidth",1,"Color","#ff0000",'DisplayName',"Road under Rear Wheel");
 plot(disturbance(1,:),makima(wheel_traj_f(1,:),wheel_traj_f(2,:)+r,disturbance(1,:)),"LineWidth",1,"LineStyle","--","Color","#0000ff",'DisplayName',"Front Wheel Center Trajectory");
 plot(disturbance(2,:),makima(wheel_traj_r(1,:),wheel_traj_r(2,:)+r,disturbance(2,:)),"LineWidth",1,"LineStyle","--","Color","#ff0000",'DisplayName',"Rear Wheel Center Trajectory");
 ylabel("Displacement [m]");
