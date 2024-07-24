@@ -19,8 +19,8 @@ dtheta0 = 0;            % 振子初期角速度
 % controller
 passive = false;        % パッシブシミュレーション
 LQR = false;            % LQR
-servo = false;           % 積分型最適サーボ系
-servo2dof = true;           % 積分型最適サーボ系
+servo = true;           % 積分型最適サーボ系
+servo2dof = false;           % 積分型最適サーボ系
 
 %% Model Definition モデルの定義
 % define state space: dxdt = Ax(t) + Bu(t) + Ed(t), y(t) = Cx(t) + Du(t)

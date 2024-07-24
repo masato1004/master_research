@@ -403,13 +403,13 @@ for i=1:c-1
             dx_disr = prev_disturbance(6,1);
             dz_disf = prev_disturbance(7,1);
             dz_disr = prev_disturbance(8,1);
-            % if noised_traj
-            %     prev_disturbance(3,1) = round(makima(noised_wheel_traj_f(1,:),noised_wheel_traj_f(2,:),prev_disturbance(1,1)),5);   % z_dixf
-            %     prev_disturbance(4,1) = round(makima(noised_wheel_traj_r(1,:),noised_wheel_traj_r(2,:),prev_disturbance(2,1)),5);   % z_dixr
+            if noised_traj
+                prev_disturbance(3,1) = round(makima(noised_wheel_traj_f(1,:),noised_wheel_traj_f(2,:),prev_disturbance(1,1)),5);   % z_dixf
+                prev_disturbance(4,1) = round(makima(noised_wheel_traj_r(1,:),noised_wheel_traj_r(2,:),prev_disturbance(2,1)),5);   % z_dixr
                 
-            %     dis_grad = gradient([last_disturbance(1:4),prev_disturbance(1:4,1)])./tc;
-            %     prev_disturbance(5:8,1) = dis_grad(:,2);
-            % end
+                dis_grad = gradient([last_disturbance(1:4),prev_disturbance(1:4,1)])./tc;
+                prev_disturbance(5:8,1) = dis_grad(:,2);
+            end
 
             prev_idx = logical([0,0,1,1,0,0,1,1]);
             w_prev(:,1) = prev_disturbance(prev_idx,1);
