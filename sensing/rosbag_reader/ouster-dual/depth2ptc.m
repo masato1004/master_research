@@ -33,7 +33,9 @@ while flag
     end
 end
 % file_num=180;
-file_num=175;
+% file_num=175;
+file_num=143;
+% file_num=210;
 % file_num=208;
 
 rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
@@ -58,14 +60,14 @@ depthImage_original_size=uint16(zeros(1080, 1920));
 raw_depth_original_size=uint16(zeros(1080, 1920));
 colorImage_original_size=uint8(ones(1080, 1920, 3));
 
-start_x = 353-1;
-start_y = 449-1;
-rect_width = 1216-1;
-rect_height = 264-1;
 % start_x = 353-1;
 % start_y = 449-1;
 % rect_width = 1216-1;
-% rect_height = 352-1;
+% rect_height = 264-1;
+start_x = 353-1;
+start_y = 449-1;
+rect_width = 1216-1;
+rect_height = 352-1;
 depthImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width) = depthImage_read;
 groundtruth_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = groundtruth_read;
 colorImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = colorImage_read;
@@ -109,7 +111,7 @@ groundtruthpcin=pointCloud(reshape(groundtruthptCloud.Location,[],3),Color=resha
 % downptCloud = pcdownsample(rawptCloud,'gridAverage',0.05);
 % downptCloud = pcdownsample(ptCloud,'gridAverage',0.1);
 % downptCloud = pointCloud(downptCloud.Location(downptCloud.Location(:,1)<7&downptCloud.Location(:,1)>0&downptCloud.Location(:,2)<3&downptCloud.Location(:,2)>-3,:,:));
-downpc = pcin;
+downpc = rawpcin;
 eliminate_idx = downpc.Location(:,1)<9&downpc.Location(:,1)>2.5&downpc.Location(:,2)<2&downpc.Location(:,2)>-2;
 downptCloud = pointCloud(downpc.Location(eliminate_idx,:,:),Color=downpc.Color(eliminate_idx,:,:));
 % downptCloud = pcdownsample(downptCloud,'gridAverage',0.001);
@@ -163,7 +165,7 @@ mean_data_num = [20, 20]; % 60, 60
 %% correct road surface profile
 max_z0 = 0.025;                                                                % [m] max road displacement
 ld = [0.05 0.15 0.05];
-start_disturbance = 3.75; % 2.96                                                                  % amplitude
+start_disturbance = 3; % 2.96                                                                  % amplitude
 max_distance = 30;                                                           % [m] driving mileage
 f_dis_total = [0,start_disturbance,start_disturbance+ld(1),start_disturbance+sum(ld(1:2)),start_disturbance+sum(ld),max_distance];
 r_dis_total =  [0,start_disturbance,start_disturbance+ld(1),start_disturbance+sum(ld(1:2)),start_disturbance+sum(ld),max_distance];
@@ -249,4 +251,6 @@ f_disturbance = f_correct_prev(2,f_correct_prev(1,:)<start_disturbance+sum(ld) &
 f_prev_movmean = movmean(f_prev_profile(2,:),mean_data_num);
 
 f_error = [f_prev_profile(1,:); movmean(f_prev_profile(2,:),mean_data_num) - f_correct_road_p(ismember(f_dis_total_p, f_prev_profile(1,:)))];
-RMSE_on_2dRPF = double(rmse(f_prev_movmean(f_prev_profile(1,:)<start_disturbance+sum(ld) & f_prev_profile(1,:)>start_disturbance) , f_disturbance))
+MAE_on_2dRPF = double(mean(abs(f_error(2,:))))
+RMSE_on_2dRPF = double(sqrt(mean(f_error(2,:).^2)))
+RMSE_on_bump = double(rmse(f_prev_movmean(f_prev_profile(1,:)<start_disturbance+sum(ld) & f_prev_profile(1,:)>start_disturbance) , f_disturbance))
