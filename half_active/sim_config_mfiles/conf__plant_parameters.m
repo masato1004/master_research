@@ -18,6 +18,6 @@ L_r = wb * 32/55;      % [m]       rear length
 
 cam_fwheel_dis = 0.895;
 
-Vkm_h = 13.6;     % [km/h]    driving velocity
+Vkm_h = 20;     % [km/h]    driving velocity
 Vkm_m=Vkm_h/60;
 V=Vkm_m*1000/60;% [m/s]

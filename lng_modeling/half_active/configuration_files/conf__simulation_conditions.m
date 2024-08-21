@@ -6,29 +6,31 @@ prev_anim = false;
 % add noise or not
 high_freq_noise = false;
 low_freq_noise  = false;
+noised_traj     = true;
 
 % spatial smoothing method
 wa  = false;
 lpf = false;
 
 % control method
-passive = false;
-LQR     = false;
-rprev   = false;
+passive         = false;
+LQR             = false;
+rprev           = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
 LQR_fprev_rprev = false;
-NLMPC = false;
-feedforward = true;
+NLMPC           = false;
+feedforward     = false;
+skyhook         = true;
 
 % road profile
-sensing = false;
-paper   = false;
-bump   = true;
+sensing  = false;
+paper    = false;
+bump     = true;
 sin_wave = false;
-step    = false;
-manhole = false;
-jari    = false;
+step     = false;
+manhole  = false;
+jari     = false;
 
 %% simulation parameter
 T   = 5;          % [s]       total simulation time
@@ -45,8 +47,8 @@ lsd = @(a,b,x) x.*a + b;     % standard deviation of additional low freq noise
 
 
 %% conbine settings
-noise_name = ["_high-freq-noise_" "_low-freq-noise_"];
-noise_logi = [high_freq_noise low_freq_noise];
+noise_name = ["_high-freq-noise_" "_low-freq-noise_" "_trajectory_from_noised_rpf_"];
+noise_logi = [high_freq_noise low_freq_noise noised_traj];
 if width(noise_name(noise_logi)) == 2
     added_noise = "_high-low-freq-noise_";
 elseif width(noise_name(noise_logi)) == 0
@@ -65,8 +67,8 @@ else
     smoothing_method= smoothing_name(smoothing_logi)
 end
 
-ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","_nlmpc_","_feedforward_"];
-logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev, NLMPC, feedforward];
+ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_fprev_rprev_","_nlmpc_","_skyhook_","_feedforward_"];
+logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev, NLMPC, skyhook, feedforward];
 control = ctrl_names(logi_ctrl)
 
 shape_names = ["_sensing2_","_paper_","_bump_","_sin_","_step_","_manhole_","_jari_"];

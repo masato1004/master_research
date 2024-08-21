@@ -108,7 +108,7 @@ cc = 1;
 s_f = 1;
 frames(s_f) = getframe(gcf);
 drawnow;
-mod_m = 100;
+mod_m = 200;
 newimg = zeros(432,1166,3);
 videoname = "videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"-fps-"+(1/dt)/mod_m;
 if not(exist("videos",'dir'))
@@ -126,9 +126,11 @@ end
 video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = (1/dt)/mod_m;
 open(video);
-for s=2:c/2
+for s=2:c/1
+    if mod(s,tc/dt) == 0
+        cc = cc+1;
+    end
     if mod(s,mod_m) == 0
-        cc = s/(mod_m/10);
 %         TL(1,s)
         cx_b = TL(1,s)*V; cy_b = states(1,s);           % displacement
         cx_f = TL(1,s)*V+L_f+L_r; cy_f = r+states(2,s); % center of front wheel

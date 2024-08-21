@@ -25,7 +25,7 @@ dis_total_r = 0:max_distance/(preT/dt):max_distance-start_disturbance-(L_f+L_r);
 
 
 %% Load wheel trajectory
-load("configuration_files/wheel_traj-"+shape+".mat");
+load("wheel_traj-"+shape+".mat");
 
 %% Calculate wheel trajectory with inverse offset method
 % inv_offset_f = [];

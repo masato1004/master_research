@@ -57,7 +57,7 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
     I_wr = (m_wr*r^2)/2;     % [kgm^2]   wheel inertia moment
 
     g = 9.80665;
-    pHorizon = 5;
+    pHorizon = 10;
 
     persistent A B E disc_func
     if isempty(A)
@@ -109,9 +109,9 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
         % discretization
         disc_func = @(tau,Mat) (-pinv(A)*expm(A.*(dt-tau)))*Mat;
 
-        % A = expm(A.*dt);
-        % B = disc_func(dt,B) - disc_func(0,B);
-        % E = disc_func(dt,E) - disc_func(0,E);
+        A = expm(A.*dt);
+        B = disc_func(dt,B) - disc_func(0,B);
+        E = disc_func(dt,E) - disc_func(0,E);
     end
     
 
@@ -203,6 +203,6 @@ function dxdt = nlmpc_config__stateFcn(x,u,p)
 
     last_d = current_d;
     
-    dxdt = A*x + B*u + E*current_d + G*g;
+    dxdt = A*x + B*u + E*current_d; % + G*g;
 
 end

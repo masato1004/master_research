@@ -24,4 +24,4 @@ wf_grad = [
     wf_global(2,:);
     gradient(wf_global(2,:))./(gradient(wf_global(1,:))./V)
     ];
-dw_prev = zeros(4,M+1);
+dw_prev = zeros(4,Md+1);

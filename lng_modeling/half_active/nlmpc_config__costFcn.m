@@ -31,7 +31,7 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
     %
     
 
-    % C = logical([0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1]);
+    C = logical([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]);
     
     % New Half-Car-Model cost function.
     % R = diag([1e-20 1e-20 1e-20 1e-20]);
@@ -50,11 +50,14 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
 
 
     ref = p(end-13:end);
-    er = x-ref;
+    er = x(C)-ref(C);
 
-    Q = diag([1e-10 1e06 1e-3 1e-3 1e05 1e-10 1e-10 1e07 1e02 1e-10 1e-10 1e02 1e-04 1e-04]);
-    R = diag([1e08 1e08 1e03 1e03]);
-    Rs = diag([1e07 1e07 1e07 1e07]);
-    pHorizon = 5;
+    Q = diag([1e-10 1e02 1e-3 1e-3 1e03 1e05 1e05 1e02 1e02 1e-10 1e-10 1e02 1e05 1e05]);
+    R = diag([1e-05 1e-05 0 0]);
+    Rd = diag([1e-02 1e-02 0 0]);
+    Rs = diag([1e00 1e00]);
+    pHorizon = 10;
 
-    J = er'*0.5*Q*er + u'*0.5*R*u + e'*0.5*Rs*e; % ((pHorizon+1 -stage)*Rs./pHorizon) 
+    % ercost = er'*0.5*Q(C,C)*er
+    % inputcost = u'*0.5*R*u
+    J = er'*0.5*Q(C,C)*er + u'*0.5*R*u + dmv'*0.5*Rd*dmv + e'*0.5*Rs*e;% % ((pHorizon+1 -stage)*Rs./pHorizon) 
