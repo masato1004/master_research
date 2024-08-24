@@ -34,9 +34,9 @@ while flag
 end
 % file_num=180;
 % file_num=175;
-file_num=143;
-% file_num=210;
-% file_num=208;
+% file_num=141;
+file_num=210;
+file_num=207;
 
 rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
@@ -111,7 +111,7 @@ groundtruthpcin=pointCloud(reshape(groundtruthptCloud.Location,[],3),Color=resha
 % downptCloud = pcdownsample(rawptCloud,'gridAverage',0.05);
 % downptCloud = pcdownsample(ptCloud,'gridAverage',0.1);
 % downptCloud = pointCloud(downptCloud.Location(downptCloud.Location(:,1)<7&downptCloud.Location(:,1)>0&downptCloud.Location(:,2)<3&downptCloud.Location(:,2)>-3,:,:));
-downpc = rawpcin;
+downpc = pcin;
 eliminate_idx = downpc.Location(:,1)<9&downpc.Location(:,1)>2.5&downpc.Location(:,2)<2&downpc.Location(:,2)>-2;
 downptCloud = pointCloud(downpc.Location(eliminate_idx,:,:),Color=downpc.Color(eliminate_idx,:,:));
 % downptCloud = pcdownsample(downptCloud,'gridAverage',0.001);
