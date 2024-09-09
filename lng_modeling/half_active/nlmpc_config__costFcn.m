@@ -53,7 +53,7 @@ function J = nlmpc_config__costFcn(stage,x,u,dmv,e,p)
     er = x(C)-ref(C);
 
     Q = diag([1e-10 1e02 1e-3 1e-3 1e03 1e05 1e05 1e02 1e02 1e-10 1e-10 1e02 1e05 1e05]);
-    R = diag([1e-05 1e-05 0 0]);
+    R = diag([1e05 1e05 1e05 1e05]);
     Rd = diag([1e-02 1e-02 0 0]);
     Rs = diag([1e00 1e00]);
     pHorizon = 10;

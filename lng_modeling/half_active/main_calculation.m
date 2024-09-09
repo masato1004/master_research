@@ -347,7 +347,7 @@ for i=1:c-1
                 simdata.StageParameter    = sp;
                 % simdata.StageParameter    = repmat([state_function_parameter; reference(:,end)],pHorizon+1,1);
 
-                simdata.TerminalState     = reference(:,end);
+                % simdata.TerminalState     = reference(:,end);
                 % reference(5)-states(5,i)
                 % states(5,i)
                 controller_start = toc;
