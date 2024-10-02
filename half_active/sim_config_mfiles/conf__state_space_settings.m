@@ -8,7 +8,7 @@ Ap = [
     (-k_sf-k_sr)/m_b, k_sf/m_b, k_sr/m_b, (-k_sf*L_f+k_sr*L_r)/m_b, (-c_sf-c_sr)/m_b, c_sf/m_b, c_sr/m_b, (-c_sf*L_f+c_sr*L_r)/m_b;
     k_sf/m_w, (-k_sf-k_w)/m_w, 0, (k_sf*L_f)/m_w, c_sf/m_w, (-c_sf-c_w)/m_w, 0, (c_sf*L_f)/m_w;
     k_sr/m_w, 0, (-k_sr-k_w)/m_w, (-k_sr *L_r)/m_w, c_sr/m_w, 0, (-c_sr-c_w)/m_w, (-c_sr*L_r)/m_w;
-    (-k_sf*L_f+k_sr*L_r)/I_b, (k_sf*L_f)/I_b, (-k_sr*L_r)/I_b, (-k_sf*L_f^2)/I_b, (-c_sf*L_f+c_sr*L_r)/I_b, (c_sf*L_f)/I_b, (-c_sr*L_r)/I_b, ((-c_sf*L_f^2)-(c_sr*L_r^2))/I_b
+    (-k_sf*L_f+k_sr*L_r)/I_b, (k_sf*L_f)/I_b, (-k_sr*L_r)/I_b, ((-k_sf*L_f^2)-(k_sr*L_r^2))/I_b, (-c_sf*L_f+c_sr*L_r)/I_b, (c_sf*L_f)/I_b, (-c_sr*L_r)/I_b, ((-c_sf*L_f^2)-(c_sr*L_r^2))/I_b
     ];
 
 Bp = [

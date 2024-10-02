@@ -11,6 +11,7 @@ sensing/zed-matlab/build/*
 sensing/zed-matlab/matlab/ZEDfigure/*
 sensing/zed-matlab/matlab/ZEDimage/*
 sensing/zed-matlab/matlab/ZEDply/*
+sensing/rosbag_reader/*.mat
 unreal_engine/
 unreal_engine/*
 
@@ -27,6 +28,12 @@ unreal_engine/*
 *.mov
 *.asv
 *.ply
+*.mat
+*.txt
+*.emf
+*.tar
+*.pth
+*.DS_Store
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important

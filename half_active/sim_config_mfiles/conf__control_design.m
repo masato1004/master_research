@@ -14,7 +14,7 @@ X = [
 
 % LQR
 Q = diag([1e-06, 1e+05, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+06]);       % all_pitch
-H = diag([1e-03,1e-03]);
+H = diag([1e-07,1e-07]);
 
 [P, K, ~] = idare(phi, G, Q, H, [], []);   % u = -Kx
 F = -K;                                      % u = Fx
