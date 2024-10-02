@@ -49,14 +49,14 @@ runner.ManipulatedVariables(3).Max = 3000;
 runner.ManipulatedVariables(4).Min = -3000;
 runner.ManipulatedVariables(4).Max = 3000;
 
-runner.ManipulatedVariables(1).RateMin = -600/2;
-runner.ManipulatedVariables(1).RateMax =  600/2;
-runner.ManipulatedVariables(2).RateMin = -600/2;
-runner.ManipulatedVariables(2).RateMax =  600/2;
-runner.ManipulatedVariables(3).RateMin = -500;
-runner.ManipulatedVariables(3).RateMax = 500;
-runner.ManipulatedVariables(4).RateMin = -500;
-runner.ManipulatedVariables(4).RateMax = 500;
+% runner.ManipulatedVariables(1).RateMin = -600/2;
+% runner.ManipulatedVariables(1).RateMax =  600/2;
+% runner.ManipulatedVariables(2).RateMin = -600/2;
+% runner.ManipulatedVariables(2).RateMax =  600/2;
+% runner.ManipulatedVariables(3).RateMin = -500;
+% runner.ManipulatedVariables(3).RateMax = 500;
+% runner.ManipulatedVariables(4).RateMin = -500;
+% runner.ManipulatedVariables(4).RateMax = 500;
 
 % runner.States(8).Min = 0;
 
@@ -104,5 +104,5 @@ disp('validate done.')
 % [coredata, onlinedata] = getCodeGenerationData(runner, states(:,1), u(:,1), StateFcnParameter=simdata.StateFcnParameter, StageParameter=simdata.StageParameter);
 % % !del ./nlmpcControllerMEX.mexw64;
 % buildMEX(runner, "nlmpcControllerMEX", coredata, onlinedata);
-
+% 
 % options = nlmpcmoveopt;
