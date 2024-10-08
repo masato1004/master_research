@@ -58,7 +58,7 @@ input_vector_r = quiver(cx_r,cy_r,0,(u(2,1)/vector_length_param),0,"LineWidth",2
 % previewing draw
 previewing = fprev_rprev || LQR_fprev_rprev;
 if previewing
-    camera_pos = scatter(1.88, 1.40+states(1,1), MarkerFaceColor=[0 1 0],MarkerEdgeColor=[0 0 0],SizeData=100);
+    camera_pos = scatter(1.5, 1.40+states(1,1), MarkerFaceColor=[0 1 0],MarkerEdgeColor=[0 0 0],SizeData=100);
     fill_x = [1.88 1.88+5.06 1.88+7];
     if sensing
         fill_y = [1.40+states(1,1) interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,1)+5.06,'linear') interp1(road_total_r(:,1)',road_total_r(:,2)',states(1,1)+7,'linear')];
@@ -129,7 +129,8 @@ video.FrameRate = (1/dt)/mod_m;
 open(video);
 for s=2:c
     if mod(s,mod_m) == 0
-        cc = s/(mod_m/10);
+        % cc = s/(mod_m/10);
+        cc = s;
 %         TL(1,s)
         cx_b = states(1,s); cy_b = states(2,s)-z_b_init;           % displacement
         cx_f = disturbance(1,s)+L_f+L_r; cy_f = r+disturbance(3,s); % center of front wheel
@@ -169,19 +170,19 @@ for s=2:c
         circle_as_a_wheel_r = plot(r*sin(phi)+cx_r,r*cos(phi)+cy_r,Color="black",LineWidth=3);
         set(wp,'XData',states(1,s))
 
-        if u(1,cc) ~= 0
-            vec_color_f = [(1+u(1,cc)/abs(u(1,cc)))/2 0 (1-u(1,cc)/abs(u(1,cc)))/2];
+        if u(3,cc) ~= 0
+            vec_color_f = [(1+u(3,cc)/abs(u(3,cc)))/2 0 (1-u(3,cc)/abs(u(3,cc)))/2];
         else
             vec_color_f = [1 0 0];
         end
-        if u(2,cc) ~= 0
-            vec_color_r = [(1+u(2,cc)/abs(u(2,cc)))/2 0 (1-u(2,cc)/abs(u(2,cc)))/2];
+        if u(4,cc) ~= 0
+            vec_color_r = [(1+u(4,cc)/abs(u(4,cc)))/2 0 (1-u(4,cc)/abs(u(4,cc)))/2];
         else
             vec_color_r = [1 0 0];
         end
 %         set(input_vector,'XData',cx_f,'YData',cy_f,'UData',0,'VData',u(1,cc)/vector_length_param,"Color",vec_color);
-        input_vector_f = quiver(cx_f,cy_f+r,0,(u(1,cc)/vector_length_param),0,"LineWidth",2,Color=vec_color_f);
-        input_vector_r = quiver(cx_r,cy_r+r,0,(u(2,cc)/vector_length_param),0,"LineWidth",2,Color=vec_color_r);
+        input_vector_f = quiver(cx_f,cy_f+r,0,(u(3,cc)/vector_length_param),0,"LineWidth",2,Color=vec_color_f);
+        input_vector_r = quiver(cx_r,cy_r+r,0,(u(4,cc)/vector_length_param),0,"LineWidth",2,Color=vec_color_r);
 
         if previewing
             delete(camera_pos);
