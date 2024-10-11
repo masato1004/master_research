@@ -1,0 +1,59 @@
+{
+	"info":{
+		"version":"1.1",
+		"md5hash":"1b2df98d28ab1eb76f51251202d5c168"
+	},
+	"switchgroup":[
+		{
+			"nodename":"GS_BR__SigC_Dir3__ER",
+			"switchgroupname":"GS_BR__SigC_Dir3__ER",
+			"switchgroupid":0,
+			"pattern":[
+				{ "branch":"SWO_BR__SigC__ER_LDT_Green", "patternid":0 },
+				{ "branch":"SWO_BR__SigC__ER_LDT_Yellow", "patternid":1 },
+				{ "branch":"SWO_BR__SigC__ER_LDT_Red", "patternid":2 }
+			]
+		}
+	],
+	"switch":[
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_Green",
+			"switchname":"SWO_BR__SigC__ER_LDT_Green",
+			"switchid":0, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_Green_OFF",
+				"BR__SigC__ER_LDT_Green_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_Yellow",
+			"switchname":"SWO_BR__SigC__ER_LDT_Yellow",
+			"switchid":1, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_Yellow_OFF",
+				"BR__SigC__ER_LDT_Yellow_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_Red",
+			"switchname":"SWO_BR__SigC__ER_LDT_Red",
+			"switchid":2, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_Red_OFF",
+				"BR__SigC__ER_LDT_Red_ON"
+			]
+		}
+	]
+}

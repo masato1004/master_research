@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Instructional Sign 403 Parking available" name_ja="指示標識 403 駐車可" uid="61f71669-e6fa-4744-ae8d-f88bd28ae711"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="0ff86b71-712e-476a-b5be-ddd367e586f4"/>
+      <Signal>
+        <Info id="403" dynamic="no" orientation="+" controlType="" name="Instructional Sign 403" name_ja="指示標識 403 駐車可"/>
+        <Type id="0ff86b71-712e-476a-b5be-ddd367e586f4" />
+        <Size height="0.6" width="0.6"/>
+        <Pos x="0.12" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

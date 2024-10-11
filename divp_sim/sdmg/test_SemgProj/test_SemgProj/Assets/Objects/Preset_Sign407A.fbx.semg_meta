@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Instructional Sign 407-A Pedestrian crossing" name_ja="指示標識 407-Ａ 横断歩道" uid="d60c394c-836f-474a-86b6-1fbd66f150d8"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="2d12e857-b307-41ca-b06e-b12e353b35e5"/>
+      <Signal>
+        <Info id="407-A" dynamic="no" orientation="+" controlType="" name="Instructional Sign 407-A" name_ja="指示標識 407-Ａ 横断歩道"/>
+        <Type id="2d12e857-b307-41ca-b06e-b12e353b35e5" value="" unit=""/>
+        <Size height="0.685" width="0.6"/>
+        <Pos x="0.048" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearMarking" lastUsageType="linearMarking" name="Curb (for OpenDRIVE)" name_ja="縁石（OpenDRIVE出力用）" uid="e996b702-11b9-4c34-84bd-9cd26cc952d9"/>
+	<LinearMarking_Group separation="0.000000" xOffset="0.000000">
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="none" curveSpaceTexture="true" dashLength="0.000000" dashSpacing="0.000000" deceleration="false" markingType="curb" width="0.0000">
+		</LinearMarking_Single>
+	</LinearMarking_Group>
+</SemgMetaData>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearMarking" lastUsageType="linearMarking" name="Yellow Solid Line" name_ja="黄実線" uid="d731cfc9-8447-4d12-a00c-b81c1d913736"/>
+	<LinearMarking_Group separation="0.000000" xOffset="0.000000">
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="yellow" curveSpaceTexture="true" dashLength="0.000000" dashSpacing="0.000000" deceleration="false" markingType="solid" width="0.150000">
+			<Asset type="material" uid="8b409bb3-9982-499e-8807-0312fc606a29"/>
+		</LinearMarking_Single>
+	</LinearMarking_Group>
+</SemgMetaData>

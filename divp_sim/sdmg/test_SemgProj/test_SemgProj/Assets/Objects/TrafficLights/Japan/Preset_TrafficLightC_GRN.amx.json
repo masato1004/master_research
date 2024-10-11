@@ -1,0 +1,15 @@
+{
+	"info":{
+		"version":"1.1",
+		"md5hash":"c8aac95f83d4ae9cabe270abed237f4a"
+	},
+	"anim":[
+		{
+			"take":"Take 001",
+			"motiontype":"Unknown",
+			"motionid":10001,
+			"repeat":1,
+			"averagespeed":0
+		}
+	]
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Traffic Signal (fixed yellow)" name_ja="信号機（黄点灯固定）" name_key="Traffic Signal (fixed yellow)" uid="cd262b6c-896e-4a3c-8220-5d72c3e1e334"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="0.610146,3.581193,6.300191" propotion="0.000000" rot="5.041103,0.000000,-269.329662" scale="0.000000,0.000000,0.000000" type="light" uid="d5978ca4-e3dc-4939-90da-f7777647f3ca">
+			<Light>
+				<PFParams area="0.076314" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="SigC_LDT_Yellow_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+	<Xodr>
+		<Object>
+			<Info id="TrafficLight" name="Traffic Signal (fixed yellow)" name_ja="信号機（黄点灯固定）" name_key="Traffic Signal (fixed yellow)" orientation="none"/>
+			<Bounding maxX="0.853487" maxY="4.293334" maxZ="6.587921" minX="-0.207022" minY="-0.210217" minZ="-0.000000"/>
+			<SignalGroup modelNode="" name="">
+				<Signal>
+					<Info dynamic="no" id="TL_yellow" name="Traffic Signal (fixed yellow)" name_ja="信号機（黄点灯固定）" name_key="Traffic Signal (fixed yellow)" orientation="+"/>
+					<Type id="00000000-0000-0000-0000-000000000000" unit="" value="0.000000"/>
+					<Size height="0.370000" width="1.160000"/>
+					<Pos x="0.530000" y="3.580000" z="6.120000"/>
+					<Rot hOffset="90.000000" pitch="5.600000" roll="0.000000"/>
+				</Signal>
+			</SignalGroup>
+		</Object>
+	</Xodr>
+</SemgMetaData>

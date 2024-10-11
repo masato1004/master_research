@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Regulatory Sign 311-A Do not proceed other than the designated direction" name_ja="規制標識 311-A 指定方向外進行禁止" uid="fd68f8d1-3e05-47d1-89c9-15f7314fab56"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="d9055bca-ac24-4e1c-9bc1-2ad4f4200ad9"/>
+      <Signal>
+        <Info id="311-A" dynamic="no" orientation="+" controlType="" name="Regulatory Sign 311-A" name_ja="規制標識 311-A 指定方向外進行禁止"/>
+        <Type id="d9055bca-ac24-4e1c-9bc1-2ad4f4200ad9" value="" unit=""/>
+        <Size height="0.4" width="0.4"/>
+        <Pos x="0.045" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

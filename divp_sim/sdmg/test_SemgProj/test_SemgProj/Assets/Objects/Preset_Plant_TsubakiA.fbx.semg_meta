@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Planting Shrub (camellia)" name_ja="植栽 低木（ツバキ）" uid="d29c2abe-477e-4c76-ba85-c3c95ebecadc"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,180.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.200000"/>
+	<TrafficSignal/>
+</SemgMetaData>

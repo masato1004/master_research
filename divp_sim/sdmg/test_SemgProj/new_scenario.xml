@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spaceDesignModel>
+	<header name="new_scenario" version="0.14.0.0"/>
+	<definitions>
+		<filePaths>
+			<filePath path=".\" target="" type="output"/>
+			<filePath path=".\test_SemgProj\Assets\" target="asset" type="input"/>
+			<filePath path="..\..\..\..\..\..\..\SDMG_0.14.0.0\asset\" target="asset" type="input"/>
+			<filePath path="..\..\..\..\..\..\..\SDMG_0.14.0.0\asset\map\TokyoWaterFrontCity\Ariake_Ferryfuto\" target="roadNetwork" type="input"/>
+		</filePaths>
+		<simulation>
+			<hat state="on"/>
+		</simulation>
+	</definitions>
+	<space>
+		<environments>
+			<environment id="environment_1">
+				<timeOfDay>
+					<time hour="20" min="0"/>
+					<date day="4" month="10" year="2024"/>
+				</timeOfDay>
+				<weather cloudState="lightCloudy">
+					<precipitation intensity="0.0000000000"/>
+					<wind direction="0.1221730476" speed="2.0000000000"/>
+				</weather>
+				<weatherLocation elevation="0.0000000000" latitude="0.62168627956038" longitude="2.43944669551247" region="japan" standardTimeMeridian="2.3561944902"/>
+			</environment>
+		</environments>
+		<views>
+			<view id="view_1">
+				<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+				<clippingDistance left="1.0000000000" rigth="10000.0000000000"/>
+				<asymmetricFov bottom="-0.6632251158" left="-0.7853981634" rigth="0.7853981634" top="0.6632251158"/>
+				<linker entityId="divp_Veh_NissanXtrail_1" entityType="object" id="linkerid_1">
+					<coordinate type="relative">
+						<position x="-2.0000000000" y="-0.4000000000" z="2.0000000000"/>
+						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</coordinate>
+				</linker>
+			</view>
+		</views>
+		<objects>
+			<object id="object_1" type="undefined">
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="1.0000000000"/>
+					<dimensions height="2.0000000000" length="2.0000000000" width="2.0000000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Map_Tokyo_WaterFrontCity_Ariake_Area02_road_1" type="undefined">
+				<modelFile file="divp_Map_Tokyo_WaterFrontCity_Ariake_Area02_road.fbx"/>
+			</object>
+			<object id="divp_Tgt_LyingMan_1" role="" subtype="pedestrian" type="person">
+				<modelFile file="divp_Tgt_LyingMan.fbx"/>
+				<boundingBox>
+					<center x="0.0230000000" y="-0.0130000000" z="0.1480000000"/>
+					<dimensions height="0.2960000000" length="1.7580000000" width="1.1040000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_Roadstud_1" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_Roadstud.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.1500000000" width="0.1050000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_ManholeCover_1" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_DeadAnimal_1" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_DeadAnimal.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0350000000" z="0.0430000000"/>
+					<dimensions height="0.0860000000" length="0.3070000000" width="0.2790000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_Colorcone_1" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_Colorcone.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.3490000000"/>
+					<dimensions height="0.6990000000" length="0.3830000000" width="0.3830000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Veh_NissanXtrail_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_NissanXtrail.fbx"/>
+				<camera id="camera_1">
+					<product name="Camera"/>
+					<coordinate type="relative">
+						<position x="1.6868846855" y="0.0000000000" z="1.6600370545"/>
+						<attitude x="0.0000000000" y="0.0052359878" z="0.0000000000"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+				</camera>
+				<lidar id="lidar_2">
+					<product name="Lidar"/>
+					<coordinate type="relative">
+						<position x="1.1338315010" y="0.0000000000" z="1.9628437858"/>
+						<attitude x="0.0000000000" y="0.0523598776" z="0.0000000000"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+					<asymmetricFov bottom="-0.4363323130" left="-3.1415926536" rigth="3.1415926536" top="0.2617993878"/>
+				</lidar>
+				<lidar id="lidar_3">
+					<product name="os1-128"/>
+					<coordinate type="relative">
+						<position x="3.6394917532" y="0.0000000000" z="0.6625940927"/>
+						<attitude x="0.0000000000" y="0.3926990817" z="0.0000000000"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+					<asymmetricFov bottom="-0.3926990817" left="-3.1415926536" rigth="3.1415926536" top="0.3926990817"/>
+				</lidar>
+				<boundingBox>
+					<center x="1.3190000000" y="0.0000000000" z="0.8740000000"/>
+					<dimensions height="1.7480000000" length="4.6420000000" width="1.7930000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Veh_SubaruImprezaG4_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_SubaruImprezaG4.fbx"/>
+				<boundingBox>
+					<center x="1.3340000000" y="0.0000000000" z="0.7270000000"/>
+					<dimensions height="1.4540000000" length="4.6360000000" width="1.7750000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Veh_MazdaRoadster_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_MazdaRoadster.fbx"/>
+				<position x="193.8846169270" y="-305.1036091420" z="6.4290297128"/>
+				<attitude x="-0.0350528026" y="0.0076697567" z="-0.9773843811"/>
+				<boundingBox>
+					<center x="1.1140000000" y="0.0000000000" z="0.6040000000"/>
+					<dimensions height="1.2080000000" length="3.9150000000" width="1.7350000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Veh_NissanNote_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_NissanNote.fbx"/>
+				<position x="183.7022883201" y="-317.8873367962" z="6.2034925315"/>
+				<attitude x="-0.0185917283" y="-0.0082096650" z="2.1816615650"/>
+				<boundingBox>
+					<center x="1.3790000000" y="0.0000000000" z="0.7520000000"/>
+					<dimensions height="1.5050000000" length="4.0450000000" width="1.6950000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Veh_NissanSerena_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_NissanSerena.fbx"/>
+				<position x="186.3152663036" y="-287.1872024051" z="6.3691463627"/>
+				<attitude x="-0.0282410720" y="0.0060173130" z="-0.9833243678"/>
+				<boundingBox>
+					<center x="1.4320000000" y="0.0000000000" z="0.9360000000"/>
+					<dimensions height="1.8720000000" length="4.7690000000" width="1.7310000000"/>
+				</boundingBox>
+			</object>
+			<object id="Preset_ManholeCover_1" role="" subtype="" type="undefined">
+				<modelFile file="Preset_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0099999994"/>
+					<dimensions height="0.0199999988" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+			</object>
+		</objects>
+		<maps>
+			<map id="map_1">
+				<routes>
+					<route followingMode="position" id="route_33" laneType="driving" shape="lane" type="waypoint">
+						<waypoint index="0" x="181.4328417822" y="-273.5117090025" z="6.4471134982"/>
+						<waypoint index="1" x="224.8258106998" y="-327.9184766572" z="5.8485144382"/>
+						<waypoint index="2" x="339.9373047739" y="-255.6487028852" z="6.8769626053"/>
+					</route>
+				</routes>
+				<objects>
+					<object id="divp_Map_Tokyo_WaterFrontCity_Ariake_Area02_road_2" type="town">
+						<modelFile file="divp_Map_Tokyo_WaterFrontCity_Ariake_Area02_road.fbx"/>
+						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</object>
+				</objects>
+				<roadNetwork>
+					<roadNetworkFile file="divp_Map_Tokyo_WaterFrontCity_Ariake.xodr" path="..\..\..\..\..\..\..\SDMG_0.14.0.0\asset\map\TokyoWaterFrontCity\Ariake_Ferryfuto\"/>
+					<trafficSignals/>
+				</roadNetwork>
+				<projection east="-4453.0000000000" latitude="0.62179856786462" longitude="2.43969403053815" north="-41444.0000000000" sourceCrs="EPSG:4326" targetCrs="EPSG:6677"/>
+			</map>
+		</maps>
+		<points/>
+	</space>
+	<scenarios>
+		<concreteScenarios>
+			<concreteScenario id="scenario_1">
+				<initialization>
+					<entity id="environment_1" type="environment">
+						<event id="event_1" index="0"/>
+					</entity>
+					<entity id="view_1" type="view">
+						<event id="event_2" index="0"/>
+					</entity>
+					<entity id="map_1" type="map">
+						<event id="event_3" index="0"/>
+					</entity>
+					<entity id="divp_Tgt_LyingMan_1" type="object">
+						<event id="event_4" index="0">
+							<action index="0">
+								<position x="266.3299160520" y="-417.9858510317" z="4.9201488495"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_1" type="object">
+						<event id="event_5" index="0">
+							<action index="0">
+								<position x="266.3299160520" y="-417.9858510317" z="4.9201488495"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Veh_NissanXtrail_1" type="object">
+						<event id="event_34" index="0">
+							<action index="0">
+								<position x="177.5606188818" y="-267.6973321714" z="6.5112114261"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0217554954" y="0.0051535416" z="-0.9834284960"/>
+							</action>
+							<action index="2">
+								<speed value="8.3333333333"/>
+							</action>
+							<action index="3">
+								<targetSpeed continuous="true" type="absolute" value="11.1111111111">
+									<transitionDynamics dimension="distance" s="50.0000000000" shape="linear"/>
+								</targetSpeed>
+							</action>
+							<action index="4">
+								<route id="route_18"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Veh_NissanSerena_1" type="object">
+						<event id="event_38" index="0">
+							<action index="0">
+								<position x="186.3152663036" y="-287.1872024051" z="6.3691463627"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0282410720" y="0.0060173130" z="-0.9833243678"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Veh_NissanNote_1" type="object">
+						<event id="event_39" index="0">
+							<action index="0">
+								<position x="183.7022883201" y="-317.8873367962" z="6.2034925315"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0185917283" y="-0.0082096650" z="2.1816615650"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Veh_MazdaRoadster_1" type="object">
+						<event id="event_40" index="0">
+							<action index="0">
+								<position x="193.8846169270" y="-305.1036091420" z="6.4290297128"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0350528026" y="0.0076697567" z="-0.9773843811"/>
+							</action>
+						</event>
+					</entity>
+				</initialization>
+				<execution>
+					<entity id="divp_Veh_NissanXtrail_1" type="object">
+						<event id="event_46" index="0">
+							<startCondition delay="0.0000000000" edge="none" index="0">
+								<boundary shape="sphere" type="inside">
+									<target entityId="" entityType="object"/>
+									<coordinate type="absolute">
+										<position x="200.2566904429" y="-301.5228396287" z="6.1555883223"/>
+										<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+									</coordinate>
+									<radius value="3.0000000000"/>
+									<trigger entityId="divp_Veh_NissanXtrail_1" entityType="object"/>
+								</boundary>
+							</startCondition>
+							<action index="1">
+								<targetSpeed continuous="false" type="absolute" value="1.3888888889">
+									<transitionDynamics dimension="time" s="30.0000000000" shape="linear"/>
+								</targetSpeed>
+							</action>
+						</event>
+						<event id="event_47" index="1"/>
+						<event id="event_48" index="2">
+							<startCondition delay="0.0000000000" edge="none" index="0">
+								<boundary shape="sphere" type="inside">
+									<target entityId="" entityType="object"/>
+									<coordinate type="absolute">
+										<position x="235.7608728679" y="-324.9999750018" z="5.6467614995"/>
+										<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+									</coordinate>
+									<radius value="3.0000000000"/>
+									<trigger entityId="divp_Veh_NissanXtrail_1" entityType="object"/>
+								</boundary>
+							</startCondition>
+							<action index="1">
+								<targetSpeed continuous="false" type="absolute" value="16.6666666667">
+									<transitionDynamics dimension="distance" s="100.0000000000" shape="linear"/>
+								</targetSpeed>
+							</action>
+						</event>
+					</entity>
+				</execution>
+			</concreteScenario>
+		</concreteScenarios>
+	</scenarios>
+	<outputs>
+		<simulationResults>
+			<simulationResult concreteScenarioId="scenario_1" id="sim_result_1" type="playback">
+				<csvFile file="sim_result_1.csv"/>
+			</simulationResult>
+		</simulationResults>
+	</outputs>
+</spaceDesignModel>

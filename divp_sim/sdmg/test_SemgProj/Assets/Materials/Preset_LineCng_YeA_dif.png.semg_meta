@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="Marking Paint (yellow)" name_ja="路面ペイント（黄）" uid="8b409bb3-9982-499e-8807-0312fc606a29"/>
+	<Memo/>
+	<Texture realSizeHeight="0.500000" realSizeWidth="0.500000"/>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+</SemgMetaData>

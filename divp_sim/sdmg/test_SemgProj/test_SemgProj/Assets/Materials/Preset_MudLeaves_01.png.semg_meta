@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="Weeds" name_ja="雑草地" uid="918601a4-e5e0-409d-9084-9d78fc14cb01"/>
+	<Memo/>
+	<Texture realSizeHeight="1.000000" realSizeWidth="1.000000"/>
+	<RoadSign size="1.000000,1.000000"/>
+	<AerialImage/>
+</SemgMetaData>

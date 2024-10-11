@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_vector" lastUsageType="pointMarking" name="Maintenance Hole Cover" name_ja="マンホール" uid="3a0557d2-0b03-442a-a8ab-aef63547c157"/>
+	<Texture realSizeWidth="1.000000"/>
+	<PointMarking texPosOffset="0.0,0.0" texRotDeg="0.0" texScale="1.0,1.0">
+		<Asset type="material" uid="81a6bc59-efed-46be-9539-c8ff5cfeb5f6"/>
+	</PointMarking>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+</SemgMetaData>

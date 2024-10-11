@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Regulatory Sign 332 No pedestrian crossing" name_ja="規制標識 332 歩行者横断禁止" uid="c2ba4503-7bb6-4247-8447-f29c45de920f"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="3cc127a8-7d98-4d59-bd65-d94470f325ef"/>
+      <Signal>
+        <Info id="332+" dynamic="no" orientation="+" controlType="" name="Regulatory Sign 332" name_ja="規制標識 332 歩行者横断禁止(表)"/>
+        <Type id="3cc127a8-7d98-4d59-bd65-d94470f325ef" value="" unit=""/>
+        <Size height="0.6" width="0.6"/>
+        <Pos x="0.11" y="0.0" z="1.3"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+      <Signal>
+        <Info id="332-" dynamic="no" orientation="-" controlType="" name="Regulatory Sign 332" name_ja="規制標識 332 歩行者横断禁止(裏)"/>
+        <Type id="3cc127a8-7d98-4d59-bd65-d94470f325ef" value="" unit=""/>
+        <Size height="0.6" width="0.6"/>
+        <Pos x="-0.11" y="0.0" z="1.3"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+      <Signal>
+        <Info id="506+" dynamic="no" orientation="+" controlType="" name="Auxiliary Sign 506" name_ja="補助標識 506 区間内(表)"/>
+        <Type id="d8901198-32bc-4e2b-ba70-68d625aea83c" value="" unit=""/>
+        <Size height="0.1" width="0.4"/>
+        <Pos x="0.11" y="0.0" z="1.17"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+      <Signal>
+        <Info id="506-" dynamic="no" orientation="-" controlType="" name="Auxiliary Sign 506" name_ja="補助標識 506 区間内(裏)"/>
+        <Type id="d8901198-32bc-4e2b-ba70-68d625aea83c" value="" unit=""/>
+        <Size height="0.1" width="0.4"/>
+        <Pos x="-0.11" y="0.0" z="1.17"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

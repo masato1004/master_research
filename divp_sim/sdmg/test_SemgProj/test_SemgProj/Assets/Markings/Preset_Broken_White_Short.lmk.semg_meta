@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearMarking" lastUsageType="linearMarking" name="White Broken Line (short)" name_ja="白破線（短）" uid="36399124-2df9-481e-bd58-1f3571d2d678"/>
+	<Memo/>
+	<LinearMarking_Group separation="153575484851867522609587538333527965696.000000" xOffset="0.000000">
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="white" curveSpaceTexture="true" dashLength="1.000000" dashSpacing="1.000000" deceleration="false" markingType="broken" width="0.150000">
+			<Asset type="material" uid="ac1e3b1d-f9a1-488d-a4ed-253811c21a0d"/>
+		</LinearMarking_Single>
+	</LinearMarking_Group>
+</SemgMetaData>

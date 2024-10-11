@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Warning Sign 203 Right turn ahead" name_ja="警戒標識 203 右方屈曲あり" uid="1af62f68-5fa0-4788-8c58-54997104f8f6"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="b5a8ab52-fca4-4198-86f0-1f33939d0fb4"/>
+      <Signal>
+        <Info id="203" dynamic="no" orientation="+" controlType="" name="Warning Sign 203" name_ja="警戒標識 203 右(又は左)方屈折あり"/>
+        <Type id="b5a8ab52-fca4-4198-86f0-1f33939d0fb4" value="" unit=""/>
+        <Size height="1.08" width="1.08"/>
+        <Pos x="0.23" y="2.55" z="5.16"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

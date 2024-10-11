@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="Asphalt" name_ja="アスファルト" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+	<Memo/>
+	<Texture realSizeHeight="3.000000" realSizeWidth="3.000000"/>
+	<RoadSign size="1.000000,1.000000"/>
+	<AerialImage/>
+</SemgMetaData>
