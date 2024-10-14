@@ -1,6 +1,6 @@
 %% Define simulation condition with boolean
 % draw an animation or not
-animation = false;
+animation = true;
 prev_anim = false;
 
 % add noise or not
@@ -12,17 +12,18 @@ wa  = false;
 lpf = false;
 
 % control method
-passive = false;
+passive = true;
 LQR     = false;
 rprev   = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
-LQR_fprev_rprev = true;
+LQR_fprev_rprev = false;
 
 % road profile
 sensing = false;
-paper   = true;
-sin_wave = false;
+paper   = false;
+bump   = false;
+sin_wave = true;
 step    = false;
 manhole = false;
 jari    = false;
@@ -65,8 +66,8 @@ ctrl_names = ["_passive_","_LQR_","_rprev_","_LQR_rprev_","_fprev_rprev_","_LQR_
 logi_ctrl = [passive, LQR, rprev, LQR_rprev, fprev_rprev, LQR_fprev_rprev];
 control = ctrl_names(logi_ctrl)
 
-shape_names = ["_sensing2_","_paper_","_sin_","_step_","_manhole_","_jari_"];
-logi_shape = [sensing, paper, sin_wave, step, manhole, jari];
+shape_names = ["_sensing2_","_paper_", "_bump_", "_sin_","_step_","_manhole_","_jari_"];
+logi_shape = [sensing, paper, bump, sin_wave, step, manhole, jari];
 shape = shape_names(logi_shape)
 
 %% LPF settings
