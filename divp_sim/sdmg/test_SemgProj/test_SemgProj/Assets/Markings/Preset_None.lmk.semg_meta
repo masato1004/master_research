@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearMarking" lastUsageType="linearMarking" name="No Line" name_ja="線なし" uid="75a818f1-f271-47e2-bd56-7e3db0a3536f"/>
+	<LinearMarking_Group separation="0.000000" xOffset="0.000000">
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="standard" curveSpaceTexture="true" dashLength="0.000000" dashSpacing="0.000000" deceleration="false" markingType="none" width="0.000000"/>
+	</LinearMarking_Group>
+</SemgMetaData>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_vector" lastUsageType="pointMarking" name="Sample Mask for Paint Peeling" name_ja="はく離模擬用サンプルマスク" uid="1db9cf18-08e9-42a9-b18d-92c373f8178e"/>
+	<Texture realSizeWidth="1.000000"/>
+	<PointMarking texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+</SemgMetaData>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="147.04167mm"
+   height="485.98615mm"
+   viewBox="0 0 147.04167 485.98615"
+   version="1.1"
+   id="svg2700"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="roadmark_210_oudanhodouari.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2702"
+     pagecolor="#808080"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.47433592"
+     inkscape:cx="1221.708"
+     inkscape:cy="1200.6259"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g2878" />
+  <defs
+     id="defs2697">
+    <marker
+       id="DistanceX"
+       orient="auto"
+       refX="0"
+       refY="0"
+       style="overflow:visible">
+      <path
+         d="M 3,-3 -3,3 M 0,-5 V 5"
+         style="stroke:#000000;stroke-width:0.5"
+         id="path2763" />
+    </marker>
+    <pattern
+       id="Hatch"
+       patternUnits="userSpaceOnUse"
+       width="8"
+       height="8"
+       x="0"
+       y="0">
+      <path
+         d="M8 4 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path2766" />
+      <path
+         d="M6 2 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path2768" />
+      <path
+         d="M4 0 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path2770" />
+    </pattern>
+  </defs>
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(130.61828,214.54269)">
+    <g
+       id="g2878"
+       transform="matrix(0.26458333,0,0,0.26458333,-6.238542,-80.372638)">
+      <g
+         inkscape:label="0"
+         id="g2775" />
+      <g
+         inkscape:label="LAYER_1"
+         id="g2833"
+         transform="translate(-6.3246318,14.757474)">
+        <path
+           style="fill:#ffffff;stroke:#ffffff;stroke-width:5.27053"
+           d="m -355.24516,757.92744 -105.7756,-352.6684 137.668,-458.936103 137.668,-458.936097 25.2393,85.5895 25.2393,85.5895 -112.0337,373.222897 -112.0337,373.222903 80.6235,269.0123 80.6236,269.0123 -25.1973,83.77976 c -13.8585,46.0789 -25.4332,83.7798 -25.7215,83.7798 -0.288,0 -48.1233,-158.70076 -106.2999,-352.66836 z"
+           id="path2953" />
+        <path
+           style="fill:#ffffff;stroke:#ffffff;stroke-width:5.27053"
+           d="m -211.51086,1237.1915 -25.1546,-84.7988 108.6131,-361.94906 c 59.7372,-199.0719 109.8632,-368.1995 111.3911,-375.839 1.8179,-9.0897 -24.8175,-105.9132 -77.0712,-280.1646 l -79.8492,-266.2747 25.4881,-84.6101 25.4881,-84.6101 105.9151,353.133597 105.9152,353.133703 -133.8089,446.2435 c -73.5949,245.43396 -135.6007,451.70896 -137.7905,458.38896 -3.0946,9.4398 -9.5853,-6.7453 -29.1363,-72.6534 z"
+           id="path2992" />
+      </g>
+      <g
+         inkscape:label="LAYER_2"
+         id="g2835" />
+    </g>
+  </g>
+</svg>

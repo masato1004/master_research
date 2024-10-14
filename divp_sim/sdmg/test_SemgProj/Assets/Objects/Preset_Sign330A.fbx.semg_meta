@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Regulatory Sign 330-A Stop" name_ja="規制標識 330-A 一時停止" uid="cab3ca26-7244-49e9-b683-429c9bf9f116"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="4fabf753-d033-4c87-a5bf-82750f4743cf"/>
+      <Signal>
+        <Info id="330-A" dynamic="no" orientation="+" controlType="" name="Regulatory Sign 330-A" name_ja="規制標識 330-A 一時停止"/>
+        <Type id="4fabf753-d033-4c87-a5bf-82750f4743cf" value="" unit=""/>
+        <Size height="0.68" width="0.77"/>
+        <Pos x="0.0" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

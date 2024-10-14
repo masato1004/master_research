@@ -1,0 +1,136 @@
+{
+	"info":{
+		"version":"1.1",
+		"md5hash":"1fbc984322dda3bfcfaff83f8e68ca1e"
+	},
+	"switchgroup":[
+		{
+			"nodename":"GS_BR__SigC_Dir3__ER",
+			"switchgroupname":"GS_BR__SigC_Dir3__ER",
+			"switchgroupid":0,
+			"pattern":[
+				{ "branch":"SWO_BR__SigC__ER_LDT_Green", "patternid":0 },
+				{ "branch":"SWO_BR__SigC__ER_LDT_Yellow", "patternid":1 },
+				{ "branch":"SWO_BR__SigC__ER_LDT_Red", "patternid":2 },
+				{ "branch":"SWO_BR__SigC__ER_LDT_DirRt", "patternid":7 },
+				{ "branch":"SWO_BR__SigC__ER_LDT_DirUp", "patternid":4 },
+				{ "branch":"SWO_BR__SigC__ER_LDT_DirLt", "patternid":6 }
+			]
+		},
+		{
+			"nodename":"GS_BR__SigP__ER",
+			"switchgroupname":"GS_BR__SigP__ER",
+			"switchgroupid":1,
+			"pattern":[
+				{ "branch":"SWO_BR__SigP__ER_LDT_Green", "patternid":0 },
+				{ "branch":"SWO_BR__SigP__ER_LDT_Red", "patternid":2 }
+			]
+		}
+	],
+	"switch":[
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_Green",
+			"switchname":"SWO_BR__SigC__ER_LDT_Green",
+			"switchid":0, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_Green_OFF",
+				"BR__SigC__ER_LDT_Green_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_Yellow",
+			"switchname":"SWO_BR__SigC__ER_LDT_Yellow",
+			"switchid":1, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_Yellow_OFF",
+				"BR__SigC__ER_LDT_Yellow_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_Red",
+			"switchname":"SWO_BR__SigC__ER_LDT_Red",
+			"switchid":2, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_Red_OFF",
+				"BR__SigC__ER_LDT_Red_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_DirRt",
+			"switchname":"SWO_BR__SigC__ER_LDT_DirRt",
+			"switchid":3, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_DirRt_OFF",
+				"BR__SigC__ER_LDT_DirRt_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_DirUp",
+			"switchname":"SWO_BR__SigC__ER_LDT_DirUp",
+			"switchid":4, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_DirUp_OFF",
+				"BR__SigC__ER_LDT_DirUp_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC__ER_LDT_DirLt",
+			"switchname":"SWO_BR__SigC__ER_LDT_DirLt",
+			"switchid":5, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC__ER_LDT_DirLt_OFF",
+				"BR__SigC__ER_LDT_DirLt_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigP__ER_LDT_Green",
+			"switchname":"SWO_BR__SigP__ER_LDT_Green",
+			"switchid":6, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigP__ER_LDT_Green_OFF",
+				"BR__SigP__ER_LDT_Green_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigP__ER_LDT_Red",
+			"switchname":"SWO_BR__SigP__ER_LDT_Red",
+			"switchid":7, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigP__ER_LDT_Red_OFF",
+				"BR__SigP__ER_LDT_Red_ON"
+			]
+		}
+	]
+}

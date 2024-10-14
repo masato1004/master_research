@@ -1,0 +1,143 @@
+{
+	"info":{
+		"version":"1.1",
+		"md5hash":"595a25e81893aa4358e72da2a0255339"
+	},
+	"switchgroup":[
+		{
+			"nodename":"GS_BR__SigC1_Dir3__ER",
+			"switchgroupname":"GS_BR__SigC1_Dir3__ER",
+			"switchgroupid":0,
+			"pattern":[
+				{ "branch":"SWO_BR__SigC1__ER_LDT_Green", "patternid":0 },
+				{ "branch":"SWO_BR__SigC1__ER_LDT_Yellow", "patternid":1 },
+				{ "branch":"SWO_BR__SigC1__ER_LDT_Red", "patternid":2 }
+			]
+		},
+		{
+			"nodename":"GS_BR__SigC2_Dir3__ER",
+			"switchgroupname":"GS_BR__SigC2_Dir3__ER",
+			"switchgroupid":1,
+			"pattern":[
+				{ "branch":"SWO_BR__SigC2__ER_LDT_Green", "patternid":0 },
+				{ "branch":"SWO_BR__SigC2__ER_LDT_Yellow", "patternid":1 },
+				{ "branch":"SWO_BR__SigC2__ER_LDT_Red", "patternid":2 }
+			]
+		},
+		{
+			"nodename":"GS_BR__SigP__ER",
+			"switchgroupname":"GS_BR__SigP__ER",
+			"switchgroupid":2,
+			"pattern":[
+				{ "branch":"SWO_BR__SigP__ER_LDT_Green", "patternid":0 },
+				{ "branch":"SWO_BR__SigP__ER_LDT_Red", "patternid":2 }
+			]
+		}
+	],
+	"switch":[
+		{
+			"nodename":"SWO_BR__SigC1__ER_LDT_Green",
+			"switchname":"SWO_BR__SigC1__ER_LDT_Green",
+			"switchid":0, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC1__ER_LDT_Green_OFF",
+				"BR__SigC1__ER_LDT_Green_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC1__ER_LDT_Yellow",
+			"switchname":"SWO_BR__SigC1__ER_LDT_Yellow",
+			"switchid":1, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC1__ER_LDT_Yellow_OFF",
+				"BR__SigC1__ER_LDT_Yellow_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC1__ER_LDT_Red",
+			"switchname":"SWO_BR__SigC1__ER_LDT_Red",
+			"switchid":2, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC1__ER_LDT_Red_OFF",
+				"BR__SigC1__ER_LDT_Red_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC2__ER_LDT_Green",
+			"switchname":"SWO_BR__SigC2__ER_LDT_Green",
+			"switchid":3, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC2__ER_LDT_Green_OFF",
+				"BR__SigC2__ER_LDT_Green_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC2__ER_LDT_Yellow",
+			"switchname":"SWO_BR__SigC2__ER_LDT_Yellow",
+			"switchid":4, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC2__ER_LDT_Yellow_OFF",
+				"BR__SigC2__ER_LDT_Yellow_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigC2__ER_LDT_Red",
+			"switchname":"SWO_BR__SigC2__ER_LDT_Red",
+			"switchid":5, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigC2__ER_LDT_Red_OFF",
+				"BR__SigC2__ER_LDT_Red_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigP__ER_LDT_Green",
+			"switchname":"SWO_BR__SigP__ER_LDT_Green",
+			"switchid":6, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigP__ER_LDT_Green_OFF",
+				"BR__SigP__ER_LDT_Green_ON"
+			]
+		},
+		{
+			"nodename":"SWO_BR__SigP__ER_LDT_Red",
+			"switchname":"SWO_BR__SigP__ER_LDT_Red",
+			"switchid":7, "initialindex":0,
+			"state":[
+				1,
+				2
+			],
+			"branch":[
+				"BR__SigP__ER_LDT_Red_OFF",
+				"BR__SigP__ER_LDT_Red_ON"
+			]
+		}
+	]
+}

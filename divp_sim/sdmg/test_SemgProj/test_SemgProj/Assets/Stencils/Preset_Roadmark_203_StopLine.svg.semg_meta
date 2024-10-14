@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_vector" lastUsageType="pointMarking" name="Stop Line" name_ja="停止線" uid="a1a13f41-5c76-4430-93c0-9174de7b84dc"/>
+	<Memo/>
+	<Texture realSizeHeight="1.000000" realSizeWidth="1.000000"/>
+	<PointMarking texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000">
+		<Asset type="material" uid="0465142f-93ff-49cf-b9a3-9dcc4ff18842"/>
+	</PointMarking>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+  <Xodr>
+    <Object>
+      <Info id="marking" orientation="+" name="Road Marking" name_ja="道路標示"/>
+      <Type id="4dd000b3-5d6c-4134-92ad-0bd1f3304570"/>
+      <Signal>
+        <Info id="m203" dynamic="no" orientation="+" controlType="" name="Instructional Marking 203 Stop line" name_ja="指示標示 203 停止線"/>
+        <Type id="4dd000b3-5d6c-4134-92ad-0bd1f3304570"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

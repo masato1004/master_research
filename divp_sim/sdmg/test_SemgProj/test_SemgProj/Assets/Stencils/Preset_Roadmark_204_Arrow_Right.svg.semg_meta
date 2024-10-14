@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_vector" lastUsageType="pointMarking" name="Right Arrow" name_ja="右矢印" uid="411001ec-6a91-4a50-9fb5-08d7c0b29299"/>
+	<Memo/>
+	<Texture realSizeHeight="1.000000" realSizeWidth="1.000000"/>
+	<PointMarking texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000">
+		<Asset type="material" uid="0465142f-93ff-49cf-b9a3-9dcc4ff18842"/>
+	</PointMarking>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+  <Xodr>
+    <Object>
+      <Info id="marking" orientation="none" name="Road Marking" name_ja="道路標示"/>
+      <Type id="a4b66c14-8cd8-4bd3-8355-f470abd08462"/>
+      <Signal>
+        <Info id="m204-R" dynamic="no" orientation="+" controlType="" name="Instructional Marking 204 Turn right" name_ja="指示標示 204 進行方向 右折"/>
+        <Type id="a4b66c14-8cd8-4bd3-8355-f470abd08462" value="" unit=""/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

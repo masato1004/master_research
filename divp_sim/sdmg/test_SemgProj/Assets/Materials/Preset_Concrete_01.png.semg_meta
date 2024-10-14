@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="Concrete" name_ja="コンクリート" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+	<Memo/>
+	<Texture realSizeHeight="1.500000" realSizeWidth="1.500000"/>
+	<RoadSign size="1.000000,1.000000"/>
+	<AerialImage/>
+</SemgMetaData>

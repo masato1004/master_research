@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Instructional Sign 407-3 Pedestrian and bicycle crossing" name_ja="指示標識 407の3 横断歩道・自転車横断帯" uid="af9fff60-f0e8-41b2-8ff3-77cdf8199e42"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="a7955d5e-133e-4373-8057-0f1d96600f6c"/>
+      <Signal>
+        <Info id="407n3" dynamic="no" orientation="+" controlType="" name="Instructional Sign 407-3" name_ja="指示標識 407の3 横断歩道・自転車横断帯"/>
+        <Type id="a7955d5e-133e-4373-8057-0f1d96600f6c" value="" unit=""/>
+        <Size height="0.685" width="0.6"/>
+        <Pos x="0.048" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="Road Patch" name_ja="道路補修痕" uid="05eefa47-620b-44d1-911a-19fc8642faf2"/>
+	<Memo/>
+	<Texture realSizeHeight="1.250000" realSizeWidth="1.693330"/>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+</SemgMetaData>

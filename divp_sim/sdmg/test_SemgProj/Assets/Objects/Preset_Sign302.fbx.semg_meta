@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Regulatory Sign 302 Vehicle closed" name_ja="規制標識 302 車両通行止め" uid="5a60b589-9b06-4baa-b53b-3895cda68868"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="3400e11e-d3ef-4d2f-922a-8b1f8c3c48cc"/>
+      <Signal>
+        <Info id="302" dynamic="no" orientation="+" controlType="" name="Regulatory Sign 302" name_ja="規制標識 302 車両通行止め"/>
+        <Type id="3400e11e-d3ef-4d2f-922a-8b1f8c3c48cc" value="" unit=""/>
+        <Size height="0.4" width="0.4"/>
+        <Pos x="0.045" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

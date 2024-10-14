@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_vector" lastUsageType="pointMarking" name="直進矢印" uid="e61d5167-a4b0-44e3-a4b8-596cae8ae6c4"/>
+	<Memo/>
+	<Texture realSizeHeight="1.000000" realSizeWidth="1.000000"/>
+	<PointMarking texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000">
+		<Asset type="material" uid="0465142f-93ff-49cf-b9a3-9dcc4ff18842"/>
+	</PointMarking>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+  <Xodr>
+    <Object>
+      <Info id="marking" orientation="none" name="道路標示"/>
+      <Type id="c566bf34-ee0d-452e-bb23-9d32966ef05c"/>
+      <Signal>
+        <Info id="m204-S" dynamic="no" orientation="+" controlType="" name="指示表示 204 進行方向 直進"/>
+        <Type id="c566bf34-ee0d-452e-bb23-9d32966ef05c" value="" unit=""/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

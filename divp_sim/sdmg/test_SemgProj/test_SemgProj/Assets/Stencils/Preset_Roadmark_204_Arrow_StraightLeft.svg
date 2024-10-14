@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="79.999817mm"
+   height="500mm"
+   viewBox="0 0 79.999817 500"
+   version="1.1"
+   id="svg16092"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="roadmark_204_arrow_straight_left.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview16094"
+     pagecolor="#777777"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.33540614"
+     inkscape:cx="56.64774"
+     inkscape:cy="907.85457"
+     inkscape:window-width="1453"
+     inkscape:window-height="1003"
+     inkscape:window-x="740"
+     inkscape:window-y="162"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs16089" />
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-124.23446,33.334647)">
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.315812;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 187.82587,324.79333 V 182.92137 h 8.20495 c 4.51273,0 8.20428,-0.27287 8.20346,-0.60629 -0.002,-0.69977 -23.18335,-213.200421 -23.52381,-215.637342 -0.12423,-0.889227 -5.42658,46.219525 -11.78302,104.686144 -6.35643,58.466618 -11.7513,107.485228 -11.98859,108.930198 l -0.43145,2.62729 h 8.31796 8.31796 l 0.005,72.14857 c 0.003,48.23766 0.30762,73.16919 0.91849,75.22821 0.50252,1.69381 0.78139,3.45109 0.61969,3.90511 -0.16169,0.45403 -1.35952,-2.72282 -2.66184,-7.05963 -2.57171,-8.56393 -8.00195,-19.95887 -12.98812,-27.2545 l -3.14988,-4.60883 -0.22428,-38.55884 -0.22432,-38.55886 -15.60182,53.59352 -15.60179,53.59355 15.60179,53.56865 15.60182,53.56863 0.43184,-38.8529 0.43184,-38.8529 3.66114,4.0032 c 4.10591,4.48953 8.01544,10.96545 10.82284,17.92743 1.83299,4.54559 1.89001,5.7931 2.16263,47.31112 l 0.28,42.64245 h 7.29884 7.29884 z"
+       id="path15890" />
+  </g>
+</svg>

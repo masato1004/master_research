@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SemgFeatureDefine version="1.0.0">
+	<Header/>
+<!-- カテゴリリスト -->
+	<Categories>
+    <!-- プリセットカテゴリ　ユーザ編集不可 -->
+		<CategoryNode name_key="system" info_key="editDisable">
+			<CategoryNode name_key="flag">
+				<CategoryLeaf id="4595e58c-a8d8-4519-bc76-233cbd091658" name_key="SystemFlagPreset" info="Undeleteable" info_ja="削除不可"/>
+				<CategoryLeaf id="43c72335-b887-41ee-a7ef-51d4a35d2562" name_key="SystemFlagStopline" info="Stopline" info_ja="停止線"/>
+				<CategoryLeaf id="a493d1dd-477d-4cd7-8aaa-00c2b2f84408" name_key="SystemFlagCrosswalk" info="Crosswalk" info_ja="横断歩道"/>
+			</CategoryNode>
+		</CategoryNode>
+		<CategoryNode name_key="none" info_key="editDisable">
+			<CategoryNode name_key="none">
+				<CategoryLeaf id="4b35ee47-aa3f-449d-ac81-2184ec70b31d" name_key="none" info="none" info_ja="カテゴリ無し"/>
+			</CategoryNode>
+		</CategoryNode>
+    <!-- 道路地物カテゴリ -->
+		<CategoryNode name="道路標識">
+			<CategoryNode name="案内標識">
+        <CategoryLeaf id="f757359a-618d-4d9f-bdbb-fa8bcb19d096" name="方面及び方向" info="道路標識、案内標識"/>
+      </CategoryNode>
+			<CategoryNode name="警戒標識">
+        <CategoryLeaf id="172720db-de4a-4615-a723-e6af08aeaa8e" name="交差点・合流あり" info="道路標識、警戒標識"/>
+        <CategoryLeaf id="7b3ec9dd-5ba9-4b66-aa45-c6fb838d598a" name="屈曲・屈折あり" info="道路標識、警戒標識"/>
+        <CategoryLeaf id="b88ece64-3795-4ad9-bfcd-d85c3c96e75a" name="その他" info="道路標識、警戒標識"/>
+      </CategoryNode>
+			<CategoryNode name="規制標識">
+        <CategoryLeaf id="30c7f1c0-6c7d-4257-87f3-9cf7f4b11bce" name="一時停止" info="道路標識、規制標識"/>
+        <CategoryLeaf id="2c5ff348-c989-48b7-ad31-bf991c01d02b" name="歩行者通行止め" info="道路標識、規制標識"/>
+        <CategoryLeaf id="d5ccc5b1-2714-477e-b5da-b747b5b12b18" name="通行止め" info="道路標識、規制標識"/>
+        <CategoryLeaf id="d5801625-7fed-4ec3-a6b2-5b05a2cf0e2e" name="指定方向外進行禁止" info="道路標識、規制標識"/>
+        <CategoryLeaf id="97b55ba3-a6dd-4780-839d-d96f81487492" name="転回禁止" info="道路標識、規制標識"/>
+        <CategoryLeaf id="7532bac4-a639-4548-a664-b95f2135415d" name="駐車禁止" info="道路標識、規制標識"/>
+				<CategoryLeaf id="435e780a-3f2c-454e-b6c1-a60a4fde5802" name="最高速度" info="道路標識、規制標識"/>
+        <CategoryLeaf id="2d0a2b1e-5787-4c00-b209-ecdb1ad2c088" name="専用道路" info="道路標識、規制標識"/>
+      </CategoryNode>
+		  <CategoryNode name="指示標識">
+        <CategoryLeaf id="4bcd59ba-b7d9-4da0-8cff-5359dcd65652" name="駐車可" info="道路標識、指示標識"/>
+        <CategoryLeaf id="840d7e1d-05c4-44c3-b028-16e0cc3f9e6b" name="横断歩道" info="道路標識、指示標識"/>
+      </CategoryNode>
+		  <CategoryNode name="補助標識">
+        <CategoryLeaf id="8872dbf5-e0a1-4db5-ba1b-1aeb4d7593bd" name="区間" info="道路標識、補助標識"/>
+        <CategoryLeaf id="694abd65-b5e3-4634-9002-fe134c3831f5" name="その他" info="道路標識、補助標識"/>
+      </CategoryNode>
+		  <CategoryNode name="その他">
+				<CategoryLeaf id="cf97e998-abb9-4f61-a589-e84181b6c84f" name="その他" info="道路標識"/>
+	  	</CategoryNode>
+		</CategoryNode>
+		<CategoryNode name="道路標示">
+			<CategoryNode name="規制標示">
+				<CategoryLeaf id="6a2b1554-1126-41dd-8956-f13ef74aaa3b" name="最高速度" info="道路標示、規制標示"/>
+			</CategoryNode>
+		  <CategoryNode name="指示標示">
+				<CategoryLeaf id="2af200ed-f04f-4416-9d58-1d1b2e3850bd" name="停止線" info="道路標示、指示標示"/>
+				<CategoryLeaf id="998afd5d-41a7-49ce-88cf-371e4cdcb814" name="横断歩道" info="道路標示、指示標示"/>
+        <CategoryLeaf id="f744b406-1206-44ed-a6f8-c4070b3841da" name="進行方向" info="道路標示、指示標示"/>
+        <CategoryLeaf id="05262563-bb8b-4a61-8d23-3d8c46ddcb36" name="その他" info="道路標示、指示標示"/>
+      </CategoryNode>
+			<CategoryNode name="その他">
+				<CategoryLeaf id="0ee32e83-974f-4bf1-b8d3-9020cc4e91e6" name="その他" info="道路標示"/>
+			</CategoryNode>
+		</CategoryNode>
+		<CategoryNode name="信号機">
+			<CategoryNode name="信号機ユニット">
+				<CategoryLeaf id="570fc54b-3219-40c1-a8f8-bfa62b70a76a" name="信号機ユニット全般" info="信号機ユニット全般"/>
+			</CategoryNode>
+			<CategoryNode name="信号機灯火">
+				<CategoryLeaf id="2d611384-238a-4158-826c-11c6ee532622" name="信号機灯火全般" info="信号機灯火全般"/>
+			</CategoryNode>
+		</CategoryNode>
+	</Categories>
+<!-- 地物リスト -->
+  <!--道路標示-->
+	<Features>
+    <Feature id="4dd000b3-5d6c-4134-92ad-0bd1f3304570">
+      <Property language="ja" name="停止線" comment="道路標示、指示標示、203"/>
+      <Property language="en" name="StopLine" comment=""/>
+      <Categories>
+				<Category id="4595e58c-a8d8-4519-bc76-233cbd091658" comment="SystemFlagPreset"/>
+				<Category id="43c72335-b887-41ee-a7ef-51d4a35d2562" comment="SystemFlagStopline"/>
+        <Category id="2af200ed-f04f-4416-9d58-1d1b2e3850bd" comment="停止線"/>
+      </Categories>
+    </Feature>
+    <Feature id="24572eeb-a405-4459-ac87-5e52060535eb">
+      <Property language="ja" name="横断歩道" comment="道路標示、指示標示、201"/>
+      <Property language="en" name="Crosswalk" comment=""/>
+      <Categories>
+				<Category id="4595e58c-a8d8-4519-bc76-233cbd091658" comment="SystemFlagPreset"/>
+				<Category id="a493d1dd-477d-4cd7-8aaa-00c2b2f84408" comment="SystemFlagCrosswalk"/>
+        <Category id="998afd5d-41a7-49ce-88cf-371e4cdcb814" comment="横断歩道"/>
+      </Categories>
+    </Feature>
+    <Feature id="191b0631-d8ec-486a-a325-bb0200f86597">
+      <Property language="ja" name="進行方向" comment="道路標示、指示標示、204（左折）"/>
+      <Categories>
+        <Category id="f744b406-1206-44ed-a6f8-c4070b3841da" comment="進行方向"/>
+      </Categories>
+    </Feature>
+    <Feature id="a4b66c14-8cd8-4bd3-8355-f470abd08462">
+      <Property language="ja" name="進行方向" comment="道路標示、指示標示、204（右折）"/>
+      <Categories>
+        <Category id="f744b406-1206-44ed-a6f8-c4070b3841da" comment="進行方向"/>
+      </Categories>
+    </Feature>
+    <Feature id="c566bf34-ee0d-452e-bb23-9d32966ef05c">
+      <Property language="ja" name="進行方向" comment="道路標示、指示標示、204（直進）"/>
+      <Categories>
+        <Category id="f744b406-1206-44ed-a6f8-c4070b3841da" comment="進行方向"/>
+      </Categories>
+    </Feature>
+    <Feature id="d57d5a5b-0929-49a9-a902-9da1b2d54f80">
+      <Property language="ja" name="進行方向" comment="道路標示、指示標示、204（直進・左折）"/>
+      <Categories>
+        <Category id="f744b406-1206-44ed-a6f8-c4070b3841da" comment="進行方向"/>
+      </Categories>
+    </Feature>
+    <Feature id="fc354219-69c4-4321-af0a-8a1247443c02">
+      <Property language="ja" name="進行方向" comment="道路標示、指示標示、204（直進・右折）"/>
+      <Categories>
+        <Category id="f744b406-1206-44ed-a6f8-c4070b3841da" comment="進行方向"/>
+      </Categories>
+    </Feature>
+    <Feature id="0213dd1d-c137-4d4d-9b36-a70d882b6766">
+      <Property language="ja" name="横断歩道又は自転車横断帯あり" comment="道路標示、指示標示、210"/>
+      <Categories>
+        <Category id="05262563-bb8b-4a61-8d23-3d8c46ddcb36" comment="その他"/>
+      </Categories>
+    </Feature>
+    <Feature id="56cfed79-6227-4bbb-83c3-5111f2622eff">
+      <Property language="ja" name="最高速度" comment="道路標示、規制標示、105"/>
+      <Categories>
+				<Category id="6a2b1554-1126-41dd-8956-f13ef74aaa3b" comment="最高速度"/>
+      </Categories>
+    </Feature>
+
+    <!--道路標識-->
+    <Feature id="8be4409d-fd80-48fa-a30e-364daf90696c">
+      <Property language="ja" name="方面及び方向の予告" comment="道路標識、案内標識、108-A"/>
+      <Categories>
+        <Category id="f757359a-618d-4d9f-bdbb-fa8bcb19d096" comment="方面及び方向"/>
+      </Categories>
+    </Feature>
+    <Feature id="06f8809a-39a8-44d0-b335-f0bef86cebda">
+      <Property language="ja" name="方面及び方向" comment="道路標識、案内標識、108n2-A"/>
+      <Categories>
+        <Category id="f757359a-618d-4d9f-bdbb-fa8bcb19d096" comment="方面及び方向"/>
+      </Categories>
+    </Feature>
+
+    <Feature id="491d914e-85b9-405f-9948-5fe6930b9cf1">
+      <Property language="ja" name="道路交差点あり" comment="道路標識、警戒標識、201-B"/>
+      <Categories>
+        <Category id="172720db-de4a-4615-a723-e6af08aeaa8e" comment="交差点・合流あり"/>
+      </Categories>
+    </Feature>
+    <Feature id="2b6303d2-1b71-4b3d-a85e-664870630038">
+      <Property language="ja" name="右(又は左)方屈曲あり" comment="道路標識、警戒標識、202"/>
+      <Categories>
+        <Category id="7b3ec9dd-5ba9-4b66-aa45-c6fb838d598a" comment="屈曲・屈折あり"/>
+      </Categories>
+    </Feature>
+    <Feature id="b5a8ab52-fca4-4198-86f0-1f33939d0fb4">
+      <Property language="ja" name="右(又は左)方屈折あり" comment="道路標識、警戒標識、203"/>
+      <Categories>
+        <Category id="7b3ec9dd-5ba9-4b66-aa45-c6fb838d598a" comment="屈曲・屈折あり"/>
+      </Categories>
+    </Feature>
+    <Feature id="25059504-365a-4139-bda4-d846b75f5154">
+      <Property language="ja" name="右(又は左)つづら折りあり" comment="道路標識、警戒標識、206"/>
+      <Categories>
+        <Category id="7b3ec9dd-5ba9-4b66-aa45-c6fb838d598a" comment="屈曲・屈折あり"/>
+      </Categories>
+    </Feature>
+    <Feature id="d20d9e39-f02f-43d7-bb8f-cc3ccbc90c00">
+      <Property language="ja" name="合流交通あり" comment="道路標識、警戒標識、210"/>
+      <Categories>
+        <Category id="172720db-de4a-4615-a723-e6af08aeaa8e" comment="交差点・合流あり"/>
+      </Categories>
+    </Feature>
+    <Feature id="bb9cecd9-58f2-46e4-98e2-f0818ed78eb0">
+      <Property language="ja" name="学校、幼稚園、保育所等あり" comment="道路標識、警戒標識、208"/>
+      <Categories>
+        <Category id="b88ece64-3795-4ad9-bfcd-d85c3c96e75a" comment="その他"/>
+      </Categories>
+    </Feature>
+
+    <Feature id="3400e11e-d3ef-4d2f-922a-8b1f8c3c48cc">
+      <Property language="ja" name="車両通行止め" comment="道路標識、規制標識、302"/>
+      <Categories>
+        <Category id="d5ccc5b1-2714-477e-b5da-b747b5b12b18" comment="通行止め"/>
+      </Categories>
+    </Feature>
+    <Feature id="d9055bca-ac24-4e1c-9bc1-2ad4f4200ad9">
+      <Property language="ja" name="指定方向外進行禁止" comment="道路標識、規制標識、311-A"/>
+      <Categories>
+        <Category id="d5801625-7fed-4ec3-a6b2-5b05a2cf0e2e" comment="指定方向外進行禁止"/>
+      </Categories>
+    </Feature>
+    <Feature id="99a23436-d797-438b-bed3-b411eb7dbd79">
+      <Property language="ja" name="指定方向外進行禁止" comment="道路標識、規制標識、311-B"/>
+      <Categories>
+        <Category id="d5801625-7fed-4ec3-a6b2-5b05a2cf0e2e" comment="指定方向外進行禁止"/>
+      </Categories>
+    </Feature>
+    <Feature id="30da77c4-dbce-478b-8635-d6c870edaf04">
+      <Property language="ja" name="指定方向外進行禁止" comment="道路標識、規制標識、311-C"/>
+      <Categories>
+        <Category id="d5801625-7fed-4ec3-a6b2-5b05a2cf0e2e" comment="指定方向外進行禁止"/>
+      </Categories>
+    </Feature>
+    <Feature id="d7c3e56e-5b02-40c6-a61d-680295844960">
+      <Property language="ja" name="一方通行" comment="道路標識、規制標識、326-A"/>
+      <Categories>
+        <Category id="d5801625-7fed-4ec3-a6b2-5b05a2cf0e2e" comment="指定方向外進行禁止"/>
+      </Categories>
+    </Feature>
+    <Feature id="b070483a-a6cb-4034-bec8-a910f780efdd">
+      <Property language="ja" name="転回禁止" comment="道路標識、規制標識、313"/>
+      <Categories>
+        <Category id="97b55ba3-a6dd-4780-839d-d96f81487492" comment="転回禁止"/>
+      </Categories>
+    </Feature>
+    <Feature id="3e717508-0e74-49e2-9897-79fb98ad4281">
+		<Property language="ja" name="駐車禁止" comment="道路標識、規制標識、316"/>
+		<Categories>
+			<Category id="7532bac4-a639-4548-a664-b95f2135415d" comment="駐車禁止"/>
+		</Categories>
+	</Feature>
+	<Feature id="941cb547-8476-435b-aa6a-17a2e05797ec">
+		<Property language="ja" name="最高速度" comment="道路標識、規制標識、323"/>
+		<Categories>
+			<Category id="435e780a-3f2c-454e-b6c1-a60a4fde5802" comment="最高速度"/>
+		</Categories>
+	</Feature>
+    <Feature id="4fabf753-d033-4c87-a5bf-82750f4743cf">
+      <Property language="ja" name="一時停止" comment="道路標識、規制標識、330-A"/>
+      <Categories>
+        <Category id="30c7f1c0-6c7d-4257-87f3-9cf7f4b11bce" comment="一時停止"/>
+      </Categories>
+    </Feature>
+    <Feature id="2fe540cc-765f-4a20-8760-ec2bba508d14">
+      <Property language="ja" name="一時停止" comment="道路標識、規制標識、330-B"/>
+      <Categories>
+        <Category id="30c7f1c0-6c7d-4257-87f3-9cf7f4b11bce" comment="一時停止"/>
+      </Categories>
+    </Feature>
+    <Feature id="5cbe7a6b-18a1-429d-a98e-e4adba08c6fe">
+      <Property language="ja" name="自動車専用" comment="道路標識、規制標識 325"/>
+      <Categories>
+        <Category id="2d0a2b1e-5787-4c00-b209-ecdb1ad2c088" comment="専用道路"/>
+      </Categories>
+    </Feature>
+    <Feature id="54bddafb-d838-4ac7-9c23-571f50fc8fd1">
+      <Property language="ja" name="自転車専用" comment="道路標識、規制標識 325の2"/>
+      <Categories>
+        <Category id="2d0a2b1e-5787-4c00-b209-ecdb1ad2c088" comment="専用道路"/>
+      </Categories>
+    </Feature>
+    <Feature id="f0f772e7-5e99-4fef-a6aa-b9f912939a37">
+      <Property language="ja" name="自転車及び歩行者専用" comment="道路標識、規制標識 325の3"/>
+      <Categories>
+        <Category id="2d0a2b1e-5787-4c00-b209-ecdb1ad2c088" comment="専用道路"/>
+      </Categories>
+    </Feature>
+    <Feature id="3cc127a8-7d98-4d59-bd65-d94470f325ef">
+      <Property language="ja" name="歩行者横断禁止" comment="道路標識、規制標識 332"/>
+      <Categories>
+        <Category id="2c5ff348-c989-48b7-ad31-bf991c01d02b" comment="歩行者通行止め"/>
+      </Categories>
+    </Feature>
+    
+    <Feature id="0ff86b71-712e-476a-b5be-ddd367e586f4">
+      <Property language="ja" name="駐車可" comment="道路標識、指示標識、403"/>
+      <Categories>
+        <Category id="4bcd59ba-b7d9-4da0-8cff-5359dcd65652" comment="駐車可"/>
+      </Categories>
+    </Feature>
+    <Feature id="2d12e857-b307-41ca-b06e-b12e353b35e5">
+      <Property language="ja" name="横断歩道" comment="道路標識、指示標識、407-A"/>
+      <Categories>
+        <Category id="840d7e1d-05c4-44c3-b028-16e0cc3f9e6b" comment="横断歩道"/>
+      </Categories>
+    </Feature>
+    <Feature id="a7955d5e-133e-4373-8057-0f1d96600f6c">
+      <Property language="ja" name="横断歩道・自転車横断帯" comment="道路標識、指示標識、407n3"/>
+      <Categories>
+        <Category id="840d7e1d-05c4-44c3-b028-16e0cc3f9e6b" comment="横断歩道"/>
+      </Categories>
+    </Feature>
+    
+    <Feature id="d8901198-32bc-4e2b-ba70-68d625aea83c">
+      <Property language="ja" name="区間内" comment="道路標識、補助標識、506"/>
+      <Categories>
+        <Category id="8872dbf5-e0a1-4db5-ba1b-1aeb4d7593bd" comment="区間"/>
+      </Categories>
+    </Feature>
+    <Feature id="12efd481-61e4-4709-a035-9871c572f48e">
+      <Property language="ja" name="通学路" comment="道路標識、補助標識、508"/>
+      <Categories>
+        <Category id="694abd65-b5e3-4634-9002-fe134c3831f5" comment="その他"/>
+      </Categories>
+    </Feature>
+
+    <Feature id="02e1a555-b63c-431c-8bb2-708ba31b5b3f">
+      <Property language="ja" name="信号機設備" comment="信号機設備全般"/>
+      <Categories>
+        <Category id="570fc54b-3219-40c1-a8f8-bfa62b70a76a" comment=""/>
+      </Categories>
+    </Feature>
+    <Feature id="93b2857a-6581-4467-aa3c-dba46758ff0b">
+      <Property language="ja" name="信号機設備" comment="信号機(車両用)、矢印灯火なし、横型、ポール付き"/>
+      <Categories>
+        <Category id="570fc54b-3219-40c1-a8f8-bfa62b70a76a" comment=""/>
+      </Categories>
+    </Feature>
+    <Feature id="ad287176-4f50-4ed4-ab0f-0e0475de4746">
+      <Property language="ja" name="信号機設備" comment="信号機(車両用両面+歩行者用)、矢印灯火なし、横型、ポール付き"/>
+      <Categories>
+        <Category id="570fc54b-3219-40c1-a8f8-bfa62b70a76a" comment=""/>
+      </Categories>
+    </Feature>
+    <Feature id="686d6794-d874-4c24-9ea3-11c18f04c6a4">
+      <Property language="ja" name="信号機設備" comment="信号機(車両用+歩行者用)、矢印3灯、横型、ポール付き"/>
+      <Categories>
+        <Category id="570fc54b-3219-40c1-a8f8-bfa62b70a76a" comment=""/>
+      </Categories>
+    </Feature>
+
+    <Feature id="a5a99e84-d787-4845-a5ef-97dd314c934c">
+      <Property language="ja" name="信号機灯火(車両用Green/Yellow/Red)" comment="信号機灯火(車両用Green/Yellow/Red)"/>
+      <Categories>
+        <Category id="2d611384-238a-4158-826c-11c6ee532622" comment=""/>
+      </Categories>
+    </Feature>
+    <Feature id="2b6759d7-dee3-428a-a1b1-3feaec9de390">
+      <Property language="ja" name="信号機灯火(歩行者用Green/Red)" comment="信号機灯火(歩行者用Green/Red)"/>
+      <Categories>
+        <Category id="2d611384-238a-4158-826c-11c6ee532622" comment=""/>
+      </Categories>
+    </Feature>
+    <Feature id="3b6fac04-f692-46bb-a32b-c6b3df715e73">
+      <Property language="ja" name="信号機灯火(左矢印)" comment="信号機灯火(左矢印)"/>
+      <Categories>
+        <Category id="2d611384-238a-4158-826c-11c6ee532622" comment=""/>
+      </Categories>
+    </Feature>
+    <Feature id="7f00957e-94cf-41e7-8874-1d7e3f173f7a">
+      <Property language="ja" name="信号機灯火(右矢印)" comment="信号機灯火(右矢印)"/>
+      <Categories>
+        <Category id="2d611384-238a-4158-826c-11c6ee532622" comment=""/>
+      </Categories>
+    </Feature>
+    <Feature id="9be7f1d2-4735-4a89-98b1-74390a74e567">
+      <Property language="ja" name="信号機灯火(上矢印)" comment="信号機灯火(上矢印)"/>
+      <Categories>
+        <Category id="2d611384-238a-4158-826c-11c6ee532622" comment=""/>
+      </Categories>
+    </Feature>
+  </Features>
+</SemgFeatureDefine>
+
+<!--Feature記述代替案
+    <Feature id="">
+      <Property>
+        <Language_ja name="横断歩道" comment="歩行者横断帯の標示"/>
+        <Language_en name="Crosswalk" comment=""/>
+      </Property>
+    </Feature>
+-->
+
+<!--コピペ用
+
+		<CategoryNode name="">
+			<CategoryNode name="">
+				<CategoryLeaf id="" name="" info=""/>
+			</CategoryNode>
+		</CategoryNode>
+    
+			<Categories>
+				<Category id="4b35ee47-aa3f-449d-ac81-2184ec70b31d" name="none"/>
+			</Categories>
+      
+-->

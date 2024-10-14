@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_vector" lastUsageType="pointMarking" name="Straight Left Arrow" name_ja="直進・左矢印" uid="332b963f-e24d-4642-942e-5bdb3cabcc75"/>
+	<Memo/>
+	<Texture realSizeHeight="1.000000" realSizeWidth="1.000000"/>
+	<PointMarking texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000">
+		<Asset type="material" uid="0465142f-93ff-49cf-b9a3-9dcc4ff18842"/>
+	</PointMarking>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage/>
+  <Xodr>
+    <Object>
+      <Info id="marking" orientation="none" name="Road Marking" name_ja="道路標示"/>
+      <Type id="d57d5a5b-0929-49a9-a902-9da1b2d54f80"/>
+      <Signal>
+        <Info id="m204-SL" dynamic="no" orientation="+" controlType="" name="Instructional Marking 204 Straight Left" name_ja="指示標示 204 進行方向 直進・左折"/>
+        <Type id="d57d5a5b-0929-49a9-a902-9da1b2d54f80" value="" unit=""/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120mm"
+   height="500.02487mm"
+   viewBox="0 0 120 500.02488"
+   version="1.1"
+   id="svg7442"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="roadmark_105_saikousokudo_60.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7444"
+     pagecolor="#808080"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.33540615"
+     inkscape:cx="-50.684819"
+     inkscape:cy="1683.0341"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs7439">
+    <marker
+       id="DistanceX"
+       orient="auto"
+       refX="0"
+       refY="0"
+       style="overflow:visible">
+      <path
+         d="M 3,-3 -3,3 M 0,-5 V 5"
+         style="stroke:#000000;stroke-width:0.5"
+         id="path7511" />
+    </marker>
+    <pattern
+       id="Hatch"
+       patternUnits="userSpaceOnUse"
+       width="8"
+       height="8"
+       x="0"
+       y="0">
+      <path
+         d="M8 4 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path7514" />
+      <path
+         d="M6 2 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path7516" />
+      <path
+         d="M4 0 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path7518" />
+    </pattern>
+  </defs>
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-64.305281,174.60516)">
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:1.07408"
+       d="m 79.391043,323.02879 c -5.675691,-2.20045 -11.302657,-7.74469 -13.122539,-12.92967 -1.901577,-5.41767 -1.901577,-464.11311 0,-469.53081 5.28711,-15.0633 28.17214,-19.68753 40.753466,-8.23481 6.77396,6.16632 6.74627,5.92861 6.74627,57.89703 v 47.664167 h -6.39397 -6.39399 V -92.89968 c 0,-32.71945 -0.51573,-36.24957 -5.637852,-38.5895 -4.206429,-1.92163 -10.486035,-1.2919 -13.596904,1.36352 l -2.85349,2.43576 v 99.609833 c 0,54.785383 0.258598,99.830657 0.574904,100.100574 0.316212,0.269918 3.062706,0.0647 6.103358,-0.456173 10.369868,-1.776176 20.843454,2.796788 25.941344,11.326542 2.1944,3.671616 2.2559,6.833432 2.23107,114.709154 -0.025,105.86099 -0.12414,111.11496 -2.17848,114.90284 -5.71496,10.53654 -20.04935,15.22626 -32.173187,10.52592 z m 17.480071,-42.1562 c 1.66229,-1.41893 3.051663,-4.08356 3.492586,-6.6983 0.40268,-2.38812 0.57538,-39.32157 0.38375,-82.07431 l -0.34843,-77.7323 -3.79661,-2.89529 c -5.043298,-3.84604 -9.802264,-3.84427 -14.312179,0.005 l -3.398197,2.90111 v 81.98946 81.98943 l 2.85349,2.43574 c 3.919477,3.34564 11.25412,3.38419 15.12559,0.0796 z"
+       id="path7647" />
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:1.0744"
+       d="m 149.35739,323.08508 c -5.70105,-2.25226 -10.33705,-6.34373 -12.73239,-11.23677 -1.61591,-3.30085 -1.80366,-28.25628 -1.78082,-236.704096 0.025,-224.688524 0.10239,-233.156084 2.17954,-236.984114 9.44445,-17.40646 38.91054,-15.84331 45.31749,2.40404 1.90249,5.4184 1.90249,464.17421 0,469.5926 -4.13426,11.7746 -20.0819,18.02543 -32.98382,12.92834 z m 17.49937,-42.23823 2.85485,-2.43605 V 75.360453 -127.68991 l -2.85485,-2.43607 c -3.11236,-2.65578 -9.39499,-3.28558 -13.60347,-1.3637 -5.90076,2.69471 -5.64057,-6.8474 -5.64057,206.850133 0,212.645647 -0.22657,203.999887 5.41577,206.798477 3.97968,1.97398 10.7276,1.3337 13.82827,-1.31208 z"
+       id="path7686" />
+  </g>
+</svg>

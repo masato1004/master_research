@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Regulatory Sign 325 Bicycle only" name_ja="規制標識 325 自動車専用" uid="fc01b4c2-dbfe-4653-9c99-6d4c05abad97"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="5cbe7a6b-18a1-429d-a98e-e4adba08c6fe"/>
+      <Signal>
+        <Info id="325" dynamic="no" orientation="+" controlType="" name="Regulatory Sign 325" name_ja="規制標識 325 自動車専用"/>
+        <Type id="5cbe7a6b-18a1-429d-a98e-e4adba08c6fe" value="" unit=""/>
+        <Size height="0.4" width="0.4"/>
+        <Pos x="0.045" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

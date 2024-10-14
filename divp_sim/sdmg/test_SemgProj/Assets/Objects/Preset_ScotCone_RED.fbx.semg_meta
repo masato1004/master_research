@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Scotch Corn (red,polygon high)" name_ja="スコッチコーン（赤、高ポリゴン）" uid="8b775730-bb6b-457b-859c-46059c0df2b9"/>
+	<Memo><![CDATA[PFで再帰反射部を正しく描画するには、マテリアルシーンファイルの設定が必要となります。
+このFBXと同フォルダに格納してある
+Preset_ScotCone_RED_camera.scene
+の内容をPF側のシーンファイルに記述し、
+MaterialFileフォルダ
+をPF側のフォルダに統合してください。
+詳細はPFの説明書を参照ください。
+In order to correctly draw the retroreflection part with PF,
+ it is necessary to set the material scene file.
+Write the contents of Preset_ScotCone_RED_camera.scene stored in the same folder as this FBX
+ in the PF side scene file, and integrate the MaterialFile folder into the PF side folder.
+Please refer to the PF manual for details.]]></Memo>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>
