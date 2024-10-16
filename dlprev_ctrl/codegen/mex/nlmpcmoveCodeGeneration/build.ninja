@@ -1,0 +1,72 @@
+# CompilerName=msvc170
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root\build\win64
+matlabdir = C:\Program Files\MATLAB\R2024a
+startdir = C:\Users\masato\research\master_research_b\lng_modeling\half_active
+
+# Toolchain information
+cc = cl
+cxx = cl
+linker = link
+linkerxx = link
+
+cflags =  /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I "$root" /I "$startdir" /I "$root\interface" /I "$matlabdir\extern\include" /I "." -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_STRUCTURE -DMW_HAVE_LAPACK_DECLS -DMODEL=nlmpcControllerMEX  
+
+cxxflags =   /c /Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD /D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0   /DMATLAB_MEX_FILE  /DMATLAB_MEX_FILE /O2 /Oy- /DNDEBUG /fp:strict /utf-8 /I "$root" /I "$startdir" /I "$root\interface" /I "$matlabdir\extern\include" /I "." -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_STRUCTURE -DMW_HAVE_LAPACK_DECLS -DMODEL=nlmpcControllerMEX  
+
+ldflags =  /nologo    /DLL /LIBPATH:"$matlabdir\extern\lib\win64\microsoft" libmx.lib libmex.lib libmat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib  /out:"nlmpcControllerMEX.mexw64" /LIBPATH:"$matlabdir\extern\lib\win64\microsoft" libmwlapack.lib libmwblas.lib libemlrt.lib libcovrt.lib libut.lib libmwmathutil.lib  /export:mexFunction /export:mexfilerequiredapiversion /export:emlrtMexFcnProperties /export:nlmpcmoveCodeGeneration /export:nlmpcmoveCodeGeneration_initialize /export:nlmpcmoveCodeGeneration_terminate /export:nlmpcmoveCodeGeneration_atexit /export:emxInit_int32_T /export:emxInit_ptrdiff_t /export:emxEnsureCapacity_int32_T /export:emxEnsureCapacity_ptrdiff_t /export:emxFree_ptrdiff_t /export:emxFree_int32_T /export:emxInit_real_T /export:emxEnsureCapacity_real_T /export:emxFree_real_T /export:emxInit_boolean_T /export:emxEnsureCapacity_boolean_T /export:emxFree_boolean_T
+
+linkobjs = 
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in /Fo$out
+
+rule cxx
+    command = $cxx $cxxflags $in /Fo$out
+
+rule link
+    command = $linker @$out.rsp $linkobjs $ldflags
+    rspfile = $out.rsp
+    rspfile_content = $in
+
+rule linkxx
+    command = $linkerxx $in $linkobjs $ldflags
+
+# Build
+build $builddir\nlmpcmoveCodeGeneration_data.obj : cc $root\nlmpcmoveCodeGeneration_data.c
+build $builddir\rt_nonfinite.obj : cc $root\rt_nonfinite.c
+build $builddir\nlmpcmoveCodeGeneration_initialize.obj : cc $root\nlmpcmoveCodeGeneration_initialize.c
+build $builddir\nlmpcmoveCodeGeneration_terminate.obj : cc $root\nlmpcmoveCodeGeneration_terminate.c
+build $builddir\nlmpcmoveCodeGeneration.obj : cc $root\nlmpcmoveCodeGeneration.c
+build $builddir\evaluateStateTrajectory.obj : cc $root\evaluateStateTrajectory.c
+build $builddir\nlmpc_config__stateFcn.obj : cc $root\nlmpc_config__stateFcn.c
+build $builddir\expm.obj : cc $root\expm.c
+build $builddir\mtimes.obj : cc $root\mtimes.c
+build $builddir\inv.obj : cc $root\inv.c
+build $builddir\log2.obj : cc $root\log2.c
+build $builddir\pinv.obj : cc $root\pinv.c
+build $builddir\makima.obj : cc $root\makima.c
+build $builddir\nlmpc_config__costFcnJacobian.obj : cc $root\nlmpc_config__costFcnJacobian.c
+build $builddir\MtimesRightAdjoint.obj : cc $root\MtimesRightAdjoint.c
+build $builddir\MtimesLeftAdjoint.obj : cc $root\MtimesLeftAdjoint.c
+build $builddir\nlmpc_config__stateFcnJacobian.obj : cc $root\nlmpc_config__stateFcnJacobian.c
+build $builddir\getHamiltonianDerivatives.obj : cc $root\getHamiltonianDerivatives.c
+build $builddir\nlmpc_config__ineqConFcn.obj : cc $root\nlmpc_config__ineqConFcn.c
+build $builddir\mldivide.obj : cc $root\mldivide.c
+build $builddir\computeInfo.obj : cc $root\computeInfo.c
+build $builddir\_coder_nlmpcmoveCodeGeneration_api.obj : cc $root\interface\_coder_nlmpcmoveCodeGeneration_api.c
+build $builddir\_coder_nlmpcmoveCodeGeneration_mex.obj : cc $root\interface\_coder_nlmpcmoveCodeGeneration_mex.c
+build $builddir\sumMatrixIncludeNaN.obj : cc $root\sumMatrixIncludeNaN.c
+build $builddir\fdgmres.obj : cc $root\fdgmres.c
+build $builddir\mpower.obj : cc $root\mpower.c
+build $builddir\nlmpcmoveCodeGeneration_emxutil.obj : cc $root\nlmpcmoveCodeGeneration_emxutil.c
+build $builddir\_coder_nlmpcmoveCodeGeneration_info.obj : cc $root\interface\_coder_nlmpcmoveCodeGeneration_info.c
+build $builddir\c_mexapi_version.obj : cc $matlabdir\extern\version\c_mexapi_version.c
+
+# Link
+build $root\nlmpcControllerMEX.mexw64 : link $builddir\nlmpcmoveCodeGeneration_data.obj $builddir\rt_nonfinite.obj $builddir\nlmpcmoveCodeGeneration_initialize.obj $builddir\nlmpcmoveCodeGeneration_terminate.obj $builddir\nlmpcmoveCodeGeneration.obj $builddir\evaluateStateTrajectory.obj $builddir\nlmpc_config__stateFcn.obj $builddir\expm.obj $builddir\mtimes.obj $builddir\inv.obj $builddir\log2.obj $builddir\pinv.obj $builddir\makima.obj $builddir\nlmpc_config__costFcnJacobian.obj $builddir\MtimesRightAdjoint.obj $builddir\MtimesLeftAdjoint.obj $builddir\nlmpc_config__stateFcnJacobian.obj $builddir\getHamiltonianDerivatives.obj $builddir\nlmpc_config__ineqConFcn.obj $builddir\mldivide.obj $builddir\computeInfo.obj $builddir\_coder_nlmpcmoveCodeGeneration_api.obj $builddir\_coder_nlmpcmoveCodeGeneration_mex.obj $builddir\sumMatrixIncludeNaN.obj $builddir\fdgmres.obj $builddir\mpower.obj $builddir\nlmpcmoveCodeGeneration_emxutil.obj $builddir\_coder_nlmpcmoveCodeGeneration_info.obj $builddir\c_mexapi_version.obj 

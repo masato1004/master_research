@@ -44,7 +44,7 @@ range_min = 0;        % minimum measurable distance [m]
 range_max = 7;        % maximum measurable distance [m]
 
 % for file_num = 170:length(list_estimated_imgs)
-animation = true;
+animation = false;
 
 if animation
     video = VideoWriter("sparse_roaddem_from_32",'MPEG-4');
