@@ -1,8 +1,8 @@
-%% branch: lng-ctrl
+%% branch: pc-system
 close all;
 clear;
 clc;
-branch = "_lng-ctrl_";
+branch = "_pc-system_";
 
 %% Simulation configulation files
 % Plant parameter
