@@ -1,7 +1,7 @@
 function [modified_data, plane_mesh, tform] = fitplane(data,downsampled_data,threshold)
     %% PCFITPLANE
     max_distance = threshold;  % [m]
-    [model,~,~] = pcfitplane(downsampled_data,max_distance,MaxNumTrials=15000);
+    [model,~,~] = pcfitplane(downsampled_data,max_distance,MaxNumTrials=30000);
     new_ver = data.Location;
     X_max = max(new_ver(:,1),[],'all');
     X_min = min(new_ver(:,1),[],'all');

@@ -32,11 +32,11 @@ while flag
         flag=false;
     end
 end
-% file_num=180;
+file_num=182;
 % file_num=175;
 % file_num=141;
-file_num=210;
-file_num=207;
+% file_num=210;
+% file_num=207;
 
 rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
@@ -60,14 +60,18 @@ depthImage_original_size=uint16(zeros(1080, 1920));
 raw_depth_original_size=uint16(zeros(1080, 1920));
 colorImage_original_size=uint8(ones(1080, 1920, 3));
 
-% start_x = 353-1;
-% start_y = 449-1;
-% rect_width = 1216-1;
-% rect_height = 264-1;
 start_x = 353-1;
 start_y = 449-1;
 rect_width = 1216-1;
-rect_height = 352-1;
+rect_height = 264-1;
+% start_x = 353-1;
+% start_y = 449-1;
+% rect_width = 1216-1;
+% rect_height = 352-1;
+% start_x = 503-1;
+% start_y = 449-1;
+% rect_width = 1216-1;
+% rect_height = 150-1;
 depthImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width) = depthImage_read;
 groundtruth_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = groundtruth_read;
 colorImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = colorImage_read;
@@ -129,6 +133,11 @@ groundtruthpcin = pointCloud(groundtruthpcin.Location(gt_eliminate_idx,:,:),Colo
 ptCloud = pctransform(ptCloud,r_tform_cam2wheel);
 rawptCloud = pctransform(rawptCloud,r_tform_cam2wheel);
 gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
+
+rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<5.5;
+rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
+ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<5.5;
+ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
 
 % ptloc=ptCloud.Location;
 % ptloc(ptloc(:,1)<0,1)=2;
