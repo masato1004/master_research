@@ -1,6 +1,6 @@
 %% Define simulation condition with boolean
 % draw an animation or not
-animation = true;
+animation = false;
 prev_anim = false;
 
 % add noise or not
@@ -11,13 +11,16 @@ low_freq_noise  = false;
 wa  = false;
 lpf = false;
 
+% use obtaiend environmental data
+realworld = true;
+
 % control method
-passive = true;
+passive = false;
 LQR     = false;
 rprev   = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
-LQR_fprev_rprev = false;
+LQR_fprev_rprev = true;
 
 % road profile
 sensing = false;
@@ -32,7 +35,7 @@ jari    = false;
 T   = 10;          % [s]       total simulation time
 dt  = 0.0001;     % [s]       delta time
 tc  = 0.001;      % control cycle
-fs  = 50;         % sampling frequence
+fs  = 20;         % sampling frequence
 ts  = 1/fs;       % sampling cycle
 cc  = 1;          % control cycle counter
 sc  = 1;          % sampling cycle counter
@@ -70,7 +73,11 @@ shape_names = ["_sensing2_","_paper_", "_bump_", "_sin_","_step_","_manhole_","_
 logi_shape = [sensing, paper, bump, sin_wave, step, manhole, jari];
 shape = shape_names(logi_shape)
 
+if realworld
+    control = control + "realword_sensing";
+end
+
 %% LPF settings
 if lpf
-    filt_des = designfilt("lowpassiir",FilterOrder=6, HalfPowerFrequency=0.006,DesignMethod="butter",SampleRate=1);
+    filt_des = designfilt("lowpassiir",FilterOrder=5, HalfPowerFrequency=0.008,DesignMethod="butter",SampleRate=1);
 end

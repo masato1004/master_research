@@ -1,7 +1,7 @@
 
 TL = 0:dt:T;     % time list ([s])
 dis = 0:T*V/(T/dt):T*V;                                                       % distance time line ([m])
-start_disturbance = 3;                                                        % the start distance of disturbance ([m])
+start_disturbance = 4.6684;                                                        % the start distance of disturbance ([m])
 
 max_z0 = 0.025;                                                                % [m] max road displacement
 ld = 0.25;

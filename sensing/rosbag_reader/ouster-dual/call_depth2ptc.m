@@ -32,7 +32,7 @@ while flag
         flag=false;
     end
 end
-file_num=182;
+file_num=170;
 % file_num=175;
 % file_num=141;
 % file_num=210;
@@ -51,13 +51,13 @@ if animation
     video.FrameRate = 2;
     open(video);
 end
-for file_num = 160:250
+for file_num = 170:250
     rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
     estimatedImage_read = imread(results+list_estimated_imgs(file_num).name);
     colorImage_read = imread(dataset+"image/"+list_color_imgs(file_num).name);
     groundtruth_read = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
 
-    chosen_depth = rawlidarImage_read;
+    chosen_depth = estimatedImage_read;
 
     if sum(sum(rawlidarImage_read~=0)) < 2400
         disp(list_estimated_imgs(file_num).name)
@@ -68,8 +68,8 @@ for file_num = 160:250
         f_prev_profile = func__ptc2profile(upsampled_points);
 
         % point cloud
-        % pcshow(upsampled_points);
-        pcshow(reshape(upsampled_points.Location,[],3));
+        pcshow(upsampled_points);
+        % pcshow(reshape(upsampled_points.Location,[],3));
         xlabel("\itX \rm[m]");
         ylabel("\itY \rm[m]");
         zlabel("\itZ \rm[m]");

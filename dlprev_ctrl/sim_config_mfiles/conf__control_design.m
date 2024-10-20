@@ -2,7 +2,7 @@
 % parameters
 control_TL = 0:tc:T;                       % time line for control results
 c_ctrl = width(control_TL);
-u = zeros(2,c_ctrl);                            % input vector
+u = zeros(2,c);                            % input vector
 du= zeros(2,c_ctrl);                            % input-differencial vector
 e = zeros(height(C),c_ctrl);                    % output-error vector
 dx= zeros(height(states),c_ctrl);               % states-differencial vector
@@ -13,8 +13,8 @@ X = [
     ];        % new states vector
 
 % LQR
-Q = diag([1e-06, 1e+05, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+06]);       % all_pitch
-H = diag([1e-07,1e-07]);
+Q = diag([1e-06, 1e+05, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+05]);       % all_pitch
+H = diag([1e-04,1e-04]);
 
 [P, K, ~] = idare(phi, G, Q, H, [], []);   % u = -Kx
 F = -K;                                      % u = Fx

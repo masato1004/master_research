@@ -19,7 +19,7 @@ groundtruth_imgs = dir(dataset+"groundtruth_depth/*.png");
 %% read datas
 close all;
 
-file_name = "1708412721.496111.png";
+file_name = "1708412721.142365.png";
 file_num = 0;
 flag = true;
 while flag
@@ -32,7 +32,7 @@ while flag
         flag=false;
     end
 end
-file_num=182;
+% file_num=182;
 % file_num=175;
 % file_num=141;
 % file_num=210;
@@ -43,7 +43,7 @@ predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
 colorImage_read = imread(dataset+"image/"+list_color_imgs(file_num).name);
 groundtruth_read = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
 
-depthImage_read = predictedImage_read;
+depthImage_read = groundtruth_read;
 
 depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);

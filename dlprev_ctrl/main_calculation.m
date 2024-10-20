@@ -3,6 +3,7 @@ close all;
 clear;
 clc;
 branch = "_pc-system_";
+warning("off","all")
 
 %% Simulation configulation files
 % Plant parameter
@@ -50,10 +51,24 @@ end
 
 %% ========================simulation========================= %%
 dw_list = [];
+wf_local_timeline = [];
 % LOOP
 for i=1:c-1
 
     % make road preview profile
+    if realworld
+        current_time = TL(i);
+        if (str2double(listing(file_num+1).name(1:end-4))-prev_time) < current_time+0.0005
+            file_num = file_num+1;
+            depthImage_read = imread(fullfile(listing(file_num).folder,listing(file_num).name));
+            rawlidarImage_read = imread(fullfile(list_rawlidar_imgs(file_num).folder,list_rawlidar_imgs(file_num).name));
+            if sum(sum(rawlidarImage_read~=0)) < 2400
+                wf_local = func__ptc2profile(func__depth2ptc(depthImage_read));
+                data_end = wf_local(2,end);
+                wf_local_timeline = [wf_local_timeline,[repmat(TL(i),1,length(wf_local));wf_local]];
+            end
+        end
+    end
     if mod(i+(ts/dt-1), ts/dt) == 0
         current_dis = r_p_prev(1,i);
         % load road profile
@@ -74,7 +89,7 @@ for i=1:c-1
                     interp1(r_p_prev(1,:),data_end*ones(size(r_p_prev(1,:))),current_dis+prev_start:tc*V:current_dis+prev_end,'linear')
                     ];
             end
-        else
+        elseif ~realworld
             wf_local = [
                 prev_start:tc*V:prev_end;
                 makima(r_p_prev(1,:),r_p_prev(2,:),current_dis+prev_start:tc*V:current_dis+prev_end)
@@ -103,7 +118,7 @@ for i=1:c-1
             eta_1 = 0.5*(1-eta);
             eta_2 = 0.5*(1+eta);
             % WA
-            if sensing
+            if sensing || realworld
                 wf_global = [
                     wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
                     wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), interp1(wf_global(1,:), wf_global(2,:), wf_local(1, wf_local(1,:)<=wf_global(1,end)),'linear').*eta_1 + wf_local(2, wf_local(1,:)<=wf_global(1,end)).*eta_2, wf_local(2, wf_local(1,:)>wf_global(1,end))
@@ -117,20 +132,34 @@ for i=1:c-1
             end
 
         else
-            wf_global = [wf_global, wf_local];
-            [~,ind] = sort(wf_global(1,:));
-            wf_global=wf_global(:,ind);
+            if realworld
+                wf_global = [
+                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
+                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(2,:);
+                    ];
+            else
+                wf_global = [wf_global, wf_local];
+                [~,ind] = sort(wf_global(1,:));
+                wf_global=wf_global(:,ind);
+            end
         end
 
 
-        % LPF
-        notnan_wfg = rmmissing(wf_global,2);
-        notnan_wfg(1,:) = notnan_wfg(1,:)./V;
+        % % LPF
+        % notnan_wfg = rmmissing(wf_global,2);
+        % notnan_wfg(1,:) = notnan_wfg(1,:)./V;
+        % % WA + filtfilt
+        % [~,ia,~]=unique(notnan_wfg(1,:));
+        % notnan_wfg = notnan_wfg(:,ia);
+        % grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
+        % grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
+
+        notnan_wfg = wf_global(1,:)./V;
         % WA + filtfilt
-        [~,ia,~]=unique(notnan_wfg(1,:));
+        [~,ia,~]=unique(notnan_wfg);
         notnan_wfg = notnan_wfg(:,ia);
         grad_time = notnan_wfg(1,1):tc:notnan_wfg(1,end);
-        grad_data1 = interp1(notnan_wfg(1,:), notnan_wfg(2,:), grad_time, "linear");
+        grad_data1 = interp1(notnan_wfg(1,:), wf_global(2,ia), grad_time, "linear");
         % disp(size(grad_time));
         if lpf
             grad_data1 = filtfilt(filt_des,double(grad_data1));
@@ -155,7 +184,7 @@ for i=1:c-1
     d = r_p(:,i);
     
     % load current input
-    u_in = u(:,cc);
+    u_in = u(:,i);
 
     % states-update with Runge-Kutta
     % Runge kutta
@@ -173,6 +202,7 @@ for i=1:c-1
             interp1(wf_grad(1,:),[0,diff(wf_grad(3,:))],[0:M].*tc,'linear');
             dw_r(4, [0:M]+cc);
             ];
+        dw_prev(isnan(dw_prev)) = 0;
         dw_list = [dw_list,dw_prev];
 
         % calculate new states
@@ -182,17 +212,18 @@ for i=1:c-1
         X(height(e)+1:end,cc) = dx(:,cc);
 
         % calculate input
-        du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1),dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
+        du(:,cc+1) = next_input(logi_ctrl,M,F,X(:,cc),FDW(:,cc),Fdj,wf_grad(1,1)-0.23,dw_r(:, cc:cc+M),dw_prev,dw_fr(:, cc:cc+M));
 
-        if cc ~= 1
-            u(:, cc+1) = u(:, cc) + du(:, cc+1);
+        if i ~= 1
+            u(:, i+1) = u(:, i) + du(:, cc+1);
         else
-            u(:, cc+1) = du(:, cc+1);
+            u(:, i+1) = du(:, cc+1);
         end
         wf_global(1,:) = wf_global(1,:) - tc*V; last_minimum = last_minimum - tc*V;
         wf_grad(1,:) = wf_grad(1,:) - tc;
 
         if prev_anim
+            set(ground_truth, "XData", 0:tc*V:5.5, "YData", interp1(r_p_prev(1,:),r_p_prev(2,:),[0:tc*V:5.5]+TL(i)*V,'linear'));
             set(check_plot0, "XData", wf_local(1,:), "YData", wf_local(2,:));  % blue
             set(check_plot, "XData", wf_global(1,:), "YData", wf_global(2,:)); % red
             set(check_plot2, "XData", wf_grad(1,:).*V, "YData", wf_grad(2,:)); % green
@@ -207,6 +238,8 @@ for i=1:c-1
             frame = getframe(check);
             writeVideo(video,frame);
         end
+    else
+        u(:, i+1) = u(:, i);
     end
 end
 
@@ -299,9 +332,9 @@ drawer(TL,accelerations(2,:)*(180/pi),["Body_Pitch_Angular_Acceleration", "Time 
 % drawer(control_TL,u(1,:),["Front_Wheel_Actuator_Force", "Time [s]", "Front Wheel Actuator Force [N]"],11,figfolder,shape);
 % drawer(control_TL,u(2,:),["Rear_Wheel_Actuator_Force", "Time [s]", "Rear Wheel Actuator Force [N]"],12,figfolder,shape);
 fig = figure('name',"Actuator_Force",'Position', [500+20*11 500-20*11 600 190]);
-plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
+plot(TL,u(1,:),"LineWidth",2,"Color","#0000ff");
 hold on;
-plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff","LineStyle","--");
+plot(TL,u(2,:),"LineWidth",2,"Color","#0000ff","LineStyle","--");
 grid on;
 xlim([0,3]);
 xlabel("Time [s]");
@@ -316,9 +349,9 @@ saveas(fig,"jpgs/"+conditions+"/Actuator_Force.jpg");
 fig = figure('name',"Actuator_Force_and_Road",'Position', [500+20 500-20 600 190]);
 xlim([0,3]);
 yyaxis left
-plot(control_TL,u(1,:),"LineWidth",2,"Color","#0000ff");
+plot(TL,u(1,:),"LineWidth",2,"Color","#0000ff");
 hold on;
-plot(control_TL,u(2,:),"LineWidth",2,"Color","#0000ff");
+plot(TL,u(2,:),"LineWidth",2,"Color","#0000ff");
 grid on;
 xlabel("Time [s]");
 ylabel("Wheel Actuator Force [N]");

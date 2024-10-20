@@ -110,26 +110,12 @@ frames(s_f) = getframe(gcf);
 drawnow;
 mod_m = 200;
 newimg = zeros(432,1166,3);
-videoname = "videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"-fps-"+(1/dt)/mod_m;
-if not(exist("videos",'dir'))
-    mkdir("videos");
-end
-if not(exist("videos/"+branch,'dir'))
-    mkdir("videos/"+branch);
-end
-if not(exist("videos/"+branch+"/"+control,'dir'))
-    mkdir("videos/"+branch+"/"+control);
-end
-if not(exist("videos/"+branch+"/"+control+"/"+shape,'dir'))
-    mkdir("videos/"+branch+"/"+control+"/"+shape);
-end
+videoname = "videos/"+conditions+"/-fps-"+(1/dt)/mod_m;
 video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = (1/dt)/mod_m;
 open(video);
-for s=2:c/1
-    if mod(s,tc/dt) == 0
-        cc = cc+1;
-    end
+for s=2:c/2
+    cc = s;
     if mod(s,mod_m) == 0
 %         TL(1,s)
         cx_b = TL(1,s)*V; cy_b = states(1,s);           % displacement
