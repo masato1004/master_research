@@ -6,7 +6,7 @@ prev_anim = false;
 % add noise or not
 high_freq_noise = false;
 low_freq_noise  = false;
-noised_traj     = true;
+noised_traj     = false;
 
 % spatial smoothing method
 wa  = false;
@@ -19,9 +19,9 @@ rprev           = false;
 LQR_rprev       = false;
 fprev_rprev     = false;
 LQR_fprev_rprev = false;
-NLMPC           = true;
+NLMPC           = false;
 feedforward     = false;
-skyhook         = false;
+skyhook         = true;
 
 % road profile
 sensing  = false;
