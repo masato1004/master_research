@@ -183,7 +183,7 @@ road_total = [0,0,max_z0,max_z0,0,0];  % converting front disturbance and buffer
 %% 2d profile
 figure("Position", [100 50 260 145]);
 % figure("Position", [100 50 260 340/2]);
-range_min = 0;        % minimum measurable distance [m]
+range_min = 3;        % minimum measurable distance [m]
 range_max = 8;        % maximum measurable distance [m]
 pick_up_width = 1;  % width of datas for a road profile [m]
 pick_up_center = 0;   % center of pick up position [m]

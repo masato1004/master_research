@@ -14,8 +14,9 @@ if sensing
     wf_global = wf_local; last_minimum = 1.9;
 else
     if realworld
+        % learning_condition = "pretrained_fixed_supervision";
         root = "C:/Users/INOUE MASATO/research/master_research/sensing/rosbag_reader/ouster-dual/";
-        est_dir = root+"results/pretrained_fixed_supervision/results/";
+        est_dir = root+"results/"+learning_condition+"/results/";
         raw_dir = root+"val_selection/val_selection_cropped/velodyne_raw/";
         list_estimated_imgs = dir(est_dir + "*.png");
         list_rawlidar_imgs = dir(raw_dir + "*.png");

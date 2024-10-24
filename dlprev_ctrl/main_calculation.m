@@ -52,6 +52,7 @@ end
 %% ========================simulation========================= %%
 dw_list = [];
 wf_local_timeline = [];
+strlen =  0;  % length of string displayed
 % LOOP
 for i=1:c-1
 
@@ -238,10 +239,12 @@ for i=1:c-1
             frame = getframe(check);
             writeVideo(video,frame);
         end
+        func__progress("Progress", i, c-1)
     else
         u(:, i+1) = u(:, i);
     end
 end
+func__progress("Progress", i, c-1)
 
 if prev_anim
     close(video);
@@ -371,6 +374,37 @@ fontsize(fig,10.5,"points");
 grid on;
 saveas(fig,"figs/"+conditions+"/Actuator_Force_and_Road.fig");
 saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
+
+% draw preview data
+[~,idx] = sort(wf_local_timeline(3,:));
+wf_local_timeline_sorted = wf_local_timeline(:,idx);
+zcolor = wf_local_timeline_sorted(3,idx);
+zcolor=((zcolor+0.06).*(0.09)/(max(zcolor+0.03)))-0.06;
+ind = wf_local_timeline_sorted(1,:)<0.5;
+zcolor = zcolor(ind);
+% 3d
+fig_prev3 = figure();
+s = scatter3(wf_local_timeline_sorted(1,ind),wf_local_timeline_sorted(2,ind),wf_local_timeline_sorted(3,ind),10,zcolor,'MarkerEdgeColor','flat','MarkerFaceColor','flat');
+colormap(jet)
+xlabel('Time [s]')
+ylabel('Local Distance [m]')
+zlabel('Road Displacement [m]')
+fontname(gcf,"Times New Roman");
+fontsize(gcf,13,"points");colorbar
+saveas(fig_prev3,"figs/"+conditions+"/previewed_profile_3d.fig");
+% 2d
+fig_prev2 = figure();
+s = scatter(wf_local_timeline_sorted(1,ind),wf_local_timeline_sorted(2,ind),10,zcolor,'MarkerEdgeColor','flat','MarkerFaceColor','flat');
+% s.MarkerFaceAlpha = 0.1;
+colormap(jet)
+colorbar;
+xlabel('Time [s]')
+ylabel('Local Distance [m]')
+fontname(gcf,"Times New Roman");
+fontname(gcf,"Times New Roman");
+fontsize(gcf,13,"points");
+grid on;
+saveas(fig_prev2,"figs/"+conditions+"/previewed_profile_2d.fig");
 
 if animation
     close all;

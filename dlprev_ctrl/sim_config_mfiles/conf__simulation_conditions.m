@@ -13,6 +13,7 @@ lpf = false;
 
 % use obtaiend environmental data
 realworld = true;
+learning_condition = "unpretrained_unfixed_supervision";
 
 % control method
 passive = false;
@@ -74,7 +75,7 @@ logi_shape = [sensing, paper, bump, sin_wave, step, manhole, jari];
 shape = shape_names(logi_shape)
 
 if realworld
-    control = control + "realword_sensing";
+    control = control + "realword_sensing_"+learning_condition;
 end
 
 %% LPF settings
