@@ -17,11 +17,12 @@ else
         % learning_condition = "pretrained_fixed_supervision";
         root = "C:/Users/INOUE MASATO/research/master_research/sensing/rosbag_reader/ouster-dual/";
         est_dir = root+"results/"+learning_condition+"/results/";
+        est_dir = root+"results/pretrained_fixed_labeled_supervision/results/";
         raw_dir = root+"val_selection/val_selection_cropped/velodyne_raw/";
         list_estimated_imgs = dir(est_dir + "*.png");
         list_rawlidar_imgs = dir(raw_dir + "*.png");
 
-        listing = list_estimated_imgs;
+        listing = list_rawlidar_imgs;
 
         file_name = "1708412721.142365.png";
         file_num = 0;

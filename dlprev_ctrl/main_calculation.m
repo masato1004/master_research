@@ -67,6 +67,11 @@ for i=1:c-1
                 wf_local = func__ptc2profile(func__depth2ptc(depthImage_read));
                 data_end = wf_local(2,end);
                 wf_local_timeline = [wf_local_timeline,[repmat(TL(i),1,length(wf_local));wf_local]];
+                
+                wf_global = [
+                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
+                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(2,:);
+                    ];
             end
         end
     end
@@ -133,16 +138,16 @@ for i=1:c-1
             end
 
         else
-            if realworld
-                wf_global = [
-                    wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
-                    wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(2,:);
-                    ];
-            else
-                wf_global = [wf_global, wf_local];
-                [~,ind] = sort(wf_global(1,:));
-                wf_global=wf_global(:,ind);
-            end
+            % if realworld
+            %     wf_global = [
+            %         wf_global(1, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(1,:);
+            %         wf_global(2, wf_global(1,:)<wf_local(1,1) & wf_global(1,:)>-200), wf_local(2,:);
+            %         ];
+            % else
+            wf_global = [wf_global, wf_local];
+            [~,ind] = sort(wf_global(1,:));
+            wf_global=wf_global(:,ind);
+            % end
         end
 
 
@@ -236,6 +241,9 @@ for i=1:c-1
             % time_text.Position = [0.05, 0.05];
             time_text.Position = [8, 0.05];
             drawnow;
+            if mod(i-1, 100) == 0 && TL(i) < 1.5
+                savefig("./videos/"+conditions+"/fig/"+TL(i)+".fig")
+            end
             frame = getframe(check);
             writeVideo(video,frame);
         end
@@ -378,8 +386,7 @@ saveas(fig,"jpgs/"+conditions+"/Actuator_Force_and_Road.jpg");
 % draw preview data
 [~,idx] = sort(wf_local_timeline(3,:));
 wf_local_timeline_sorted = wf_local_timeline(:,idx);
-zcolor = wf_local_timeline_sorted(3,idx);
-zcolor=((zcolor+0.06).*(0.09)/(max(zcolor+0.03)))-0.06;
+zcolor = wf_local_timeline_sorted(3,:);
 ind = wf_local_timeline_sorted(1,:)<0.5;
 zcolor = zcolor(ind);
 % 3d
@@ -391,6 +398,7 @@ ylabel('Local Distance [m]')
 zlabel('Road Displacement [m]')
 fontname(gcf,"Times New Roman");
 fontsize(gcf,13,"points");colorbar
+clim([-0.03 0.03])
 saveas(fig_prev3,"figs/"+conditions+"/previewed_profile_3d.fig");
 % 2d
 fig_prev2 = figure();
@@ -404,6 +412,7 @@ fontname(gcf,"Times New Roman");
 fontname(gcf,"Times New Roman");
 fontsize(gcf,13,"points");
 grid on;
+clim([-0.03 0.03])
 saveas(fig_prev2,"figs/"+conditions+"/previewed_profile_2d.fig");
 
 if animation

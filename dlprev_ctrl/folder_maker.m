@@ -61,6 +61,9 @@ function conditions = folder_maker(branch,control,shape,figfolder,smoothing_meth
     if not(exist("videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/"+smoothing_method+"--"+added_noise,'dir'))
         mkdir("videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/"+smoothing_method+"--"+added_noise)
     end
+    if not(exist("videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/"+smoothing_method+"--"+added_noise+"/fig",'dir'))
+        mkdir("videos/"+branch+"/"+control+"/"+shape+"/"+figfolder+"/"+smoothing_method+"--"+added_noise+"/fig")
+    end
 
     % conditions name
     conditions = branch+"/"+control+"/"+shape+"/"+figfolder+"/"+smoothing_method+"--"+added_noise;

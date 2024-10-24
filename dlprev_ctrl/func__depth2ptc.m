@@ -9,16 +9,16 @@ function upsampled_road = func__depth2ptc(upsampled_depth)
     depthImage_original_size=uint16(zeros(1080, 1920));
 
     % for height 264
-    % start_x = 353-1;
-    % start_y = 449-1;
-    % rect_width = 1216-1;
-    % rect_height = 264-1;
-
-    % for height 352
     start_x = 353-1;
     start_y = 449-1;
     rect_width = 1216-1;
-    rect_height = 352-1;
+    rect_height = 264-1;
+
+    % for height 352
+    % start_x = 353-1;
+    % start_y = 449-1;
+    % rect_width = 1216-1;
+    % rect_height = 352-1;
 
     % for height 150
     % start_x = 503-1;
