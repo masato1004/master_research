@@ -42,13 +42,19 @@ rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num)
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
 colorImage_read = imread(dataset+"image/"+list_color_imgs(file_num).name);
 groundtruth_read = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
+if exist(dataset+"uneven_label/","dir")
+    labelImage_read = imread(dataset+"uneven_label/"+list_color_imgs(file_num).name);
+end
 
-imshow(predictedImage_read)
-imshow(rawlidarImage_read)
-imshow(groundtruth_read)
-colormap(jet)
+imshow(labelImage_read)
+% imshow(rawlidarImage_read)
+% imshow(groundtruth_read)
+colormap(turbo)
+colormap(gray)
 clim([0 65535]);
-colorbar;
+% colorbar;
+fontname(gcf,"Arial");
+fontsize(gca,8,"points");
 
 
 % depthImage_read = predictedImage_read;
