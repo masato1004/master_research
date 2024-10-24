@@ -32,9 +32,9 @@ while flag
         flag=false;
     end
 end
-% file_num=182;
+file_num=182;
 % file_num=175;
-% file_num=141;
+file_num=143;
 % file_num=210;
 % file_num=207;
 
@@ -60,14 +60,14 @@ depthImage_original_size=uint16(zeros(1080, 1920));
 raw_depth_original_size=uint16(zeros(1080, 1920));
 colorImage_original_size=uint8(ones(1080, 1920, 3));
 
-start_x = 353-1;
-start_y = 449-1;
-rect_width = 1216-1;
-rect_height = 264-1;
 % start_x = 353-1;
 % start_y = 449-1;
 % rect_width = 1216-1;
-% rect_height = 352-1;
+% rect_height = 264-1;
+start_x = 353-1;
+start_y = 449-1;
+rect_width = 1216-1;
+rect_height = 352-1;
 % start_x = 503-1;
 % start_y = 449-1;
 % rect_width = 1216-1;
@@ -183,7 +183,7 @@ road_total = [0,0,max_z0,max_z0,0,0];  % converting front disturbance and buffer
 %% 2d profile
 figure("Position", [100 50 260 145]);
 % figure("Position", [100 50 260 340/2]);
-range_min = 3;        % minimum measurable distance [m]
+range_min = 0;        % minimum measurable distance [m]
 range_max = 8;        % maximum measurable distance [m]
 pick_up_width = 1;  % width of datas for a road profile [m]
 pick_up_center = 0;   % center of pick up position [m]
