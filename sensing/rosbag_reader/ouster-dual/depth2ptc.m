@@ -4,17 +4,16 @@
 % dataset="val_selection_cropped_labeled_supervision/";
 dataset=uigetdir("./val_selection/", "DATASET folder to Open") + "\";
 
-% results="unpretrained_unfixed_supervision/results/";
-% results="unpretrained_fixed_supervision/results/";
-% results="pretrained_fixed_supervision/results/";
-% results="pretrained_labeled_supervision/results/";
-% results="conventional_model/results/";
+% figname="unpretrained_unfixed_supervision";
+% figname="pretrained_fixed_supervision";
+figname="pretrained_fixed_supervision";
+% figname="conventional_model";
 results=uigetdir("./results/","RESULTS folder to Open") + "\results\";
 
 list_predicted_imgs = dir(results+"*.png");
-list_rawlidar_imgs = dir(dataset+"velodyne_raw/*.png");
-list_color_imgs = dir(dataset+"image/*.png");
-groundtruth_imgs = dir(dataset+"groundtruth_depth/*.png");
+list_rawlidar_imgs  = dir(dataset+"velodyne_raw/*.png");
+list_color_imgs     = dir(dataset+"image/*.png");
+groundtruth_imgs    = dir(dataset+"groundtruth_depth/*.png");
 
 %% read datas
 close all;
@@ -34,16 +33,34 @@ while flag
 end
 file_num=182;
 % file_num=175;
-file_num=143;
+% file_num=143;
 % file_num=210;
 % file_num=207;
 
-rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
+rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
-colorImage_read = imread(dataset+"image/"+list_color_imgs(file_num).name);
-groundtruth_read = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
+colorImage_read     = imread(dataset+"image/"+list_color_imgs(file_num).name);
+groundtruth_read    = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
 
-depthImage_read = groundtruth_read;
+images = {rawlidarImage_read;
+            predictedImage_read;
+            colorImage_read;
+            groundtruth_read};
+
+if height(predictedImage_read) > 264
+    for i = 1:4
+        image = images{i};
+        image = image(1:264,:,:);
+        images{i} = image;
+    end
+end
+
+rawlidarImage_read = images{1};
+predictedImage_read = images{2};
+colorImage_read = images{3};
+groundtruth_read = images{4};
+
+depthImage_read = images{2};
 
 depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);
@@ -60,14 +77,14 @@ depthImage_original_size=uint16(zeros(1080, 1920));
 raw_depth_original_size=uint16(zeros(1080, 1920));
 colorImage_original_size=uint8(ones(1080, 1920, 3));
 
-% start_x = 353-1;
-% start_y = 449-1;
-% rect_width = 1216-1;
-% rect_height = 264-1;
 start_x = 353-1;
 start_y = 449-1;
 rect_width = 1216-1;
-rect_height = 352-1;
+rect_height = 264-1;
+% start_x = 353-1;
+% start_y = 449-1;
+% rect_width = 1216-1;
+% rect_height = 352-1;
 % start_x = 503-1;
 % start_y = 449-1;
 % rect_width = 1216-1;
@@ -134,9 +151,10 @@ ptCloud = pctransform(ptCloud,r_tform_cam2wheel);
 rawptCloud = pctransform(rawptCloud,r_tform_cam2wheel);
 gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
 
-rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<5.5;
+max_x = 9;
+rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x;
 rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
-ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<5.5;
+ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x;
 ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
 
 % ptloc=ptCloud.Location;
@@ -144,20 +162,24 @@ ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.C
 % ptloc(ptloc(:,3)>0.5,3)=0;
 % ptCloud=pointCloud(ptloc);
 % colorImage_new = reshape(colorImage,[],3);
-temp_fig = figure("Position",[100,100,250,200]);
-% pcshow(reshape(ptCloud.Location,[],3));
+temp_fig = figure("Position",[100,100,150,120]);
+pcshow(reshape(ptCloud.Location,[],3));
+colormap("turbo")
+clim([-0.03 0.03])
 % pcshow(reshape(ptCloud.Location,[],3),reshape(colorImage,[],3));
-pcshow(ptCloud);
+% pcshow(ptCloud);
 % ptCloud=ptCloud_new;
 xlabel("\itX \rm[m]");
 ylabel("\itY \rm[m]");
 zlabel("\itZ \rm[m]");
-fontname(gcf,"Times New Roman");
-fontsize(gca,9,"points");
+fontname(gcf,"Arial");
+fontsize(gca,8,"points");
 set(gcf,'color','w');
 set(gca,'color','w');
 set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
 saveas(temp_fig, "test.png")
+% saveas(temp_fig,"C:\Users\INOUE MASATO\OneDrive - keio.jp\高橋研究室\journal\AutomotiveInnovation\figs\ptc_"+figname+"_"+RMSE_on_2dRPF+"_"+RMSE_on_bump+".fig")
+
 
 %% set infomations
 msg_nums = [2748 2750];
@@ -181,11 +203,11 @@ r_dis_total =  [0,start_disturbance,start_disturbance+ld(1),start_disturbance+su
 road_total = [0,0,max_z0,max_z0,0,0];  % converting front disturbance and buffer ([m])
 
 %% 2d profile
-figure("Position", [100 50 260 145]);
+fig_2d = figure("Position", [100 50 150 130]);
 % figure("Position", [100 50 260 340/2]);
 range_min = 0;        % minimum measurable distance [m]
-range_max = 8;        % maximum measurable distance [m]
-pick_up_width = 1;  % width of datas for a road profile [m]
+range_max = 10;        % maximum measurable distance [m]
+pick_up_width = 0.7;  % width of datas for a road profile [m]
 pick_up_center = 0;   % center of pick up position [m]
 p_min = pick_up_center - pick_up_width/2;
 p_max = pick_up_center + pick_up_width/2;
@@ -224,10 +246,10 @@ f_prev_profile=f_line(f_ind,[true false true])';
 f_dis_total_p = [f_dis_total, f_prev_profile(1,:)];
 [f_dis_total_p,~] = sort(f_dis_total_p);
 f_correct_road_p = interp1(f_dis_total,road_total,f_dis_total_p);
-f_sc = scatter(f_prev_profile(1,:),f_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#0000ff","DisplayName","Predicted Data"); hold on;  % picked up points
+f_sc = scatter(f_prev_profile(1,:),f_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#0000ff","DisplayName","Estimate"); hold on;  % picked up points
 % raw_sc = scatter(raw_prev_profile(1,:),raw_prev_profile(2,:),1.5,'filled',"MarkerFaceColor","#00aa00","DisplayName","Raw Data"); hold on;  % picked up points
-f_correct_road = plot(f_dis_total_p,f_correct_road_p,"LineWidth",2,"Color","#aaaaaa","DisplayName","Actual Road"); hold on;
-f_pl = plot(f_prev_profile(1,:),movmean(f_prev_profile(2,:),mean_data_num),"LineWidth",2,"LineStyle",":","Color","#ff0000","DisplayName","Moving Average"); % moving average
+f_correct_road = plot(f_dis_total_p,f_correct_road_p,"LineWidth",2,"Color","#aaaaaa","DisplayName","Actual"); hold on;
+f_pl = plot(f_prev_profile(1,:),movmean(f_prev_profile(2,:),mean_data_num),"LineWidth",2,"LineStyle",":","Color","#ff0000","DisplayName","MA"); % moving average
 
 grid on;
 xlim([range_min,range_max]);
@@ -247,14 +269,20 @@ ylim([-0.1,0.05]);
 xlabel("\itX \rm[m]");
 ylabel("\itZ \rm[m]");
 grid on
-fontname(gcf,"Times New Roman");
-fontsize(gca,9,"points");
+fontname(gcf,"Arial");
+fontsize(gca,8,"points");
+% saveas(fig_2d,"C:\Users\INOUE MASATO\OneDrive - keio.jp\高橋研究室\journal\AutomotiveInnovation\figs\rsp_"+figname+"_"+RMSE_on_2dRPF+"_"+RMSE_on_bump+".fig")
 
 %% calculate Error between actual road and estimated road
 % front
 f_dis_total_p = [f_dis_total, f_prev_profile(1,:)];
 [f_dis_total_p,f_dis_idx] = sort(f_dis_total_p);
 f_correct_road_p = interp1(f_dis_total,road_total,f_dis_total_p);
+
+% [uni_f_prev_profile, uni_idx] = unique(f_prev_profile(1,:));
+% f_prev_profile = [uni_f_prev_profile; f_prev_profile(2,uni_idx)];
+% f_correct_road_p = [f_correct_road_p, interp1(f_dis_total_p,f_correct_road_p,uni_f_prev_profile)];
+
 f_correct_prev = [f_prev_profile(1,:); f_correct_road_p(ismember(f_dis_total_p, f_prev_profile(1,:)))];
 f_disturbance = f_correct_prev(2,f_correct_prev(1,:)<start_disturbance+sum(ld) & f_correct_prev(1,:)>start_disturbance);
 f_prev_movmean = movmean(f_prev_profile(2,:),mean_data_num);
@@ -263,3 +291,4 @@ f_error = [f_prev_profile(1,:); movmean(f_prev_profile(2,:),mean_data_num) - f_c
 MAE_on_2dRPF = double(mean(abs(f_error(2,:))))
 RMSE_on_2dRPF = double(sqrt(mean(f_error(2,:).^2)))
 RMSE_on_bump = double(rmse(f_prev_movmean(f_prev_profile(1,:)<start_disturbance+sum(ld) & f_prev_profile(1,:)>start_disturbance) , f_disturbance))
+% RMSE_on_bump = double(rmse(f_prev_profile(2,f_prev_profile(1,:)<start_disturbance+sum(ld) & f_prev_profile(1,:)>start_disturbance) , f_disturbance))

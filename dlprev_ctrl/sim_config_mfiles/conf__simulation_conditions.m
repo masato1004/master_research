@@ -1,7 +1,7 @@
 %% Define simulation condition with boolean
 % draw an animation or not
 animation = false;
-prev_anim = true;
+prev_anim = false;
 
 % add noise or not
 high_freq_noise = false;
@@ -13,7 +13,7 @@ lpf = false;
 
 % use obtaiend environmental data
 realworld = true;
-learning_condition = "raw_sparse_lidar32";
+learning_condition = "unpretrained_unfixed_supervision";
 
 % control method
 passive = false;

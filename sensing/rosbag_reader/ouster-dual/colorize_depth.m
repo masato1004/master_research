@@ -34,7 +34,7 @@ while flag
 end
 file_num=182;
 % file_num=175;
-file_num=143;
+% file_num=143;
 % file_num=210;
 % file_num=207;
 
@@ -46,9 +46,29 @@ if exist(dataset+"uneven_label/","dir")
     labelImage_read = imread(dataset+"uneven_label/"+list_color_imgs(file_num).name);
 end
 
+images = {rawlidarImage_read;
+            predictedImage_read;
+            colorImage_read;
+            groundtruth_read};
+
+if height(predictedImage_read) > 264
+    for i = 1:4
+        image = images{i};
+        image = image(1:264,:,:);
+        images{i} = image;
+    end
+end
+
+rawlidarImage_read = images{1};
+predictedImage_read = images{2};
+colorImage_read = images{3};
+groundtruth_read = images{4};
+
 imshow(groundtruth_read)
 % imshow(rawlidarImage_read)
 % imshow(groundtruth_read)
+cm = trubo;
+cm(1,:) = [0 0 0];
 colormap(turbo)
 % colormap(gray)
 clim([0 65535]);

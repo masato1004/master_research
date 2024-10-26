@@ -27,7 +27,7 @@ run("sim_config_mfiles/conf__control_design.m")
 % Preview data loading
 run("sim_config_mfiles/conf__preview_data_loader.m")
 
-figfolder = "-QH-"+"all_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
+figfolder = "-QH-"+"heave_pitch"+"-v-"+Vkm_h+"-shape-"+shape+"-hieght-"+max_z0+"-Ld-"+ld+"-freq-"+frequency+"-ctrlCycle-"+tc;
 conditions = folder_maker(branch,control,shape,figfolder,smoothing_method,added_noise);
 
 % Preview animation settings
@@ -100,6 +100,7 @@ for i=1:c-1
                 prev_start:tc*V:prev_end;
                 makima(r_p_prev(1,:),r_p_prev(2,:),current_dis+prev_start:tc*V:current_dis+prev_end)
                 ];
+            wf_local_timeline = [wf_local_timeline,[repmat(TL(i),1,length(wf_local));wf_local]];
         end
         
         % Noise addition

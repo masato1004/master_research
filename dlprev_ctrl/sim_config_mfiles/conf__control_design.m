@@ -13,7 +13,7 @@ X = [
     ];        % new states vector
 
 % LQR
-Q = diag([1e-06, 1e+05, 1e-03, 1e-03, 1e-03, 1e+06, 1e-03, 1e-03, 1e-03, 1e+05]);       % all_pitch
+Q = diag([1e+05, 1e+05, 1e+05, 1e-03, 1e-03, 1e+06, 1e+06, 1e-03, 1e-03, 1e+05]);       % all_pitch
 H = diag([1e-04,1e-04]);
 
 [P, K, ~] = idare(phi, G, Q, H, [], []);   % u = -Kx
