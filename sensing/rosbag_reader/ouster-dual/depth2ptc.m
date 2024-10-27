@@ -6,7 +6,7 @@ dataset=uigetdir("./val_selection/", "DATASET folder to Open") + "\";
 
 % figname="unpretrained_unfixed_supervision";
 % figname="pretrained_fixed_supervision";
-figname="gt_pretrained_labeled_supervision";
+figname="conventional";
 % figname="conventional_model";
 results=uigetdir("./results/","RESULTS folder to Open") + "\results\";
 
@@ -34,7 +34,7 @@ end
 file_num=182;
 % file_num=175;
 % file_num=143;
-% file_num=210;
+file_num=210;
 % file_num=207;
 
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
