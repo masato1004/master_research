@@ -13,7 +13,7 @@ lpf = false;
 
 % use obtaiend environmental data
 realworld = true;
-learning_condition = "unpretrained_unfixed_supervision";
+learning_condition = "pretrained_fixed_supervision";
 
 % control method
 passive = false;

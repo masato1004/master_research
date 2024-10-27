@@ -6,7 +6,7 @@ dataset=uigetdir("./val_selection/", "DATASET folder to Open") + "\";
 
 % figname="unpretrained_unfixed_supervision";
 % figname="pretrained_fixed_supervision";
-figname="pretrained_fixed_supervision";
+figname="gt_pretrained_labeled_supervision";
 % figname="conventional_model";
 results=uigetdir("./results/","RESULTS folder to Open") + "\results\";
 
@@ -203,7 +203,7 @@ r_dis_total =  [0,start_disturbance,start_disturbance+ld(1),start_disturbance+su
 road_total = [0,0,max_z0,max_z0,0,0];  % converting front disturbance and buffer ([m])
 
 %% 2d profile
-fig_2d = figure("Position", [100 50 150 130]);
+fig_2d = figure("Position", [100 50 300 130]);
 % figure("Position", [100 50 260 340/2]);
 range_min = 0;        % minimum measurable distance [m]
 range_max = 10;        % maximum measurable distance [m]
