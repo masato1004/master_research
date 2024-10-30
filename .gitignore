@@ -36,7 +36,7 @@ unreal_engine/*
 *.pt
 *.DS_Store
 
-sensing/rosbag_reader/results/+model_best_epoch_99_pth_tar/x8_ATEN34.m
+sensing/rosbag_reader/results/+model_best_epoch_99_pth_tar/*.m
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
