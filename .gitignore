@@ -13,6 +13,7 @@ sensing/zed-matlab/matlab/ZEDimage/*
 sensing/zed-matlab/matlab/ZEDply/*
 sensing/rosbag_reader/*.mat
 sensing/rosbag_reader/results/
+sensing/rosbag_reader/results/*
 unreal_engine/
 unreal_engine/*
 
