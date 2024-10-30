@@ -12,8 +12,7 @@ sensing/zed-matlab/matlab/ZEDfigure/*
 sensing/zed-matlab/matlab/ZEDimage/*
 sensing/zed-matlab/matlab/ZEDply/*
 sensing/rosbag_reader/*.mat
-sensing/rosbag_reader/results/
-sensing/rosbag_reader/results/*
+sensing/rosbag_reader/results/+model_best_epoch_99_pth_tar
 unreal_engine/
 unreal_engine/*
 
