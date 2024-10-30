@@ -34,7 +34,7 @@ end
 file_num=182;
 % file_num=175;
 % file_num=143;
-file_num=210;
+% file_num=210;
 % file_num=207;
 
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);

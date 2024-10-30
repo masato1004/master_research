@@ -35,7 +35,7 @@ end
 file_num=182;
 % file_num=175;
 % file_num=143;
-file_num=210;
+% file_num=210;
 % file_num=207;
 
 rawlidarImage_read = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
@@ -64,14 +64,14 @@ predictedImage_read = images{2};
 colorImage_read = images{3};
 groundtruth_read = images{4};
 
-imshow(groundtruth_read)
+imshow(labelImage_read)
 % imshow(rawlidarImage_read)
 % imshow(groundtruth_read)
 cm = turbo;
 cm(1,:) = [0 0 0];
 colormap(cm)
-% colormap(gray)
-% clim([0 65535]);
+colormap(gray)
+clim([0 65535]);
 % colorbar;
 fontname(gcf,"Arial");
 fontsize(gca,8,"points");
