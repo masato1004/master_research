@@ -12,7 +12,6 @@ sensing/zed-matlab/matlab/ZEDfigure/*
 sensing/zed-matlab/matlab/ZEDimage/*
 sensing/zed-matlab/matlab/ZEDply/*
 sensing/rosbag_reader/*.mat
-sensing/rosbag_reader/results/+model_best_epoch_99_pth_tar
 unreal_engine/
 unreal_engine/*
 
@@ -36,6 +35,8 @@ unreal_engine/*
 *.pth
 *.pt
 *.DS_Store
+
+sensing/rosbag_reader/results/+model_best_epoch_99_pth_tar/x8_ATEN34.m
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
