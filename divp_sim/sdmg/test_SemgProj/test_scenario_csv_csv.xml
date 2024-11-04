@@ -17,7 +17,7 @@
 		<environments>
 			<environment id="environment_1">
 				<timeOfDay>
-					<time hour="12" min="0"/>
+					<time hour="20" min="0"/>
 					<date day="4" month="10" year="2024"/>
 				</timeOfDay>
 				<weather cloudState="lightCloudy">
@@ -57,6 +57,8 @@
 					<center x="0.0230000000" y="-0.0130000000" z="0.1480000000"/>
 					<dimensions height="0.2960000000" length="1.7580000000" width="1.1040000000"/>
 				</boundingBox>
+				<position x="231.7876456141" y="-331.6612209821" z="5.8215747122"/>
+				<attitude x="-0.0126418709" y="0.0214309938" z="-0.8859919078"/>
 			</object>
 			<object id="divp_Tgt_Roadstud_1" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_Roadstud.fbx"/>
@@ -85,6 +87,8 @@
 					<center x="0.0000000000" y="0.0000000000" z="0.3490000000"/>
 					<dimensions height="0.6990000000" length="0.3830000000" width="0.3830000000"/>
 				</boundingBox>
+				<position x="232.1748125443" y="-330.4394672487" z="5.8098028689"/>
+				<attitude x="-0.0311751463" y="0.0208157955" z="-0.9907090365"/>
 			</object>
 			<object id="divp_Veh_NissanXtrail_1" role="" subtype="car" type="vehicle">
 				<modelFile file="divp_Veh_NissanXtrail.fbx"/>
@@ -129,8 +133,8 @@
 			</object>
 			<object id="divp_Veh_MazdaRoadster_1" role="" subtype="car" type="vehicle">
 				<modelFile file="divp_Veh_MazdaRoadster.fbx"/>
-				<position x="193.8846169270" y="-305.1036091420" z="6.4290297128"/>
-				<attitude x="-0.0350528026" y="0.0076697567" z="-0.9773843811"/>
+				<position x="334.7329476266" y="-264.5305350080" z="6.7273405859"/>
+				<attitude x="-0.0200037453" y="0.0178317829" z="-2.5562985509"/>
 				<boundingBox>
 					<center x="1.1140000000" y="0.0000000000" z="0.6040000000"/>
 					<dimensions height="1.2080000000" length="3.9150000000" width="1.7350000000"/>
@@ -160,6 +164,26 @@
 					<center x="0.0000000000" y="0.0000000000" z="0.0099999994"/>
 					<dimensions height="0.0199999988" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
+				<position x="235.2547607079" y="-326.3574422010" z="5.7062341190"/>
+				<attitude x="-0.0207060712" y="0.0101409734" z="0.5200777987"/>
+			</object>
+			<object id="divp_Tgt_Colorcone_1_1" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_Colorcone.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.3490000000"/>
+					<dimensions height="0.6990000000" length="0.3830000000" width="0.3830000000"/>
+				</boundingBox>
+				<position x="231.4294789636" y="-332.5384774722" z="5.8217173609"/>
+				<attitude x="0.0043336075" y="0.0292651226" z="0.2902586002"/>
+			</object>
+			<object id="Preset_ManholeCover_1_1" role="" subtype="" type="undefined">
+				<modelFile file="Preset_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0099999994"/>
+					<dimensions height="0.0199999988" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="237.8453179785" y="-321.8593414894" z="5.5986986235"/>
+				<attitude x="-0.0203375843" y="0.0078528497" z="0.5443431644"/>
 			</object>
 		</objects>
 		<maps>
@@ -431,10 +455,10 @@
 					<entity id="divp_Tgt_LyingMan_1" type="object">
 						<event id="event_34" index="0">
 							<action index="0">
-								<position x="266.3299160520" y="-417.9858510317" z="4.9180108842"/>
+								<position x="231.7876456141" y="-331.6612209821" z="5.8215747122"/>
 							</action>
 							<action index="1">
-								<attitude x="-0.0074154048" y="0.0119361739" z="0.0000000000"/>
+								<attitude x="-0.0126418709" y="0.0214309938" z="-0.8859919078"/>
 							</action>
 							<action index="2">
 								<route id="route_csv_43"/>
@@ -496,19 +520,89 @@
 					<entity id="divp_Veh_MazdaRoadster_1" type="object">
 						<event id="event_39" index="0">
 							<action index="0">
-								<position x="193.8846169270" y="-305.1036091420" z="6.4210835680"/>
+								<position x="334.7329476266" y="-264.5305350080" z="6.7273405859"/>
 							</action>
 							<action index="1">
-								<attitude x="-0.0341583192" y="0.0094155333" z="-0.9773843811"/>
+								<attitude x="-0.0200037453" y="0.0178317829" z="-2.5562985509"/>
 							</action>
 							<action index="2">
 								<route id="route_csv_48"/>
+							</action>
+							<action index="3">
+								<speed value="11.1111111111"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_Colorcone_1" type="object">
+						<event id="event_40" index="0">
+							<action index="0">
+								<position x="232.1748125443" y="-330.4394672487" z="5.8098028689"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0311751463" y="0.0208157955" z="-0.9907090365"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_Colorcone_1_1" type="object">
+						<event id="event_40_1" index="0">
+							<action index="0">
+								<position x="231.4294789636" y="-332.5384774722" z="5.8217173609"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0043336075" y="0.0292651226" z="0.2902586002"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="Preset_ManholeCover_1" type="object">
+						<event id="event_42" index="0">
+							<action index="0">
+								<position x="235.2547607079" y="-326.3574422010" z="5.7062341190"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0207060712" y="0.0101409734" z="0.5200777987"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="Preset_ManholeCover_1_1" type="object">
+						<event id="event_42_1" index="0">
+							<action index="0">
+								<position x="237.8453179785" y="-321.8593414894" z="5.5986986235"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0203375843" y="0.0078528497" z="0.5443431644"/>
 							</action>
 						</event>
 					</entity>
 				</initialization>
 				<execution>
 					<entity id="divp_Veh_NissanXtrail_1" type="object"/>
+					<entity id="divp_Veh_MazdaRoadster_1" type="object">
+						<event id="event_44" index="0">
+							<startCondition delay="0.0000000000" edge="none" index="0">
+								<boundary shape="sphere" type="inside">
+									<target entityId="" entityType="object"/>
+									<coordinate type="absolute">
+										<position x="240.6397430751" y="-326.7251425997" z="5.6087765914"/>
+										<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+									</coordinate>
+									<radius value="3.0000000000"/>
+									<trigger entityId="divp_Veh_MazdaRoadster_1" entityType="object"/>
+								</boundary>
+							</startCondition>
+							<action index="1">
+								<targetSpeed continuous="false" type="absolute" value="0.0000000000">
+									<transitionDynamics dimension="distance" s="50.0000000000" shape="linear"/>
+								</targetSpeed>
+							</action>
+						</event>
+						<event id="event_45" index="1">
+							<action index="0">
+								<targetSpeed continuous="false" type="absolute" value="11.1111111111">
+									<transitionDynamics dimension="distance" s="50.0000000000" shape="linear"/>
+								</targetSpeed>
+							</action>
+						</event>
+					</entity>
 				</execution>
 			</concreteScenario>
 		</concreteScenarios>
