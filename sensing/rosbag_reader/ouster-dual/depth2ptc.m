@@ -6,7 +6,7 @@ dataset=uigetdir("./val_selection/", "DATASET folder to Open") + "\";
 
 % figname="unpretrained_unfixed_supervision";
 % figname="pretrained_fixed_supervision";
-figname="conventional";
+figname="pretrained_fixed_labeled_supervision";
 % figname="conventional_model";
 results=uigetdir("./results/","RESULTS folder to Open") + "\results\";
 
@@ -60,7 +60,7 @@ predictedImage_read = images{2};
 colorImage_read = images{3};
 groundtruth_read = images{4};
 
-depthImage_read = images{2};
+depthImage_read = images{1};
 
 depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);
