@@ -1,10 +1,10 @@
 close all;
 
 %% define pcd and img
-lidar_name = "roof"
+lidar_name = "front"
 
-pcd_dir_name = "ply_"+lidar_name+"-lidar_tmp";
-img_dir_name = "image_2";
+pcd_dir_name = "ply_"+lidar_name+"-lidar";
+img_dir_name = "image";
 
 pcd_list = dir(pcd_dir_name+"/*.pcd");
 img_list = dir(img_dir_name+"/*.png");
@@ -48,8 +48,8 @@ lidar_angles_r = [0., 0., 0.];
 lidar_position_f = [3.639492, 0., 0.662594];
 lidar_angles_f = [0., deg2rad(22.500000), 0.];
 
-lidar_position = lidar_position_r;
-lidar_angles   =   lidar_angles_r;
+lidar_position = lidar_position_f;
+lidar_angles   =   lidar_angles_f;
 camera_position = [1.690000, 0.0, 1.500000];
 camera_angles = [0., 0., 0.];
 
@@ -67,9 +67,9 @@ for i = 1:length(pcd_list)
     
     if i > 1
         %% load pcd
-        ptCloud_r = pcread(pcd_dir_name+"/"+pcd_name);
-        idx = sum(ptCloud_r.Location(:,:) ~= 0,2)~=0;
-        ptCloud_r = pointCloud(ptCloud_r.Location(idx,:));
+        ptCloud = pcread(pcd_dir_name+"/"+pcd_name);
+        idx = sum(ptCloud.Location(:,:) ~= 0,2)~=0;
+        ptCloud = pointCloud(ptCloud.Location(idx,:));
     
         %% pcd on img
         eulerAngle1 = lidar_angles;
@@ -77,12 +77,12 @@ for i = 1:length(pcd_list)
         R1 = eul2rotm(eulerAngle1);
         A1 = [[R1;0,0,0],[translation';1]];
         
-        [depth_r,cameraPoints] = func_ptc_transformer(ptCloud_r,intrinsics,A1);
-        depth_r = func_projectLidarToDepthImage(cameraPoints.Location, focalLength, principalPoint, imageSize, RadialDistortion6, TangentialDistortion);
+        % [depth,cameraPoints] = func_ptc_transformer(ptCloud,intrinsics,A1);
+        [depth,~] = func_projectLidarToDepthImage(ptCloud, A1, focalLength, principalPoint, imageSize, RadialDistortion6, TangentialDistortion);
         % pause(5)
         %% show depth onto img
         hold on
-        scatter(depth_r(:,1),depth_r(:,2),5,depth_r(:,3),'MarkerEdgeColor','flat','MarkerFaceColor','flat')
+        scatter(depth(:,1),depth(:,2),5,depth(:,3),'MarkerEdgeColor','flat','MarkerFaceColor','flat')
         colormap(turbo);
         clim([0 100])
         hold off
