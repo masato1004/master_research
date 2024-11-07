@@ -28,6 +28,7 @@ unreal_engine/*
 *.mov
 *.asv
 *.ply
+*.pcd
 *.mat
 *.txt
 *.emf
