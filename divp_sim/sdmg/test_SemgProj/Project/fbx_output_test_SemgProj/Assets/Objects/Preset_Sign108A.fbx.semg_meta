@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Guide Sign 108-A Area and direction" name_ja="案内標識 108-A 方面及び方向の予告" uid="b6da717e-508d-4f41-810d-8b9a695d8c4a"/>
+	<Memo><![CDATA[・文字は書かれていません
+・「案内標識 108の2-Ａ 方面及び方向」と形状は同じですがマテリアル名は異なっています
+
+- No characters are written.
+- The shape is the same as "Guide Sign 108-2-A", but the material name is different.]]></Memo>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X-" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="8be4409d-fd80-48fa-a30e-364daf90696c"/>
+      <Signal>
+        <Info id="108-A" dynamic="no" orientation="+" controlType="" name="Guide Sign 108-A" name_ja="案内標識 108-A 方面及び方向の予告"/>
+        <Type id="8be4409d-fd80-48fa-a30e-364daf90696c" value="" unit=""/>
+        <Size height="2.55" width="3.5"/>
+        <Pos x="-0.25" y="-4.22" z="6.1"/>
+        <Rot hOffset="270.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

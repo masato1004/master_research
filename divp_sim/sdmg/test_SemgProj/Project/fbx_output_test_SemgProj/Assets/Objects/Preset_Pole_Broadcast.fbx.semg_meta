@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Electric Pole" name_ja="放送スピーカー電柱" uid="2ce050d3-b6d8-479e-a1f8-9dc647a2120b"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>

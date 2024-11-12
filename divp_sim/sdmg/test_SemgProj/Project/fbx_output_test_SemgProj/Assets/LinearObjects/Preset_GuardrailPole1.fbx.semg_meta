@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Guard rail pole" name_ja="ガードレールポール" uid="0fb2f84b-2ea8-4e9e-928e-82bdab532bd1"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="true" defaultSpacing="2.000000" frontAxis="X-" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>

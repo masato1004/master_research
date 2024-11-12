@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Pedestrian Traffic light (side-mounted type)" name_ja="歩行者用信号機(横取り付けタイプ)" name_key="Pedestrian Traffic light (side-mounted type)" uid="8c34e847-5337-46ae-8a35-f12c11145c11"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="0.858240,0.095628,-0.427219" propotion="0.000000" rot="-0.198184,0.000000,-179.904888" scale="0.000000,0.000000,0.000000" type="light" uid="59e6e689-ff66-4bae-96db-8e63fd956651">
+			<Light>
+				<PFParams area="0.062388" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="BR__SigP__ER_LDT_Red_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="0.851054,0.095830,-0.764435" propotion="0.000000" rot="-0.193352,0.000000,-179.908210" scale="0.000000,0.000000,0.000000" type="light" uid="4ccb5847-8a5c-4767-8947-f205491b52db">
+			<Light>
+				<PFParams area="0.062388" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="BR__SigP__ER_LDT_Green_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+	<Xodr>
+		<Object>
+			<Info id="sig" name="Traffic lights unit" name_ja="信号機ユニット" name_key="Traffic lights unit" orientation="+"/>
+			<Type id="02e1a555-b63c-431c-8bb2-708ba31b5b3f"/>
+			<SignalGroup modelNode="GS_BR__SigP__ER" name="">
+				<Signal>
+					<Info dynamic="yes" id="Ped" name="Pedestrian Traffic Light" name_ja="信号機灯火 歩行者用" name_key="Pedestrian Traffic Light" orientation="+"/>
+					<Type id="2b6759d7-dee3-428a-a1b1-3feaec9de390" unit="" value="0.000000"/>
+					<Size height="0.670000" width="0.380000"/>
+					<Pos x="0.850000" y="0.060000" z="-0.930000"/>
+					<Rot hOffset="180.000000" pitch="0.000000" roll="0.000000"/>
+				</Signal>
+			</SignalGroup>
+		</Object>
+	</Xodr>
+</SemgMetaData>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Street Lamp" name_ja="街灯" name_key="Street Lamp" uid="1837f364-54c3-4836-813c-19ce82d1d79a"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="-0.006167,2.710277,9.695562" propotion="0.000000" rot="78.656227,0.000000,180.000000" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.236605" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="EmittingB" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="0.011340,-2.673709,9.696121" propotion="0.000000" rot="78.870600,0.000000,0.000000" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.236605" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="EmittingA" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+</SemgMetaData>

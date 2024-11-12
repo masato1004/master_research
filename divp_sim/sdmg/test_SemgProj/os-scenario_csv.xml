@@ -101,7 +101,7 @@
 				<camera id="camera_1">
 					<product name="Camera"/>
 					<coordinate type="relative">
-						<position x="1.8000000000" y="0.0000000000" z="1.5000000000"/>
+						<position x="1.6900000000" y="0.0000000000" z="1.5000000000"/>
 						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
 					</coordinate>
 					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>

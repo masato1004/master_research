@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearMarking" lastUsageType="linearMarking" name="Yellow Broken Line (dusty)" name_ja="黄破線(劣化)" uid="ba0b05ab-73ce-4238-b06b-741e6d3cd47e"/>
+	<LinearMarking_Group separation="0.000000" xOffset="0.000000">
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="yellow" curveSpaceTexture="true" dashLength="5.000000" dashSpacing="5.000000" deceleration="false" markingType="broken" width="0.150000">
+			<Asset type="material" uid="624e2d24-9046-4b47-9184-937c046339fb"/>
+		</LinearMarking_Single>
+	</LinearMarking_Group>
+</SemgMetaData>

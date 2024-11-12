@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="68mm"
+   height="500mm"
+   viewBox="0 0 68 500"
+   version="1.1"
+   id="svg16092"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="roadmark_204_arrow_right.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview16094"
+     pagecolor="#777777"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.33540614"
+     inkscape:cx="80.49942"
+     inkscape:cy="970.46523"
+     inkscape:window-width="1453"
+     inkscape:window-height="1003"
+     inkscape:window-x="740"
+     inkscape:window-y="162"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs16089" />
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-117.69263,49.964135)">
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.40731;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 117.70108,265.57037 c 0.009,-178.836181 0.076,-184.710593 2.24273,-192.496645 4.78016,-17.179131 14.45886,-32.797141 28.01127,-45.200405 l 4.41509,-4.040744 0.30372,-36.898341 0.30368,-36.89837 16.35752,52.0946607 16.35754,52.0946003 -16.35754,51.301654 -16.35752,51.30159 -0.30368,-36.6069 c -0.17535,-21.121503 -0.74871,-36.606877 -1.35597,-36.606877 -1.64104,0 -8.62013,7.484162 -11.99139,12.859173 -6.95181,11.083744 -6.59452,1.054047 -6.59452,185.118844 v 168.44325 h -7.51969 -7.51969 z"
+       id="path15611" />
+  </g>
+</svg>

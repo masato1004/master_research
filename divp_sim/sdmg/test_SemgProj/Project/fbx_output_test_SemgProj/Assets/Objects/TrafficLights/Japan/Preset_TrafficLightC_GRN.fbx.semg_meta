@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Traffic Signal (fixed green)" name_ja="信号機（青点灯固定）" name_key="Traffic Signal (fixed green)" uid="8891779d-a08c-43ad-8153-c192a7eb087f"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="0.610215,3.200970,6.299851" propotion="0.000000" rot="5.004623,0.000000,-269.345838" scale="0.000000,0.000000,0.000000" type="light" uid="4ccb5847-8a5c-4767-8947-f205491b52db">
+			<Light>
+				<PFParams area="0.076314" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="SigC_LDT_Green_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+	<Xodr>
+		<Object>
+			<Info id="TrafficLight" name="Traffic Signal (fixed green)" name_ja="信号機（青点灯固定）" name_key="Traffic Signal (fixed green)" orientation="none"/>
+			<Bounding maxX="0.853487" maxY="4.293334" maxZ="6.587921" minX="-0.207022" minY="-0.210217" minZ="-0.000000"/>
+			<SignalGroup modelNode="" name="">
+				<Signal>
+					<Info dynamic="no" id="TL_green" name="Traffic Signal (fixed green)" name_ja="信号機（青点灯固定）" name_key="Traffic Signal (fixed green)" orientation="+"/>
+					<Type id="00000000-0000-0000-0000-000000000000" unit="" value="0.000000"/>
+					<Size height="0.370000" width="1.160000"/>
+					<Pos x="0.530000" y="3.580000" z="6.120000"/>
+					<Rot hOffset="90.000000" pitch="5.600000" roll="0.000000"/>
+				</Signal>
+			</SignalGroup>
+		</Object>
+	</Xodr>
+</SemgMetaData>

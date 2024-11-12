@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Pole for Vehicle Traffic light" name_ja="車両信号機用ポール" uid="11ef7b35-55a1-4d19-8cf0-53bd23b56ffb"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+	<Xodr/>
+</SemgMetaData>
