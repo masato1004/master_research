@@ -14,9 +14,11 @@ if ~exist("imageNdepth",'dir')
 end
 
 %% video setting
+sampling_freq = 20;
+sampling_period = 1/sampling_freq;
 videoname = "imageNdepth"+"/test"+lidar_name;
 video = VideoWriter(videoname,'MPEG-4');
-video.FrameRate = 20;
+video.FrameRate = sampling_freq;
 open(video);
 
 %% camera parameter
