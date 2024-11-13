@@ -1,7 +1,7 @@
 close all;
 
 %% define pcd and img
-lidar_name = "front"
+lidar_name = "roof"
 
 pcd_dir_name = "ply_"+lidar_name+"-lidar";
 img_dir_name = "image";
@@ -9,8 +9,9 @@ img_dir_name = "image";
 pcd_list = dir(pcd_dir_name+"/*.pcd");
 img_list = dir(img_dir_name+"/*.png");
 
-if ~exist("imageNdepth",'dir')
-    mkdir("imageNdepth")
+save_dir_name = "imageNdepth";
+if ~exist(save_dir_name,'dir')
+    mkdir(save_dir_name)
 end
 
 %% define ego csv and load positions
@@ -22,10 +23,10 @@ pos_table = readtable(filename,opts);
 %% video setting
 sampling_freq = 20;
 sampling_period = 1/sampling_freq;
-% videoname = "imageNdepth"+"/test"+lidar_name;
-% video = VideoWriter(videoname,'MPEG-4');
-% video.FrameRate = sampling_freq;
-% open(video);
+videoname = save_dir_name+"/path_with_"+lidar_name;
+video = VideoWriter(videoname,'MPEG-4');
+video.FrameRate = sampling_freq;
+open(video);
 
 %% camera parameter
 img_w = 3840;
@@ -55,15 +56,19 @@ lidar_angles_r = [0., 0., 0.];
 lidar_position_f = [3.639492, 0., 0.662594];
 lidar_angles_f = [0., deg2rad(22.500000), 0.];
 
-lidar_position = lidar_position_f;
-lidar_angles   =   lidar_angles_f;
+lidar_position = lidar_position_r;
+lidar_angles   =   lidar_angles_r;
 camera_position = [1.690000, 0.0, 1.500000];
 % camera_position = [1.881159, 0.0, 1.554000];
 camera_angles = [0., 0., 0.];
 
 %% figure
-img_fig = figure();
-for i = 1:5:length(pcd_list)
+img_fig = figure('Position',[300,300,865.67,524.67]);
+
+
+imax = length(pcd_list);
+strlen = 0;
+for i = 1:1:length(pcd_list)
     pcd_name = pcd_list(i).name;
     img_name = img_list(i).name;
     
@@ -114,34 +119,52 @@ for i = 1:5:length(pcd_list)
 
         %% visualize BBox of the ego vehicle
         % view1
-        subplot(2,1,1)
+        subplot(2,2,1)
         lidar = scatter3(ptCloud.Location(:,1)+camera_position(1),ptCloud.Location(:,2),ptCloud.Location(:,3)+camera_position(3),2,ptCloud.Location(:,3),'fill');
         hold on
-        roi = drawcuboid(lidar,'Color','r','Position',[-1 -1.793/2 0 4.642 1.793 1.748]);
+        roi1 = drawcuboid(lidar,'Color','r','Position',[-1 -1.793/2 0 4.642 1.793 1.748]);
         % roi.Position = [-0.8 -1 0 4 2 1.8];
         scatter3(ptc_path_from_car.Location(front_idx,1),ptc_path_from_car.Location(front_idx,2),ptc_path_from_car.Location(front_idx,3),3,'red','filled')
         axis equal;
         xlim([-10 40])
-        ylim([-20 20])
+        ylim([-15 15])
         zlim([-2 4])
-        view([0 0])
-        view([-50 -40 20])
+        view([-50 -10 20])
+        xlabel( '\itX \rm[m]'); ylabel( '\itY \rm[m]'); zlabel( '\itZ \rm[m]');
         hold off
 
         % view2
-        subplot(2,1,2)
+        subplot(2,2,2)
         lidar2 = scatter3(ptCloud.Location(:,1)+camera_position(1),ptCloud.Location(:,2),ptCloud.Location(:,3)+camera_position(3),2,ptCloud.Location(:,3),'fill');
         hold on
         roi2 = drawcuboid(lidar2,'Color','r','Position',[-1 -1.793/2 0 4.642 1.793 1.748]);
         % roi.Position = [-0.8 -1 0 4 2 1.8];
         scatter3(ptc_path_from_car.Location(front_idx,1),ptc_path_from_car.Location(front_idx,2),ptc_path_from_car.Location(front_idx,3),3,'red','filled')
         axis equal;
+        xlim([-5 20])
+        ylim([-15 15])
+        zlim([-2 4])
+        view([-90 90])
+        xlabel( '\itX \rm[m]'); ylabel( '\itY \rm[m]'); zlabel( '\itZ \rm[m]');
+        hold off
+
+        % view3
+        subplot(2,1,2)
+        lidar3 = scatter3(ptCloud.Location(:,1)+camera_position(1),ptCloud.Location(:,2),ptCloud.Location(:,3)+camera_position(3),2,ptCloud.Location(:,3),'fill');
+        hold on
+        roi3 = drawcuboid(lidar3,'Color','r','Position',[-1 -1.793/2 0 4.642 1.793 1.748]);
+        % roi.Position = [-0.8 -1 0 4 2 1.8];
+        scatter3(ptc_path_from_car.Location(front_idx,1),ptc_path_from_car.Location(front_idx,2),ptc_path_from_car.Location(front_idx,3),3,'red','filled')
+        axis equal;
         xlim([-10 40])
         ylim([-20 20])
         zlim([-2 4])
         view([0 0])
-        % view([-50 -40 20])
+        xlabel( '\itX \rm[m]'); ylabel( '\itY \rm[m]'); zlabel( '\itZ \rm[m]');
         hold off
+
+        fontname(gcf,"Arial");
+        fontsize(img_fig().Children,13,"points");
     end
 
     last_pos = pos;
@@ -153,7 +176,14 @@ for i = 1:5:length(pcd_list)
     % hold off
 
     drawnow;
-    % frame = getframe(img_fig);
-    % writeVideo(video,frame);
+    frame = getframe(img_fig);
+    writeVideo(video,frame);
+
+    Tmp = {'Progress: %3d/%d\n', i, imax};
+    Tmp{1} = [ repmat(sprintf('\b'),[1 strlen]),  Tmp{1} ];
+
+    Txt = sprintf(Tmp{1:3});
+    fprintf(Txt);
+    strlen = length(Txt) - strlen;
 end
-% close(video)
+close(video)
