@@ -7,13 +7,13 @@ function [depth_for_img,cameraPoints] = func_projectLidarToDepthImage(pcd, tmat_
     R2 = eul2rotm(eulerAngle2);
     A2 = [[R2;0,0,0],[0;0;0;1]];
     
-    A3 = A2*tmat_cam2lidar;
+    % A3 = A2*tmat_cam2lidar;
 
-    tform = rigidtform3d(A3);
+    tform = rigidtform3d(A2);
     cameraPoints = pctransform(pcd,tform);                        % Nx3
     
-    % カメラ視野内（Z > 0）の点をフィルタリング
-    validIdx = cameraPoints.Location(:, 3) > 2;
+    % カメラ視野内（Z > 1）の点をフィルタリング
+    validIdx = cameraPoints.Location(:, 3) > 1;
     cameraPoints = cameraPoints.Location(validIdx, :);
     
     % 正規化画像平面に投影

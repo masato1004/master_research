@@ -13,13 +13,19 @@ if ~exist("imageNdepth",'dir')
     mkdir("imageNdepth")
 end
 
+%% define ego csv and load positions
+filename = "scenario/scenario_1_divp_Veh_NissanXtrail_1.csv";
+opts = detectImportOptions(filename);
+opts.SelectedVariableNames = ["timestamp", "pos_x","pos_y","pos_z", "yaw_rad", "pitch_rad", "roll_rad"];
+pos_table = readtable(filename,opts);
+
 %% video setting
 sampling_freq = 20;
 sampling_period = 1/sampling_freq;
-videoname = "imageNdepth"+"/test"+lidar_name;
-video = VideoWriter(videoname,'MPEG-4');
-video.FrameRate = sampling_freq;
-open(video);
+% videoname = "imageNdepth"+"/test"+lidar_name;
+% video = VideoWriter(videoname,'MPEG-4');
+% video.FrameRate = sampling_freq;
+% open(video);
 
 %% camera parameter
 img_w = 3840;
@@ -39,10 +45,9 @@ cy = 1073.60153;
 imageSize = [img_h, img_w];
 focalLength      = [fx, fy];
 principalPoint   = [cx, cy];
-RadialDistortion = [-0.06390521968364953,0.0013426527038489695,-8.135414576415314e-06];
 RadialDistortion6 = [k1, k2, k3, k4, k5, k6];
 TangentialDistortion = [p1,p2];
-intrinsics       = cameraIntrinsics(focalLength,principalPoint,imageSize,"RadialDistortion",RadialDistortion,"TangentialDistortion",TangentialDistortion);
+% intrinsics       = cameraIntrinsics(focalLength,principalPoint,imageSize,"RadialDistortion",RadialDistortion,"TangentialDistortion",TangentialDistortion);
 
 %% cam2roof-lidar transformation
 lidar_position_r = [1.110943, 0., 1.998877];
@@ -53,11 +58,12 @@ lidar_angles_f = [0., deg2rad(22.500000), 0.];
 lidar_position = lidar_position_f;
 lidar_angles   =   lidar_angles_f;
 camera_position = [1.690000, 0.0, 1.500000];
+% camera_position = [1.881159, 0.0, 1.554000];
 camera_angles = [0., 0., 0.];
 
 %% figure
 img_fig = figure();
-for i = 1:length(pcd_list)
+for i = 1:5:length(pcd_list)
     pcd_name = pcd_list(i).name;
     img_name = img_list(i).name;
     
@@ -65,7 +71,24 @@ for i = 1:length(pcd_list)
     img = imread(img_dir_name+"/"+img_name);
     
     %% imshow
-    imshow(img);
+    % imshow(img);
+
+    %% load path view
+    pos_idx = abs(pos_table.timestamp - (i-1)*sampling_period) < 1e-10;
+    pos = [pos_table.pos_x(pos_idx),pos_table.pos_y(pos_idx),pos_table.pos_z(pos_idx)];
+    agl = [pos_table.yaw_rad(pos_idx),pos_table.pitch_rad(pos_idx),pos_table.roll_rad(pos_idx)];
+    % agl = [pos_table.yaw_rad(pos_idx),0.024,0.001];
+    ptc_path_from_pos = pointCloud([pos_table.pos_x ,pos_table.pos_y ,pos_table.pos_z ] - pos);
+    
+    R_pos = eul2rotm(-agl);
+    A_pos = [[R_pos;0,0,0],[0;0;0; 1]];
+    A_pos2cam = [[eye(3);0,0,0], [(-camera_position)'; 1]];
+    pos_tform = rigidtform3d(A_pos);
+    pos_tform2 = rigidtform3d(A_pos2cam);
+    ptc_path_from_car = pctransform(ptc_path_from_pos,pos_tform);
+    front_idx = ptc_path_from_car.Location(:,1)>0;
+    
+    [path_depth,path_camerapoints] = func_projectLidarToDepthImage(ptc_path_from_car, A_pos2cam, focalLength, principalPoint, imageSize, RadialDistortion6, TangentialDistortion);
     
     if i > 1
         %% load pcd
@@ -78,19 +101,59 @@ for i = 1:length(pcd_list)
         translation =  - camera_position + lidar_position;
         R1 = eul2rotm(eulerAngle1);
         A1 = [[R1;0,0,0],[translation';1]];
+        ptCloud = pctransform(ptCloud,rigidtform3d(A1));
         
-        % [depth,cameraPoints] = func_ptc_transformer(ptCloud,intrinsics,A1);
-        [depth,~] = func_projectLidarToDepthImage(ptCloud, A1, focalLength, principalPoint, imageSize, RadialDistortion6, TangentialDistortion);
-        % pause(5)
+        [depth,lidar_camerapoints] = func_projectLidarToDepthImage(ptCloud, A1, focalLength, principalPoint, imageSize, RadialDistortion6, TangentialDistortion);
+
         %% show depth onto img
+        % hold on
+        % scatter(depth(:,1),depth(:,2),5,depth(:,3),'MarkerEdgeColor','flat','MarkerFaceColor','flat')
+        % colormap(turbo);
+        % clim([0 100])
+        % hold off
+
+        %% visualize BBox of the ego vehicle
+        % view1
+        subplot(2,1,1)
+        lidar = scatter3(ptCloud.Location(:,1)+camera_position(1),ptCloud.Location(:,2),ptCloud.Location(:,3)+camera_position(3),2,ptCloud.Location(:,3),'fill');
         hold on
-        scatter(depth(:,1),depth(:,2),5,depth(:,3),'MarkerEdgeColor','flat','MarkerFaceColor','flat')
-        colormap(turbo);
-        clim([0 100])
+        roi = drawcuboid(lidar,'Color','r','Position',[-1 -1.793/2 0 4.642 1.793 1.748]);
+        % roi.Position = [-0.8 -1 0 4 2 1.8];
+        scatter3(ptc_path_from_car.Location(front_idx,1),ptc_path_from_car.Location(front_idx,2),ptc_path_from_car.Location(front_idx,3),3,'red','filled')
+        axis equal;
+        xlim([-10 40])
+        ylim([-20 20])
+        zlim([-2 4])
+        view([0 0])
+        view([-50 -40 20])
+        hold off
+
+        % view2
+        subplot(2,1,2)
+        lidar2 = scatter3(ptCloud.Location(:,1)+camera_position(1),ptCloud.Location(:,2),ptCloud.Location(:,3)+camera_position(3),2,ptCloud.Location(:,3),'fill');
+        hold on
+        roi2 = drawcuboid(lidar2,'Color','r','Position',[-1 -1.793/2 0 4.642 1.793 1.748]);
+        % roi.Position = [-0.8 -1 0 4 2 1.8];
+        scatter3(ptc_path_from_car.Location(front_idx,1),ptc_path_from_car.Location(front_idx,2),ptc_path_from_car.Location(front_idx,3),3,'red','filled')
+        axis equal;
+        xlim([-10 40])
+        ylim([-20 20])
+        zlim([-2 4])
+        view([0 0])
+        % view([-50 -40 20])
         hold off
     end
+
+    last_pos = pos;
+    %% visualize path on RGB image
+    % hold on
+    % scatter(path_depth(:,1),path_depth(:,2),5,path_depth(:,3),'MarkerEdgeColor','flat','MarkerFaceColor','flat')
+    % colormap(turbo);
+    % clim([0 100])
+    % hold off
+
     drawnow;
-    frame = getframe(img_fig);
-    writeVideo(video,frame);
+    % frame = getframe(img_fig);
+    % writeVideo(video,frame);
 end
-close(video)
+% close(video)
