@@ -7,9 +7,9 @@ function [depth_for_img,cameraPoints] = func_projectLidarToDepthImage(pcd, tmat_
     R2 = eul2rotm(eulerAngle2);
     A2 = [[R2;0,0,0],[0;0;0;1]];
     
-    % A3 = A2*tmat_cam2lidar;
+    A3 = A2*tmat_cam2lidar;
 
-    tform = rigidtform3d(A2);
+    tform = rigidtform3d(A3);
     cameraPoints = pctransform(pcd,tform);                        % Nx3
     
     % カメラ視野内（Z > 1）の点をフィルタリング
