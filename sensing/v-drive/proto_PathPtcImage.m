@@ -8,7 +8,7 @@ use_img = true;
 animation = false;
 
 %% define pcd and img
-lidar_name = "front"
+lidar_name = "roof"
 
 pcd_dir_name = "ply_"+lidar_name+"-lidar";
 img_dir_name = "image";
@@ -125,7 +125,7 @@ for i = 1:1:length(pcd_list)
             translation =  - camera_position + lidar_position;
             R1 = eul2rotm(eulerAngle1);
             A1 = [[R1;0,0,0],[translation';1]];
-            ptCloud = pctransform(ptCloud,rigidtform3d(A1));
+            % ptCloud = pctransform(ptCloud,rigidtform3d(A1));
             
             [depth,lidar_camerapoints] = func_projectLidarToDepthImage(ptCloud, A1, focalLength, principalPoint, imageSize, RadialDistortion6, TangentialDistortion);
         end
