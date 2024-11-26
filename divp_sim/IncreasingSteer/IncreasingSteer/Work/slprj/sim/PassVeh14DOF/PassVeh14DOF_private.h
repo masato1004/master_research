@@ -1,7 +1,6 @@
 #ifndef PassVeh14DOF_private_h_
 #define PassVeh14DOF_private_h_
 #include "rtwtypes.h"
-#include "model_reference_types.h"
 #include "builtin_typeid_types.h"
 #include "multiword_types.h"
 #include "zero_crossing_types.h"
@@ -74,12 +73,6 @@ gblLoggingInterval ;
 #endif
 #ifndef rtmSetNonContDerivMemory
 #define rtmSetNonContDerivMemory(rtm, val) ((rtm)->NonContDerivMemory = (val))
-#endif
-#ifndef rtmGetAbsTolControlVector
-#define rtmGetAbsTolControlVector(rtm) (ssGetAbsTolControlVector(_ssGetRootSS((rtm)->_mdlRefSfcnS)))
-#endif
-#ifndef rtmGetAbsTolVector
-#define rtmGetAbsTolVector(rtm) (ssGetAbsTolVector(_ssGetRootSS((rtm)->_mdlRefSfcnS)))
 #endif
 #ifndef rtmGetClockTick0
 #define rtmGetClockTick0(rtm) ssGetClockTick( _ssGetRootSS((rtm)->_mdlRefSfcnS), (rtm)->Timing.mdlref_GlobalTID[0])

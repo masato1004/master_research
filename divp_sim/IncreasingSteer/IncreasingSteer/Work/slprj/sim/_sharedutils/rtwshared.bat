@@ -1,14 +1,14 @@
 @echo off
-set skipSetupArg=%1
-if "%skipSetupArg%" NEQ "skip_setup_msvc" (
-call "setup_msvc.bat"
-)
+
+call "setup_mingw.bat"
 
 cd .
-nmake -f rtwshared.mk  OPTS="-DNRT -DIS_SIM_TARGET"
+
+if "%1"=="" ("%MINGW_ROOT%\mingw32-make.exe"  -j 8 -l 8 -Oline -f rtwshared.mk all) else ("%MINGW_ROOT%\mingw32-make.exe"  -j 8 -l 8 -Oline -f rtwshared.mk %1)
 @if errorlevel 1 goto error_exit
-exit 0
+
+exit /B 0
 
 :error_exit
 echo The make command returned an error of %errorlevel%
-exit 1
+exit /B 1

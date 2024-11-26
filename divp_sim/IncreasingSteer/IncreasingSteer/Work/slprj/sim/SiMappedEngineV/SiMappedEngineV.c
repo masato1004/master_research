@@ -6,8 +6,7 @@
 #include "SiMappedEngineV_capi.h"
 #include "look1_binlcpw.h"
 #include "look2_binlcpw.h"
-#include <string.h>
-static RegMdlInfo rtMdlInfo_SiMappedEngineV [ 44 ] = { { "o2k4rz0uw5x" ,
+static RegMdlInfo rtMdlInfo_SiMappedEngineV [ 43 ] = { { "o2k4rz0uw5x" ,
 MDL_INFO_NAME_MDLREF_DWORK , 0 , - 1 , ( void * ) "SiMappedEngineV" } , {
 "jgubm4xidl" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
 "SiMappedEngineV" } , { "jfimtdo5tu" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
@@ -30,24 +29,23 @@ MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * ) "SiMappedEngineV" } ,
 - 1 , ( void * ) "SiMappedEngineV" } , { "po5zlrzzyd" ,
 MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * ) "SiMappedEngineV" } ,
 { "ecxs4hsbvq" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
-"SiMappedEngineV" } , { "a20sjwaowh" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
-- 1 , ( void * ) "SiMappedEngineV" } , { "bmpf100lpn" ,
+"SiMappedEngineV" } , { "bmpf100lpn" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
+- 1 , ( void * ) "SiMappedEngineV" } , { "pj3vtlmlns" ,
 MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * ) "SiMappedEngineV" } ,
-{ "pj3vtlmlns" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
-"SiMappedEngineV" } , { "f4glzcjee3" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
-- 1 , ( void * ) "SiMappedEngineV" } , { "f5rmroe5ej" ,
+{ "f4glzcjee3" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
+"SiMappedEngineV" } , { "f5rmroe5ej" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
+- 1 , ( void * ) "SiMappedEngineV" } , { "fbspkqemka" ,
 MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * ) "SiMappedEngineV" } ,
-{ "fbspkqemka" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
-"SiMappedEngineV" } , { "eglqnicaef" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
-- 1 , ( void * ) "SiMappedEngineV" } , { "as2gecbwug" ,
+{ "eglqnicaef" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
+"SiMappedEngineV" } , { "as2gecbwug" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
+- 1 , ( void * ) "SiMappedEngineV" } , { "SiMappedEngineV" ,
+MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , 0 , ( NULL ) } , { "ajamtm0fjy" ,
 MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * ) "SiMappedEngineV" } ,
-{ "SiMappedEngineV" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , 0 , ( NULL ) } ,
-{ "ajamtm0fjy" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
-"SiMappedEngineV" } , { "anoacnregqm" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0
-, - 1 , ( void * ) "SiMappedEngineV" } , { "mrj2qlehgq" ,
+{ "anoacnregqm" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
+"SiMappedEngineV" } , { "mrj2qlehgq" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 ,
+- 1 , ( void * ) "SiMappedEngineV" } , { "kgxfljuibq" ,
 MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * ) "SiMappedEngineV" } ,
-{ "kgxfljuibq" , MDL_INFO_ID_GLOBAL_RTW_CONSTRUCT , 0 , - 1 , ( void * )
-"SiMappedEngineV" } , { "mr_SiMappedEngineV_GetSimStateDisallowedBlocks" ,
+{ "mr_SiMappedEngineV_GetSimStateDisallowedBlocks" ,
 MDL_INFO_ID_MODEL_FCN_NAME , 0 , - 1 , ( void * ) "SiMappedEngineV" } , {
 "mr_SiMappedEngineV_extractBitFieldFromCellArrayWithOffset" ,
 MDL_INFO_ID_MODEL_FCN_NAME , 0 , - 1 , ( void * ) "SiMappedEngineV" } , {
@@ -178,48 +176,40 @@ localX -> h235wq4fsj = anoacnregq . P_18 ; localX -> lf5wmc502m = anoacnregq
 anoacnregq . P_16 ; localX -> obuuvimtvu = anoacnregq . P_17 ; localX ->
 h235wq4fsj = anoacnregq . P_18 ; localX -> lf5wmc502m = anoacnregq . P_19 ; }
 void SiMappedEngineV ( real_T * p2vuqhqrpz , puu5fcics1 * localB , fpgmc1blog
-* localX ) { real_T ffp01xusok ; localB -> guvbzoda22 = localX -> peid1wqkia
-; localB -> jv1i44zpz4 = localX -> obuuvimtvu ; * p2vuqhqrpz = localX ->
-h235wq4fsj ; localB -> nmqikn0wfy = localB -> guvbzoda22 - localB ->
-jv1i44zpz4 ; localB -> hln2r0vyrz [ 0 ] = localB -> akvflxxm0n ; localB ->
-hln2r0vyrz [ 1 ] = localB -> gqznr3sow4 ; localB -> haqwzftjaf [ 0 ] =
-anoacnregq . P_5 ; localB -> haqwzftjaf [ 1 ] = anoacnregq . P_4 ;
-LookUp_real_T_real_T ( & ( ffp01xusok ) , & localB -> haqwzftjaf [ 0 ] ,
-localB -> nmqikn0wfy , & localB -> hln2r0vyrz [ 0 ] , 1U ) ; localB ->
-bagmxejbfa [ 0 ] = anoacnregq . P_23 ; localB -> bagmxejbfa [ 1 ] = localB ->
-nz430vfzwk ; localB -> ozcmxjbphl [ 0 ] = anoacnregq . P_6 ; localB ->
-ozcmxjbphl [ 1 ] = ffp01xusok ; localB -> cuyzaclebl = localB -> jv1i44zpz4 -
-localB -> guvbzoda22 ; } void SiMappedEngineVTID2 ( puu5fcics1 * localB ) {
-real_T maxV ; int32_T k ; maxV = anoacnregq . P_3 [ 0 ] ; for ( k = 0 ; k <
-15 ; k ++ ) { maxV = muDoubleScalarMax ( maxV , anoacnregq . P_3 [ k + 1 ] )
-; } localB -> nz430vfzwk = anoacnregq . P_20 * maxV ; localB -> akvflxxm0n =
-anoacnregq . P_21 * localB -> nz430vfzwk ; localB -> gqznr3sow4 = anoacnregq
-. P_22 * localB -> nz430vfzwk ; } void pj3vtlmlns ( kgxfljuibq * const
-plpdajfsza , const real_T * gzpwimsfg2 , puu5fcics1 * localB , ow0cmqxpyk *
-localDW ) { real_T k13tucdry1_p ; k13tucdry1_p = 9.5492965855137211 * *
-gzpwimsfg2 ; if ( ssIsModeUpdateTimeStep ( plpdajfsza -> _mdlRefSfcnS ) ) {
-if ( k13tucdry1_p >= anoacnregq . P_12 ) { localDW -> ex3gnslpxt = 1 ; } else
-if ( k13tucdry1_p > anoacnregq . P_13 ) { localDW -> ex3gnslpxt = 0 ; } else
-{ localDW -> ex3gnslpxt = - 1 ; } } localB -> hrrraf0pos = localB ->
-guvbzoda22 - look1_binlcpw ( k13tucdry1_p , anoacnregq . P_2 , anoacnregq .
-P_1 , 15U ) ; LookUp_real_T_real_T ( & ( localB -> pcmsck1qnt ) , & localB ->
-ozcmxjbphl [ 0 ] , localB -> hrrraf0pos , & localB -> bagmxejbfa [ 0 ] , 1U )
-; } void bmpf100lpn ( kgxfljuibq * const plpdajfsza , const real_T *
-dhoq3itz5d , const real_T * gzpwimsfg2 , real_T * p2vuqhqrpz , puu5fcics1 *
-localB , ow0cmqxpyk * localDW , ih0mudozt1 * localXdot ) { real_T
-akgtawrtv1_p ; real_T k13tucdry1_e ; real_T ps5xef4zf3_p ; k13tucdry1_e =
-9.5492965855137211 * * gzpwimsfg2 ; if ( ssIsModeUpdateTimeStep ( plpdajfsza
--> _mdlRefSfcnS ) ) { if ( k13tucdry1_e >= anoacnregq . P_12 ) { localDW ->
-ex3gnslpxt = 1 ; } else if ( k13tucdry1_e > anoacnregq . P_13 ) { localDW ->
-ex3gnslpxt = 0 ; } else { localDW -> ex3gnslpxt = - 1 ; } } ps5xef4zf3_p = *
-dhoq3itz5d - localB -> jv1i44zpz4 ; if ( localDW -> ex3gnslpxt == 1 ) {
-akgtawrtv1_p = anoacnregq . P_12 ; } else if ( localDW -> ex3gnslpxt == - 1 )
-{ akgtawrtv1_p = anoacnregq . P_13 ; } else { akgtawrtv1_p = k13tucdry1_e ; }
-akgtawrtv1_p = ( look2_binlcpw ( localB -> guvbzoda22 , k13tucdry1_e ,
+* localX ) { real_T ffp01xusok ; real_T p30k1e2vor [ 2 ] ; real_T psxshosc0e
+[ 2 ] ; real_T oflzfxzxot ; localB -> guvbzoda22 = localX -> peid1wqkia ;
+localB -> jv1i44zpz4 = localX -> obuuvimtvu ; * p2vuqhqrpz = localX ->
+h235wq4fsj ; oflzfxzxot = localB -> guvbzoda22 - localB -> jv1i44zpz4 ;
+p30k1e2vor [ 0 ] = localB -> fma41c5arp ; p30k1e2vor [ 1 ] = localB ->
+dz1nagzqcl ; psxshosc0e [ 0 ] = anoacnregq . P_5 ; psxshosc0e [ 1 ] =
+anoacnregq . P_4 ; LookUp_real_T_real_T ( & ( ffp01xusok ) , & psxshosc0e [ 0
+] , oflzfxzxot , & p30k1e2vor [ 0 ] , 1U ) ; localB -> ijdd3bycis [ 0 ] =
+anoacnregq . P_23 ; localB -> ijdd3bycis [ 1 ] = localB -> ncfpjveivd ;
+localB -> mimwwinlyj [ 0 ] = anoacnregq . P_6 ; localB -> mimwwinlyj [ 1 ] =
+ffp01xusok ; localB -> leq5v2moc0 = localB -> jv1i44zpz4 - localB ->
+guvbzoda22 ; } void SiMappedEngineVTID2 ( puu5fcics1 * localB ) { real_T maxV
+; int32_T k ; maxV = anoacnregq . P_3 [ 0 ] ; for ( k = 0 ; k < 15 ; k ++ ) {
+maxV = muDoubleScalarMax ( maxV , anoacnregq . P_3 [ k + 1 ] ) ; } localB ->
+ncfpjveivd = anoacnregq . P_20 * maxV ; localB -> fma41c5arp = anoacnregq .
+P_21 * localB -> ncfpjveivd ; localB -> dz1nagzqcl = anoacnregq . P_22 *
+localB -> ncfpjveivd ; } void pj3vtlmlns ( const real_T * gzpwimsfg2 ,
+puu5fcics1 * localB ) { real_T clzldb3mla_p ; clzldb3mla_p =
+9.5492965855137211 * * gzpwimsfg2 ; localB -> ggolq00kwu = localB ->
+guvbzoda22 - look1_binlcpw ( clzldb3mla_p , anoacnregq . P_2 , anoacnregq .
+P_1 , 15U ) ; LookUp_real_T_real_T ( & ( localB -> fjdm0q5w0f ) , & localB ->
+mimwwinlyj [ 0 ] , localB -> ggolq00kwu , & localB -> ijdd3bycis [ 0 ] , 1U )
+; } void bmpf100lpn ( const real_T * dhoq3itz5d , const real_T * gzpwimsfg2 ,
+real_T * p2vuqhqrpz , puu5fcics1 * localB , ih0mudozt1 * localXdot ) { real_T
+c5a5pxaow5_p ; real_T clzldb3mla_e ; real_T oiz4a1rfes_p ; clzldb3mla_e =
+9.5492965855137211 * * gzpwimsfg2 ; oiz4a1rfes_p = * dhoq3itz5d - localB ->
+jv1i44zpz4 ; if ( clzldb3mla_e > anoacnregq . P_12 ) { c5a5pxaow5_p =
+anoacnregq . P_12 ; } else if ( clzldb3mla_e < anoacnregq . P_13 ) {
+c5a5pxaow5_p = anoacnregq . P_13 ; } else { c5a5pxaow5_p = clzldb3mla_e ; }
+c5a5pxaow5_p = ( look2_binlcpw ( localB -> guvbzoda22 , clzldb3mla_e ,
 anoacnregq . P_3 , anoacnregq . P_2 , anoacnregq . P_0 , anoacnregq . P_24 ,
-16U ) - anoacnregq . P_11 * look1_binlcpw ( k13tucdry1_e , anoacnregq . P_10
-, anoacnregq . P_9 , 1U ) / ( akgtawrtv1_p * anoacnregq . P_14 ) ) - *
-p2vuqhqrpz ; localB -> hrrraf0pos = localB -> guvbzoda22 - look1_binlcpw ( k13tucdry1_e , anoacnregq . P_2 , anoacnregq . P_1 , 15U ) ; LookUp_real_T_real_T ( & ( localB -> pcmsck1qnt ) , & localB -> ozcmxjbphl [ 0 ] , localB -> hrrraf0pos , & localB -> bagmxejbfa [ 0 ] , 1U ) ; localXdot -> peid1wqkia = 1.0 / localB -> pcmsck1qnt * localB -> cuyzaclebl ; localXdot -> obuuvimtvu = ps5xef4zf3_p * anoacnregq . P_7 ; localXdot -> h235wq4fsj = akgtawrtv1_p * anoacnregq . P_8 ; localXdot -> lf5wmc502m = anoacnregq . P_15 * k13tucdry1_e ; } void a20sjwaowh ( kgxfljuibq * const plpdajfsza , const real_T * gzpwimsfg2 , puu5fcics1 * localB , ow0cmqxpyk * localDW , jgubm4xidl * localZCSV ) { real_T k13tucdry1_m ; k13tucdry1_m = 9.5492965855137211 * * gzpwimsfg2 ; if ( ssIsModeUpdateTimeStep ( plpdajfsza -> _mdlRefSfcnS ) ) { if ( k13tucdry1_m >= anoacnregq . P_12 ) { localDW -> ex3gnslpxt = 1 ; } else if ( k13tucdry1_m > anoacnregq . P_13 ) { localDW -> ex3gnslpxt = 0 ; } else { localDW -> ex3gnslpxt = - 1 ; } } localB -> hrrraf0pos = localB -> guvbzoda22 - look1_binlcpw ( k13tucdry1_m , anoacnregq . P_2 , anoacnregq . P_1 , 15U ) ; LookUp_real_T_real_T ( & ( localB -> pcmsck1qnt ) , & localB -> ozcmxjbphl [ 0 ] , localB -> hrrraf0pos , & localB -> bagmxejbfa [ 0 ] , 1U ) ; localZCSV -> oww3vu3njk = k13tucdry1_m - anoacnregq . P_12 ; localZCSV -> j54vi5dxsi = k13tucdry1_m - anoacnregq . P_13 ; } void po5zlrzzyd ( kgxfljuibq * const plpdajfsza ) { if ( ! slIsRapidAcceleratorSimulating ( ) ) { slmrRunPluginEvent ( plpdajfsza -> _mdlRefSfcnS , "SiMappedEngineV" , "SIMSTATUS_TERMINATING_MODELREF_ACCEL_EVENT" ) ; } } void fbspkqemka ( SimStruct * _mdlRefSfcnS , int_T mdlref_TID0 , int_T mdlref_TID1 , int_T mdlref_TID2 , kgxfljuibq * const plpdajfsza , puu5fcics1 * localB , ow0cmqxpyk * localDW , fpgmc1blog * localX , void * sysRanPtr , int contextTid , rtwCAPI_ModelMappingInfo * rt_ParentMMI , const char_T * rt_ChildPath , int_T rt_ChildMMIIdx , int_T rt_CSTATEIdx ) { ( void ) memset ( ( void * ) plpdajfsza , 0 , sizeof ( kgxfljuibq ) ) ; plpdajfsza -> Timing . mdlref_GlobalTID [ 0 ] = mdlref_TID0 ; plpdajfsza -> Timing . mdlref_GlobalTID [ 1 ] = mdlref_TID1 ; plpdajfsza -> Timing . mdlref_GlobalTID [ 2 ] = mdlref_TID2 ; plpdajfsza -> _mdlRefSfcnS = ( _mdlRefSfcnS ) ; if ( ! slIsRapidAcceleratorSimulating ( ) ) { slmrRunPluginEvent ( plpdajfsza -> _mdlRefSfcnS , "SiMappedEngineV" , "START_OF_SIM_MODEL_MODELREF_ACCEL_EVENT" ) ; } { localB -> guvbzoda22 = 0.0 ; localB -> jv1i44zpz4 = 0.0 ; localB -> nmqikn0wfy = 0.0 ; localB -> hln2r0vyrz [ 0 ] = 0.0 ; localB -> hln2r0vyrz [ 1 ] = 0.0 ; localB -> haqwzftjaf [ 0 ] = 0.0 ; localB -> haqwzftjaf [ 1 ] = 0.0 ; localB -> bagmxejbfa [ 0 ] = 0.0 ; localB -> bagmxejbfa [ 1 ] = 0.0 ; localB -> ozcmxjbphl [ 0 ] = 0.0 ; localB -> ozcmxjbphl [ 1 ] = 0.0 ; localB -> cuyzaclebl = 0.0 ; localB -> nz430vfzwk = 0.0 ; localB -> akvflxxm0n = 0.0 ; localB -> gqznr3sow4 = 0.0 ; localB -> hrrraf0pos = 0.0 ; localB -> pcmsck1qnt = 0.0 ; } ( void ) memset ( ( void * ) localDW , 0 , sizeof ( ow0cmqxpyk ) ) ; SiMappedEngineV_InitializeDataMapInfo ( plpdajfsza , localDW , localX , sysRanPtr , contextTid ) ; if ( ( rt_ParentMMI != ( NULL ) ) && ( rt_ChildPath != ( NULL ) ) ) { rtwCAPI_SetChildMMI ( * rt_ParentMMI , rt_ChildMMIIdx , & ( plpdajfsza -> DataMapInfo . mmi ) ) ; rtwCAPI_SetPath ( plpdajfsza -> DataMapInfo . mmi , rt_ChildPath ) ; rtwCAPI_MMISetContStateStartIndex ( plpdajfsza -> DataMapInfo . mmi , rt_CSTATEIdx ) ; } } void mr_SiMappedEngineV_MdlInfoRegFcn ( SimStruct * mdlRefSfcnS , char_T * modelName , int_T * retVal ) { * retVal = 0 ; { boolean_T regSubmodelsMdlinfo = false ; ssGetRegSubmodelsMdlinfo ( mdlRefSfcnS , & regSubmodelsMdlinfo ) ; if ( regSubmodelsMdlinfo ) { } } * retVal = 0 ; ssRegModelRefMdlInfo ( mdlRefSfcnS , modelName , rtMdlInfo_SiMappedEngineV , 44 ) ; * retVal = 1 ; } static void mr_SiMappedEngineV_cacheDataAsMxArray ( mxArray * destArray , mwIndex i , int j , const void * srcData , size_t numBytes ) ; static void mr_SiMappedEngineV_cacheDataAsMxArray ( mxArray * destArray , mwIndex i , int j , const void * srcData , size_t numBytes ) { mxArray * newArray = mxCreateUninitNumericMatrix ( ( size_t ) 1 , numBytes , mxUINT8_CLASS , mxREAL ) ; memcpy ( ( uint8_T * ) mxGetData ( newArray ) , ( const uint8_T * ) srcData , numBytes ) ; mxSetFieldByNumber ( destArray , i , j , newArray ) ; } static void mr_SiMappedEngineV_restoreDataFromMxArray ( void * destData , const mxArray * srcArray , mwIndex i , int j , size_t numBytes ) ; static void mr_SiMappedEngineV_restoreDataFromMxArray ( void * destData , const mxArray * srcArray , mwIndex i , int j , size_t numBytes ) { memcpy ( ( uint8_T * ) destData , ( const uint8_T * ) mxGetData ( mxGetFieldByNumber ( srcArray , i , j ) ) , numBytes ) ; } static void mr_SiMappedEngineV_cacheBitFieldToMxArray ( mxArray * destArray , mwIndex i , int j , uint_T bitVal ) ; static void mr_SiMappedEngineV_cacheBitFieldToMxArray ( mxArray * destArray , mwIndex i , int j , uint_T bitVal ) { mxSetFieldByNumber ( destArray , i , j , mxCreateDoubleScalar ( ( real_T ) bitVal ) ) ; } static uint_T mr_SiMappedEngineV_extractBitFieldFromMxArray ( const mxArray * srcArray , mwIndex i , int j , uint_T numBits ) ; static uint_T mr_SiMappedEngineV_extractBitFieldFromMxArray ( const mxArray * srcArray , mwIndex i , int j , uint_T numBits ) { const uint_T varVal = ( uint_T ) mxGetScalar ( mxGetFieldByNumber ( srcArray , i , j ) ) ; return varVal & ( ( 1u << numBits ) - 1u ) ; } static void mr_SiMappedEngineV_cacheDataToMxArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , const void * srcData , size_t numBytes ) ; static void mr_SiMappedEngineV_cacheDataToMxArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , const void * srcData , size_t numBytes ) { uint8_T * varData = ( uint8_T * ) mxGetData ( mxGetFieldByNumber ( destArray , i , j ) ) ; memcpy ( ( uint8_T * ) & varData [ offset * numBytes ] , ( const uint8_T * ) srcData , numBytes ) ; } static void mr_SiMappedEngineV_restoreDataFromMxArrayWithOffset ( void * destData , const mxArray * srcArray , mwIndex i , int j , mwIndex offset , size_t numBytes ) ; static void mr_SiMappedEngineV_restoreDataFromMxArrayWithOffset ( void * destData , const mxArray * srcArray , mwIndex i , int j , mwIndex offset , size_t numBytes ) { const uint8_T * varData = ( const uint8_T * ) mxGetData ( mxGetFieldByNumber ( srcArray , i , j ) ) ; memcpy ( ( uint8_T * ) destData , ( const uint8_T * ) & varData [ offset * numBytes ] , numBytes ) ; } static void mr_SiMappedEngineV_cacheBitFieldToCellArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , uint_T fieldVal ) ; static void mr_SiMappedEngineV_cacheBitFieldToCellArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , uint_T fieldVal ) { mxSetCell ( mxGetFieldByNumber ( destArray , i , j ) , offset , mxCreateDoubleScalar ( ( real_T ) fieldVal ) ) ; } static uint_T mr_SiMappedEngineV_extractBitFieldFromCellArrayWithOffset ( const mxArray * srcArray , mwIndex i , int j , mwIndex offset , uint_T numBits ) ; static uint_T mr_SiMappedEngineV_extractBitFieldFromCellArrayWithOffset ( const mxArray * srcArray , mwIndex i , int j , mwIndex offset , uint_T numBits ) { const uint_T fieldVal = ( uint_T ) mxGetScalar ( mxGetCell ( mxGetFieldByNumber ( srcArray , i , j ) , offset ) ) ; return fieldVal & ( ( 1u << numBits ) - 1u ) ; } mxArray * mr_SiMappedEngineV_GetDWork ( const o2k4rz0uw5x * mdlrefDW ) { static const char_T * ssDWFieldNames [ 3 ] = { "rtb" , "rtdw" , "NULL->rtzce" , } ; mxArray * ssDW = mxCreateStructMatrix ( 1 , 1 , 3 , ssDWFieldNames ) ; mr_SiMappedEngineV_cacheDataAsMxArray ( ssDW , 0 , 0 , ( const void * ) & ( mdlrefDW -> rtb ) , sizeof ( mdlrefDW -> rtb ) ) ; { static const char_T * rtdwDataFieldNames [ 1 ] = { "mdlrefDW->rtdw.ex3gnslpxt" , } ; mxArray * rtdwData = mxCreateStructMatrix ( 1 , 1 , 1 , rtdwDataFieldNames ) ; mr_SiMappedEngineV_cacheDataAsMxArray ( rtdwData , 0 , 0 , ( const void * ) & ( mdlrefDW -> rtdw . ex3gnslpxt ) , sizeof ( mdlrefDW -> rtdw . ex3gnslpxt ) ) ; mxSetFieldByNumber ( ssDW , 0 , 1 , rtdwData ) ; } ( void ) mdlrefDW ; return ssDW ; } void mr_SiMappedEngineV_SetDWork ( o2k4rz0uw5x * mdlrefDW , const mxArray * ssDW ) { ( void ) ssDW ; ( void ) mdlrefDW ; mr_SiMappedEngineV_restoreDataFromMxArray ( ( void * ) & ( mdlrefDW -> rtb ) , ssDW , 0 , 0 , sizeof ( mdlrefDW -> rtb ) ) ; { const mxArray * rtdwData = mxGetFieldByNumber ( ssDW , 0 , 1 ) ; mr_SiMappedEngineV_restoreDataFromMxArray ( ( void * ) & ( mdlrefDW -> rtdw . ex3gnslpxt ) , rtdwData , 0 , 0 , sizeof ( mdlrefDW -> rtdw . ex3gnslpxt ) ) ; } } void mr_SiMappedEngineV_RegisterSimStateChecksum ( SimStruct * S ) { const uint32_T chksum [ 4 ] = { 2194920608U , 1649709503U , 2073822557U , 475073365U , } ; slmrModelRefRegisterSimStateChecksum ( S , "SiMappedEngineV" , & chksum [ 0 ] ) ; } mxArray * mr_SiMappedEngineV_GetSimStateDisallowedBlocks ( ) { return ( NULL ) ; }
+16U ) - anoacnregq . P_11 * look1_binlcpw ( clzldb3mla_e , anoacnregq . P_10
+, anoacnregq . P_9 , 1U ) / ( anoacnregq . P_14 * c5a5pxaow5_p ) ) - *
+p2vuqhqrpz ; localB -> ggolq00kwu = localB -> guvbzoda22 - look1_binlcpw ( clzldb3mla_e , anoacnregq . P_2 , anoacnregq . P_1 , 15U ) ; LookUp_real_T_real_T ( & ( localB -> fjdm0q5w0f ) , & localB -> mimwwinlyj [ 0 ] , localB -> ggolq00kwu , & localB -> ijdd3bycis [ 0 ] , 1U ) ; localXdot -> peid1wqkia = 1.0 / localB -> fjdm0q5w0f * localB -> leq5v2moc0 ; localXdot -> obuuvimtvu = oiz4a1rfes_p * anoacnregq . P_7 ; localXdot -> h235wq4fsj = c5a5pxaow5_p * anoacnregq . P_8 ; localXdot -> lf5wmc502m = anoacnregq . P_15 * clzldb3mla_e ; } void po5zlrzzyd ( kgxfljuibq * const plpdajfsza ) { if ( ! slIsRapidAcceleratorSimulating ( ) ) { slmrRunPluginEvent ( plpdajfsza -> _mdlRefSfcnS , "SiMappedEngineV" , "SIMSTATUS_TERMINATING_MODELREF_ACCEL_EVENT" ) ; } } void fbspkqemka ( SimStruct * _mdlRefSfcnS , int_T mdlref_TID0 , int_T mdlref_TID1 , int_T mdlref_TID2 , kgxfljuibq * const plpdajfsza , puu5fcics1 * localB , fpgmc1blog * localX , void * sysRanPtr , int contextTid , rtwCAPI_ModelMappingInfo * rt_ParentMMI , const char_T * rt_ChildPath , int_T rt_ChildMMIIdx , int_T rt_CSTATEIdx ) { ( void ) memset ( ( void * ) plpdajfsza , 0 , sizeof ( kgxfljuibq ) ) ; plpdajfsza -> Timing . mdlref_GlobalTID [ 0 ] = mdlref_TID0 ; plpdajfsza -> Timing . mdlref_GlobalTID [ 1 ] = mdlref_TID1 ; plpdajfsza -> Timing . mdlref_GlobalTID [ 2 ] = mdlref_TID2 ; plpdajfsza -> _mdlRefSfcnS = ( _mdlRefSfcnS ) ; if ( ! slIsRapidAcceleratorSimulating ( ) ) { slmrRunPluginEvent ( plpdajfsza -> _mdlRefSfcnS , "SiMappedEngineV" , "START_OF_SIM_MODEL_MODELREF_ACCEL_EVENT" ) ; } { localB -> guvbzoda22 = 0.0 ; localB -> jv1i44zpz4 = 0.0 ; localB -> ijdd3bycis [ 0 ] = 0.0 ; localB -> ijdd3bycis [ 1 ] = 0.0 ; localB -> mimwwinlyj [ 0 ] = 0.0 ; localB -> mimwwinlyj [ 1 ] = 0.0 ; localB -> leq5v2moc0 = 0.0 ; localB -> ncfpjveivd = 0.0 ; localB -> fma41c5arp = 0.0 ; localB -> dz1nagzqcl = 0.0 ; localB -> ggolq00kwu = 0.0 ; localB -> fjdm0q5w0f = 0.0 ; } SiMappedEngineV_InitializeDataMapInfo ( plpdajfsza , localX , sysRanPtr , contextTid ) ; if ( ( rt_ParentMMI != ( NULL ) ) && ( rt_ChildPath != ( NULL ) ) ) { rtwCAPI_SetChildMMI ( * rt_ParentMMI , rt_ChildMMIIdx , & ( plpdajfsza -> DataMapInfo . mmi ) ) ; rtwCAPI_SetPath ( plpdajfsza -> DataMapInfo . mmi , rt_ChildPath ) ; rtwCAPI_MMISetContStateStartIndex ( plpdajfsza -> DataMapInfo . mmi , rt_CSTATEIdx ) ; } } void mr_SiMappedEngineV_MdlInfoRegFcn ( SimStruct * mdlRefSfcnS , char_T * modelName , int_T * retVal ) { * retVal = 0 ; { boolean_T regSubmodelsMdlinfo = false ; ssGetRegSubmodelsMdlinfo ( mdlRefSfcnS , & regSubmodelsMdlinfo ) ; if ( regSubmodelsMdlinfo ) { } } * retVal = 0 ; ssRegModelRefMdlInfo ( mdlRefSfcnS , modelName , rtMdlInfo_SiMappedEngineV , 43 ) ; * retVal = 1 ; } static void mr_SiMappedEngineV_cacheDataAsMxArray ( mxArray * destArray , mwIndex i , int j , const void * srcData , size_t numBytes ) ; static void mr_SiMappedEngineV_cacheDataAsMxArray ( mxArray * destArray , mwIndex i , int j , const void * srcData , size_t numBytes ) { mxArray * newArray = mxCreateUninitNumericMatrix ( ( size_t ) 1 , numBytes , mxUINT8_CLASS , mxREAL ) ; memcpy ( ( uint8_T * ) mxGetData ( newArray ) , ( const uint8_T * ) srcData , numBytes ) ; mxSetFieldByNumber ( destArray , i , j , newArray ) ; } static void mr_SiMappedEngineV_restoreDataFromMxArray ( void * destData , const mxArray * srcArray , mwIndex i , int j , size_t numBytes ) ; static void mr_SiMappedEngineV_restoreDataFromMxArray ( void * destData , const mxArray * srcArray , mwIndex i , int j , size_t numBytes ) { memcpy ( ( uint8_T * ) destData , ( const uint8_T * ) mxGetData ( mxGetFieldByNumber ( srcArray , i , j ) ) , numBytes ) ; } static void mr_SiMappedEngineV_cacheBitFieldToMxArray ( mxArray * destArray , mwIndex i , int j , uint_T bitVal ) ; static void mr_SiMappedEngineV_cacheBitFieldToMxArray ( mxArray * destArray , mwIndex i , int j , uint_T bitVal ) { mxSetFieldByNumber ( destArray , i , j , mxCreateDoubleScalar ( ( real_T ) bitVal ) ) ; } static uint_T mr_SiMappedEngineV_extractBitFieldFromMxArray ( const mxArray * srcArray , mwIndex i , int j , uint_T numBits ) ; static uint_T mr_SiMappedEngineV_extractBitFieldFromMxArray ( const mxArray * srcArray , mwIndex i , int j , uint_T numBits ) { const uint_T varVal = ( uint_T ) mxGetScalar ( mxGetFieldByNumber ( srcArray , i , j ) ) ; return varVal & ( ( 1u << numBits ) - 1u ) ; } static void mr_SiMappedEngineV_cacheDataToMxArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , const void * srcData , size_t numBytes ) ; static void mr_SiMappedEngineV_cacheDataToMxArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , const void * srcData , size_t numBytes ) { uint8_T * varData = ( uint8_T * ) mxGetData ( mxGetFieldByNumber ( destArray , i , j ) ) ; memcpy ( ( uint8_T * ) & varData [ offset * numBytes ] , ( const uint8_T * ) srcData , numBytes ) ; } static void mr_SiMappedEngineV_restoreDataFromMxArrayWithOffset ( void * destData , const mxArray * srcArray , mwIndex i , int j , mwIndex offset , size_t numBytes ) ; static void mr_SiMappedEngineV_restoreDataFromMxArrayWithOffset ( void * destData , const mxArray * srcArray , mwIndex i , int j , mwIndex offset , size_t numBytes ) { const uint8_T * varData = ( const uint8_T * ) mxGetData ( mxGetFieldByNumber ( srcArray , i , j ) ) ; memcpy ( ( uint8_T * ) destData , ( const uint8_T * ) & varData [ offset * numBytes ] , numBytes ) ; } static void mr_SiMappedEngineV_cacheBitFieldToCellArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , uint_T fieldVal ) ; static void mr_SiMappedEngineV_cacheBitFieldToCellArrayWithOffset ( mxArray * destArray , mwIndex i , int j , mwIndex offset , uint_T fieldVal ) { mxSetCell ( mxGetFieldByNumber ( destArray , i , j ) , offset , mxCreateDoubleScalar ( ( real_T ) fieldVal ) ) ; } static uint_T mr_SiMappedEngineV_extractBitFieldFromCellArrayWithOffset ( const mxArray * srcArray , mwIndex i , int j , mwIndex offset , uint_T numBits ) ; static uint_T mr_SiMappedEngineV_extractBitFieldFromCellArrayWithOffset ( const mxArray * srcArray , mwIndex i , int j , mwIndex offset , uint_T numBits ) { const uint_T fieldVal = ( uint_T ) mxGetScalar ( mxGetCell ( mxGetFieldByNumber ( srcArray , i , j ) , offset ) ) ; return fieldVal & ( ( 1u << numBits ) - 1u ) ; } mxArray * mr_SiMappedEngineV_GetDWork ( const o2k4rz0uw5x * mdlrefDW ) { static const char_T * ssDWFieldNames [ 3 ] = { "rtb" , "NULL->rtdw" , "NULL->rtzce" , } ; mxArray * ssDW = mxCreateStructMatrix ( 1 , 1 , 3 , ssDWFieldNames ) ; mr_SiMappedEngineV_cacheDataAsMxArray ( ssDW , 0 , 0 , ( const void * ) & ( mdlrefDW -> rtb ) , sizeof ( mdlrefDW -> rtb ) ) ; ( void ) mdlrefDW ; return ssDW ; } void mr_SiMappedEngineV_SetDWork ( o2k4rz0uw5x * mdlrefDW , const mxArray * ssDW ) { ( void ) ssDW ; ( void ) mdlrefDW ; mr_SiMappedEngineV_restoreDataFromMxArray ( ( void * ) & ( mdlrefDW -> rtb ) , ssDW , 0 , 0 , sizeof ( mdlrefDW -> rtb ) ) ; } void mr_SiMappedEngineV_RegisterSimStateChecksum ( SimStruct * S ) { const uint32_T chksum [ 4 ] = { 3185615467U , 2684372981U , 3094773393U , 4228370235U , } ; slmrModelRefRegisterSimStateChecksum ( S , "SiMappedEngineV" , & chksum [ 0 ] ) ; } mxArray * mr_SiMappedEngineV_GetSimStateDisallowedBlocks ( ) { return ( NULL ) ; }
 #if defined(_MSC_VER)
 #pragma warning(disable: 4505) //unreferenced local function has been removed
 #endif

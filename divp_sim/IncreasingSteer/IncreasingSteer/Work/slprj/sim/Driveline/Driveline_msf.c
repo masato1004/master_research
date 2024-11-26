@@ -29,9 +29,10 @@ UnitId unitIdReg ; ssRegisterUnitFromExpr ( S , "rad" , & unitIdReg ) ; if ( uni
 } ssSetInputPortDirectFeedThrough ( S , 0 , 1 ) ;
 ssSetInputPortRequiredContiguous ( S , 0 , 1 ) ; ssSetInputPortOptimOpts ( S
 , 0 , SS_NOT_REUSABLE_AND_GLOBAL ) ; ssSetInputPortOverWritable ( S , 0 ,
-false ) ; ssSetInputPortSampleTime ( S , 0 , 0.0 ) ; ssSetInputPortOffsetTime
-( S , 0 , 0.0 ) ; if ( ! ssSetInputPortVectorDimension ( S , 1 , 1 ) ) return
-; ssSetInputPortDimensionsMode ( S , 1 , FIXED_DIMS_MODE ) ;
+false ) ; ssSetInputPortSampleTime ( S , 0 , 0.001 ) ;
+ssSetInputPortOffsetTime ( S , 0 , 0.0 ) ; if ( !
+ssSetInputPortVectorDimension ( S , 1 , 1 ) ) return ;
+ssSetInputPortDimensionsMode ( S , 1 , FIXED_DIMS_MODE ) ;
 ssSetInputPortFrameData ( S , 1 , FRAME_NO ) ; if ( ssGetSimMode ( S ) !=
 SS_SIMMODE_SIZES_CALL_ONLY ) { ssSetInputPortDataType ( S , 1 , SS_DOUBLE ) ;
 } if ( ssGetSimMode ( S ) != SS_SIMMODE_SIZES_CALL_ONLY ) {
@@ -101,11 +102,11 @@ SS_SIMMODE_SIZES_CALL_ONLY ) { ssSetOutputPortDataType ( S , 0 , SS_DOUBLE )
 #if defined (MATLAB_MEX_FILE)
 UnitId unitIdReg ; ssRegisterUnitFromExpr ( S , "rad" , & unitIdReg ) ; if ( unitIdReg == INVALID_UNIT_ID ) return ; ssSetOutputPortUnit ( S , 0 , unitIdReg ) ;
 #endif
-} ssSetOutputPortSampleTime ( S , 0 , 0.0 ) ; ssSetOutputPortOffsetTime ( S ,
-0 , 0.0 ) ; ssSetOutputPortDiscreteValuedOutput ( S , 0 , 0 ) ;
+} ssSetOutputPortSampleTime ( S , 0 , 0.001 ) ; ssSetOutputPortOffsetTime ( S
+, 0 , 0.0 ) ; ssSetOutputPortDiscreteValuedOutput ( S , 0 , 0 ) ;
 ssSetOutputPortOkToMerge ( S , 0 , SS_OK_TO_MERGE_CONDITIONAL ) ;
 ssSetOutputPortICAttributes ( S , 0 , false , false , false ) ;
-ssSetOutputPortOptimOpts ( S , 0 , SS_NOT_REUSABLE_AND_GLOBAL ) ; if ( !
+ssSetOutputPortOptimOpts ( S , 0 , SS_NOT_REUSABLE_AND_LOCAL ) ; if ( !
 ssSetOutputPortVectorDimension ( S , 1 , 4 ) ) return ;
 ssSetOutputPortDimensionsMode ( S , 1 , FIXED_DIMS_MODE ) ;
 ssSetOutputPortFrameData ( S , 1 , FRAME_NO ) ; if ( ssGetSimMode ( S ) !=
@@ -118,7 +119,7 @@ UnitId unitIdReg ; ssRegisterUnitFromExpr ( S , "" , & unitIdReg ) ; if ( unitId
 1 , 0.0 ) ; ssSetOutputPortDiscreteValuedOutput ( S , 1 , 0 ) ;
 ssSetOutputPortOkToMerge ( S , 1 , SS_OK_TO_MERGE_CONDITIONAL ) ;
 ssSetOutputPortICAttributes ( S , 1 , false , false , false ) ;
-ssSetOutputPortOptimOpts ( S , 1 , SS_NOT_REUSABLE_AND_GLOBAL ) ; if ( !
+ssSetOutputPortOptimOpts ( S , 1 , SS_NOT_REUSABLE_AND_LOCAL ) ; if ( !
 ssSetOutputPortVectorDimension ( S , 2 , 4 ) ) return ;
 ssSetOutputPortDimensionsMode ( S , 2 , FIXED_DIMS_MODE ) ;
 ssSetOutputPortFrameData ( S , 2 , FRAME_NO ) ; if ( ssGetSimMode ( S ) !=
@@ -131,7 +132,7 @@ UnitId unitIdReg ; ssRegisterUnitFromExpr ( S , "" , & unitIdReg ) ; if ( unitId
 2 , 0.0 ) ; ssSetOutputPortDiscreteValuedOutput ( S , 2 , 0 ) ;
 ssSetOutputPortOkToMerge ( S , 2 , SS_OK_TO_MERGE_CONDITIONAL ) ;
 ssSetOutputPortICAttributes ( S , 2 , false , false , false ) ;
-ssSetOutputPortOptimOpts ( S , 2 , SS_NOT_REUSABLE_AND_GLOBAL ) ; if ( !
+ssSetOutputPortOptimOpts ( S , 2 , SS_NOT_REUSABLE_AND_LOCAL ) ; if ( !
 ssSetOutputPortVectorDimension ( S , 3 , 1 ) ) return ;
 ssSetOutputPortDimensionsMode ( S , 3 , FIXED_DIMS_MODE ) ;
 ssSetOutputPortFrameData ( S , 3 , FRAME_NO ) ; if ( ssGetSimMode ( S ) !=
@@ -146,7 +147,7 @@ unitIdReg ) ;
 3 , 0.0 ) ; ssSetOutputPortDiscreteValuedOutput ( S , 3 , 0 ) ;
 ssSetOutputPortOkToMerge ( S , 3 , SS_OK_TO_MERGE ) ;
 ssSetOutputPortICAttributes ( S , 3 , false , false , false ) ;
-ssSetOutputPortOptimOpts ( S , 3 , SS_NOT_REUSABLE_AND_GLOBAL ) ; if ( !
+ssSetOutputPortOptimOpts ( S , 3 , SS_NOT_REUSABLE_AND_LOCAL ) ; if ( !
 ssSetOutputPortVectorDimension ( S , 4 , 1 ) ) return ;
 ssSetOutputPortDimensionsMode ( S , 4 , FIXED_DIMS_MODE ) ;
 ssSetOutputPortFrameData ( S , 4 , FRAME_NO ) ; if ( ssGetSimMode ( S ) !=
@@ -161,7 +162,7 @@ unitIdReg ) ;
 4 , 0.0 ) ; ssSetOutputPortDiscreteValuedOutput ( S , 4 , 0 ) ;
 ssSetOutputPortOkToMerge ( S , 4 , SS_NOT_OK_TO_MERGE ) ;
 ssSetOutputPortICAttributes ( S , 4 , false , false , false ) ;
-ssSetOutputPortOptimOpts ( S , 4 , SS_NOT_REUSABLE_AND_GLOBAL ) ; if ( !
+ssSetOutputPortOptimOpts ( S , 4 , SS_NOT_REUSABLE_AND_LOCAL ) ; if ( !
 ssSetOutputPortVectorDimension ( S , 5 , 1 ) ) return ;
 ssSetOutputPortDimensionsMode ( S , 5 , FIXED_DIMS_MODE ) ;
 ssSetOutputPortFrameData ( S , 5 , FRAME_NO ) ; if ( ssGetSimMode ( S ) !=
@@ -256,7 +257,7 @@ slmrRegisterPeriodicOutputUpdateMethod ( S , mdlPeriodicOutputUpdate ) ;
 ssSetSimulinkVersionGeneratedIn ( S , "24.2" ) ; ssSetNeedAbsoluteTime ( S ,
 1 ) ; } static void mdlInitializeSampleTimes ( SimStruct * S ) {
 ssSetSampleTime ( S , 0 , 0 ) ; ssSetOffsetTime ( S , 0 , 0 ) ;
-ssSetSampleTime ( S , 1 , 0 ) ; ssSetOffsetTime ( S , 1 , 1 ) ;
+ssSetSampleTime ( S , 1 , 0.001 ) ; ssSetOffsetTime ( S , 1 , 0 ) ;
 ssSetSampleTime ( S , 2 , mxGetInf ( ) ) ; ssSetOffsetTime ( S , 2 , 0 ) ;
 ssSetSampleTime ( S , 3 , rtInf ) ; ssSetOffsetTime ( S , 3 , rtInf ) ;
 return ; }
@@ -315,7 +316,7 @@ mxSetFieldByNumber ( ss , 0 , 0 , storedX ) ; } { mxArray * mdlrefDW =
 mr_Driveline_GetDWork ( ssGetDWork ( S , 0 ) ) ; mxSetFieldByNumber ( ss , 0
 , 1 , mdlrefDW ) ; } { mxArray * data =
 mr_Driveline_GetSimStateDisallowedBlocks ( ) ; mxSetFieldByNumber ( ss , 0 ,
-2 , data ) ; } ; mxSetFieldByNumber ( ss , 0 , 3 , mxCreateDoubleScalar ( ( double ) ssGetTNext ( S ) ) ) ; mxSetFieldByNumber ( ss , 0 , 4 , mxCreateDoubleScalar ( ( double ) ssGetTNextTid ( S ) ) ) ; { n5qm5cab0up * dw = ( n5qm5cab0up * ) ssGetDWork ( S , 0 ) ; dwsgrvz41y * rtm = & ( dw -> rtm ) ; mxArray * nonContDerivSigInfo = mxCreateCellMatrix ( 4 , 1 ) ; for ( int i = 0 ; i < 4 ; ++ i ) { mxArray * prevValmxArray = mxCreateNumericMatrix ( 1 , rtm -> nonContDerivSignal [ i ] . sizeInBytes , mxUINT8_CLASS , mxREAL ) ; memcpy ( ( uint8_T * ) mxGetData ( prevValmxArray ) , ( const uint8_T * ) rtm -> nonContDerivSignal [ i ] . pPrevVal , rtm -> nonContDerivSignal [ i ] . sizeInBytes ) ; mxSetCell ( nonContDerivSigInfo , i , prevValmxArray ) ; } mxSetFieldByNumber ( ss , 0 , 5 , nonContDerivSigInfo ) ; } return ss ; }
+2 , data ) ; } ; mxSetFieldByNumber ( ss , 0 , 3 , mxCreateDoubleScalar ( ( double ) ssGetTNext ( S ) ) ) ; mxSetFieldByNumber ( ss , 0 , 4 , mxCreateDoubleScalar ( ( double ) ssGetTNextTid ( S ) ) ) ; return ss ; }
 #if !defined(MDL_SIM_STATE)
 #define MDL_SIM_STATE
 #endif
@@ -327,11 +328,7 @@ mxGetFieldByNumber ( ss , 0 , 0 ) ; const UINT8_T * rawData = ( const UINT8_T
 } mr_Driveline_SetDWork ( ssGetDWork ( S , 0 ) , mxGetFieldByNumber ( ss , 0
 , 1 ) ) ; ssSetTNext ( S , ( time_T ) mxGetScalar ( mxGetFieldByNumber ( ss ,
 0 , 3 ) ) ) ; ssSetTNextTid ( S , ( int_T ) mxGetScalar ( mxGetFieldByNumber
-( ss , 0 , 4 ) ) ) ; { mxArray * nonContDerivSigInfo = mxGetFieldByNumber ( ss
-, 0 , 5 ) ; n5qm5cab0up * dw = ( n5qm5cab0up * ) ssGetDWork ( S , 0 ) ;
-dwsgrvz41y * rtm = & ( dw -> rtm ) ; for ( int i = 0 ; i < 4 ; ++ i ) {
-mxArray * prevValmxArray = mxGetCell ( nonContDerivSigInfo , i ) ; ( void )
-memcpy ( rtm -> nonContDerivSignal [ i ] . pPrevVal , ( char * ) mxGetData ( prevValmxArray ) , rtm -> nonContDerivSignal [ i ] . sizeInBytes ) ; } } }
+( ss , 0 , 4 ) ) ) ; }
 #ifdef MATLAB_MEX_FILE 
 #include "simulink.c"
 #include "fixedpoint.c"
