@@ -40,13 +40,13 @@ R1 = eul2rotm(-initagl);
 A1 = [[R1;0,0,0],[0; 0; 0;1]];
 pcdpos = pctransform(pointCloud([pcdpos.Location(:,1)-initpos(1),pcdpos.Location(:,2)-initpos(2),pcdpos.Location(:,3)-initpos(3)]),rigidtform3d(A1));
 pcdpos = pcdpos.Location;
-[k,~] = dsearchn(pcdpos(:,1),3);
+[k,~] = dsearchn(pcdpos(:,1),30);
 initialpos = pcdpos(k(1),:);
 
 mdl = "System/ISReferenceApplication";
 open_system(mdl)
 simIn = Simulink.SimulationInput(mdl);
-simIn = setModelParameter(simIn,"Solver","ode4","StopTime","10");
+simIn = setModelParameter(simIn,"Solver","ode4","StopTime","20");
 
 mdlwks = get_param('ISReferenceApplication','ModelWorkspace');
 temp = getVariable(mdlwks,'VEH');
@@ -61,9 +61,11 @@ temp.WheelBase = 2.860;
 temp.FrontAxlePositionfromCG = 1.43;
 temp.RearAxlePositionfromCG = 1.43;
 temp.TrackWidth = 1.485;
+temp.DrawFreq = 0.1;
+temp.T_ref = pcdpos;
 % temp.pcdmap = double(pcdmap);
 assignin(mdlwks,'temp',temp);
-
+global video
 out = sim(simIn);
 % [VEH.InitialLongPosition,VEH.InitialLatPosition,VEH.InitialVertPosition]
 % [temp.InitialLongPosition,temp.InitialLatPosition,temp.InitialVertPosition]

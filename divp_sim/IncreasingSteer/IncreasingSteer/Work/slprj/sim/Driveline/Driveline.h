@@ -93,7 +93,7 @@ rtwCAPI_ModelMapLoggingInstanceInfo mmiLogInstanceInfo ; void * dataAddress [
 ; sysRanDType * systemRan [ 8 ] ; int_T systemTid [ 8 ] ; } DataMapInfo ;
 struct { int_T mdlref_GlobalTID [ 3 ] ; time_T tStart ; } Timing ; } ;
 typedef struct { fxrjyezkwn rtb ; bsz3qtxrxd rtdw ; dwsgrvz41y rtm ;
-gvxaj4x0qw rtzce ; } n5qm5cab0up ; extern struct_hFtzkwIyDan9Uw0DEd8s7D
+gvxaj4x0qw rtzce ; } n5qm5cab0up ; extern struct_bhbbFgPaiXNmRg0hUA42gC
 rtP_temp ; extern void jnccjczqwr ( SimStruct * _mdlRefSfcnS , int_T
 mdlref_TID0 , int_T mdlref_TID1 , int_T mdlref_TID2 , dwsgrvz41y * const
 pubqvcmed4 , fxrjyezkwn * localB , bsz3qtxrxd * localDW , oakdhkzk5b * localX

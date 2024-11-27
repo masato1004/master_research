@@ -16,8 +16,8 @@ typedef struct { real_T FR ; real_T FL ; } struct_A6Yb21eKNPgaupJlKafAPB ;
 #define DEFINED_TYPEDEF_FOR_struct_NtCe3ohFvXuRZXQoDidoXH_
 typedef struct { real_T RR ; real_T RL ; } struct_NtCe3ohFvXuRZXQoDidoXH ;
 #endif
-#ifndef DEFINED_TYPEDEF_FOR_struct_hFtzkwIyDan9Uw0DEd8s7D_
-#define DEFINED_TYPEDEF_FOR_struct_hFtzkwIyDan9Uw0DEd8s7D_
+#ifndef DEFINED_TYPEDEF_FOR_struct_bhbbFgPaiXNmRg0hUA42gC_
+#define DEFINED_TYPEDEF_FOR_struct_bhbbFgPaiXNmRg0hUA42gC_
 typedef struct { real_T Mass ; struct_A6Yb21eKNPgaupJlKafAPB
 StaticNormalFrontLoad ; struct_NtCe3ohFvXuRZXQoDidoXH StaticNormalRearLoad ;
 real_T WheelBase ; real_T FrontAxlePositionfromCG ; real_T
@@ -29,7 +29,8 @@ InitialLatPosition ; real_T InitialVertPosition ; real_T InitialRollAngle ;
 real_T InitialPitchAngle ; real_T InitialYawAngle ; real_T InitialLongVel ;
 real_T InitialLatVel ; real_T InitialVertVel ; real_T InitialRollRate ;
 real_T InitialPitchRate ; real_T InitialYawRate ; real_T UnsprungMassRearAxle
-; real_T UnsprungMassFrontAxle ; } struct_hFtzkwIyDan9Uw0DEd8s7D ;
+; real_T UnsprungMassFrontAxle ; real_T DrawFreq ; real_T T_ref [ 6003 ] ; }
+struct_bhbbFgPaiXNmRg0hUA42gC ;
 #endif
 #ifndef SS_UINT64
 #define SS_UINT64 21
