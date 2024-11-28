@@ -53,6 +53,8 @@ for i = 1:100:length(positions)
     writeVideo(video,frame);
 end
 close(video)
+ylim([min(positions(1,:))-2,max(positions(1,:))+2]);
+xlim([min(positions(2,:))-2,max(positions(2,:))+2]);
 
 function XYplot(time,pos,agl,vel,wheel_agl,T_ref)
 persistent track_w a b fig_xy diameter ref_p
