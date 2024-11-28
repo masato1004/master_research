@@ -1,0 +1,15 @@
+{
+	"info":{
+		"version":"1.1",
+		"md5hash":"83acfe00ccd26075468a08c476c519b6"
+	},
+	"anim":[
+		{
+			"take":"Preset_GuardrailSleeveBeamLeft",
+			"motiontype":"Unknown",
+			"motionid":10001,
+			"repeat":1,
+			"averagespeed":0
+		}
+	]
+}
