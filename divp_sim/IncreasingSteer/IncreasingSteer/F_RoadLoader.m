@@ -1,14 +1,14 @@
-function [zfl,zfr,zrl,zrr] = F_RoadLoader(FL,FR,RL,RR)
+function [zfl,zfr,zrl,zrr] = F_RoadLoader(FL,FR,RL,RR,pcdmappath,scenariopath)
     
     persistent pcdmap
     if isempty(pcdmap)
         disp("Loading 3D map points...")
-        pcdmap = pcread("map_gt.ply");
+        pcdmap = pcread(pcdmappath);
         gridStep = 0.02;
         pcdmap = pcdownsample(pcdmap,'gridAverage',gridStep);
     
         %% if transform is needed
-        filename = "scenario_1_divp_Veh_NissanXtrail_1.csv";
+        filename = scenariopath;
         opts = detectImportOptions(filename);
         opts.SelectedVariableNames = ["timestamp", "pos_x","pos_y","pos_z", "yaw_rad", "pitch_rad", "roll_rad"];
         pos_table = readtable(filename,opts);

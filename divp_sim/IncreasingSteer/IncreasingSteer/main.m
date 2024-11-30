@@ -46,7 +46,7 @@ initialpos = pcdpos(k(1),:);
 mdl = "System/ISReferenceApplication";
 open_system(mdl)
 simIn = Simulink.SimulationInput(mdl);
-simIn = setModelParameter(simIn,"Solver","ode4","StopTime","20");
+simIn = setModelParameter(simIn,"Solver","ode4","StopTime","20",'FixedStep','1e-3');
 
 mdlwks = get_param('ISReferenceApplication','ModelWorkspace');
 temp = getVariable(mdlwks,'VEH');
@@ -61,6 +61,9 @@ temp.WheelBase = 2.860;
 temp.FrontAxlePositionfromCG = 1.43;
 temp.RearAxlePositionfromCG = 1.43;
 temp.TrackWidth = 1.485;
+temp.VehicleWidth = 1.731;
+temp.VehicleLength = 4.769;
+temp.diameter = 0.653;
 temp.DrawFreq = 0.1;
 temp.T_ref = pcdpos;
 % temp.pcdmap = double(pcdmap);

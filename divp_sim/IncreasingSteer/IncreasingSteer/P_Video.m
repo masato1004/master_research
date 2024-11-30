@@ -1,3 +1,7 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Run after running simulink %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 Body_inert = out.Body_inert;
 Driveline = out.Driveline;
 
@@ -38,10 +42,10 @@ T_ref = pcdpos.Location;
 fig_xy = figure('Position',[100 100 500 450]);
 videoname = 'test_tracking';
 video = VideoWriter(videoname,'MPEG-4');
-video.FrameRate = 10;
+video.FrameRate = int(1/temp.DrawFreq);
 open(video);
 
-for i = 1:100:length(positions)
+for i = 1:int(temp.DrawFreq/0.001):length(positions)
     pos = positions(:,i);
     ang = angles(:,i);
     vel = velocitys(:,i);
@@ -57,12 +61,12 @@ ylim([min(positions(1,:))-2,max(positions(1,:))+2]);
 xlim([min(positions(2,:))-2,max(positions(2,:))+2]);
 
 function XYplot(time,pos,agl,vel,wheel_agl,T_ref)
-persistent track_w a b fig_xy diameter ref_p
+persistent track_w a b diameter ref_p
 if time<0.000001
-    track_w = 1.485;
-    a = 1.43;
-    b = 1.43;
-    diameter = 0.653;
+    track_w = temp.TrackWidth;
+    a = temp.FrontAxlePositionfromCG;
+    b = temp.RearAxlePositionfromCG;
+    diameter = temp.diameter;
 end
 if time<0.000001
     % map_p = scatter(-pcdmap(:,2),pcdmap(:,1),1,pcdmap(:,3),'filled'); clim([-1 1]);
@@ -97,8 +101,8 @@ wrl_rec_x = [wrl_y-0.1 wrl_y+0.1 wrl_y+0.1 wrl_y-0.1];
 wrl_rec_y = [wrl_x-diameter/2 wrl_x-diameter/2 wrl_x+diameter/2 wrl_x+diameter/2];
 wrr_rec_x = [wrr_y-0.1 wrr_y+0.1 wrr_y+0.1 wrr_y-0.1];
 wrr_rec_y = [wrr_x-diameter/2 wrr_x-diameter/2 wrr_x+diameter/2 wrr_x+diameter/2];
-bdy_rec_x = [body_y-1.731/2 body_y-1.731/3 body_y+1.731/3 body_y+1.731/2 body_y+1.731/2 body_y+1.731/4 body_y-1.731/4 body_y-1.731/2];
-bdy_rec_y = [body_x-4.769/2+0.3 body_x-4.769/2 body_x-4.769/2 body_x-4.769/2+0.3 body_x+4.769/2-0.5 body_x+4.769/2 body_x+4.769/2 body_x+4.769/2-0.5];
+bdy_rec_x = [body_y-temp.VehicleWidth/2 body_y-temp.VehicleWidth/3 body_y+temp.VehicleWidth/3 body_y+temp.VehicleWidth/2 body_y+temp.VehicleWidth/2 body_y+temp.VehicleWidth/4 body_y-temp.VehicleWidth/4 body_y-temp.VehicleWidth/2];
+bdy_rec_y = [body_x-temp.VehicleLength/2+0.3 body_x-temp.VehicleLength/2 body_x-temp.VehicleLength/2 body_x-temp.VehicleLength/2+0.3 body_x+temp.VehicleLength/2-0.5 body_x+temp.VehicleLength/2 body_x+temp.VehicleLength/2 body_x+temp.VehicleLength/2-0.5];
 
 wfl_rec = [wfl_rec_x;wfl_rec_y];
 wfr_rec = [wfr_rec_x;wfr_rec_y];
