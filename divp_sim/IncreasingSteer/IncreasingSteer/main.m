@@ -28,7 +28,7 @@ warning("off",'all');
 % end
 
 %% find initial position
-filename = "scenario_1_divp_Veh_NissanXtrail_1.csv";
+filename = "scenario/test_manhole/scenario_1_divp_Veh_NissanXtrail_1.csv";
 opts = detectImportOptions(filename);
 opts.SelectedVariableNames = ["timestamp", "pos_x","pos_y","pos_z", "yaw_rad", "pitch_rad", "roll_rad"];
 pos_table = readtable(filename,opts);
@@ -40,7 +40,7 @@ R1 = eul2rotm(-initagl);
 A1 = [[R1;0,0,0],[0; 0; 0;1]];
 pcdpos = pctransform(pointCloud([pcdpos.Location(:,1)-initpos(1),pcdpos.Location(:,2)-initpos(2),pcdpos.Location(:,3)-initpos(3)]),rigidtform3d(A1));
 pcdpos = pcdpos.Location;
-[k,~] = dsearchn(pcdpos(:,1),30);
+[k,~] = dsearchn(pcdpos(:,1),570);
 initialpos = pcdpos(k(1),:);
 
 mdl = "System/ISReferenceApplication";
@@ -51,11 +51,11 @@ simIn = setModelParameter(simIn,"Solver","ode4","StopTime","20",'FixedStep','1e-
 mdlwks = get_param('ISReferenceApplication','ModelWorkspace');
 temp = getVariable(mdlwks,'VEH');
 temp.InitialLongPosition = initialpos(1);
-temp.InitialLatPosition = -initialpos(2);
-temp.InitialVertPosition = initialpos(3);
-temp.InitialRollAngle = pos_table.roll_rad(1);
-temp.InitialPitchAngle = pos_table.pitch_rad(1);
-temp.InitialYawAngle = 0;
+temp.InitialLatPosition = initialpos(2);
+temp.InitialVertPosition = -initialpos(3);
+temp.InitialRollAngle = pos_table.roll_rad(k);
+temp.InitialPitchAngle = -pos_table.pitch_rad(k);
+temp.InitialYawAngle = -pos_table.yaw_rad(k)+pos_table.yaw_rad(1);
 temp.InitialLongVel = 0;
 temp.WheelBase = 2.860;
 temp.FrontAxlePositionfromCG = 1.43;
@@ -70,5 +70,6 @@ temp.T_ref = pcdpos;
 assignin(mdlwks,'temp',temp);
 global video
 out = sim(simIn);
+run("P_WheelDisp.m")
 % [VEH.InitialLongPosition,VEH.InitialLatPosition,VEH.InitialVertPosition]
 % [temp.InitialLongPosition,temp.InitialLatPosition,temp.InitialVertPosition]

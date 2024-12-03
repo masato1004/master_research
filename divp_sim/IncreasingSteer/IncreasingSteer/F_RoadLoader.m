@@ -4,7 +4,7 @@ function [zfl,zfr,zrl,zrr] = F_RoadLoader(FL,FR,RL,RR,pcdmappath,scenariopath)
     if isempty(pcdmap)
         disp("Loading 3D map points...")
         pcdmap = pcread(pcdmappath);
-        gridStep = 0.02;
+        gridStep = 0.01;
         pcdmap = pcdownsample(pcdmap,'gridAverage',gridStep);
     
         %% if transform is needed
@@ -26,9 +26,28 @@ function [zfl,zfr,zrl,zrr] = F_RoadLoader(FL,FR,RL,RR,pcdmappath,scenariopath)
         disp("Finish Loading 3D map points.")
     end
     
-    [k,~] = dsearchn(pcdmap(:,1:2),[FL;FR;RL;RR]);
-    zfl = pcdmap(k(1),3);
-    zfr = pcdmap(k(2),3);
-    zrl = pcdmap(k(3),3);
-    zrr = pcdmap(k(4),3);
+    % [k,~] = dsearchn(pcdmap(:,1:2),[FL;FR;RL;RR]);
+    persistent zfl_last zfr_last zrl_last zrr_last
+    if sum(FL) ~= 0
+        zfl = mean(pcdmap(pcdmap(:,1)<FL(1)+0.025&pcdmap(:,1)>FL(1)-0.025&pcdmap(:,2)<FL(2)+0.025&pcdmap(:,2)>FL(2)-0.025,3));
+        zfr = mean(pcdmap(pcdmap(:,1)<FR(1)+0.025&pcdmap(:,1)>FR(1)-0.025&pcdmap(:,2)<FR(2)+0.025&pcdmap(:,2)>FR(2)-0.025,3));
+        zrl = mean(pcdmap(pcdmap(:,1)<RL(1)+0.025&pcdmap(:,1)>RL(1)-0.025&pcdmap(:,2)<RL(2)+0.025&pcdmap(:,2)>RL(2)-0.025,3));
+        zrr = mean(pcdmap(pcdmap(:,1)<RR(1)+0.025&pcdmap(:,1)>RR(1)-0.025&pcdmap(:,2)<RR(2)+0.025&pcdmap(:,2)>RR(2)-0.025,3));
+    end
+    if sum(FL) == 0 || isnan(zfl)
+        zfl = zfl_last;
+    end
+    if sum(FR) == 0 || isnan(zfr)
+        zfr = zfr_last;
+    end
+    if sum(RL) == 0 || isnan(zrl)
+        zrl = zrl_last;
+    end
+    if sum(RR) == 0 || isnan(zrr)
+        zrr = zrr_last;
+    end
+    zfl_last = zfl;
+    zfr_last = zfr;
+    zrl_last = zrl;
+    zrr_last = zrr;
 end
