@@ -28,7 +28,7 @@ org_p = plot(T_ref(:,1),T_ref(:,2),'Color','red','LineWidth',1.5,'DisplayName','
 whl_p = plot(T_ref(:,1),T_ref(:,2)-1.485/2,'Color','black','LineWidth',1.5,'DisplayName','Ref. Path');
 plot(T_ref(:,1),T_ref(:,2)+1.485/2,'Color','black','LineWidth',1.5,'DisplayName','Ref. Path'); hold on;
 xlim([x_min, x_max]); ylim([-13 -9]);
-xlabel('\itY \rm[m]'); ylabel('\itX \rm[m]');
+xlabel('\itX \rm[m]'); ylabel('\itY \rm[m]');
 set(gca,'FontName','Times New Roman','FontSize',9);
 xlim([x_min x_max])
 
@@ -57,7 +57,7 @@ whl_avo_p = plot(new_path(:,1),new_path(:,2)-1.485/2,'Color','black','LineWidth'
 plot(new_path(:,1),new_path(:,2)+1.485/2,'Color','black','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path'); hold on;
 axis equal
 xlim([x_min, x_max]); ylim([-13 -9]);
-xlabel('\itY \rm[m]'); ylabel('\itX \rm[m]');
+xlabel('\itX \rm[m]'); ylabel('\itY \rm[m]');
 set(gca,'FontName','Times New Roman','FontSize',9);
 legend([org_p,whl_p,avo_p,whl_avo_p],{'Original Path','Original Wheel Track','Avoidance Path','Avoidance Wheel Track'});
 
