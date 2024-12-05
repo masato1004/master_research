@@ -161,9 +161,9 @@ axis('equal');
 grid on;
 ylim([body_x-(a+b)*2.5 body_x+(a+b)*2.5]);
 xlim([body_y-(a+b)*2.5 body_y+(a+b)*2.5]);
-xlabel('Y [m]'); ylabel('X [m]');
+xlabel('\itY \rm[m]'); ylabel('\itX \rm[m]');
 
-set(gca,'FontName','Arial','FontSize',11);
+set(gca,'FontName','Times New Roman','FontSize',11);
 drawnow;
 
 % coder.extrinsic('F_Video');
