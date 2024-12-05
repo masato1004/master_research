@@ -51,7 +51,7 @@ for i = 1:double(temp.DrawFreq/0.001):length(positions)
     vel = velocitys(:,i);
     wheel_ang = wheel_angles(:,i);
     time = out.tout(i);
-    XYplot(time,pos,ang,vel,wheel_ang,T_ref,temp)
+    XYplot(time,pos,ang,vel,wheel_ang,new_path,temp)
 
     frame = getframe(gcf);
     writeVideo(video,frame);

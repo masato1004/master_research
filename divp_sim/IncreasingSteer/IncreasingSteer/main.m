@@ -40,7 +40,7 @@ R1 = eul2rotm(-initagl);
 A1 = [[R1;0,0,0],[0; 0; 0;1]];
 pcdpos = pctransform(pointCloud([pcdpos.Location(:,1)-initpos(1),pcdpos.Location(:,2)-initpos(2),pcdpos.Location(:,3)-initpos(3)]),rigidtform3d(A1));
 pcdpos = pcdpos.Location;
-[k,~] = dsearchn(pcdpos(:,1),570);
+[k,~] = dsearchn(pcdpos(:,1),590);
 initialpos = pcdpos(k(1),:);
 
 mdl = "System/ISReferenceApplication";
@@ -65,7 +65,8 @@ temp.VehicleWidth = 1.731;
 temp.VehicleLength = 4.769;
 temp.diameter = 0.653;
 temp.DrawFreq = 0.1;
-temp.T_ref = pcdpos;
+% temp.T_ref = pcdpos;
+temp.T_ref = new_path;
 % temp.pcdmap = double(pcdmap);
 assignin(mdlwks,'temp',temp);
 global video
