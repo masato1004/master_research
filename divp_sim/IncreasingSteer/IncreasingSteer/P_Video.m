@@ -45,13 +45,19 @@ video = VideoWriter(videoname,'MPEG-4');
 video.FrameRate = double(1/temp.DrawFreq);
 open(video);
 
+front = [];
+front_left = [];
+front_right = [];
 for i = 1:double(temp.DrawFreq/0.001):length(positions)
     pos = positions(:,i);
     ang = angles(:,i);
     vel = velocitys(:,i);
     wheel_ang = wheel_angles(:,i);
     time = out.tout(i);
-    XYplot(time,pos,ang,vel,wheel_ang,new_path,temp)
+    [frt,frt_l,frt_r] = XYplot(time,pos,ang,vel,wheel_ang,T_ref,temp);
+    front = [front; frt];
+    front_left = [front_left; frt_l];
+    front_right = [front_right; frt_r];
 
     frame = getframe(gcf);
     writeVideo(video,frame);
@@ -60,7 +66,7 @@ close(video)
 ylim([min(positions(1,:))-2,max(positions(1,:))+2]);
 xlim([min(positions(2,:))-2,max(positions(2,:))+2]);
 
-function XYplot(time,pos,agl,vel,wheel_agl,T_ref,temp)
+function [front,front_left,front_right] = XYplot(time,pos,agl,vel,wheel_agl,T_ref,temp)
 persistent track_w a b diameter ref_p
 if time<0.000001
     track_w = temp.TrackWidth;
@@ -153,6 +159,9 @@ else
     set(vel_p,'String',txt,'Position',[body_y-4,body_x+4]);
     set(time_p,'String',txt_time,'Position',[body_y-4,body_x+3.5]);
 end
+front = [frnt_axl(1),-frnt_axl(2)];
+front_left = [mean(wfl_rec(2,:)),-mean(wfl_rec(1,:))];
+front_right = [mean(wfr_rec(2,:)),-mean(wfr_rec(1,:))];
 
 legend([ref_p,bdy_sc],{'Ref. Path','Trajectory'});
 
