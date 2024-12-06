@@ -130,9 +130,9 @@ new_path(new_path(:,1)>start_x&new_path(:,1)<end_x,1:2) = trajGlobal.Trajectory(
 % plot3(new_path(:,1),new_path(:,2),new_path(:,3),'Color','red','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path');
 % plot3(new_path(:,1),new_path(:,2)-1.485/2,new_path(:,3),'Color','black','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path');
 % plot3(new_path(:,1),new_path(:,2)+1.485/2,new_path(:,3),'Color','black','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path'); hold on;
-avo_p = plot3(new_path(:,1),new_path(:,2),'Color','red','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path');
-whl_avo_p = plot3(new_path(:,1),new_path(:,2)-1.485/2,'Color','black','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path');
-plot3(new_path(:,1),new_path(:,2)+1.485/2,'Color','black','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path'); hold on;
+avo_p = plot(new_path(:,1),new_path(:,2),'Color','red','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path');
+whl_avo_p = plot(new_path(:,1),new_path(:,2)-1.485/2,'Color','black','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path');
+plot(new_path(:,1),new_path(:,2)+1.485/2,'Color','black','LineWidth',1.5,'LineStyle','--','DisplayName','Ref. Path'); hold on;
 axis equal
 xlim([x_min, x_max]); ylim([-13 -9]);
 xlabel('\itY \rm[m]'); ylabel('\itX \rm[m]');
