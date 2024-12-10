@@ -1,0 +1,8 @@
+! measured by GS-1290-BSDF
+! format:BSDF*cos
+[Version],0.30
+[Name],colorcone_reflector
+[Unit],deg,nm,dB
+[WaveLength],,905
+[BSDF_Row],32761
+[BSDF],binary,colorcone_reflector_lidar.bin

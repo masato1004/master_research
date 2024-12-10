@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="light" lastUsageType="light" name="TrafficLight_yellow" name_ja="信号機用ライト(黄)" uid="d5978ca4-e3dc-4939-90da-f7777647f3ca"/>
+	<Memo/>
+	<Light>
+		<PFParams anisotropic="true" area="0.001" colorTemperatureFile="traffic_light_yellow.csv" colorTemperatureType="file" colorTemperatureValue="3000" emissionStrengthFactor="1.000000" enableLightSource="true" forceSampling="false" ies="1H33GYRC_yellow.ies" mapLightType="signal" version="0.6.0"/>
+	</Light>
+</SemgMetaData>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearMarking" lastUsageType="linearMarking" name="Yellow Solid Line" name_ja="黄実線" name_key="Yellow Solid Line" uid="d731cfc9-8447-4d12-a00c-b81c1d913736"/>
+	<Memo/>
+	<LinearMarking_Group separation="0.050000" xOffset="0.000000">
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="yellow" curveSpaceTexture="true" dashLength="0.000000" dashSpacing="0.000000" deceleration="false" markingType="solid" width="0.150000">
+			<Asset offset="0.000000" pos="0.000000,0.000000,0.000000" propotion="0.000000" rot="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" type="material" uid="8b409bb3-9982-499e-8807-0312fc606a29"/>
+		</LinearMarking_Single>
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="white" curveSpaceTexture="true" dashLength="5.000000" dashSpacing="5.000000" deceleration="false" markingType="solid" width="0.150000">
+			<Asset offset="0.000000" pos="0.000000,0.000000,0.000000" propotion="0.000000" rot="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" type="material" uid="ac1e3b1d-f9a1-488d-a4ed-253811c21a0d"/>
+		</LinearMarking_Single>
+	</LinearMarking_Group>
+</SemgMetaData>

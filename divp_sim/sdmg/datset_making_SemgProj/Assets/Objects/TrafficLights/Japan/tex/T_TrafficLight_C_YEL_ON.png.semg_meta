@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="" uid="f85470cb-8ddb-4ce0-a159-6771587c6cdd"/>
+	<Memo/>
+	<Texture realSizeHeight="1.000000" realSizeWidth="1.000000"/>
+	<RoadSign size="0.000000,0.000000"/>
+	<AerialImage bl="0.000000,0.000000" br="0.000000,0.000000" tl="0.000000,0.000000" tr="0.000000,0.000000"/>
+</SemgMetaData>

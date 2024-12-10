@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="roadStyle" lastUsageType="roadStyle" name="1 lane each way + sidewalk + deceleration" name_ja="片側１車線＋歩道＋減速標示" uid="bcb712c0-4f50-4b33-b9e8-fed2074722a1"/>
+	<Memo/>
+	<RoadStyle>
+		<Lanes>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="none" laneType="sidewalk" width="2.000000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="none" laneType="sidewalk" width="0.300000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="forward" laneType="shoulder" width="0.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="e996b702-11b9-4c34-84bd-9cd26cc952d9"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="forward" laneType="driving" width="3.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="4ef4bcff-35ac-4caf-8004-7dd55099f94b"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="true" laneDir="" laneType="none" width="0.000000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="939d6871-b995-4bdd-8098-c289b036c266"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="backward" laneType="driving" width="3.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="4ef4bcff-35ac-4caf-8004-7dd55099f94b"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="backward" laneType="shoulder" width="0.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="e996b702-11b9-4c34-84bd-9cd26cc952d9"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="none" laneType="sidewalk" width="0.300000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="none" laneType="sidewalk" width="2.000000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+		</Lanes>
+		<Shapes/>
+	</RoadStyle>
+</SemgMetaData>

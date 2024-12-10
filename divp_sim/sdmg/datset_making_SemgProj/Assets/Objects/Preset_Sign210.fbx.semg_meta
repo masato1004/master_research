@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Warning Sign 210 Merging traffic ahead" name_ja="警戒標識 210 合流交通あり" uid="604fe350-62c5-464c-91b0-836cc1711054"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="d20d9e39-f02f-43d7-bb8f-cc3ccbc90c00"/>
+      <Signal>
+        <Info id="210" dynamic="no" orientation="+" controlType="" name="Warning Sign 210" name_ja="警戒標識 210 合流交通あり"/>
+        <Type id="d20d9e39-f02f-43d7-bb8f-cc3ccbc90c00" value="" unit=""/>
+        <Size height="0.83" width="0.83"/>
+        <Pos x="0.0" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

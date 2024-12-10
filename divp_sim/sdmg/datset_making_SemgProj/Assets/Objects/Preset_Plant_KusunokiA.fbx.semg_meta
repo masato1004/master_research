@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Planting Medium Tree (camphor)" name_ja="植栽 中木（クスノキ）" uid="8e85f074-5300-48af-b970-ffdc1fbaef72"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,180.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.200000"/>
+	<TrafficSignal/>
+</SemgMetaData>

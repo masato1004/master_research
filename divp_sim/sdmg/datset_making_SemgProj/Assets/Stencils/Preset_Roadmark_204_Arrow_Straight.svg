@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="44.495209mm"
+   height="500mm"
+   viewBox="0 0 44.495209 500"
+   version="1.1"
+   id="svg16092"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="roadmark_204_arrow_straight.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview16094"
+     pagecolor="#777777"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.33540614"
+     inkscape:cx="232.55388"
+     inkscape:cy="845.24391"
+     inkscape:window-width="1453"
+     inkscape:window-height="1003"
+     inkscape:window-x="740"
+     inkscape:window-y="162"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs16089" />
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-49.931674,87.892425)">
+    <path
+       id="path3889"
+       style="fill:#ffffff;stroke:none;stroke-width:0.0994378;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 72.179266,-87.892425 49.931674,162.10757 h 14.828337 v 250 h 14.833436 v -250 h 14.833435 z" />
+  </g>
+</svg>

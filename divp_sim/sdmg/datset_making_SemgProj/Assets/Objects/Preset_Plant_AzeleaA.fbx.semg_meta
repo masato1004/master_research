@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Planting Shrub (azalia)" name_ja="植栽 低木（アゼリア）" uid="10eaa217-2616-4872-845e-7c926171862f"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,180.000000" defaultAlignNormal="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.200000"/>
+	<TrafficSignal/>
+</SemgMetaData>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearObject" lastUsageType="linearObject" name="Highway Wall" name_ja="高速道路防音壁" name_key="New - LinearObject" uid="953a1935-c3b2-4ced-b82b-12915c7a94e0"/>
+	<Memo/>
+	<LinearObject>
+		<CrossSections>
+			<CrossSection texUid_back="0f62074f-411e-49d4-8872-3d3e226119e2" texUid_cover="0f62074f-411e-49d4-8872-3d3e226119e2" texUid_thick="0f62074f-411e-49d4-8872-3d3e226119e2" thick="0.000000">
+				<VertexGroup loop="false">
+					<Vertex handleType="polyline" pos="-0.200000,-0.100000" texUid="2b4e2f5a-be15-4b48-844b-64fe26e0cc2f"/>
+					<Vertex handleType="polyline" pos="-0.200000,4.080000"/>
+					<Vertex handleType="polyline" pos="-0.301680,4.033650"/>
+					<Vertex handleType="polyline" pos="-0.343100,4.124640"/>
+					<Vertex handleType="polyline" pos="3.003260,5.649620"/>
+					<Vertex handleType="polyline" pos="3.044680,5.558630"/>
+					<Vertex handleType="polyline" pos="2.953700,5.517160"/>
+					<Vertex handleType="polyline" pos="3.061620,5.280580"/>
+					<Vertex handleType="polyline" pos="0.770450,4.236510"/>
+					<Vertex handleType="polyline" pos="0.453600,4.015130"/>
+					<Vertex handleType="polyline" pos="0.215450,3.735240"/>
+					<Vertex handleType="polyline" pos="0.055860,3.396840"/>
+					<Vertex handleType="polyline" pos="0.000000,3.000000"/>
+					<Vertex handleType="polyline" pos="0.000000,-0.100000"/>
+				</VertexGroup>
+			</CrossSection>
+		</CrossSections>
+	</LinearObject>
+</SemgMetaData>

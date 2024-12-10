@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Convenience Store Building" name_ja="コンビニ建屋" name_key="Convenience Store Building" uid="db2df0f1-2d34-40e4-8d6b-52a1ee7c48f8"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="true" defaultSpacing="5.000000" frontAxis="Y-" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="3.060120,-0.707751,3.324106" propotion="0.000000" rot="0.000000,0.000000,-270.083421" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="36.532722" areaOverride="true" emissionStrengthFactor="50.000000" enableLightSource="false" nodeName="EmitParts" version="0.13.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="2.692744,-1.097693,1.608133" propotion="0.000000" rot="0.000000,0.000000,-269.853011" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="82.788472" areaOverride="true" emissionStrengthFactor="50.000000" enableLightSource="false" nodeName="Win" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+</SemgMetaData>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="roadStyle" lastUsageType="roadStyle" name="1 lane each way + sidewalk + shape" name_ja="片側1車線_歩道+shape" uid="4227f5af-8be7-4cfe-9f31-9e8853dd654e"/>
+	<RoadStyle>
+		<Lanes>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.150000" heightOffset_outer="0.150000" isCenter="false" laneDir="none" laneType="sidewalk" width="2.000000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.150000" heightOffset_outer="0.150000" isCenter="false" laneDir="none" laneType="sidewalk" width="0.300000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="forward" laneType="shoulder" width="0.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="e996b702-11b9-4c34-84bd-9cd26cc952d9"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="forward" laneType="driving" width="3.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="7377b90a-c073-4c76-ae55-1215e2eb630d"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="true" laneDir="none" laneType="none" width="0.000000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="d731cfc9-8447-4d12-a00c-b81c1d913736"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="backward" laneType="driving" width="3.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="7377b90a-c073-4c76-ae55-1215e2eb630d"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.000000" heightOffset_outer="0.000000" isCenter="false" laneDir="backward" laneType="shoulder" width="0.500000">
+				<Asset type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+				<Asset type="linearMarking" uid="e996b702-11b9-4c34-84bd-9cd26cc952d9"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.150000" heightOffset_outer="0.150000" isCenter="false" laneDir="none" laneType="sidewalk" width="0.300000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+			<Lane curveSpaceUv_lane="true" curveSpaceUv_marking="true" heightOffset_inner="0.150000" heightOffset_outer="0.150000" isCenter="false" laneDir="none" laneType="sidewalk" width="2.000000">
+				<Asset type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+			</Lane>
+		</Lanes>
+		<Shapes>
+			<Shape s="0.0000000000000000e+00" t="-1.0000000000000000e+02" a="-5.0000000000000000e+00" b="5.0000000000001758e-02" c="-1.0197981751049057e-04" d="1.0406103827601435e-06"/>
+			<Shape s="0.0000000000000000e+00" t="-2.0000000000034248e+00" a="-1.0000000000000001e-01" b="5.9994022116029465e-02" c="7.2035835058722516e-03" d="-6.7204769409138316e-03"/>
+			<Shape s="0.0000000000000000e+00" t="4.9999999999646150e-01" a="-1.0000000000000000e-02" b="-2.9997002996733801e-02" c="-4.0007981260336604e-02" d="1.3337322172106088e-02"/>
+			<Shape s="0.0000000000000000e+00" t="1.9999999999964615e+00" a="-1.0000000000000001e-01" b="-5.9994022116027508e-02" c="2.0395963502094005e-04" d="-1.0406103827599357e-06"/>
+		</Shapes>
+	</RoadStyle>
+</SemgMetaData>
