@@ -1,10 +1,10 @@
-function [pcd] = func_projectDepthImageToLidar(depthImage, fl, pp, rd, td)
+function [pcd,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage, depthScaleFactor, fl, pp, rd, td, sf, rgbImg)
 
     % Get image dimensions
-    [height, width] = size(depthImage);
+    [img_H, img_W] = size(depthImage);
     
     % Create a grid of pixel coordinates
-    [x, y] = meshgrid(1:width, 1:height);
+    [x, y] = meshgrid(1:img_W, 1:img_H);
     
     % Normalize pixel coordinates to the camera's principal point
     x_norm = (x - pp(1)) / fl(1);
@@ -12,7 +12,8 @@ function [pcd] = func_projectDepthImageToLidar(depthImage, fl, pp, rd, td)
     
     % Compute radial and tangential distortions
     r2 = x_norm.^2 + y_norm.^2; % Squared radius
-    radial_distortion = (1+rd(1)*r2+rd(2)*r2.^2+rd(3)*r2.^3) ./ (1+rd(4)*r2+rd(5)*r2.^2+rd(6)*r2.^3);
+    % radial_distortion = -(1+rd(1)*r2+rd(2)*r2.^2+rd(3)*r2.^3) ./ (1+rd(4)*r2+rd(5)*r2.^2+rd(6)*r2.^3);
+    radial_distortion = 1;
     x_tangential = 2 * td(1) * x_norm .* y_norm + td(2) * (r2 + 2 * x_norm.^2);
     y_tangential = td(1) * (r2 + 2 * y_norm.^2) + 2 * td(2) * x_norm .* y_norm;
     
@@ -25,18 +26,29 @@ function [pcd] = func_projectDepthImageToLidar(depthImage, fl, pp, rd, td)
     % y_undistorted = y_undistorted * fl(2) + pp(2);
     
     % Depth values (Z-coordinate in meters)
-    z = depthImage; % Depth is the Z-coordinate
+    z = double(depthImage)/sf; % Depth is the Z-coordinate
     
     % Compute undistorted 3D coordinates
     x3D = x_undistorted.* z; % X-coordinate
     y3D = y_undistorted.* z; % Y-coordinate
     
     % Combine into a point cloud
-    pointCloud = [x3D(:), y3D(:), z(:)];
+    pcd = [x3D(:), y3D(:), z(:)];
+    color = double(reshape(rgbImg,[height(rgbImg)*width(rgbImg),3]))./255;
+
+    [diffImage_x,diffImage_y] = gradient(double(depthImage));
+    diffImage = (diffImage_x./depthScaleFactor).^2 ;%+ (diffImage_y./depthScaleFactor).^2;
+    diffImage(:,1)=0;
+    diffImage(1,:)=0;
+    diffImage(:,end)=0;
+    diffImage(end,:)=0;
+    diffImage = diffImage./(z.^2);
+    diffcolor = double(reshape(diffImage,[height(diffImage)*width(diffImage),1]));
     
     % Remove points with invalid depth (e.g., zero or NaN values)
     validPoints = z(:) > 0; % Adjust threshold as needed
-    pcd = pointCloud(validPoints, :);
+    pcd = pointCloud(pcd(validPoints,:),Color=color(validPoints,:));
+    diffcolor=diffcolor(validPoints)*1000;
 
     % eulerAngle2 = [0 -pi/2 pi/2];
     % R2 = eul2rotm(-eulerAngle2);
