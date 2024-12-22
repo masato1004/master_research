@@ -31,11 +31,7 @@ while flag
         flag=false;
     end
 end
-% file_num=182;
-% file_num=175;
-% file_num=143;
-% file_num=210;
-% file_num=207;
+file_num=41;
 
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
@@ -78,8 +74,8 @@ depthImage_original_size=uint16(zeros(img_h, img_w));
 raw_depth_original_size=uint16(zeros(img_h, img_w));
 colorImage_original_size=uint8(ones(img_h, img_w, 3));
 
-start_x = 1171-1;
-start_y = 1207-1;
+start_x = 1175-1;
+start_y = 1209-1;
 rect_width = 1496-1;
 rect_height = 624-1;
 % start_x = 353-1;
@@ -130,9 +126,9 @@ f_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,f_translation_cam2wheel)
 r_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,r_translation_cam2wheel);
 
 % ptCloud = pcfromdepth(depthImage,depthScaleFactor,intrinsics,ColorImage=colorImage);
-[ptCloud,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage,depthScaleFactor,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
-[groundtruthptCloud,~,~] = func_projectDepthImageToLidar(groundtruth,depthScaleFactor,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
-[rawptCloud,~,~] = func_projectDepthImageToLidar(rawlidarImage,depthScaleFactor,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
+[ptCloud,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
+[groundtruthptCloud,~,~] = func_projectDepthImageToLidar(groundtruth,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
+[rawptCloud,~,~] = func_projectDepthImageToLidar(rawlidarImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
 tform = rigidtform3d([-90 0 -90],camera_position);
 ptCloud = pctransform(ptCloud,tform);
 rawptCloud = pctransform(rawptCloud,tform);
@@ -179,14 +175,20 @@ ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.C
 
 figure();
 pcshow(ptCloud);
+figure();
+pcshow(ptCloud.Location);
+clim([-0.1 0.1])
 % temp_fig = figure("Position",[100,100,150,120]);
 temp_fig = figure();
+diffcolor = diffcolor(ptCloud_eliminate_idx);
+% diffcolor(diffcolor>0.003)=0;
 % pcshow(pointCloud(ptCloud.Location,Color=repmat(diffImage(ptCloud_eliminate_idx),[1,3])./max(diffImage(ptCloud_eliminate_idx))));
-scatter(ptCloud.Location(:,1),ptCloud.Location(:,2),3,diffcolor(ptCloud_eliminate_idx),"filled");
-colormap("turbo")
-clim([-0.01 0.01])
+scatter(ptCloud.Location(:,1),ptCloud.Location(:,2),3,diffcolor,"filled");
+colormap("jet")
+% clim([-0.01 0.01])
+% clim([-0.0000001 0.0000001])
 % pcshow(reshape(ptCloud.Location,[],3),reshape(colorImage,[],3));
-% pcshow(ptCloud);
+% pcshow(ptCloud.Location);
 % ptCloud=ptCloud_new;
 xlabel("\itX \rm[m]");
 ylabel("\itY \rm[m]");

@@ -1,4 +1,4 @@
-function [pcd,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage, depthScaleFactor, fl, pp, rd, td, sf, rgbImg)
+function [pcd,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage, fl, pp, rd, td, sf, rgbImg)
 
     % Get image dimensions
     [img_H, img_W] = size(depthImage);
@@ -12,14 +12,14 @@ function [pcd,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage,
     
     % Compute radial and tangential distortions
     r2 = x_norm.^2 + y_norm.^2; % Squared radius
-    % radial_distortion = -(1+rd(1)*r2+rd(2)*r2.^2+rd(3)*r2.^3) ./ (1+rd(4)*r2+rd(5)*r2.^2+rd(6)*r2.^3);
-    radial_distortion = 1;
+    radial_distortion = (1+rd(1)*r2+rd(2)*r2.^2+rd(3)*r2.^3) ./ (1+rd(4)*r2+rd(5)*r2.^2+rd(6)*r2.^3);
+    % radial_distortion = 1;
     x_tangential = 2 * td(1) * x_norm .* y_norm + td(2) * (r2 + 2 * x_norm.^2);
     y_tangential = td(1) * (r2 + 2 * y_norm.^2) + 2 * td(2) * x_norm .* y_norm;
     
     % Apply distortion correction
-    x_undistorted = x_norm .* radial_distortion + x_tangential;
-    y_undistorted = y_norm .* radial_distortion + y_tangential;
+    x_undistorted = x_norm ;%./ radial_distortion - x_tangential;
+    y_undistorted = y_norm ;%./ radial_distortion - y_tangential;
     
     % Scale back to pixel coordinates
     % x_undistorted = x_undistorted * fl(1) + pp(1);
@@ -36,13 +36,13 @@ function [pcd,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage,
     pcd = [x3D(:), y3D(:), z(:)];
     color = double(reshape(rgbImg,[height(rgbImg)*width(rgbImg),3]))./255;
 
-    [diffImage_x,diffImage_y] = gradient(double(depthImage));
-    diffImage = (diffImage_x./depthScaleFactor).^2 ;%+ (diffImage_y./depthScaleFactor).^2;
-    diffImage(:,1)=0;
-    diffImage(1,:)=0;
-    diffImage(:,end)=0;
-    diffImage(end,:)=0;
-    diffImage = diffImage./(z.^2);
+    [diffImage_x,diffImage_y] = gradient(double(y3D));
+    diffImage = 1000000*(diffImage_x./sf).^2 + (diffImage_y./sf).^2;
+    % diffImage(:,1)=0;
+    % diffImage(1,:)=0;
+    % diffImage(:,end)=0;
+    % diffImage(end,:)=0;
+    diffImage = diffImage./(z+x3D);
     diffcolor = double(reshape(diffImage,[height(diffImage)*width(diffImage),1]));
     
     % Remove points with invalid depth (e.g., zero or NaN values)
