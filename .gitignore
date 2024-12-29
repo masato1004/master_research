@@ -14,6 +14,8 @@ sensing/zed-matlab/matlab/ZEDply/*
 sensing/rosbag_reader/*.mat
 unreal_engine/
 unreal_engine/*
+optimization/casadi-3.6.7-windows64-matlab2018b
+optimization/casadi-3.6.7-windows64-matlab2018b/*
 
 # Executables
 *.swf
