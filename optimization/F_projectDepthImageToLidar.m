@@ -1,4 +1,4 @@
-function [pcd,validPoints,diffcolor,dpcd] = func_projectDepthImageToLidar(depthImage, fl, pp, rd, td, sf, rgbImg, crop_info)
+function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImage, fl, pp, rd, td, sf, rgbImg, crop_info)
 
     % Get image dimensions
     [img_H, img_W] = size(depthImage);

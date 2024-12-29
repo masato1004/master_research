@@ -16,7 +16,7 @@ list_color_imgs     = dir(dataset+"image/*.png");
 groundtruth_imgs    = dir(dataset+"groundtruth_depth/*.png");
 
 %% read datas
-% close all;
+close all;
 
 file_name = "depth_image_008850.png";
 file_num = 0;
@@ -31,7 +31,7 @@ while flag
         flag=false;
     end
 end
-file_num=41;
+file_num=23;
 
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
@@ -56,13 +56,14 @@ predictedImage_read = images{2};
 colorImage_read = images{3};
 groundtruth_read = images{4};
 
-depthImage_read = images{2};
+depthImage_read = images{4};
 
 depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);
 depthImage_check(depthImage_check==0)   = nan;
 groundtruth_check(groundtruth_check==0) = nan;
-rmse_px = rmse(depthImage_check.*15./65535,groundtruth_check.*15./65535,"omitnan");
+maxCameraDepth   = 30;
+rmse_px = rmse(depthImage_check.*maxCameraDepth./65535,groundtruth_check.*maxCameraDepth./65535,"omitnan");
 rmse_px = rmmissing(rmse_px);
 RMSE_on_depthmap = sum(rmse_px,'all')/numel(rmse_px)
 
@@ -78,6 +79,7 @@ start_x = 1175-1;
 start_y = 1209-1;
 rect_width = 1496-1;
 rect_height = 624-1;
+crop_info = {start_y:start_y+rect_height-1;start_x+10:start_x+rect_width-10};
 % start_x = 353-1;
 % start_y = 449-1;
 % rect_width = 1216-1;
@@ -113,7 +115,6 @@ focalLength      = [fx, fy];
 principalPoint   = [cx, cy];
 RadialDistortion6 = [k1, k2, k3, k4, k5, k6];
 TangentialDistortion = [p1,p2];
-maxCameraDepth   = 30;
 depthScaleFactor = 65535/maxCameraDepth; % Z = 深度画像[u,v]/スケールファクタ
 
 
@@ -126,11 +127,12 @@ f_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,f_translation_cam2wheel)
 r_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,r_translation_cam2wheel);
 
 % ptCloud = pcfromdepth(depthImage,depthScaleFactor,intrinsics,ColorImage=colorImage);
-[ptCloud,validPoints,diffcolor] = func_projectDepthImageToLidar(depthImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
-[groundtruthptCloud,~,~] = func_projectDepthImageToLidar(groundtruth,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
-[rawptCloud,~,~] = func_projectDepthImageToLidar(rawlidarImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage);
+[ptCloud,validPoints,diffcolor,dpcd] = func_projectDepthImageToLidar(depthImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
+[groundtruthptCloud,~,~,~] = func_projectDepthImageToLidar(groundtruth,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
+[rawptCloud,~,~,~] = func_projectDepthImageToLidar(rawlidarImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
 tform = rigidtform3d([-90 0 -90],camera_position);
 ptCloud = pctransform(ptCloud,tform);
+dpcd = pctransform(dpcd,tform);
 rawptCloud = pctransform(rawptCloud,tform);
 groundtruthptCloud = pctransform(groundtruthptCloud,tform);
 % pcshow(ptCloud);
@@ -166,6 +168,11 @@ rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)
 rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
 ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-2&ptCloud.Location(:,2)<2;
 ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
+dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2;
+dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
+dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
+[model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.0016);
+% dpcd = pointCloud(dpcd.Location(dpcd.Location(:,3)<mean(dpcd.Location(:,3))+0.01,:));
 
 % ptloc=ptCloud.Location;
 % ptloc(ptloc(:,1)<0,1)=2;
@@ -175,8 +182,19 @@ ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.C
 
 figure();
 pcshow(ptCloud);
+axis equal;
+fontname(gcf,"Arial");
+fontsize(gca,8,"points");
+set(gcf,'color','w');
+set(gca,'color','w');
+set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
 figure();
 pcshow(ptCloud.Location);
+fontname(gcf,"Arial");
+fontsize(gca,8,"points");
+set(gcf,'color','w');
+set(gca,'color','w');
+set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
 clim([-0.1 0.1])
 % temp_fig = figure("Position",[100,100,150,120]);
 temp_fig = figure();
@@ -193,7 +211,23 @@ colormap("jet")
 xlabel("\itX \rm[m]");
 ylabel("\itY \rm[m]");
 % zlabel("\itZ \rm[m]");
+clim([-0.002 0.002])
+xlim([min(ptCloud.Location(:,1)),max(ptCloud.Location(:,1))]);
+ylim([min(ptCloud.Location(:,2)),max(ptCloud.Location(:,2))]);
 axis equal;
+fontname(gcf,"Arial");
+fontsize(gca,8,"points");
+set(gcf,'color','w');
+set(gca,'color','w');
+set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
+
+figure();
+pcshow(dpcd.Location(outlierIndices,:),MarkerSize=40)
+xlabel("\itX \rm[m]");
+ylabel("\itY \rm[m]");
+zlabel("\itZ \rm[m]");
+xlim([min(ptCloud.Location(:,1)),max(ptCloud.Location(:,1))]);
+ylim([min(ptCloud.Location(:,2)),max(ptCloud.Location(:,2))]);
 fontname(gcf,"Arial");
 fontsize(gca,8,"points");
 set(gcf,'color','w');
