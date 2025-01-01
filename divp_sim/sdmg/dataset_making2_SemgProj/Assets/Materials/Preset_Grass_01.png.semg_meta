@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="Grass" name_ja="芝生" uid="88ae41f6-3f42-4106-8603-48feca9c6e54"/>
+	<Memo/>
+	<Texture realSizeHeight="1.400000" realSizeWidth="1.400000"/>
+	<RoadSign size="1.000000,1.000000"/>
+	<AerialImage/>
+</SemgMetaData>

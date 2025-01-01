@@ -1,0 +1,9 @@
+# Preset_Phonebooth
+
+material M_Phonebooth_Glass
+{
+	color 0.7 0.7 0.7
+	refraction 1.43
+	thickness 0.005
+	brdf 1
+}

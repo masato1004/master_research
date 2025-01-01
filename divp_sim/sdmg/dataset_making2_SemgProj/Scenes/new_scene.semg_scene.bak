@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgScene>
+	<Header app_version="0.14.0.0" comment="" format_version="1.0.0" name="new_scene" uid="392779c6-8216-4f70-a41f-444843ddc2ea"/>
+	<Project path="..\"/>
+	<AppInfo>
+		<View3d eyeInfo="0.761847 -0.642808 -1.587181 0.715617 0.078182 0.341188 0.041239 0.036284 -0.006244 -0.998471"/>
+	</AppInfo>
+	<Config>
+		<MarkingPeeloff>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_080.svg" maskScale="2.000000" rank="1"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_070.svg" maskScale="2.000000" rank="2"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_060.svg" maskScale="2.000000" rank="3"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_040.svg" maskScale="2.000000" rank="4"/>
+			<VisualRank maskFilepath="" maskScale="2.000000" rank="5"/>
+		</MarkingPeeloff>
+		<GeoReference crs="" crsDescType="None"/>
+		<SceneRoad drivingSide="LHT"/>
+		<View3dGrid origin="0.000000,0.000000,0.000000"/>
+		<Export offsetHeadingDeg="0.000000" offsetOrigin="0.000000,0.000000,0.000000"/>
+	</Config>
+	<Entities>
+		<EntityGroup entityType="Shape" visible="true">
+			<Entity attDeg="0.000000,0.000000,-31.989687" entityType="Shape" name="Shape_1" pos="-0.056468,0.197532,-0.300000" scale="1.000000,1.000000,1.000000" serialId="1" shapeType="bezier_standalone_loopOnly" uid="f8b70e57-6622-4e5d-af09-0f248106f4c7" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="true">
+					<Vtx handleType="smooth">
+						<Cp_fst x="-2.221952" y="1.177700" z="-0.300000"/>
+						<Vertex x="-2.089134" y="1.390339" z="-0.300000"/>
+						<Cp_snd x="-1.956316" y="1.602977" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.767168" y="1.788256" z="-0.300000"/>
+						<Vertex x="-1.551831" y="1.916652" z="-0.300000"/>
+						<Cp_snd x="-1.378641" y="2.019918" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.164061" y="2.032931" z="-0.300000"/>
+						<Vertex x="-0.964382" y="2.060979" z="-0.300000"/>
+						<Cp_snd x="-0.794247" y="2.084877" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.620805" y="2.066469" z="-0.300000"/>
+						<Vertex x="-0.449076" y="2.071549" z="-0.300000"/>
+						<Cp_snd x="-0.052145" y="2.083291" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.350517" y="2.180514" z="-0.300000"/>
+						<Vertex x="0.741567" y="2.111444" z="-0.300000"/>
+						<Cp_snd x="1.040600" y="2.058627" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.309063" y="1.883729" z="-0.300000"/>
+						<Vertex x="1.562377" y="1.716271" z="-0.300000"/>
+						<Cp_snd x="1.670088" y="1.645067" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.751956" y="1.530569" z="-0.300000"/>
+						<Vertex x="1.800963" y="1.411111" z="-0.300000"/>
+						<Cp_snd x="1.907330" y="1.151834" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.986209" y="0.877682" z="-0.300000"/>
+						<Vertex x="2.020510" y="0.599542" z="-0.300000"/>
+						<Cp_snd x="2.058879" y="0.288422" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="2.062898" y="-0.030779" z="-0.300000"/>
+						<Vertex x="2.017028" y="-0.340882" z="-0.300000"/>
+						<Cp_snd x="1.977096" y="-0.610845" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.954671" y="-0.922892" z="-0.300000"/>
+						<Vertex x="1.766130" y="-1.120193" z="-0.300000"/>
+						<Cp_snd x="1.584822" y="-1.309925" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.303581" y="-1.530932" z="-0.300000"/>
+						<Vertex x="1.042172" y="-1.593719" z="-0.300000"/>
+						<Cp_snd x="0.812394" y="-1.648908" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.572580" y="-1.663653" z="-0.300000"/>
+						<Vertex x="0.321524" y="-1.685583" z="-0.300000"/>
+						<Cp_snd x="0.171727" y="-1.698668" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.000590" y="-1.725981" z="-0.300000"/>
+						<Vertex x="-0.149471" y="-1.716380" z="-0.300000"/>
+						<Cp_snd x="-0.328737" y="-1.704910" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.533179" y="-1.712178" z="-0.300000"/>
+						<Vertex x="-0.707041" y="-1.667015" z="-0.300000"/>
+						<Cp_snd x="-0.843450" y="-1.631581" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.063293" y="-1.597235" z="-0.300000"/>
+						<Vertex x="-1.176467" y="-1.513243" z="-0.300000"/>
+						<Cp_snd x="-1.312858" y="-1.412019" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.534071" y="-1.313958" z="-0.300000"/>
+						<Vertex x="-1.652342" y="-1.192053" z="-0.300000"/>
+						<Cp_snd x="-1.797707" y="-1.042219" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.842519" y="-0.563396" z="-0.300000"/>
+						<Vertex x="-1.931506" y="-0.359835" z="-0.300000"/>
+						<Cp_snd x="-2.068334" y="-0.046838" z="-0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-2.138711" y="0.303307" z="-0.300000"/>
+						<Vertex x="-2.133447" y="0.644865" z="-0.300000"/>
+						<Cp_snd x="-2.128182" y="0.986422" z="-0.300000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,-68.831933" entityType="Shape" name="Shape_2" pos="0.007781,0.006893,0.000000" scale="1.000000,1.000000,1.000000" serialId="28" shapeType="bezier_standalone_loopOnly" uid="48783ed7-a340-43b9-997c-3622e2dcd679" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="true">
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.374248" y="0.765062" z="0.000000"/>
+						<Vertex x="-1.233330" y="0.819630" z="0.000000"/>
+						<Cp_snd x="-1.092412" y="0.874198" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.945139" y="0.914517" z="0.000000"/>
+						<Vertex x="-0.796077" y="0.939336" z="0.000000"/>
+						<Cp_snd x="-0.647550" y="0.964066" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.495772" y="0.970949" z="0.000000"/>
+						<Vertex x="-0.345240" y="0.967499" z="0.000000"/>
+						<Cp_snd x="-0.155009" y="0.963139" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.033056" y="0.920917" z="0.000000"/>
+						<Vertex x="0.223273" y="0.915973" z="0.000000"/>
+						<Cp_snd x="0.476859" y="0.909383" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.737271" y="0.991478" z="0.000000"/>
+						<Vertex x="0.984100" y="0.932951" z="0.000000"/>
+						<Cp_snd x="1.110040" y="0.903089" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.207249" y="0.782420" z="0.000000"/>
+						<Vertex x="1.268158" y="0.668215" z="0.000000"/>
+						<Cp_snd x="1.333913" y="0.544923" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.332553" y="0.395308" z="0.000000"/>
+						<Vertex x="1.345063" y="0.256139" z="0.000000"/>
+						<Cp_snd x="1.354071" y="0.155917" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.340819" y="0.054795" z="0.000000"/>
+						<Vertex x="1.332309" y="-0.045471" z="0.000000"/>
+						<Cp_snd x="1.317486" y="-0.220111" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.323168" y="-0.399607" z="0.000000"/>
+						<Vertex x="1.275100" y="-0.568155" z="0.000000"/>
+						<Cp_snd x="1.247180" y="-0.666052" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.189800" y="-0.761890" z="0.000000"/>
+						<Vertex x="1.109975" y="-0.825067" z="0.000000"/>
+						<Cp_snd x="1.044620" y="-0.876791" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.950979" y="-0.877949" z="0.000000"/>
+						<Vertex x="0.868502" y="-0.889954" z="0.000000"/>
+						<Cp_snd x="0.784723" y="-0.902149" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.698048" y="-0.868729" z="0.000000"/>
+						<Vertex x="0.613381" y="-0.877678" z="0.000000"/>
+						<Cp_snd x="0.534456" y="-0.886021" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.462495" y="-0.930077" z="0.000000"/>
+						<Vertex x="0.383910" y="-0.941178" z="0.000000"/>
+						<Cp_snd x="0.276964" y="-0.956285" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.153548" y="-0.939069" z="0.000000"/>
+						<Vertex x="0.038364" y="-0.938554" z="0.000000"/>
+						<Cp_snd x="-0.083617" y="-0.938009" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.205628" y="-0.935354" z="0.000000"/>
+						<Vertex x="-0.327582" y="-0.937997" z="0.000000"/>
+						<Cp_snd x="-0.438880" y="-0.940409" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.550078" y="-0.960661" z="0.000000"/>
+						<Vertex x="-0.661185" y="-0.953713" z="0.000000"/>
+						<Cp_snd x="-0.746491" y="-0.948378" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.833961" y="-0.935808" z="0.000000"/>
+						<Vertex x="-0.912217" y="-0.901435" z="0.000000"/>
+						<Cp_snd x="-1.007266" y="-0.859686" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.127691" y="-0.823373" z="0.000000"/>
+						<Vertex x="-1.171842" y="-0.729415" z="0.000000"/>
+						<Cp_snd x="-1.265850" y="-0.529357" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.279265" y="-0.299027" z="0.000000"/>
+						<Vertex x="-1.309307" y="-0.079714" z="0.000000"/>
+						<Cp_snd x="-1.332001" y="0.085964" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.338794" y="0.254588" z="0.000000"/>
+						<Vertex x="-1.329501" y="0.421554" z="0.000000"/>
+						<Cp_snd x="-1.320208" y="0.588521" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,68.978143" entityType="Shape" name="Shape_4" pos="0.031705,-0.051949,0.300000" scale="1.000000,1.000000,1.000000" serialId="105" shapeType="bezier_standalone_loopOnly" uid="0fd0800d-3b49-4b12-aae9-8dc4c30b1580" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="true">
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.613304" y="-0.386825" z="0.300000"/>
+						<Vertex x="0.575051" y="-0.372124" z="0.300000"/>
+						<Cp_snd x="0.536799" y="-0.357424" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.494167" y="-0.351367" z="0.300000"/>
+						<Vertex x="0.453334" y="-0.354831" z="0.300000"/>
+						<Cp_snd x="0.402538" y="-0.359140" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.356445" y="-0.389511" z="0.300000"/>
+						<Vertex x="0.305760" y="-0.394968" z="0.300000"/>
+						<Cp_snd x="0.277191" y="-0.398044" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.249584" y="-0.381443" z="0.300000"/>
+						<Vertex x="0.220894" y="-0.379858" z="0.300000"/>
+						<Cp_snd x="0.174773" y="-0.377309" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.128454" y="-0.379808" z="0.300000"/>
+						<Vertex x="0.082349" y="-0.382621" z="0.300000"/>
+						<Cp_snd x="0.041703" y="-0.385101" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.001541" y="-0.393356" z="0.300000"/>
+						<Vertex x="-0.039111" y="-0.395720" z="0.300000"/>
+						<Cp_snd x="-0.080088" y="-0.398103" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.121548" y="-0.391491" z="0.300000"/>
+						<Vertex x="-0.162243" y="-0.396843" z="0.300000"/>
+						<Cp_snd x="-0.207296" y="-0.402768" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.249200" y="-0.429615" z="0.300000"/>
+						<Vertex x="-0.294641" y="-0.429327" z="0.300000"/>
+						<Cp_snd x="-0.323825" y="-0.429142" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.349141" y="-0.408241" z="0.300000"/>
+						<Vertex x="-0.375394" y="-0.395492" z="0.300000"/>
+						<Cp_snd x="-0.407720" y="-0.379793" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.447760" y="-0.366818" z="0.300000"/>
+						<Vertex x="-0.471506" y="-0.338017" z="0.300000"/>
+						<Cp_snd x="-0.490356" y="-0.315153" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.490522" y="-0.281403" z="0.300000"/>
+						<Vertex x="-0.493744" y="-0.251946" z="0.300000"/>
+						<Cp_snd x="-0.498952" y="-0.204320" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.495649" y="-0.156146" z="0.300000"/>
+						<Vertex x="-0.496633" y="-0.108247" z="0.300000"/>
+						<Cp_snd x="-0.497902" y="-0.046535" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.497222" y="0.015250" z="0.300000"/>
+						<Vertex x="-0.500503" y="0.076887" z="0.300000"/>
+						<Cp_snd x="-0.504219" y="0.146693" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.535869" y="0.218423" z="0.300000"/>
+						<Vertex x="-0.517616" y="0.285902" z="0.300000"/>
+						<Cp_snd x="-0.509910" y="0.314388" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.463651" y="0.310383" z="0.300000"/>
+						<Vertex x="-0.435211" y="0.318257" z="0.300000"/>
+						<Cp_snd x="-0.415685" y="0.323663" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.395064" y="0.326846" z="0.300000"/>
+						<Vertex x="-0.374852" y="0.325429" z="0.300000"/>
+						<Cp_snd x="-0.341289" y="0.323076" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.309211" y="0.308612" z="0.300000"/>
+						<Vertex x="-0.275602" y="0.307065" z="0.300000"/>
+						<Cp_snd x="-0.247471" y="0.305770" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.219844" y="0.315887" z="0.300000"/>
+						<Vertex x="-0.191705" y="0.316998" z="0.300000"/>
+						<Cp_snd x="-0.156227" y="0.318398" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.120699" y="0.315814" z="0.300000"/>
+						<Vertex x="-0.085214" y="0.314580" z="0.300000"/>
+						<Cp_snd x="-0.055348" y="0.313541" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.025514" y="0.311741" z="0.300000"/>
+						<Vertex x="0.004330" y="0.310179" z="0.300000"/>
+						<Cp_snd x="0.033013" y="0.308678" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.062072" y="0.310344" z="0.300000"/>
+						<Vertex x="0.090364" y="0.305390" z="0.300000"/>
+						<Cp_snd x="0.121683" y="0.299906" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.150249" y="0.279172" z="0.300000"/>
+						<Vertex x="0.182044" y="0.279062" z="0.300000"/>
+						<Cp_snd x="0.214114" y="0.278951" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.242909" y="0.301018" z="0.300000"/>
+						<Vertex x="0.274761" y="0.304752" z="0.300000"/>
+						<Cp_snd x="0.300962" y="0.307822" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.327330" y="0.299742" z="0.300000"/>
+						<Vertex x="0.353704" y="0.299182" z="0.300000"/>
+						<Cp_snd x="0.380915" y="0.298604" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.408111" y="0.301628" z="0.300000"/>
+						<Vertex x="0.435327" y="0.301343" z="0.300000"/>
+						<Cp_snd x="0.466103" y="0.301021" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.505232" y="0.318531" z="0.300000"/>
+						<Vertex x="0.527574" y="0.297362" z="0.300000"/>
+						<Cp_snd x="0.557744" y="0.268776" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.557108" y="0.219236" z="0.300000"/>
+						<Vertex x="0.565042" y="0.178438" z="0.300000"/>
+						<Cp_snd x="0.571711" y="0.144147" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.569046" y="0.108685" z="0.300000"/>
+						<Vertex x="0.571048" y="0.073809" z="0.300000"/>
+						<Cp_snd x="0.573373" y="0.033308" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.576598" y="-0.007151" z="0.300000"/>
+						<Vertex x="0.578022" y="-0.047694" z="0.300000"/>
+						<Cp_snd x="0.579925" y="-0.101841" z="0.300000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.580926" y="-0.156027" z="0.300000"/>
+						<Vertex x="0.581027" y="-0.210208" z="0.300000"/>
+						<Cp_snd x="0.581127" y="-0.264389" z="0.300000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,-0.324276,-66.033734" entityType="Shape" name="Shape_5" pos="0.015925,0.002110,0.372703" scale="1.000000,1.000000,1.000000" serialId="143" shapeType="bezier_standalone_loopOnly" uid="1190df18-6c88-471a-b825-7ce0a6c38d10" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="true">
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.184329" y="0.077370" z="0.378549"/>
+						<Vertex x="-0.162490" y="0.087078" z="0.378685"/>
+						<Cp_snd x="-0.140652" y="0.096786" z="0.378820"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.116901" y="0.102865" z="0.376247"/>
+						<Vertex x="-0.093087" y="0.104845" z="0.375841"/>
+						<Cp_snd x="-0.070684" y="0.106707" z="0.375460"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.048409" y="0.099236" z="0.376784"/>
+						<Vertex x="-0.025944" y="0.098428" z="0.376360"/>
+						<Cp_snd x="-0.004746" y="0.097666" z="0.375959"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.016420" y="0.100698" z="0.374290"/>
+						<Vertex x="0.037608" y="0.100147" z="0.373373"/>
+						<Cp_snd x="0.055859" y="0.099672" z="0.372582"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.073989" y="0.097047" z="0.371715"/>
+						<Vertex x="0.092178" y="0.095355" z="0.371244"/>
+						<Cp_snd x="0.110430" y="0.093657" z="0.370770"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.128872" y="0.093206" z="0.370828"/>
+						<Vertex x="0.146920" y="0.089977" z="0.370539"/>
+						<Cp_snd x="0.167452" y="0.086303" z="0.370209"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.194077" y="0.090586" z="0.369386"/>
+						<Vertex x="0.207598" y="0.074701" z="0.369391"/>
+						<Cp_snd x="0.221193" y="0.058729" z="0.369396"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.212313" y="0.032998" z="0.370482"/>
+						<Vertex x="0.213252" y="0.012045" z="0.370564"/>
+						<Cp_snd x="0.214021" y="-0.005118" z="0.370632"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.214025" y="-0.022363" z="0.370222"/>
+						<Vertex x="0.212716" y="-0.039489" z="0.369839"/>
+						<Cp_snd x="0.211657" y="-0.053333" z="0.369530"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.214862" y="-0.069796" z="0.369042"/>
+						<Vertex x="0.206168" y="-0.080611" z="0.368494"/>
+						<Cp_snd x="0.196340" y="-0.092837" z="0.367875"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.179096" y="-0.098308" z="0.367027"/>
+						<Vertex x="0.163571" y="-0.100624" z="0.366743"/>
+						<Cp_snd x="0.145581" y="-0.103308" z="0.366413"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.127425" y="-0.096332" z="0.366686"/>
+						<Vertex x="0.109276" y="-0.095068" z="0.366720"/>
+						<Cp_snd x="0.088191" y="-0.093600" z="0.366760"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.066980" y="-0.094248" z="0.366786"/>
+						<Vertex x="0.045922" y="-0.092431" z="0.366964"/>
+						<Cp_snd x="0.020696" y="-0.090256" z="0.367176"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.004355" y="-0.086384" z="0.367407"/>
+						<Vertex x="-0.029457" y="-0.083102" z="0.367891"/>
+						<Cp_snd x="-0.049553" y="-0.080474" z="0.368279"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.070125" y="-0.080102" z="0.369404"/>
+						<Vertex x="-0.089662" y="-0.074703" z="0.369578"/>
+						<Cp_snd x="-0.106786" y="-0.069971" z="0.369730"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.128229" y="-0.067617" z="0.368649"/>
+						<Vertex x="-0.138342" y="-0.053011" z="0.368859"/>
+						<Cp_snd x="-0.149378" y="-0.037072" z="0.369088"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.188714" y="0.004759" z="0.370540"/>
+						<Vertex x="-0.181402" y="0.022715" z="0.370464"/>
+						<Cp_snd x="-0.174091" y="0.040671" z="0.370388"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+		</EntityGroup>
+		<EntityGroup entityType="Road" visible="true"/>
+		<EntityGroup entityType="Intersection" visible="true"/>
+		<EntityGroup entityType="ArealFeature" visible="true"/>
+		<EntityGroup entityType="LinearFeature" visible="true"/>
+		<EntityGroup entityType="PointMarking" visible="true"/>
+		<EntityGroup entityType="PointFeature" visible="true"/>
+		<EntityGroup entityType="Terrain" visible="true">
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Terrain" name="Terrain_1" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="2" uid="1b574fc1-4b3e-41c4-a876-576aeb9c098e" visible="true">
+				<Shape uid="f8b70e57-6622-4e5d-af09-0f248106f4c7"/>
+				<Params deployPriority="0" materialUid="a11a54b6-7e10-493b-8ba2-ab9966bc6bc5" texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Terrain" name="Terrain_2" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="29" uid="360d7b35-d48b-41fa-9adf-26823674f0e8" visible="true">
+				<Shape uid="48783ed7-a340-43b9-997c-3622e2dcd679"/>
+				<Params deployPriority="0" materialUid="05eefa47-620b-44d1-911a-19fc8642faf2" texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Terrain" name="Terrain_4" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="106" uid="18b398a7-327f-48a1-85e0-5b4c4a218a58" visible="true">
+				<Shape uid="0fd0800d-3b49-4b12-aae9-8dc4c30b1580"/>
+				<Params deployPriority="0" materialUid="05eefa47-620b-44d1-911a-19fc8642faf2" texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Terrain" name="Terrain_5" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="144" uid="4f5cdd4e-a575-4f08-9ac1-42cc7e30a580" visible="true">
+				<Shape uid="1190df18-6c88-471a-b825-7ce0a6c38d10"/>
+				<Params deployPriority="0" materialUid="05eefa47-620b-44d1-911a-19fc8642faf2" texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+			</Entity>
+		</EntityGroup>
+	</Entities>
+</SemgScene>

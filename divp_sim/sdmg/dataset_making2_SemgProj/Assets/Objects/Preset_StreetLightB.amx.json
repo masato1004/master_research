@@ -1,0 +1,15 @@
+{
+	"info":{
+		"version":"1.1",
+		"md5hash":"6edcb0aedc41042e48142c7cd85f77c9"
+	},
+	"anim":[
+		{
+			"take":"Preset_StreetLightB",
+			"motiontype":"Unknown",
+			"motionid":10001,
+			"repeat":1,
+			"averagespeed":0
+		}
+	]
+}

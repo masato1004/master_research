@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Control Panel Box" name_ja="制御盤ボックス" uid="e4d9a0e8-2c83-4d04-8807-2e34cf2be991"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>

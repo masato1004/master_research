@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearMarking" lastUsageType="linearMarking" name="White Solid Line (dusty)" name_ja="白実線(劣化)" uid="da2ce891-8033-4abc-b5a5-a4609049154c"/>
+	<LinearMarking_Group separation="0.000000" xOffset="0.000000">
+		<LinearMarking_Single color="1.000000,1.000000,1.000000,1.000000" colorStr="white" curveSpaceTexture="true" dashLength="0.000000" dashSpacing="0.000000" deceleration="false" markingType="solid" width="0.150000">
+			<Asset type="material" uid="b36d339b-2e1f-49a1-9226-d3a5c40cd0bb"/>
+		</LinearMarking_Single>
+	</LinearMarking_Group>
+</SemgMetaData>

@@ -1,0 +1,17 @@
+# Preset_ScotCone
+
+material M_ScotConeBlue_Reflector
+{
+    fresnel_n 1
+    fresnel_k 0
+    file MaterialFile/colorcone/colorcone_reflector_camera.csv
+    brdf 2
+}
+
+material M_ScotConeBlue_Resin
+{
+    fresnel_n 1
+    fresnel_k 0
+    file MaterialFile/colorcone/colorcone_blue_camera.csv
+    brdf 2
+}

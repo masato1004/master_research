@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="light" lastUsageType="light" name="TrafficLight_white" name_ja="信号機用ライト(白)" name_key="TrafficLight_white" uid="38d83164-e0b2-4119-802f-c781fae9cbad"/>
+	<Memo/>
+	<Light>
+		<PFParams anisotropic="true" area="0.001000" colorTemperatureFile="traffic_light_blue.csv" colorTemperatureFilepathType="PfInstalled" colorTemperatureType="value" colorTemperatureValue="4000" emissionStrengthFactor="1.000000" enableLightSource="true" forceSampling="false" ies="1H33GYRC_blue.ies" iesFilepathType="PfInstalled" mapLightType="signal" version="0.6.0"/>
+	</Light>
+</SemgMetaData>

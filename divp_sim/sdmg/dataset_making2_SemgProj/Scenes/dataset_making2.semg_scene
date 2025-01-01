@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgScene>
+	<Header app_version="0.14.0.0" comment="" format_version="1.0.0" name="new_scene" uid="fbd475cb-1818-40ce-8bba-e2d86eba5b76"/>
+	<Project path="..\"/>
+	<AppInfo>
+		<View3d eyeInfo="0.190769 0.114462 -3.087181 0.045637 -0.001416 0.217889 0.106371 0.684985 0.101120 -0.713621"/>
+	</AppInfo>
+	<Config>
+		<MarkingPeeloff>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_080.svg" maskScale="2.000000" rank="1"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_070.svg" maskScale="2.000000" rank="2"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_060.svg" maskScale="2.000000" rank="3"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_040.svg" maskScale="2.000000" rank="4"/>
+			<VisualRank maskFilepath="" maskScale="2.000000" rank="5"/>
+		</MarkingPeeloff>
+		<GeoReference crs="" crsDescType="None"/>
+		<SceneRoad drivingSide="LHT"/>
+		<View3dGrid origin="0.000000,0.000000,0.000000"/>
+		<Export offsetHeadingDeg="0.000000" offsetOrigin="0.000000,0.000000,0.000000"/>
+	</Config>
+	<Entities>
+		<EntityGroup entityType="Shape" visible="true">
+			<Entity attDeg="0.000000,0.000000,-163.370783" entityType="Shape" name="Shape_9" pos="-0.011449,-0.045918,0.010000" scale="1.000000,1.000000,1.000000" serialId="238" shapeType="bezier_standalone_loopOnly" uid="def6089c-c2aa-46c5-98d5-253165c46190" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="true">
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.712669" y="0.279151" z="0.010000"/>
+						<Vertex x="0.762221" y="0.113239" z="0.010000"/>
+						<Cp_snd x="0.824098" y="-0.093938" z="0.010000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.742084" y="-0.449004" z="0.010000"/>
+						<Vertex x="0.520243" y="-0.529785" z="0.010000"/>
+						<Cp_snd x="0.363972" y="-0.586689" z="0.010000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.035465" y="-0.527121" z="0.010000"/>
+						<Vertex x="-0.090839" y="-0.523505" z="0.010000"/>
+						<Cp_snd x="-0.217221" y="-0.519888" z="0.010000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.456134" y="-0.656277" z="0.010000"/>
+						<Vertex x="-0.571988" y="-0.491972" z="0.010000"/>
+						<Cp_snd x="-0.685630" y="-0.330804" z="0.010000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.802855" y="-0.205319" z="0.010000"/>
+						<Vertex x="-0.785119" y="0.012873" z="0.010000"/>
+						<Cp_snd x="-0.768145" y="0.221692" z="0.010000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.601807" y="0.303992" z="0.010000"/>
+						<Vertex x="-0.512247" y="0.357136" z="0.010000"/>
+						<Cp_snd x="-0.393762" y="0.427442" z="0.010000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.168758" y="0.444482" z="0.010000"/>
+						<Vertex x="0.000686" y="0.437949" z="0.010000"/>
+						<Cp_snd x="0.194342" y="0.430482" z="0.010000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.476653" y="0.459504" z="0.010000"/>
+						<Vertex x="0.549368" y="0.411784" z="0.010000"/>
+						<Cp_snd x="0.639173" y="0.352850" z="0.010000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,96.415707" entityType="Shape" name="Shape_16" pos="0.028170,-0.129681,0.100000" scale="1.000000,1.000000,1.000000" serialId="395" shapeType="bezier_standalone_loopOnly" uid="5a7a17a7-fe47-4cda-ae2a-111933a2bc64" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="true">
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.157548" y="-0.213428" z="0.100000"/>
+						<Vertex x="0.099134" y="-0.219996" z="0.100000"/>
+						<Cp_snd x="0.040720" y="-0.226564" z="0.100000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.031809" y="-0.173077" z="0.100000"/>
+						<Vertex x="-0.042793" y="-0.115330" z="0.100000"/>
+						<Cp_snd x="-0.050730" y="-0.073602" z="0.100000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.033939" y="-0.012312" z="0.100000"/>
+						<Vertex x="0.066685" y="-0.039366" z="0.100000"/>
+						<Cp_snd x="0.099431" y="-0.066421" z="0.100000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Shape" name="Shape_17" pos="1.094052,-0.755964,0.000000" scale="1.000000,1.000000,1.000000" serialId="402" shapeType="" uid="f8dfd2ce-9237-4f15-ae0c-d33bc11b858e" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="false">
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.094052" y="-0.755964" z="0.000000"/>
+						<Vertex x="1.094052" y="-0.755964" z="0.000000"/>
+						<Cp_snd x="1.094052" y="-0.755964" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,146.294536" entityType="Shape" name="Shape_18" pos="0.024430,-0.083654,0.000000" scale="1.000000,1.000000,1.000000" serialId="404" shapeType="bezier_standalone_loopOnly" uid="63bc5072-0d2b-4e84-b463-00b62423416f" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="true">
+					<Vtx handleType="smooth">
+						<Cp_fst x="1.308468" y="-0.432731" z="0.000000"/>
+						<Vertex x="1.122688" y="-0.711238" z="0.000000"/>
+						<Cp_snd x="0.962279" y="-0.951711" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.881306" y="-0.975666" z="0.000000"/>
+						<Vertex x="-1.073828" y="-0.762454" z="0.000000"/>
+						<Cp_snd x="-1.212272" y="-0.609132" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.143261" y="0.412328" z="0.000000"/>
+						<Vertex x="-0.993700" y="0.542178" z="0.000000"/>
+						<Cp_snd x="-0.837602" y="0.677703" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="smooth">
+						<Cp_fst x="0.769911" y="0.799598" z="0.000000"/>
+						<Vertex x="1.070451" y="0.595146" z="0.000000"/>
+						<Cp_snd x="1.226126" y="0.489243" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+		</EntityGroup>
+		<EntityGroup entityType="Road" visible="true"/>
+		<EntityGroup entityType="Intersection" visible="true"/>
+		<EntityGroup entityType="ArealFeature" visible="true"/>
+		<EntityGroup entityType="LinearFeature" visible="true"/>
+		<EntityGroup entityType="PointMarking" visible="true"/>
+		<EntityGroup entityType="PointFeature" visible="true"/>
+		<EntityGroup entityType="Terrain" visible="true">
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Terrain" name="Terrain_7" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="239" uid="61da55e1-3cc9-4420-bc0d-44122d212f2b" visible="true">
+				<Shape uid="def6089c-c2aa-46c5-98d5-253165c46190"/>
+				<Params deployPriority="3" materialUid="05eefa47-620b-44d1-911a-19fc8642faf2" texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Terrain" name="Terrain_13" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="396" uid="045d2144-f646-4981-a6e6-54249793dc17" visible="true">
+				<Shape uid="5a7a17a7-fe47-4cda-ae2a-111933a2bc64"/>
+				<Params deployPriority="0" materialUid="00000000-0000-0000-0000-000000000000" texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Terrain" name="Terrain_14" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="405" uid="7de739c7-556b-45f3-80aa-d14783c05fb6" visible="true">
+				<Shape uid="63bc5072-0d2b-4e84-b463-00b62423416f"/>
+				<Params deployPriority="0" materialUid="5d3bd4df-6990-464b-b575-e97fea65d459" texPosOffset="0.000000,0.000000" texRotDeg="0.000000" texScale="1.000000,1.000000"/>
+			</Entity>
+		</EntityGroup>
+	</Entities>
+</SemgScene>

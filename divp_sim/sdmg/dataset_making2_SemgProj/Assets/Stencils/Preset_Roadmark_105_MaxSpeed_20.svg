@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120.00002mm"
+   height="499.99963mm"
+   viewBox="0 0 120.00002 499.99964"
+   version="1.1"
+   id="svg6082"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="roadmark_105_saikousokudo_20.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6084"
+     pagecolor="#808080"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.47433593"
+     inkscape:cx="227.68674"
+     inkscape:cy="819.03979"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs6079">
+    <marker
+       id="DistanceX"
+       orient="auto"
+       refX="0"
+       refY="0"
+       style="overflow:visible">
+      <path
+         d="M 3,-3 -3,3 M 0,-5 V 5"
+         style="stroke:#000000;stroke-width:0.5"
+         id="path6151" />
+    </marker>
+    <pattern
+       id="Hatch"
+       patternUnits="userSpaceOnUse"
+       width="8"
+       height="8"
+       x="0"
+       y="0">
+      <path
+         d="M8 4 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path6154" />
+      <path
+         d="M6 2 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path6156" />
+      <path
+         d="M4 0 l-4,4"
+         stroke="#000000"
+         stroke-width="0.25"
+         linecap="square"
+         id="path6158" />
+    </pattern>
+  </defs>
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-60.820209,119.3126)">
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:1.20083"
+       d="M 61.42088,353.47526 V 326.86419 L 79.483164,178.99623 97.545479,31.128239 97.201916,-14.584708 96.858354,-60.29762 94.041578,-63.498719 c -3.908351,-4.441631 -11.74117,-4.518256 -15.826197,-0.154851 l -2.851881,3.046283 v 40.391269 40.391269 H 68.392174 61.42088 l 0.0063,-58.020157 c 0.0031,-37.074282 0.451494,-59.731999 1.239194,-62.761994 1.513951,-5.82366 7.840115,-13.51693 13.455365,-16.36319 3.014933,-1.52817 6.226807,-1.98498 11.456127,-1.62929 9.621184,0.65437 15.445264,4.69273 19.594484,13.58661 l 3.04751,6.532406 v 67.338531 67.338562 L 92.791503,178.82661 c -9.585549,78.44643 -17.428252,143.81421 -17.428252,145.26175 0,2.56478 0.444137,2.63185 17.428252,2.63185 h 17.428277 v 26.68304 26.68304 H 85.820208 61.42063 Z"
+       id="path6284" />
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:1.20183"
+       d="m 145.92899,378.44819 c -5.09623,-2.42166 -9.66863,-7.46982 -12.21615,-13.48735 -2.18828,-5.1689 -2.24188,-10.7101 -2.26676,-234.33989 l -0.0249,-229.045781 2.94009,-6.325919 c 4.13503,-8.89689 10.25256,-13.20436 19.66577,-13.84702 5.23648,-0.35749 8.44272,0.0996 11.4566,1.63289 5.6094,2.85399 11.92896,10.56821 13.44132,16.40774 1.72581,6.663609 1.72581,455.82614 0,462.48975 -1.48539,5.73537 -7.80495,13.54002 -13.17651,16.273 -4.71747,2.40015 -15.01317,2.52618 -19.81889,0.24241 z m 17.46283,-53.56951 2.8489,-3.05457 V 130.68773 -60.448645 l -2.8489,-3.054575 c -4.0816,-4.376185 -11.90583,-4.298584 -15.80969,0.156941 l -2.81384,3.211416 V 130.68786 321.5106 l 2.81384,3.2114 c 3.90386,4.45539 11.72809,4.533 15.80969,0.15695 z"
+       id="path6323" />
+  </g>
+</svg>

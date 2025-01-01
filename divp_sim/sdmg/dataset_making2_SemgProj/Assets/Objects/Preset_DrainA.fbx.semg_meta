@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Drain Cover" name_ja="ドレイン" uid="d035af34-e9bf-46f1-9948-6e4a61d8a5c4"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>

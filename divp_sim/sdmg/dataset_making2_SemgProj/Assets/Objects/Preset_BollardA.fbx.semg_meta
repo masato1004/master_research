@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Bollard" name_ja="車止め" uid="33c9028f-7e45-4672-acdf-7b8e31e0cbb8"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>
