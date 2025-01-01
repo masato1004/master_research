@@ -1,5 +1,5 @@
 % clear all;
-warning("off",'all');
+% warning("off",'all');
 
 % global pcdmap
 % if isempty(pcdmap)
