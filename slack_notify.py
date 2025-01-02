@@ -8,16 +8,17 @@ def SendToSlackMessage(message, username='PythonBot', icon_emoji=':thumbsup:',fi
 
     # Upload the image to Slack
     try:
-        response = client.files_upload_v2(
-            channel='C07EN5NGKDZ',
-            file=file if file is not None else io.BytesIO(b"Hello World!"),
-            title='Sample Plot',
-            initial_comment=message
-        )
+        if file is not None:
+            response = client.files_upload_v2(
+                channel='C07EN5NGKDZ',
+                file=file if file is not None else io.BytesIO(b"Hello World!"),
+                title='progress',
+                initial_comment=message
+            )
+        else:
+            response = client.chat_postMessage(channel='C07EN5NGKDZ', text  = message, username = username, icon_emoji = icon_emoji)
     except SlackApiError as e:
         print(f"Error uploading file: {e.response['error']}")
-    # del sio
-    # response=client.chat_postMessage(channel='C07EN5NGKDZ', text=message, username=username, icon_emoji=icon_emoji)
 
 
 if __name__ == '__main__':
