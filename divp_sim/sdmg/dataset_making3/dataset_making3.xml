@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spaceDesignModel>
+	<header name="dataset_making3" version="0.14.0.0"/>
+	<definitions>
+		<filePaths>
+			<filePath path=".\" target="" type="output"/>
+			<filePath path="..\dataset_making2_SemgProj\" target="asset" type="input"/>
+			<filePath path="..\..\..\..\..\..\..\SDMG_0.14.0.0\asset\" target="asset" type="input"/>
+			<filePath path="..\..\..\..\..\..\..\SDMG_0.14.0.0\asset\map\TokyoWaterFrontCity\Daiba_Aomi1\" target="roadNetwork" type="input"/>
+		</filePaths>
+		<simulation>
+			<hat state="on"/>
+		</simulation>
+	</definitions>
+	<space>
+		<environments>
+			<environment id="environment_1">
+				<timeOfDay>
+					<date day="1" month="1" year="2025"/>
+					<time hour="15" min="0"/>
+				</timeOfDay>
+				<weather cloudState="sunny">
+					<precipitation intensity="0.0000000000"/>
+					<wind direction="0.0000000000" speed="0.0000000000"/>
+				</weather>
+				<weatherLocation elevation="0.0000000000" latitude="0.62168627956038" longitude="2.43944669551247" region="japan" standardTimeMeridian="2.3561944902"/>
+			</environment>
+		</environments>
+		<views>
+			<view id="view_1">
+				<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+				<clippingDistance left="1.0000000000" rigth="10000.0000000000"/>
+				<asymmetricFov bottom="-0.6632251158" left="-0.7853981634" rigth="0.7853981634" top="0.6632251158"/>
+				<linker entityId="divp_Veh_NissanXtrail_1" entityType="object" id="linkerid_1">
+					<coordinate type="relative">
+						<position x="0.0000000000" y="0.0000000000" z="2.0000000000"/>
+						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</coordinate>
+				</linker>
+			</view>
+		</views>
+		<objects>
+			<object id="divp_Tgt_ManholeCover_1" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-220.8776326276" y="289.8340953177" z="6.5976385310"/>
+				<attitude x="-0.0235903493" y="-0.0041608694" z="2.1545262004"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_2" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-231.3943804789" y="302.7327727381" z="6.5856758911"/>
+				<attitude x="-0.0265534258" y="0.0101965104" z="2.1251088767"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_3" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-253.3372929519" y="343.8892809625" z="6.0936891563"/>
+				<attitude x="-0.0175977522" y="-0.0027263025" z="2.0406680015"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_4" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-281.7111953533" y="397.3794646384" z="6.0899274729"/>
+				<attitude x="-0.0251594242" y="-0.0053396024" z="2.1313265366"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_5" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-338.7737163639" y="479.9138943955" z="6.4845675429"/>
+				<attitude x="-0.0192992437" y="-0.0041623093" z="2.1533947209"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_6" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-363.2627457003" y="517.5038896522" z="6.6676852022"/>
+				<attitude x="-0.0124463274" y="-0.0073840702" z="2.1507528898"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_7" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-377.9342342856" y="540.7933632164" z="6.7566316609"/>
+				<attitude x="-0.0250759546" y="-0.0022858208" z="2.1504483772"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_8" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-586.3523465992" y="855.3865897101" z="7.0856367035"/>
+				<attitude x="-0.0169028998" y="0.0024503896" z="2.1563389888"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_9" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-431.3973389369" y="616.6274119501" z="6.9913489863"/>
+				<attitude x="-0.0254381143" y="-0.0037215042" z="2.1573995862"/>
+			</object>
+			<object id="divp_Tgt_ManholeCover_10" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+				<position x="-450.2775758241" y="653.8988529491" z="7.0845711363"/>
+				<attitude x="-0.0108593774" y="0.0038577618" z="2.1605919720"/>
+			</object>
+			<object id="divp_Veh_NissanXtrail_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_NissanXtrail.fbx"/>
+				<boundingBox>
+					<center x="1.3190000000" y="0.0000000000" z="0.8740000000"/>
+					<dimensions height="1.7480000000" length="4.6420000000" width="1.7930000000"/>
+				</boundingBox>
+				<camera id="camera_5">
+					<coordinate type="relative">
+						<position x="1.8811590000" y="0.0000000000" z="1.5540000000"/>
+						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</coordinate>
+					<product name="Camera"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+				</camera>
+				<camera id="camera_6">
+					<coordinate type="relative">
+						<position x="-1.5134446142" y="-2.3833745560" z="1.8830535919"/>
+						<attitude x="0.0000000000" y="0.1570796327" z="0.3490658504"/>
+					</coordinate>
+					<product name="Camera"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+				</camera>
+				<camera id="camera_7">
+					<coordinate type="relative">
+						<position x="-1.5801984661" y="2.2840826135" z="1.8995573027"/>
+						<attitude x="0.0000000000" y="0.1745329252" z="-0.3490658504"/>
+					</coordinate>
+					<product name="Camera"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+				</camera>
+				<camera id="camera_8">
+					<coordinate type="relative">
+						<position x="3.0000000000" y="0.0000000000" z="5.0000000000"/>
+						<attitude x="0.0000000000" y="1.5707963268" z="0.0000000000"/>
+					</coordinate>
+					<product name="Camera"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+				</camera>
+				<lidar id="lidar_3">
+					<coordinate type="relative">
+						<position x="1.1109430000" y="0.0000000000" z="1.9988770000"/>
+						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</coordinate>
+					<product name="Lidar"/>
+					<asymmetricFov bottom="-0.4363323130" left="-3.1415926536" rigth="3.1415926536" top="0.2617993878"/>
+					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+				</lidar>
+				<lidar id="lidar_4">
+					<coordinate type="relative">
+						<position x="3.6394917532" y="0.0000000000" z="0.6625940927"/>
+						<attitude x="0.0000000000" y="0.3926990817" z="0.0000000000"/>
+					</coordinate>
+					<product name="os1-128"/>
+					<asymmetricFov bottom="-0.3926990817" left="-3.1415926536" rigth="3.1415926536" top="0.3926990817"/>
+					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+				</lidar>
+			</object>
+			<object id="divp_Veh_SubaruImprezaG4_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_SubaruImprezaG4.fbx"/>
+				<boundingBox>
+					<center x="1.3340000000" y="0.0000000000" z="0.7270000000"/>
+					<dimensions height="1.4540000000" length="4.6360000000" width="1.7750000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Veh_HondaCB1300_1" role="" subtype="motorbike" type="vehicle">
+				<modelFile file="divp_Veh_HondaCB1300.fbx"/>
+				<boundingBox>
+					<center x="0.7280000000" y="-0.0010000000" z="0.8550000000"/>
+					<dimensions height="1.7100000000" length="2.2000000000" width="0.8100000000"/>
+				</boundingBox>
+				<position x="-487.9890119324" y="718.4632379612" z="6.8660877191"/>
+				<attitude x="-0.0239028150" y="-0.0034699249" z="-0.9826826168"/>
+			</object>
+			<object id="divp_Tgt_LyingMan_1" role="" subtype="pedestrian" type="person">
+				<modelFile file="divp_Tgt_LyingMan.fbx"/>
+				<boundingBox>
+					<center x="0.0230000000" y="-0.0130000000" z="0.1480000000"/>
+					<dimensions height="0.2960000000" length="1.7580000000" width="1.1040000000"/>
+				</boundingBox>
+				<position x="-525.6896679688" y="760.1572910459" z="6.8146780674"/>
+				<attitude x="-0.0007816711" y="-0.0234525193" z="0.8917341460"/>
+			</object>
+			<object id="fixed_part4_1" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-246.5006111360" y="332.1798057223" z="5.9862653041"/>
+				<attitude x="-0.0204739377" y="0.0124093643" z="2.0677756344"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_2" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-275.0725180573" y="381.6949170978" z="5.6548081766"/>
+				<attitude x="0.0054465716" y="-0.0217991921" z="0.5235987756"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_3" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-306.2782502762" y="429.8421937211" z="5.9107518244"/>
+				<attitude x="-0.0201428298" y="-0.0011653623" z="2.1570654812"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_4" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<property id="hat" value="off"/>
+				<position x="-479.7313166999" y="695.1075887113" z="6.6542163582"/>
+				<attitude x="-0.0153350204" y="0.0040624140" z="2.1576785486"/>
+			</object>
+			<object id="fixed_part4_5" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-493.6750164583" y="717.4743903251" z="6.5673248104"/>
+				<attitude x="-0.0143294832" y="0.0041779419" z="2.1577620473"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_6" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-318.9600205237" y="454.0474529225" z="6.2142511264"/>
+				<attitude x="-0.0011306962" y="-0.0139626340" z="0.6108652382"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_7" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-395.6882408350" y="565.9763215408" z="6.5577514630"/>
+				<attitude x="-0.0036924985" y="0.0355467768" z="-2.5307274154"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_8" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-431.5826045388" y="625.9170014902" z="6.8385453354"/>
+				<attitude x="-0.0129167168" y="-0.0015766982" z="2.1632948323"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_9" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-552.8361483249" y="806.4949148525" z="6.8121414750"/>
+				<attitude x="-0.0131230778" y="-0.0037640392" z="2.1569737673"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_10" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-526.6806468989" y="768.6473495672" z="6.6564807375"/>
+				<attitude x="-0.0029473809" y="0.0348111425" z="-2.5307274154"/>
+				<property id="hat" value="off"/>
+			</object>
+		</objects>
+		<maps>
+			<map id="map_1">
+				<objects>
+					<object id="divp_Map_Tokyo_WaterFrontCity_Daiba_north_Area03_road_1" type="town">
+						<modelFile file="divp_Map_Tokyo_WaterFrontCity_Daiba_north_Area03_road.fbx"/>
+						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</object>
+				</objects>
+				<projection east="-4453.0000000000" latitude="0.62179856786462" longitude="2.43969403053815" north="-41444.0000000000" sourceCrs="EPSG:4326" targetCrs="EPSG:6677"/>
+				<roadNetwork>
+					<roadNetworkFile file="divp_Map_Tokyo_WaterFrontCity_Daiba.xodr" path="..\..\..\..\..\..\..\SDMG_0.14.0.0\asset\map\TokyoWaterFrontCity\Daiba_Aomi1\"/>
+					<trafficSignals/>
+				</roadNetwork>
+			</map>
+		</maps>
+		<points/>
+	</space>
+	<scenarios>
+		<concreteScenarios>
+			<concreteScenario id="scenario_1">
+				<initialization>
+					<entity id="environment_1" type="environment">
+						<event id="event_1" index="0"/>
+					</entity>
+					<entity id="view_1" type="view">
+						<event id="event_2" index="0"/>
+					</entity>
+					<entity id="map_1" type="map">
+						<event id="event_3" index="0"/>
+					</entity>
+					<entity id="divp_Veh_NissanXtrail_1" type="object">
+						<event id="event_7" index="0">
+							<action index="0">
+								<position x="-211.6772197762" y="274.2774202289" z="6.4533150917"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="-0.0112314437" z="2.1587143172"/>
+							</action>
+							<action index="2">
+								<speed value="9.7222222222"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_1" type="object">
+						<event id="event_8" index="0">
+							<action index="0">
+								<position x="-220.8776326276" y="289.8340953177" z="6.5976385310"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0235903493" y="-0.0041608694" z="2.1545262004"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_2" type="object">
+						<event id="event_9" index="0">
+							<action index="0">
+								<position x="-231.3943804789" y="302.7327727381" z="6.5856758911"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0265534258" y="0.0101965104" z="2.1251088767"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_1" type="object">
+						<event id="event_10" index="0">
+							<action index="0">
+								<position x="-246.5006111360" y="332.1798057223" z="5.9862653041"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0204739377" y="0.0124093643" z="2.0677756344"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_3" type="object">
+						<event id="event_11" index="0">
+							<action index="0">
+								<position x="-253.3372929519" y="343.8892809625" z="6.0936891563"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0175977522" y="-0.0027263025" z="2.0406680015"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_2" type="object">
+						<event id="event_12" index="0">
+							<action index="0">
+								<position x="-275.0725180573" y="381.6949170978" z="5.6548081766"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0054465716" y="-0.0217991921" z="0.5235987756"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_4" type="object">
+						<event id="event_13" index="0">
+							<action index="0">
+								<position x="-281.7111953533" y="397.3794646384" z="6.0899274729"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0251594242" y="-0.0053396024" z="2.1313265366"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_3" type="object">
+						<event id="event_14" index="0">
+							<action index="0">
+								<position x="-306.2782502762" y="429.8421937211" z="5.9107518244"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0201428298" y="-0.0011653623" z="2.1570654812"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_5" type="object">
+						<event id="event_15" index="0">
+							<action index="0">
+								<position x="-338.7737163639" y="479.9138943955" z="6.4845675429"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0192992437" y="-0.0041623093" z="2.1533947209"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_6" type="object">
+						<event id="event_16" index="0">
+							<action index="0">
+								<position x="-363.2627457003" y="517.5038896522" z="6.6676852022"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0124463274" y="-0.0073840702" z="2.1507528898"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_7" type="object">
+						<event id="event_17" index="0">
+							<action index="0">
+								<position x="-377.9342342856" y="540.7933632164" z="6.7566316609"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0250759546" y="-0.0022858208" z="2.1504483772"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_6" type="object">
+						<event id="event_19" index="0">
+							<action index="0">
+								<position x="-318.9600205237" y="454.0474529225" z="6.2142511264"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0011306962" y="-0.0139626340" z="0.6108652382"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_7" type="object">
+						<event id="event_20" index="0">
+							<action index="0">
+								<position x="-395.6882408350" y="565.9763215408" z="6.5577514630"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0036924985" y="0.0355467768" z="-2.5307274154"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_9" type="object">
+						<event id="event_21" index="0">
+							<action index="0">
+								<position x="-431.3973389369" y="616.6274119501" z="6.9913489863"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0254381143" y="-0.0037215042" z="2.1573995862"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_8" type="object">
+						<event id="event_22" index="0">
+							<action index="0">
+								<position x="-431.5826045388" y="625.9170014902" z="6.8385453354"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0129167168" y="-0.0015766982" z="2.1632948323"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_10" type="object">
+						<event id="event_23" index="0">
+							<action index="0">
+								<position x="-450.2775758241" y="653.8988529491" z="7.0845711363"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0108593774" y="0.0038577618" z="2.1605919720"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_4" type="object">
+						<event id="event_25" index="0">
+							<action index="0">
+								<position x="-479.7313166999" y="695.1075887113" z="6.6542163582"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0153350204" y="0.0040624140" z="2.1576785486"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_5" type="object">
+						<event id="event_26" index="0">
+							<action index="0">
+								<position x="-493.6750164583" y="717.4743903251" z="6.5673248104"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0143294832" y="0.0041779419" z="2.1577620473"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_LyingMan_1" type="object">
+						<event id="event_27" index="0">
+							<action index="0">
+								<position x="-525.6896679688" y="760.1572910459" z="6.8146780674"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0007816711" y="-0.0234525193" z="0.8917341460"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_10" type="object">
+						<event id="event_28" index="0">
+							<action index="0">
+								<position x="-526.6806468989" y="768.6473495672" z="6.6564807375"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0029473809" y="0.0348111425" z="-2.5307274154"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_9" type="object">
+						<event id="event_29" index="0">
+							<action index="0">
+								<position x="-552.8361483249" y="806.4949148525" z="6.8121414750"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0131230778" y="-0.0037640392" z="2.1569737673"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_8" type="object">
+						<event id="event_31" index="0">
+							<action index="0">
+								<position x="-586.3523465992" y="855.3865897101" z="7.0856367035"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0169028998" y="0.0024503896" z="2.1563389888"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Veh_HondaCB1300_1" type="object">
+						<event id="event_33" index="0">
+							<action index="0">
+								<position x="-487.9890119324" y="718.4632379612" z="6.8660877191"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0239028150" y="-0.0034699249" z="-0.9826826168"/>
+							</action>
+							<action index="2">
+								<speed value="12.5000000000"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Veh_SubaruImprezaG4_1" type="object">
+						<event id="event_34" index="0">
+							<action index="0">
+								<position x="-175.2509315552" y="213.1529662354" z="5.4254233755"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="-0.0132760981" z="2.1566195009"/>
+							</action>
+							<action index="2">
+								<speed value="16.6666666667"/>
+							</action>
+						</event>
+					</entity>
+				</initialization>
+				<execution/>
+			</concreteScenario>
+		</concreteScenarios>
+	</scenarios>
+	<outputs/>
+</spaceDesignModel>
