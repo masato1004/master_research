@@ -103,7 +103,7 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2;
     dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
     dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
-    [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.0016);
+    [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.002);
     gradient = dpcd.Location(outlierIndices,:);
 
     % ptloc=ptCloud.Location;

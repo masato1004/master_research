@@ -60,7 +60,9 @@ function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImag
     % diffcolor(diffcolor>3.4) = 0;
 
     dpcd = pointCloud([pcd.Location(:,1),diffcolor+mean(pcd.Location(:,2)),pcd.Location(:,3)]);
-    dpcd = pcdownsample(dpcd,'gridAverage',0.022);
+    dpcd = pcdownsample(dpcd,'gridAverage',0.014);
+    percentage = 0.5;
+    % dpcd = pcdownsample(dpcd,'random',percentage,PreserveStructure=false);
     % eulerAngle2 = [0 -pi/2 pi/2];
     % R2 = eul2rotm(-eulerAngle2);
     % A2 = [[R2;0,0,0],[0;0;0;1]];

@@ -10,14 +10,14 @@ function y = F_pdf(x, mu, sigma, sigmoid_bool)
     end
     
     % Compute the PDF
-    y = (1 / (sigma * sqrt(2 * pi))) * exp(-0.5 * ((x - mu) / sigma).^2);
+    y = (1 / (sigma * sqrt(2 * pi))) * exp(-0.5 * ((x-mu) / sigma).^2);
 
     % Apply a sigmoid function to the output
     if sigmoid_bool
-        y = y*mysigmoid(x-mu);
+        y = y.*mysigmoid(x-mu);
     end
 end
 
 function mysigmoid = mysigmoid(x)
-    mysigmoid = 1 - 1 / (1 + exp(-6*(x-1)));
+    mysigmoid = 1 - 1 ./ (1 + exp(-6*(x-3)));
 end
