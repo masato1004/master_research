@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgScene>
+	<Header app_version="0.14.0.0" comment="" format_version="1.0.0" name="new_scene" uid="47ade4aa-0846-434c-9640-01fb3d3937ea"/>
+	<Project path="..\"/>
+	<AppInfo>
+		<View3d eyeInfo="1.325549 -1.205044 -14.033628 -0.168403 0.000000 244.554727 -0.117795 -0.018134 0.011747 0.992803"/>
+	</AppInfo>
+	<Config>
+		<MarkingPeeloff>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_080.svg" maskScale="2.000000" rank="1"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_070.svg" maskScale="2.000000" rank="2"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_060.svg" maskScale="2.000000" rank="3"/>
+			<VisualRank maskFilepath="..\SemgSystemAssets\MarkingPeeloffMask\semg_markingPeeloffMask_040.svg" maskScale="2.000000" rank="4"/>
+			<VisualRank maskFilepath="" maskScale="2.000000" rank="5"/>
+		</MarkingPeeloff>
+		<GeoReference crs="" crsDescType="None"/>
+		<SceneRoad drivingSide="LHT"/>
+		<View3dGrid origin="0.000000,0.000000,0.000000"/>
+		<Export offsetHeadingDeg="0.000000" offsetOrigin="0.000000,0.000000,0.000000"/>
+	</Config>
+	<Entities>
+		<EntityGroup entityType="Shape" visible="true">
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Shape" name="Shape_2" pos="-1.621967,-240.051746,0.000000" scale="1.000000,1.000000,1.000000" serialId="5" shapeType="" uid="f68306b2-cbfc-4ac0-889a-764d9dca142d" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="false">
+					<Vtx handleType="smooth">
+						<Cp_fst x="-1.621967" y="-240.051746" z="0.000000"/>
+						<Vertex x="-1.621967" y="-240.051746" z="0.000000"/>
+						<Cp_snd x="-1.621967" y="-240.051746" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Shape" name="Shape_3" pos="-0.069035,-243.741776,0.000000" scale="1.000000,1.000000,1.000000" serialId="9" shapeType="" uid="84a08ace-2769-4c82-866b-cf9ed382a875" visible="true">
+				<RefRoad elemInfo="" entityType="(Unknown)" entityUid="00000000-0000-0000-0000-000000000000"/>
+				<Bezier loop="false">
+					<Vtx handleType="smooth">
+						<Cp_fst x="-0.069035" y="-243.741776" z="0.000000"/>
+						<Vertex x="-0.069035" y="-243.741776" z="0.000000"/>
+						<Cp_snd x="-0.069035" y="-243.741776" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Shape" name="Shape_4" pos="-4.300000,23.913633,0.000000" scale="1.000000,1.000000,1.000000" serialId="15" shapeType="bezier_along_lane" uid="654e22e9-76bc-4520-96b5-4ed9eb68d3f1" visible="true">
+				<RefRoad elemInfo="6,130,0,0" entityType="Road" entityUid="fe0e6732-2d48-4ddf-ae66-6c93c19c334e"/>
+				<Bezier loop="false">
+					<Vtx handleType="free">
+						<Cp_fst x="-4.300000" y="-430.098818" z="0.000000"/>
+						<Vertex x="-4.300000" y="-248.493837" z="0.000000"/>
+						<Cp_snd x="-4.300000" y="-66.888857" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="free">
+						<Cp_fst x="-4.300000" y="114.716123" z="0.000000"/>
+						<Vertex x="-4.300000" y="296.321103" z="0.000000"/>
+						<Cp_snd x="-4.300000" y="477.926084" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Shape" name="Shape_6" pos="4.300000,23.913633,0.000000" scale="1.000000,1.000000,1.000000" serialId="19" shapeType="bezier_along_lane" uid="8309e514-15e1-4d76-a001-b1876c037d79" visible="true">
+				<RefRoad elemInfo="6,124,0,0" entityType="Road" entityUid="fe0e6732-2d48-4ddf-ae66-6c93c19c334e"/>
+				<Bezier loop="false">
+					<Vtx handleType="free">
+						<Cp_fst x="4.300000" y="-430.098818" z="0.000000"/>
+						<Vertex x="4.300000" y="-248.493837" z="0.000000"/>
+						<Cp_snd x="4.300000" y="-66.888857" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="free">
+						<Cp_fst x="4.300000" y="114.716123" z="0.000000"/>
+						<Vertex x="4.300000" y="296.321103" z="0.000000"/>
+						<Cp_snd x="4.300000" y="477.926084" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Shape" name="Shape_8" pos="-6.300000,23.913633,0.000000" scale="1.000000,1.000000,1.000000" serialId="38" shapeType="bezier_along_lane" uid="3bab8b57-a9d9-4742-96e9-279fdecc1061" visible="true">
+				<RefRoad elemInfo="6,131,0,0" entityType="Road" entityUid="fe0e6732-2d48-4ddf-ae66-6c93c19c334e"/>
+				<Bezier loop="false">
+					<Vtx handleType="free">
+						<Cp_fst x="-6.300000" y="-430.098818" z="0.000000"/>
+						<Vertex x="-6.300000" y="-248.493837" z="0.000000"/>
+						<Cp_snd x="-6.300000" y="-66.888857" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="free">
+						<Cp_fst x="-6.300000" y="114.716123" z="0.000000"/>
+						<Vertex x="-6.300000" y="296.321103" z="0.000000"/>
+						<Cp_snd x="-6.300000" y="477.926084" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Shape" name="Shape_9" pos="6.300000,23.913633,0.000000" scale="1.000000,1.000000,1.000000" serialId="40" shapeType="bezier_along_lane" uid="718920fb-05aa-4e6d-8a55-ee5357d8716e" visible="true">
+				<RefRoad elemInfo="6,123,0,0" entityType="Road" entityUid="fe0e6732-2d48-4ddf-ae66-6c93c19c334e"/>
+				<Bezier loop="false">
+					<Vtx handleType="free">
+						<Cp_fst x="6.300000" y="-430.098818" z="0.000000"/>
+						<Vertex x="6.300000" y="-248.493837" z="0.000000"/>
+						<Cp_snd x="6.300000" y="-66.888857" z="0.000000"/>
+					</Vtx>
+					<Vtx handleType="free">
+						<Cp_fst x="6.300000" y="114.716123" z="0.000000"/>
+						<Vertex x="6.300000" y="296.321103" z="0.000000"/>
+						<Cp_snd x="6.300000" y="477.926084" z="0.000000"/>
+					</Vtx>
+				</Bezier>
+			</Entity>
+		</EntityGroup>
+		<EntityGroup entityType="Road" visible="true">
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="Road" name="Road_1" pos="0.000000,23.913633,0.000000" scale="1.000000,1.000000,1.000000" serialId="1" uid="fe0e6732-2d48-4ddf-ae66-6c93c19c334e" visible="true">
+				<Alignments>
+					<Connections begin="" end=""/>
+					<HorzIp>
+						<Ip circle_L="50.000000" circle_R="50.000000" clothoid_A1="50.000000" clothoid_A2="50.000000" curve_combo="8" curve_type="0" x="0.000000" y="-248.493838"/>
+						<Ip circle_L="50.000000" circle_R="50.000000" clothoid_A1="50.000000" clothoid_A2="50.000000" curve_combo="8" curve_type="0" x="0.000000" y="296.321104"/>
+					</HorzIp>
+					<VertIp>
+						<Ip curve_L="50.000000" x="-0.000000" y="0.000000"/>
+						<Ip curve_L="50.000000" x="544.814943" y="0.000000"/>
+					</VertIp>
+					<GradIp>
+						<Ip x="-0.000000" y="0.000000"/>
+						<Ip x="544.814943" y="0.000000"/>
+					</GradIp>
+				</Alignments>
+				<Xodr>
+					<road id="fe0e6732-2d48-4ddf-ae66-6c93c19c334e" junction="-1" length="5.4481494277005663e+02" name="Road_1" rule="LHT">
+						<planView>
+							<geometry hdg="1.5707963267948966e+00" length="5.4481494277005663e+02" s="0.0000000000000000e+00" x="0.0000000000000000e+00" y="-2.4849383840084644e+02">
+								<line/>
+							</geometry>
+						</planView>
+						<elevationProfile>
+							<elevation a="0.0000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" s="0.0000000000000000e+00"/>
+						</elevationProfile>
+						<lateralProfile>
+							<superelevation a="0.0000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" s="0.0000000000000000e+00"/>
+							<shape a="0.0000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" s="0.0000000000000000e+00" t="-9.9900000000000000e+02"/>
+						</lateralProfile>
+						<lanes>
+							<laneOffset a="0.0000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" s="0.0000000000000000e+00"/>
+							<laneSection s="0.0000000000000000e+00">
+								<left>
+									<lane id="4" type="sidewalk">
+										<width a="2.0000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+									<lane id="3" type="sidewalk">
+										<width a="2.9999999999999999e-01" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+									<lane id="2" type="shoulder">
+										<width a="5.0000000000000000e-01" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<roadMark color="none" sOffset="0.0000000000000000e+00" type="curb" width="0.0000000000000000e+00">
+											<userData code="SEMG">
+												<Metadata type="linearMarking" uid="e996b702-11b9-4c34-84bd-9cd26cc952d9"/>
+											</userData>
+										</roadMark>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+									<lane id="1" type="driving">
+										<width a="3.5000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<roadMark color="white" sOffset="0.0000000000000000e+00" type="solid" width="1.5000000596046448e-01">
+											<userData code="SEMG">
+												<Metadata type="linearMarking" uid="7377b90a-c073-4c76-ae55-1215e2eb630d"/>
+											</userData>
+										</roadMark>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+								</left>
+								<center>
+									<lane id="0" type="none">
+										<width a="0.0000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<roadMark color="yellow" sOffset="0.0000000000000000e+00" type="solid" width="1.5000000596046448e-01">
+											<userData code="SEMG">
+												<Metadata type="linearMarking" uid="d731cfc9-8447-4d12-a00c-b81c1d913736"/>
+											</userData>
+										</roadMark>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+								</center>
+								<right>
+									<lane id="-1" type="driving">
+										<width a="3.5000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<roadMark color="white" sOffset="0.0000000000000000e+00" type="solid" width="1.5000000596046448e-01">
+											<userData code="SEMG">
+												<Metadata type="linearMarking" uid="7377b90a-c073-4c76-ae55-1215e2eb630d"/>
+											</userData>
+										</roadMark>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+									<lane id="-2" type="shoulder">
+										<width a="5.0000000000000000e-01" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<roadMark color="none" sOffset="0.0000000000000000e+00" type="curb" width="0.0000000000000000e+00">
+											<userData code="SEMG">
+												<Metadata type="linearMarking" uid="e996b702-11b9-4c34-84bd-9cd26cc952d9"/>
+											</userData>
+										</roadMark>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="732b5df5-c7d3-4f89-b98e-36c6a1d2b71f"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+									<lane id="-3" type="sidewalk">
+										<width a="2.9999999999999999e-01" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+									<lane id="-4" type="sidewalk">
+										<width a="2.0000000000000000e+00" b="0.0000000000000000e+00" c="0.0000000000000000e+00" d="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<height inner="0.0000000000000000e+00" outer="0.0000000000000000e+00" sOffset="0.0000000000000000e+00"/>
+										<userData code="SEMG">
+											<Metadata type="material" uid="0f62074f-411e-49d4-8872-3d3e226119e2"/>
+											<Metadata curveSpaceUv_lane="true" curveSpaceUv_marking="true" type="laneStyle"/>
+										</userData>
+									</lane>
+								</right>
+								<userData code="SEMG">
+									<Metadata type="roadStyle" uid="728bd91f-a291-45d1-a869-7fd8e1ef4eab"/>
+								</userData>
+							</laneSection>
+						</lanes>
+					</road>
+				</Xodr>
+			</Entity>
+		</EntityGroup>
+		<EntityGroup entityType="Intersection" visible="true"/>
+		<EntityGroup entityType="ArealFeature" visible="true"/>
+		<EntityGroup entityType="LinearFeature" visible="true">
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="LinearFeature" entityTypeSub="Object" name="" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="6" uid="8e6e3867-ba23-49c5-bf65-b45d2d7a9d2f" visible="true">
+				<Asset uid="665c4112-82d5-4d41-b41b-9d721cc634fa"/>
+				<Curve uid="f68306b2-cbfc-4ac0-889a-764d9dca142d"/>
+				<Params adjustSpacing="true" alignNormal="true" attOffsetDeg="0.000000,0.000000,0.000000" attVarianceDeg="0.000000,0.000000,0.000000" combineOnExport="false" distanceFromEnd="0.000000" distanceFromStart="0.000000" posOffset="0.000000,0.000000,0.000000" posVariance="0.000000,0.000000,0.000000" projectToTerrain="true" reverse="false" scale="1.000000,1.000000,1.000000" scaleVariance="0.000000,0.000000,0.000000" spacing="5.000000" uniformScaleVariance="0.000000" varianceSeed="971122089"/>
+				<Connections exportObject="true" exportSignal="true"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="LinearFeature" entityTypeSub="Object" name="" pos="0.000000,0.000000,0.000000" scale="1.000000,1.000000,1.000000" serialId="8" uid="e5d321c7-0d84-487e-8212-e54d45cdfb83" visible="true">
+				<Asset uid="665c4112-82d5-4d41-b41b-9d721cc634fa"/>
+				<Curve uid="f68306b2-cbfc-4ac0-889a-764d9dca142d"/>
+				<Params adjustSpacing="true" alignNormal="true" attOffsetDeg="0.000000,0.000000,0.000000" attVarianceDeg="0.000000,0.000000,0.000000" combineOnExport="false" distanceFromEnd="0.000000" distanceFromStart="0.000000" posOffset="0.000000,0.000000,0.000000" posVariance="0.000000,0.000000,0.000000" projectToTerrain="true" reverse="false" scale="1.000000,1.000000,1.000000" scaleVariance="0.000000,0.000000,0.000000" spacing="5.000000" uniformScaleVariance="0.000000" varianceSeed="1197169543"/>
+				<Connections exportObject="true" exportSignal="true"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="LinearFeature" entityTypeSub="Object" name="" pos="-6.300812,25.455451,5.927193" scale="1.000000,1.000000,1.000000" serialId="39" uid="eaee94bd-4880-43df-853f-63120b0cc507" visible="true">
+				<Asset uid="65b980e5-935e-4f8f-bae6-f28026e2f4ff"/>
+				<Curve uid="3bab8b57-a9d9-4742-96e9-279fdecc1061"/>
+				<Params adjustSpacing="true" alignNormal="false" attOffsetDeg="0.000000,0.000000,0.000000" attVarianceDeg="0.000000,0.000000,0.000000" combineOnExport="false" distanceFromEnd="0.000000" distanceFromStart="0.000000" posOffset="0.000000,0.000000,0.000000" posVariance="0.000000,0.000000,0.000000" projectToTerrain="true" reverse="false" scale="1.000000,1.000000,1.000000" scaleVariance="0.000000,0.000000,0.000000" spacing="30.000000" uniformScaleVariance="0.000000" varianceSeed="268497414"/>
+				<Connections exportObject="true" exportSignal="true"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="LinearFeature" entityTypeSub="Object" name="" pos="6.299188,25.455451,5.927193" scale="1.000000,1.000000,1.000000" serialId="41" uid="344a4d7c-f584-47bb-ac12-b4223ee55121" visible="true">
+				<Asset uid="65b980e5-935e-4f8f-bae6-f28026e2f4ff"/>
+				<Curve uid="718920fb-05aa-4e6d-8a55-ee5357d8716e"/>
+				<Params adjustSpacing="true" alignNormal="false" attOffsetDeg="0.000000,0.000000,0.000000" attVarianceDeg="0.000000,0.000000,0.000000" combineOnExport="false" distanceFromEnd="0.000000" distanceFromStart="0.000000" posOffset="0.000000,0.000000,0.000000" posVariance="0.000000,0.000000,0.000000" projectToTerrain="true" reverse="true" scale="1.000000,1.000000,1.000000" scaleVariance="0.000000,0.000000,0.000000" spacing="30.000000" uniformScaleVariance="0.000000" varianceSeed="973086030"/>
+				<Connections exportObject="true" exportSignal="true"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="LinearFeature" entityTypeSub="Object" name="" pos="-4.300586,23.913757,0.466034" scale="1.000000,1.000000,1.000000" serialId="68" uid="b8a225a2-fc8b-45d7-814b-edb0a041af33" visible="true">
+				<Asset uid="439e80fd-fea9-44ba-94dc-4b0fad57f462"/>
+				<Curve uid="654e22e9-76bc-4520-96b5-4ed9eb68d3f1"/>
+				<Params adjustSpacing="true" alignNormal="true" attOffsetDeg="0.000000,0.000000,0.000000" attVarianceDeg="0.000000,0.000000,0.000000" combineOnExport="false" distanceFromEnd="0.000000" distanceFromStart="0.000000" posOffset="0.000000,0.000000,0.000000" posVariance="0.000000,0.000000,0.000000" projectToTerrain="true" reverse="false" scale="1.000000,1.000000,1.000000" scaleVariance="0.000000,0.000000,0.000000" spacing="2.500000" uniformScaleVariance="0.000000" varianceSeed="1641976324"/>
+				<Connections exportObject="true" exportSignal="true"/>
+			</Entity>
+			<Entity attDeg="0.000000,0.000000,0.000000" entityType="LinearFeature" entityTypeSub="Object" name="" pos="4.299414,23.913757,0.466034" scale="1.000000,1.000000,1.000000" serialId="70" uid="05f101da-dbed-4103-9bf7-47f91d35d8f9" visible="true">
+				<Asset uid="439e80fd-fea9-44ba-94dc-4b0fad57f462"/>
+				<Curve uid="8309e514-15e1-4d76-a001-b1876c037d79"/>
+				<Params adjustSpacing="true" alignNormal="true" attOffsetDeg="0.000000,0.000000,0.000000" attVarianceDeg="0.000000,0.000000,0.000000" combineOnExport="false" distanceFromEnd="0.000000" distanceFromStart="0.000000" posOffset="0.000000,0.000000,0.000000" posVariance="0.000000,0.000000,0.000000" projectToTerrain="true" reverse="false" scale="1.000000,1.000000,1.000000" scaleVariance="0.000000,0.000000,0.000000" spacing="2.500000" uniformScaleVariance="0.000000" varianceSeed="152340504"/>
+				<Connections exportObject="true" exportSignal="true"/>
+			</Entity>
+		</EntityGroup>
+		<EntityGroup entityType="PointMarking" visible="true"/>
+		<EntityGroup entityType="PointFeature" visible="true"/>
+		<EntityGroup entityType="Terrain" visible="true"/>
+	</Entities>
+</SemgScene>

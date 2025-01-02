@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Vehicle Traffic light" name_ja="車両用信号機" name_key="Vehicle Traffic light" uid="973ff31b-39e6-42b3-9f04-226dcdd8a88c"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="0.609987,3.200025,6.298258" propotion="0.000000" rot="6.383579,0.000000,-270.621488" scale="0.000000,0.000000,0.000000" type="light" uid="4ccb5847-8a5c-4767-8947-f205491b52db">
+			<Light>
+				<PFParams area="0.076314" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="BR__SigC__ER_LDT_Green_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="0.610109,3.581323,6.298797" propotion="0.000000" rot="5.725665,0.000000,-269.684255" scale="0.000000,0.000000,0.000000" type="light" uid="d5978ca4-e3dc-4939-90da-f7777647f3ca">
+			<Light>
+				<PFParams area="0.076314" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="BR__SigC__ER_LDT_Yellow_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="0.610064,3.961275,6.299324" propotion="0.000000" rot="5.475860,0.000000,-269.372855" scale="0.000000,0.000000,0.000000" type="light" uid="59e6e689-ff66-4bae-96db-8e63fd956651">
+			<Light>
+				<PFParams area="0.076314" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="BR__SigC__ER_LDT_Red_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+	<Xodr>
+		<Object>
+			<Info id="sig" name="Traffic lights unit" name_ja="信号機ユニット" name_key="Traffic lights unit" orientation="+"/>
+			<Type id="93b2857a-6581-4467-aa3c-dba46758ff0b"/>
+			<SignalGroup modelNode="GS_BR__SigC_Dir3__ER" name="Vehicle traffic light" name_ja="車両用信号機" name_key="Vehicle traffic light">
+				<Signal>
+					<Info dynamic="yes" id="RYG" name="Vehicle traffic light" name_ja="信号機灯火 車両用 青/黄/赤" name_key="Vehicle traffic light" orientation="+"/>
+					<Type id="a5a99e84-d787-4845-a5ef-97dd314c934c" unit="" value="0.000000"/>
+					<Size height="0.370000" width="1.160000"/>
+					<Pos x="0.550000" y="3.584000" z="6.118000"/>
+					<Rot hOffset="90.000000" pitch="7.000000" roll="0.000000"/>
+				</Signal>
+			</SignalGroup>
+		</Object>
+	</Xodr>
+</SemgMetaData>

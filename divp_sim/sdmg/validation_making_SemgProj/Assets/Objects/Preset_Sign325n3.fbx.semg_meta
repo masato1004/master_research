@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Regulatory Sign 325-3 Bicycle and pedestrian only" name_ja="規制標識 325の3 自転車及び歩行者専用" uid="9adfdf64-5271-4fc7-a88b-685d53f0da36"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="f0f772e7-5e99-4fef-a6aa-b9f912939a37"/>
+      <Signal>
+        <Info id="325n3" dynamic="no" orientation="+" controlType="" name="Regulatory Sign 325-3" name_ja="規制標識 325の3 自転車及び歩行者専用"/>
+        <Type id="f0f772e7-5e99-4fef-a6aa-b9f912939a37" value="" unit=""/>
+        <Size height="0.4" width="0.4"/>
+        <Pos x="0.045" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

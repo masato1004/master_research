@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Street Lamp" name_ja="街灯" name_key="Street Lamp" uid="aa2f6469-8761-47cc-98ab-94c2efde98eb"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="true" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="0.158646,0.260559,3.960900" propotion="0.000000" rot="22.738629,0.000000,-225.207767" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.088502" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="Emitting" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="-0.143130,0.263892,3.949455" propotion="0.000000" rot="22.766013,0.000000,-165.153441" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.088498" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="Emitting1" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="-0.300244,-0.007641,3.951086" propotion="0.000000" rot="22.732255,0.000000,-74.673379" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.088504" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="Emitting2" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="-0.147548,-0.269312,3.966558" propotion="0.000000" rot="22.731652,0.000000,-14.672965" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.088507" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="Emitting3" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="0.159623,-0.259389,3.962634" propotion="0.000000" rot="22.762545,0.000000,-314.674159" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.088508" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="Emitting4" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="0.299428,0.012453,3.953021" propotion="0.000000" rot="22.754179,0.000000,-254.672631" scale="0.000000,0.000000,0.000000" type="light" uid="5aa8528d-1c73-47be-b26a-a0f042d2e862">
+			<Light>
+				<PFParams area="0.088511" areaOverride="true" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="Emitting5" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+</SemgMetaData>

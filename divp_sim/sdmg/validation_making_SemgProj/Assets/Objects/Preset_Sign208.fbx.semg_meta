@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Warning Sign 208 School ahead" name_ja="警戒標識 208 学校、幼稚園、保育所等あり" uid="872208f2-2cd9-4551-a681-184781c0e9d3"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="bb9cecd9-58f2-46e4-98e2-f0818ed78eb0"/>
+      <Signal>
+        <Info id="208" dynamic="no" orientation="+" controlType="" name="Warning Sign 208" name_ja="警戒標識 208 学校、幼稚園、保育所等あり"/>
+        <Type id="bb9cecd9-58f2-46e4-98e2-f0818ed78eb0" value="" unit=""/>
+        <Size height="0.83" width="0.83"/>
+        <Pos x="0.0" y="0.0" z="1.96"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+      <Signal>
+        <Info id="508" dynamic="no" orientation="+" controlType="" name="Auxiliary Sign 508" name_ja="補助標識 508 通学路"/>
+        <Type id="12efd481-61e4-4709-a035-9871c572f48e" value="" unit=""/>
+        <Size height="0.15" width="0.6"/>
+        <Pos x="0.0" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

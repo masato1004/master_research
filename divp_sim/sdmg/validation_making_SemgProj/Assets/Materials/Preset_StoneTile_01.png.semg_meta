@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="image_raster" lastUsageType="texture" name="Stone Tile" name_ja="石タイル" uid="5d9e670b-a313-4ead-a838-40bc0202fe9e"/>
+	<Memo/>
+	<Texture realSizeHeight="2.000000" realSizeWidth="2.000000"/>
+	<RoadSign size="1.000000,1.000000"/>
+	<AerialImage/>
+</SemgMetaData>

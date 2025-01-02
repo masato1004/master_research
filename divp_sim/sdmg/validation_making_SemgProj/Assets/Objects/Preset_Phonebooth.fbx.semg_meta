@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Japanese Phone Box" name_ja="電話ボックス" uid="f133f2e5-8bb9-4836-9460-f0ea1fc23d5f"/>
+	<Memo><![CDATA[PFでガラス部分を正しく描画するには、マテリアルシーンファイルの設定が必要となります。
+このFBXと同フォルダに格納してある
+Preset_Phonebooth_camera.scene
+の内容をPF側のシーンファイルに記述してください。
+詳細はPFの説明書を参照ください。
+In order to draw the glass part correctly with PF, it is necessary to set the material scene file.
+Write the contents of Preset_Phonebooth_camera.scene stored in the same folder as this FBX
+ in the scene file on the PF side.
+Please refer to the PF manual for details.]]></Memo>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>

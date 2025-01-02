@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Planting Weeds" name_ja="植栽 雑草" uid="949ee9f0-e18b-4f7b-8445-6f8155e460ea"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,180.000000" defaultAlignNormal="true" defaultSpacing="0.500000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="1.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>

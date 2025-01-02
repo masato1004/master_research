@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Warning Sign 206 Winding road ahead" name_ja="警戒標識 206 右(又は左)つづら折りあり" uid="57342f96-42a0-4be8-aae0-3d4c7dfa718c"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="X+" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+  <Xodr>
+    <Object>
+      <Info id="signboard" orientation="none" name="Road Sign" name_ja="道路標識"/>
+      <Type id="25059504-365a-4139-bda4-d846b75f5154"/>
+      <Signal>
+        <Info id="206" dynamic="no" orientation="+" controlType="" name="Warning Sign 206" name_ja="警戒標識 206 右(又は左)つづら折りあり"/>
+        <Type id="25059504-365a-4139-bda4-d846b75f5154" value="" unit=""/>
+        <Size height="0.83" width="0.83"/>
+        <Pos x="0.0" y="0.0" z="1.8"/>
+        <Rot hOffset="90.0" pitch="0.0" roll="0.0"/>
+      </Signal>
+    </Object>
+  </Xodr>
+</SemgMetaData>

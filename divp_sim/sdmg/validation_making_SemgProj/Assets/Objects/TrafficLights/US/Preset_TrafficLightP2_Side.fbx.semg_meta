@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Pedestrian Traffic light" name_ja="歩行者用信号機" name_key="Pedestrian Traffic light" uid="652d31f5-e4dd-41b2-800d-d1f7ad7932d8"/>
+	<Memo/>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultProjectToTerrain="false" defaultSpacing="5.000000" frontAxis="X-" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000">
+		<Asset offset="0.000000" pos="-0.015984,-0.585079,0.010374" propotion="0.000000" rot="0.000000,0.000000,-360.000000" scale="0.000000,0.000000,0.000000" type="light" uid="59e6e689-ff66-4bae-96db-8e63fd956651">
+			<Light>
+				<PFParams area="0.108706" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="BR__SigP__ER_LDT_Red_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+		<Asset offset="0.000000" pos="-0.002951,-0.585130,-0.389587" propotion="0.000000" rot="-0.000000,0.000000,-360.000000" scale="0.000000,0.000000,0.000000" type="light" uid="38d83164-e0b2-4119-802f-c781fae9cbad">
+			<Light>
+				<PFParams area="0.108706" areaOverride="false" emissionStrengthFactor="1.000000" enableLightSource="true" nodeName="BR__SigP__ER_LDT_Green_ON" version="0.6.0"/>
+			</Light>
+		</Asset>
+	</Object>
+	<TrafficSignal/>
+	<Xodr>
+		<Object>
+			<Info id="sig" name="Traffic lights unit" name_ja="信号機ユニット" name_key="Traffic lights unit" orientation="+"/>
+			<Type id="02e1a555-b63c-431c-8bb2-708ba31b5b3f"/>
+			<SignalGroup modelNode="GS_BR__SigP__ER" name="">
+				<Signal>
+					<Info dynamic="yes" id="Ped" name="Pedestrian Traffic Light" name_ja="信号機灯火 歩行者用" name_key="Pedestrian Traffic Light" orientation="+"/>
+					<Type id="2b6759d7-dee3-428a-a1b1-3feaec9de390" unit="" value="0.000000"/>
+					<Size height="0.720000" width="0.350000"/>
+					<Pos x="0.000000" y="-0.585000" z="-0.570000"/>
+					<Rot hOffset="0.000000" pitch="0.000000" roll="0.000000"/>
+				</Signal>
+			</SignalGroup>
+		</Object>
+	</Xodr>
+</SemgMetaData>

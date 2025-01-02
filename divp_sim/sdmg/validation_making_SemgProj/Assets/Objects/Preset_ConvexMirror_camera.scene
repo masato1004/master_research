@@ -1,0 +1,9 @@
+# Preset_ConvexMirror
+
+material M_ConvexMirror_Mirror
+{
+	fresnel_n 38
+	fresnel_k 0
+	file MaterialFile/mirror_basecolor_camera.csv
+	brdf 2
+}

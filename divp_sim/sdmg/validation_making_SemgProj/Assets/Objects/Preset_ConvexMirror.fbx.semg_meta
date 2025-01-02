@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="model" lastUsageType="object" name="Convex Mirror" name_ja="カーブミラー" uid="8969d6e8-eec5-4a4a-b1bc-cb4c7f1e983e"/>
+	<Memo><![CDATA[PFでミラー部分を正しく描画するには、マテリアルシーンファイルの設定が必要となります。
+このFBXと同フォルダに格納してある
+Preset_ConvexMirror_camera.scene
+の内容をPF側のシーンファイルに記述してください。
+詳細はPFの説明書を参照ください。
+In order to draw the mirror part correctly with PF, it is necessary to set the material scene file.
+Write the contents of Preset_ConvexMirror_camera.scene stored in the same folder as this FBX
+ in the scene file on the PF side.
+Please refer to the PF manual for details.]]></Memo>
+	<Object attVarianceDeg="0.000000,0.000000,0.000000" defaultAlignNormal="false" defaultSpacing="5.000000" frontAxis="Y-" scaleVariance="0.000000,0.000000,0.000000" uniformScaleVariance="0.000000"/>
+	<TrafficSignal/>
+</SemgMetaData>

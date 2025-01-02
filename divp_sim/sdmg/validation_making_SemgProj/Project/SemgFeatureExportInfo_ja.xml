@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SemgFeatureExportInfo version="1.0.0">
+  <Header name="ja"/>
+  <Features>
+    <!--道路標示-->
+    <Feature id="4dd000b3-5d6c-4134-92ad-0bd1f3304570" name="StopLine" comment="停止線">
+      <Xodr>
+        <Object type="stopline"/>
+        <Signal country="OpenDRIVE" countryRevision="2013" type="294" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="24572eeb-a405-4459-ac87-5e52060535eb" name="Crosswalk" comment="横断歩道">
+      <Xodr>
+        <Object type="crosswalk"/>
+        <Signal country="OpenDRIVE" countryRevision="2013" type="293" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="191b0631-d8ec-486a-a325-bb0200f86597" name="DirectionLeft" comment="進行方向（左折）">
+      <Xodr>
+        <Object type="m204-L"/>
+        <Signal country="ja" countryRevision="2022" type="m204-L" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="a4b66c14-8cd8-4bd3-8355-f470abd08462" name="DirectionRight" comment="進行方向（右折）">
+      <Xodr>
+        <Object type="m204-R"/>
+        <Signal country="ja" countryRevision="2022" type="m204-R" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="c566bf34-ee0d-452e-bb23-9d32966ef05c" name="DirectionStraight" comment="進行方向（直進）">
+      <Xodr>
+        <Object type="m204-S"/>
+        <Signal country="ja" countryRevision="2022" type="m204-S" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="d57d5a5b-0929-49a9-a902-9da1b2d54f80" name="DirectionStraightAndLeft" comment="進行方向（直進・左折）">
+      <Xodr>
+        <Object type="m204-SL"/>
+        <Signal country="ja" countryRevision="2022" type="m204-SL" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="fc354219-69c4-4321-af0a-8a1247443c02" name="DirectionStraightAndRight" comment="進行方向（直進・右折）">
+      <Xodr>
+        <Object type="m204-SR"/>
+        <Signal country="ja" countryRevision="2022" type="m204-SR" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="0213dd1d-c137-4d4d-9b36-a70d882b6766" name="" comment="横断歩道又は自転車横断帯あり">
+      <Xodr>
+        <Object type="m210"/>
+        <Signal country="ja" countryRevision="2022" type="m210" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="56cfed79-6227-4bbb-83c3-5111f2622eff" name="MaximumSpeedMarking" comment="最高速度の標示">
+      <Xodr>
+        <Object type="m105"/>
+        <Signal country="ja" countryRevision="2022" type="m105" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <!--道路標識-->
+    <Feature id="8be4409d-fd80-48fa-a30e-364daf90696c" name="Directions" comment="方面及び方向の予告">
+      <Xodr>
+        <Object type="108-A"/>
+        <Signal country="ja" countryRevision="2022" type="108-A" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="06f8809a-39a8-44d0-b335-f0bef86cebda" name="Directions" comment="方面及び方向">
+      <Xodr>
+        <Object type="108n2-A"/>
+        <Signal country="ja" countryRevision="2022" type="108n2-A" subtype="-1"/>
+      </Xodr>
+    </Feature>
+
+    <Feature id="491d914e-85b9-405f-9948-5fe6930b9cf1" name="Crossroads" comment="道路交差点あり">
+      <Xodr>
+        <Object type="201-B"/>
+        <Signal country="ja" countryRevision="2022" type="201-B" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="2b6303d2-1b71-4b3d-a85e-664870630038" name="Curve" comment="右(又は左)方屈曲あり">
+      <Xodr>
+        <Object type="202"/>
+        <Signal country="ja" countryRevision="2022" type="202" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="b5a8ab52-fca4-4198-86f0-1f33939d0fb4" name="Corner" comment="右(又は左)方屈折あり">
+      <Xodr>
+        <Object type="203"/>
+        <Signal country="ja" countryRevision="2022" type="203" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="25059504-365a-4139-bda4-d846b75f5154" name="Corners" comment="右(又は左)つづら折りあり">
+      <Xodr>
+        <Object type="206"/>
+        <Signal country="ja" countryRevision="2022" type="206" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="bb9cecd9-58f2-46e4-98e2-f0818ed78eb0" name="ChildrenCrossing" comment="学校、幼稚園、保育所等あり">
+      <Xodr>
+        <Object type="208"/>
+        <Signal country="ja" countryRevision="2022" type="208" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="d20d9e39-f02f-43d7-bb8f-cc3ccbc90c00" name="TrafficMerges" comment="合流交通あり">
+      <Xodr>
+        <Object type="210"/>
+        <Signal country="ja" countryRevision="2022" type="210" subtype="-1"/>
+      </Xodr>
+    </Feature>
+
+    <Feature id="3400e11e-d3ef-4d2f-922a-8b1f8c3c48cc" name="RoadClosedToVehicles" comment="車両通行止め">
+      <Xodr>
+        <Object type="302"/>
+        <Signal country="ja" countryRevision="2022" type="302" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="d9055bca-ac24-4e1c-9bc1-2ad4f4200ad9" name="StraightAheadOrLeftTurnPermitted" comment="指定方向外進行禁止">
+      <Xodr>
+        <Object type="311-A"/>
+        <Signal country="ja" countryRevision="2022" type="311-A" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="99a23436-d797-438b-bed3-b411eb7dbd79" name="TurnLeft" comment="指定方向外進行禁止">
+      <Xodr>
+        <Object type="311-B"/>
+        <Signal country="ja" countryRevision="2022" type="311-B" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="30da77c4-dbce-478b-8635-d6c870edaf04" name="NoTurns" comment="指定方向外進行禁止">
+      <Xodr>
+        <Object type="311-C"/>
+        <Signal country="ja" countryRevision="2022" type="311-C" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="d7c3e56e-5b02-40c6-a61d-680295844960" name="One-wayStreetToTheRight" comment="一方通行">
+      <Xodr>
+        <Object type="326-A"/>
+        <Signal country="ja" countryRevision="2022" type="326-A" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="b070483a-a6cb-4034-bec8-a910f780efdd" name="DoNotTurn" comment="転回禁止">
+      <Xodr>
+        <Object type="313"/>
+        <Signal country="ja" countryRevision="2022" type="313" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="3e717508-0e74-49e2-9897-79fb98ad4281" name="NoStop" comment="駐車禁止">
+      <Xodr>
+        <Object type="316"/>
+        <Signal country="ja" countryRevision="2022" type="316" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="941cb547-8476-435b-aa6a-17a2e05797ec" name="MaximumSpeed" comment="最高速度の標識">
+      <Xodr>
+        <Object type="323"/>
+        <Signal country="ja" countryRevision="2022" type="323" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="4fabf753-d033-4c87-a5bf-82750f4743cf" name="Stop" comment="一時停止">
+      <Xodr>
+        <Object type="330-A"/>
+        <Signal country="ja" countryRevision="2022" type="330-A" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="2fe540cc-765f-4a20-8760-ec2bba508d14" name="Stop" comment="一時停止">
+      <Xodr>
+        <Object type="330-B"/>
+        <Signal country="ja" countryRevision="2022" type="330-B" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="0ff86b71-712e-476a-b5be-ddd367e586f4" name="ParkingAvailable" comment="駐車可">
+      <Xodr>
+        <Object type="403"/>
+        <Signal country="ja" countryRevision="2022" type="403" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="2d12e857-b307-41ca-b06e-b12e353b35e5" name="Crosswalk" comment="横断歩道">
+      <Xodr>
+        <Object type="407-A"/>
+        <Signal country="ja" countryRevision="2022" type="407-A" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="a7955d5e-133e-4373-8057-0f1d96600f6c" name="CrosswalkAndBicyclesRoad" comment="横断歩道・自転車横断帯">
+      <Xodr>
+        <Object type="407n3"/>
+        <Signal country="ja" countryRevision="2022" type="407n3" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="5cbe7a6b-18a1-429d-a98e-e4adba08c6fe" name="CarOnly" comment="自動車専用">
+      <Xodr>
+        <Object type="325"/>
+        <Signal country="ja" countryRevision="2022" type="325" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="54bddafb-d838-4ac7-9c23-571f50fc8fd1" name="BicyclesOnly" comment="自転車専用">
+      <Xodr>
+        <Object type="325n2"/>
+        <Signal country="ja" countryRevision="2022" type="325n2" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="f0f772e7-5e99-4fef-a6aa-b9f912939a37" name="BicyclesAndPedestriansOnly" comment="自転車及び歩行者専用">
+      <Xodr>
+        <Object type="325n3"/>
+        <Signal country="ja" countryRevision="2022" type="325n3" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="3cc127a8-7d98-4d59-bd65-d94470f325ef" name="NoPedestrianCrossing" comment="歩行者横断禁止">
+      <Xodr>
+        <Object type="332"/>
+        <Signal country="ja" countryRevision="2022" type="332" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="d8901198-32bc-4e2b-ba70-68d625aea83c" name="WithinTheSection" comment="区間内">
+      <Xodr>
+        <Object type="506"/>
+        <Signal country="ja" countryRevision="2022" type="506" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="12efd481-61e4-4709-a035-9871c572f48e" name="SchoolRoad" comment="通学路">
+      <Xodr>
+        <Object type="508"/>
+        <Signal country="ja" countryRevision="2022" type="508" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="a5a99e84-d787-4845-a5ef-97dd314c934c" name="TrafficLight for Vehicle (Green Yellow Red)" comment="信号機灯火 車両用 青/黄/赤">
+      <Xodr>
+        <Signal country="OpenDRIVE" type="1000001" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="2b6759d7-dee3-428a-a1b1-3feaec9de390" name="TrafficLight for Pedestrian (Green Red)" comment="信号機灯火 歩行者用 青/赤">
+      <Xodr>
+        <Signal country="OpenDRIVE" type="1000002" subtype="-1"/>
+      </Xodr>
+    </Feature>
+    <Feature id="3b6fac04-f692-46bb-a32b-c6b3df715e73" name="TrafficLight (Left Arrow)" comment="信号機灯火 左矢印">
+      <Xodr>
+        <Signal country="OpenDRIVE" type="1000012" subtype="10"/>
+      </Xodr>
+    </Feature>
+    <Feature id="7f00957e-94cf-41e7-8874-1d7e3f173f7a" name="TrafficLight (Right Arrow)" comment="信号機灯火 右矢印">
+      <Xodr>
+        <Signal country="OpenDRIVE" type="1000012" subtype="20"/>
+      </Xodr>
+    </Feature>
+    <Feature id="9be7f1d2-4735-4a89-98b1-74390a74e567" name="TrafficLight (Up Arrow)" comment="信号機灯火 上矢印">
+      <Xodr>
+        <Signal country="OpenDRIVE" type="1000012" subtype="30"/>
+      </Xodr>
+    </Feature>
+  </Features>
+</SemgFeatureExportInfo>
+
+
+
+<!--コピペ用
+
+    <Feature id="" name="" comment="">
+      <Xodr>
+        <Object type=""/>
+        <Signal country="ja" countryRevision="2022" type="" subtype="-1"/>
+      </Xodr>
+    </Feature>
+
+-->

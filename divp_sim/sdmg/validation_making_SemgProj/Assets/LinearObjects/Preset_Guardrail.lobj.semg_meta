@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SemgMetaData version="1.0.0">
+	<Header fileType="linearObject" lastUsageType="linearObject" name="Guard rail" name_ja="ガードレール" name_key="Guard rail" uid="12ef7fd6-06ef-409f-98dd-efcc9259ed1e"/>
+	<Memo/>
+	<LinearObject>
+		<CrossSections>
+			<CrossSection texUid_back="00000000-0000-0000-0000-000000000000" texUid_cover="33fc6540-0695-439b-8ed7-274e42bfd409" texUid_thick="33fc6540-0695-439b-8ed7-274e42bfd409" thick="0.010000">
+				<VertexGroup loop="false">
+					<Vertex handleType="polyline" pos="0.100424,0.768702" texUid="33fc6540-0695-439b-8ed7-274e42bfd409"/>
+					<Vertex handleType="polyline" pos="0.131377,0.735497"/>
+					<Vertex handleType="polyline" pos="0.133984,0.724529"/>
+					<Vertex handleType="polyline" pos="0.133857,0.680654"/>
+					<Vertex handleType="polyline" pos="0.126884,0.666178"/>
+					<Vertex handleType="polyline" pos="0.095796,0.634497"/>
+					<Vertex handleType="polyline" pos="0.088696,0.619305"/>
+					<Vertex handleType="polyline" pos="0.088882,0.576133"/>
+					<Vertex handleType="polyline" pos="0.096167,0.561008"/>
+					<Vertex handleType="polyline" pos="0.127651,0.529596"/>
+					<Vertex handleType="polyline" pos="0.134731,0.515484"/>
+					<Vertex handleType="polyline" pos="0.135346,0.471202"/>
+					<Vertex handleType="polyline" pos="0.132866,0.460201"/>
+					<Vertex handleType="polyline" pos="0.108060,0.420806"/>
+				</VertexGroup>
+			</CrossSection>
+		</CrossSections>
+		<Objects>
+			<Asset pos="0.000000,0.200000,0.000000" rot="0.000000,0.000000,0.000000" type="linearObject" uid="85df943b-21f6-4748-89b6-fcd6db9d3bec">
+				<Placement slope="perpendicular" type="start"/>
+			</Asset>
+			<Asset pos="0.000000,0.200000,0.000000" rot="0.000000,0.000000,0.000000" type="linearObject" uid="bbeb1caa-fd19-4098-9015-016cfdff5ea6">
+				<Placement slope="perpendicular" type="end"/>
+			</Asset>
+			<Asset pos="0.000000,0.200000,0.000000" rot="0.000000,0.000000,0.000000" type="linearObject" uid="0fb2f84b-2ea8-4e9e-928e-82bdab532bd1">
+				<Placement slope="vertical" type="end"/>
+			</Asset>
+			<Asset pos="0.000000,0.200000,0.000000" rot="0.000000,0.000000,0.000000" type="linearObject" uid="0fb2f84b-2ea8-4e9e-928e-82bdab532bd1">
+				<Placement slope="vertical" type="start"/>
+			</Asset>
+		</Objects>
+	</LinearObject>
+</SemgMetaData>

@@ -1,0 +1,15 @@
+{
+	"info":{
+		"version":"1.1",
+		"md5hash":"ab1fbb32a16e11240434a231c996825d"
+	},
+	"anim":[
+		{
+			"take":"Preset_GuardrailPole1",
+			"motiontype":"Unknown",
+			"motionid":10001,
+			"repeat":1,
+			"averagespeed":0
+		}
+	]
+}
