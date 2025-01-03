@@ -6,12 +6,27 @@ import io
 def SendToSlackMessage(message, username='PythonBot', icon_emoji=':thumbsup:',file=None):
     client = WebClient(token='')
 
+    import matplotlib.pyplot as plt
+
+    def plot_to_bytes():
+        # Create a simple plot
+        plt.figure()
+        plt.plot([1, 2, 3, 4], [10, 20, 25, 30])
+        plt.title('Sample Plot')
+
+        # Save the plot to a bytes buffer
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        return buf
+
+    file = plot_to_bytes()
     # Upload the image to Slack
     try:
         if file is not None:
             response = client.files_upload_v2(
                 channel='C07EN5NGKDZ',
-                file=file if file is not None else io.BytesIO(b"Hello World!"),
+                file=file,
                 title='progress',
                 initial_comment=message
             )

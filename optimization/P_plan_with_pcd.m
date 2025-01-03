@@ -31,7 +31,7 @@ while flag
         flag=false;
     end
 end
-file_num=90;
+file_num=40;
 
         
 next_state = [0; 0; 0];
@@ -77,9 +77,52 @@ rmse_px = rmse(depthImage_check.*maxCameraDepth./65535,groundtruth_check.*maxCam
 rmse_px = rmmissing(rmse_px);
 RMSE_on_depthmap = sum(rmse_px,'all')/numel(rmse_px)
 
+file_num = file_num + 1;
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  NLMPC code block
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+pause(2)
+addpath('./casadi-3.6.7-windows64-matlab2018b')
+% import casadi.*
+
+% Clear and close all
+% clear;
+% close all;
+
+% Define the vehicle parameters
+tw = 1.485; % Track width
+wb = 2.86; % Wheelbase
+v = 50/3.6; % Constant velocity
+L = 3; % Wheelbase
+
+% obstacle = [13.6512; 0.482284];
+lane_width = 3.5; % Width of the lane
+g = 9.8;
+
+% Define the optimization variables
+opti = casadi.Opti();
+N = 9; % Number of steps
+interp_steps = 2;
+x = opti.variable(3, N+1); % State variables (x, y, theta)
+u = opti.variable(1, N);   % Control variables
+du = opti.variable(1, N); % Change in control variables
+
+% Define the dynamics
+dt = 0.175;
+
+% Define reference trajectory
+x_ref = 0:dt*v:dt*v*N;
+y_ref = zeros(size(x_ref));
+% y_ref = -(exp(x_ref*0.02) - 1);
+yaw_ref = atan2(gradient(y_ref), gradient(x_ref));
+max_lat_force_ref = v^2 * gradient(yaw_ref)*g;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Load the road gradient point cloud
 [road_gradient, groundtruthptCloud] = F_depth2gradient(depthImage_read,groundtruth_read,colorImage_read,rawlidarImage_read,maxCameraDepth);
-show_idx = groundtruthptCloud.Location(:,2) < 3.5/2 & groundtruthptCloud.Location(:,2) > -3.5/2;
-gradient_idx = road_gradient(:,2) < 3.5/2 & road_gradient(:,2) > -3.5/2;% & road_gradient(:,1) < 14;
+gt_width_from_center = interp1(x_ref,y_ref,groundtruthptCloud.Location(:,1));
+show_idx = groundtruthptCloud.Location(:,2) < gt_width_from_center+lane_width/2 & groundtruthptCloud.Location(:,2) > gt_width_from_center-lane_width/2;
+road_width_from_center = interp1(x_ref,y_ref,road_gradient(:,1));
+gradient_idx = road_gradient(:,2) < road_width_from_center+lane_width/2 & road_gradient(:,2) > road_width_from_center-lane_width/2;% & road_gradient(:,1) < 14;
 
 road_gradient = pointCloud(road_gradient(gradient_idx,:));
 % road_gradient = pcdenoise(road_gradient,"Threshold",0.1,"NumNeighbors",3,"PreserveStructure",false);
@@ -118,24 +161,7 @@ set(gca,'color','w');
 set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
 hold off;
 drawnow;
-
-file_num = file_num + 1;
-%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  NLMPC code block
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-pause(2)
-addpath('./casadi-3.6.7-windows64-matlab2018b')
-% import casadi.*
-
-% Clear and close all
-% clear;
-% close all;
-
-% Define the vehicle parameters
-tw = 1.485; % Track width
-wb = 2.86; % Wheelbase
-v = 50/3.6; % Constant velocity
-L = 3; % Wheelbase
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Define environment parameters
 % Define the obstacle as the mean position of the points in the gradient point cloud
@@ -160,15 +186,11 @@ end
 % obstacle = obstacle(1:2);
 % disp(['The obstacle position is: ', num2str(obstacle')]);
 
-% obstacle = [13.6512; 0.482284];
-lane_width = 3.5; % Width of the lane
-g = 9.8;
-
 % Define the potential field parameters
 obstacle_radius = 0.0025;
 repulsive_gain = 10000;
 obstacle_gain = 0.0001;
-center_gain = 0.1;
+center_gain = 1;
 delta_gain = 0.01;
 lateral_G_gain = 0.08;
 pdf_sigma = 0.3;
@@ -184,29 +206,15 @@ u0 = next_input- sign(next_input).*[0.00000001];
 last_du = next_du;
 
 % Define the maximum allowable lateral force
-max_lateral_force = 0.2 * g;
+max_avoidance_lat_force = 0.2 * g;
+max_lat_force_ref(abs(max_lat_force_ref) < max_avoidance_lat_force) = max_avoidance_lat_force;
+max_lateral_force = abs(max_lat_force_ref);
 
 % Define the maximum allowable yaw rate
 max_yaw_rate = 0.02;
 
 % Define the maximum allowable lateral position
 max_lateral_position = lane_width/2 - tw/2 - 0.35;
-
-% Define the optimization variables
-opti = casadi.Opti();
-N = 9; % Number of steps
-interp_steps = 2;
-x = opti.variable(3, N+1); % State variables (x, y, theta)
-u = opti.variable(1, N);   % Control variables
-du = opti.variable(1, N); % Change in control variables
-
-% Define the dynamics
-dt = 0.175;
-
-% Define reference trajectory
-x_ref = 0:dt*v:dt*v*N;
-y_ref = zeros(size(x_ref));
-yaw_ref = atan2(gradient(y_ref), gradient(x_ref));
 
 % Define the goal position
 goal = [v*dt*N; 0; 0];
@@ -232,7 +240,7 @@ for k = 1:N+1
 
         % Lateral force constraint
         lateral_force = v^2 * tan(u(:,k)) / L;
-        opti.subject_to(-max_lateral_force <= lateral_force <= max_lateral_force);
+        opti.subject_to(-max_lateral_force(k) <= lateral_force <= max_lateral_force(k));
     end
     % Boundary constraints
     ref = [x_ref(k); y_ref(k)];
@@ -391,14 +399,14 @@ for i = 1:size(X, 1)
         % Calculate the repulsive potential
         if obstacle_calculation
             dist_to_obstacle = sum((obstacle - pos').^2, 2);
-            point_repulsive_left = repulsive_gain  * obstacle_gain * sum(1./(((dist_to_obstacle/3).^2) + 1e-3));
+            point_repulsive = repulsive_gain  * obstacle_gain * sum(1./(((dist_to_obstacle/3).^2) + 1e-3));
 
             % dist_to_obstacle = sum((road_gradient(:,1:2) - repmat(pos', [height(road_gradient), 1])).^2, 2);
             % repulsive_potential = repulsive_gain * obstacle_gain * k^2 * road_gradient(:,3)' * (1 ./ (dist_to_obstacle + 1e-3)); % 1/d^2
             % repulsive_potential = repulsive_gain * obstacle_gain * road_gradient(:,3)' * F_pdf(dist_to_obstacle, 0, pdf_sigma, false); % Gaussian
             repulsive_potential_x = repulsive_gain *  (road_gradient(:,3)'./label_count') * F_pdf(repmat(pos(1), [height(road_gradient), 1]), road_gradient(:,1), v*pdf_sigma, true); % Gaussian
             repulsive_potential_y = repulsive_gain * (road_gradient(:,3)'./label_count') * F_pdf(repmat(pos(2), [height(road_gradient), 1]), road_gradient(:,2), pdf_sigma, false); % Gaussian
-            total_potential(i, j) = total_potential(i, j) + repulsive_potential_x * repulsive_potential_y + point_repulsive_left + point_repulsive_right;
+            total_potential(i, j) = total_potential(i, j) + repulsive_potential_x * repulsive_potential_y + point_repulsive;
         end
 
         centering_potential = center_gain * sum((pos - [X(i, j); 0]).^2);
