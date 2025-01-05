@@ -9,7 +9,7 @@ list_color_imgs     = dir(dataset+"image/*.png");
 groundtruth_imgs    = dir(dataset+"groundtruth_depth/*.png");
 
 %% Load python function
-python_path = 'C:\Users\INOUE MASATO\research\divpenv\Scripts\python.exe';
+python_path = "C:\Users\"+getenv('username')+"\research\divpenv\Scripts\python.exe";
 if pyenv().Executable ~= python_path
     pe = pyenv(Version=python_path);
 end
@@ -46,4 +46,8 @@ groundtruth_read    = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_
 
 colorImage_np = py.numpy.array(colorImage_read);
 rawlidarImage_np = py.numpy.array(rawlidarImage_read,dtype=py.numpy.uint16);
-test = py.F_depthcompletion.depth_completion(colorImage_np, rawlidarImage_np, crop_h, crop_w);
+tic
+output = py.F_depthcompletion.depth_completion(colorImage_np, rawlidarImage_np, crop_h, crop_w);
+dense_map = reshape(uint16(output),[crop_h,crop_w]);
+toc
+imshow(dense_map)

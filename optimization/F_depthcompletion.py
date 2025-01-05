@@ -7,6 +7,7 @@ import numpy as np
 import matlab
 
 sys.path.append('C:/Users/INOUE MASATO/research/depth_completion')
+sys.path.append('C:/Users/masato/research/depth_completion')
 from Utils.utils import str2bool, AverageMeter, depth_read 
 import Models
 import time

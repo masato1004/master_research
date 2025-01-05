@@ -31,7 +31,7 @@ while flag
         flag=false;
     end
 end
-file_num=23;
+file_num=20;
 
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
@@ -56,13 +56,13 @@ predictedImage_read = images{2};
 colorImage_read = images{3};
 groundtruth_read = images{4};
 
-depthImage_read = images{4};
+depthImage_read = images{2};
 
 depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);
 depthImage_check(depthImage_check==0)   = nan;
 groundtruth_check(groundtruth_check==0) = nan;
-maxCameraDepth   = 30;
+maxCameraDepth   = 20;
 rmse_px = rmse(depthImage_check.*maxCameraDepth./65535,groundtruth_check.*maxCameraDepth./65535,"omitnan");
 rmse_px = rmmissing(rmse_px);
 RMSE_on_depthmap = sum(rmse_px,'all')/numel(rmse_px)
@@ -75,10 +75,10 @@ depthImage_original_size=uint16(zeros(img_h, img_w));
 raw_depth_original_size=uint16(zeros(img_h, img_w));
 colorImage_original_size=uint8(ones(img_h, img_w, 3));
 
-start_x = 1175-1;
-start_y = 1209-1;
+start_x = 1172+1;
+start_y = 1271+1;
 rect_width = 1496-1;
-rect_height = 624-1;
+rect_height = 552-1;
 crop_info = {start_y:start_y+rect_height-1;start_x+10:start_x+rect_width-10};
 % start_x = 353-1;
 % start_y = 449-1;
