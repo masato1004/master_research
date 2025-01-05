@@ -1,4 +1,7 @@
-pe = pyenv(Version='C:\Users\masato\AppData\Local\anaconda3\python.exe');
+python_path = 'C:\Users\INOUE MASATO\research\divpenv\Scripts\python.exe';
+if pyenv().Executable ~= python_path
+    pe = pyenv(Version=python_path);
+end
 pymod = py.importlib.import_module('test');
-py.importlib.reload(mod);
+py.importlib.reload(pymod);
 test = py.test.test(1,2)
