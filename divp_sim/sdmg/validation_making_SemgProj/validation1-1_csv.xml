@@ -18,8 +18,8 @@
 		<environments>
 			<environment id="environment_1">
 				<timeOfDay>
-					<date day="1" month="1" year="2025"/>
 					<time hour="12" min="0"/>
+					<date day="1" month="1" year="2025"/>
 				</timeOfDay>
 				<weather cloudState="lightCloudy">
 					<precipitation intensity="0.0000000000"/>
@@ -82,249 +82,196 @@
 			</object>
 			<object id="divp_Tgt_DeadAnimal_2" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_DeadAnimal.fbx"/>
+				<position x="-36.6388017864" y="0.7392466744" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="1.5707963268"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0350000000" z="0.0430000000"/>
 					<dimensions height="0.0860000000" length="0.3070000000" width="0.2790000000"/>
 				</boundingBox>
-				<position x="-36.6388017864" y="0.7392466744" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="1.5707963268"/>
 			</object>
 			<object id="divp_Tgt_LyingMan_1" role="" subtype="pedestrian" type="person">
 				<modelFile file="divp_Tgt_LyingMan.fbx"/>
+				<position x="24.2195980949" y="0.0411029322" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.5235987756"/>
 				<boundingBox>
 					<center x="0.0230000000" y="-0.0130000000" z="0.1480000000"/>
 					<dimensions height="0.2960000000" length="1.7580000000" width="1.1040000000"/>
 				</boundingBox>
-				<position x="24.2195980949" y="0.0411029322" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="0.5235987756"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_1" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-188.2244597489" y="0.7504136346" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-188.2244597489" y="0.7504136346" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_2" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-157.9258186665" y="2.6217929627" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-157.9258186665" y="2.6217929627" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_3" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-142.0749032843" y="1.2372865178" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-142.0749032843" y="1.2372865178" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_4" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-97.5518055884" y="2.9479195837" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-97.5518055884" y="2.9479195837" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_5" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-79.4000019547" y="2.2065609667" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-79.4000019547" y="2.2065609667" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 			</object>
 			<object id="divp_Veh_NissanXtrail_1" role="" subtype="car" type="vehicle">
 				<modelFile file="divp_Veh_NissanXtrail.fbx"/>
-				<boundingBox>
-					<center x="1.3190000000" y="0.0000000000" z="0.8740000000"/>
-					<dimensions height="1.7480000000" length="4.6420000000" width="1.7930000000"/>
-				</boundingBox>
 				<camera id="camera_13">
+					<product name="Camera"/>
 					<coordinate type="relative">
 						<position x="1.8811590000" y="0.0000000000" z="1.5540000000"/>
 						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
 					</coordinate>
-					<product name="Camera"/>
-					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 				</camera>
 				<camera id="camera_14">
+					<product name="Camera"/>
 					<coordinate type="relative">
 						<position x="-1.5134446142" y="-2.3833745560" z="1.8830535919"/>
 						<attitude x="0.0000000000" y="0.1570796327" z="0.3490658504"/>
 					</coordinate>
-					<product name="Camera"/>
-					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 				</camera>
 				<camera id="camera_15">
+					<product name="Camera"/>
 					<coordinate type="relative">
 						<position x="-1.5801984661" y="2.2840826135" z="1.8995573027"/>
 						<attitude x="0.0000000000" y="0.1745329252" z="-0.3490658504"/>
 					</coordinate>
-					<product name="Camera"/>
-					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 				</camera>
 				<camera id="camera_16">
+					<product name="Camera"/>
 					<coordinate type="relative">
 						<position x="3.0000000000" y="0.0000000000" z="5.0000000000"/>
 						<attitude x="0.0000000000" y="1.5707963268" z="0.0000000000"/>
 					</coordinate>
-					<product name="Camera"/>
-					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
 				</camera>
 				<lidar id="lidar_7">
+					<product name="Lidar"/>
 					<coordinate type="relative">
 						<position x="1.1109430000" y="0.0000000000" z="1.9988770000"/>
 						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
 					</coordinate>
-					<product name="Lidar"/>
-					<asymmetricFov bottom="-0.4363323130" left="-3.1415926536" rigth="3.1415926536" top="0.2617993878"/>
 					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+					<asymmetricFov bottom="-0.4363323130" left="-3.1415926536" rigth="3.1415926536" top="0.2617993878"/>
 				</lidar>
 				<lidar id="lidar_8">
+					<product name="os1-128"/>
 					<coordinate type="relative">
 						<position x="3.6394917532" y="0.0000000000" z="0.6625940927"/>
 						<attitude x="0.0000000000" y="0.3926990817" z="0.0000000000"/>
 					</coordinate>
-					<product name="os1-128"/>
-					<asymmetricFov bottom="-0.3926990817" left="-3.1415926536" rigth="3.1415926536" top="0.3926990817"/>
 					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+					<asymmetricFov bottom="-0.3926990817" left="-3.1415926536" rigth="3.1415926536" top="0.3926990817"/>
 				</lidar>
+				<boundingBox>
+					<center x="1.3190000000" y="0.0000000000" z="0.8740000000"/>
+					<dimensions height="1.7480000000" length="4.6420000000" width="1.7930000000"/>
+				</boundingBox>
 			</object>
 			<object id="divp_Tgt_ManholeCover_5_1" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-79.3530328214" y="0.4326523323" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-79.3530328214" y="0.4326523323" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_6" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="235.7750171696" y="-0.4699437512" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="235.7750171696" y="-0.4699437512" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_7" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="175.3156414326" y="-0.8377079044" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="175.3156414326" y="-0.8377079044" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_8" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="114.7566583804" y="-1.7500000000" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="114.7566583804" y="-1.7500000000" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_9" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="54.2530074119" y="-2.5960447365" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="3.1415926536"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="54.2530074119" y="-2.5960447365" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="3.1415926536"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_10" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-36.6092202366" y="-3.0039916848" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-36.6092202366" y="-3.0039916848" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 			</object>
 			<object id="divp_Tgt_ManholeCover_11" role="" subtype="" type="undefined">
 				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-97.0691723880" y="-1.2893536358" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 				<boundingBox>
 					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
 					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
 				</boundingBox>
-				<position x="-97.0691723880" y="-1.2893536358" z="0.0000000000"/>
-				<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 			</object>
 		</objects>
 		<maps>
 			<map id="map_1">
-				<objects>
-					<object id="validation1_1" type="town">
-						<modelFile file="validation1.fbx"/>
-						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
-					</object>
-					<object id="validation1_2" type="town">
-						<modelFile file="validation1.fbx"/>
-						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
-					</object>
-				</objects>
-				<roadNetwork>
-					<roadNetworkFile file="validation1.xodr" path=".\Exports\"/>
-					<trafficSignals/>
-				</roadNetwork>
 				<routes>
-					<route id="route_csv_21" laneType="" type="csvFile">
-						<csvFile file="scenario_1_divp_Veh_NissanXtrail_1.csv">
-							<column dataType="double" headerName="timestamp" result="simulationTime"/>
-							<column dataType="double" headerName="pos_x" result="positionX"/>
-							<column dataType="double" headerName="pos_y" result="positionY"/>
-							<column dataType="double" headerName="pos_z" result="positionZ"/>
-							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
-							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
-							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
-							<column dataType="double" headerName="vel_x" result="velocityX"/>
-							<column dataType="double" headerName="vel_y" result="velocityY"/>
-							<column dataType="double" headerName="vel_z" result="velocityZ"/>
-							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
-							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
-							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
-							<column dataType="double" headerName="acc_x" result="accelerationX"/>
-							<column dataType="double" headerName="acc_y" result="accelerationY"/>
-							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
-							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
-							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
-							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
-							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
-							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
-							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
-							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
-							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
-							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
-							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
-							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
-							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
-							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
-							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
-							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
-							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
-							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
-							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
-							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
-						</csvFile>
-					</route>
-					<route id="route_csv_22" laneType="" type="csvFile">
+					<route id="route_csv_61" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_1.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -363,7 +310,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_23" laneType="" type="csvFile">
+					<route id="route_csv_62" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_2.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -402,7 +349,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_24" laneType="" type="csvFile">
+					<route id="route_csv_63" laneType="" type="csvFile">
 						<csvFile file="scenario_1_fixed_part4_2.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -441,7 +388,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_25" laneType="" type="csvFile">
+					<route id="route_csv_64" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_3.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -480,7 +427,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_26" laneType="" type="csvFile">
+					<route id="route_csv_65" laneType="" type="csvFile">
 						<csvFile file="scenario_1_fixed_part4_3.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -519,7 +466,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_27" laneType="" type="csvFile">
+					<route id="route_csv_66" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_DeadAnimal_2.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -558,7 +505,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_28" laneType="" type="csvFile">
+					<route id="route_csv_67" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_LyingMan_1.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -597,7 +544,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_29" laneType="" type="csvFile">
+					<route id="route_csv_68" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_4.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -636,7 +583,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_30" laneType="" type="csvFile">
+					<route id="route_csv_69" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_5.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -675,7 +622,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_31" laneType="" type="csvFile">
+					<route id="route_csv_70" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_5_1.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -714,7 +661,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_32" laneType="" type="csvFile">
+					<route id="route_csv_71" laneType="" type="csvFile">
 						<csvFile file="scenario_1_fixed_part4_1.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -753,7 +700,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_33" laneType="" type="csvFile">
+					<route id="route_csv_72" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_6.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -792,7 +739,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_34" laneType="" type="csvFile">
+					<route id="route_csv_73" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_7.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -831,7 +778,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_35" laneType="" type="csvFile">
+					<route id="route_csv_74" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_8.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -870,7 +817,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_36" laneType="" type="csvFile">
+					<route id="route_csv_75" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_9.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -909,7 +856,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_37" laneType="" type="csvFile">
+					<route id="route_csv_76" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_10.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -948,7 +895,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_38" laneType="" type="csvFile">
+					<route id="route_csv_77" laneType="" type="csvFile">
 						<csvFile file="scenario_1_divp_Tgt_ManholeCover_11.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -987,7 +934,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_39" laneType="" type="csvFile">
+					<route id="route_csv_78" laneType="" type="csvFile">
 						<csvFile file="scenario_1_fixed_part4_4.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -1026,7 +973,7 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
-					<route id="route_csv_40" laneType="" type="csvFile">
+					<route id="route_csv_79" laneType="" type="csvFile">
 						<csvFile file="scenario_1_fixed_part4_5.csv">
 							<column dataType="double" headerName="timestamp" result="simulationTime"/>
 							<column dataType="double" headerName="pos_x" result="positionX"/>
@@ -1065,7 +1012,60 @@
 							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
 						</csvFile>
 					</route>
+					<route id="route_csv_80" laneType="" type="csvFile">
+						<csvFile file="scenario_1_divp_Veh_NissanXtrail_1.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
 				</routes>
+				<objects>
+					<object id="validation1_1" type="town">
+						<modelFile file="validation1.fbx"/>
+						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</object>
+					<object id="validation1_2" type="town">
+						<modelFile file="validation1.fbx"/>
+						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</object>
+				</objects>
+				<roadNetwork>
+					<roadNetworkFile file="validation1.xodr" path=".\Exports\"/>
+					<trafficSignals/>
+				</roadNetwork>
 			</map>
 		</maps>
 		<points/>
@@ -1083,21 +1083,8 @@
 					<entity id="map_1" type="map">
 						<event id="event_3" index="0"/>
 					</entity>
-					<entity id="divp_Veh_NissanXtrail_1" type="object">
-						<event id="event_51" index="0">
-							<action index="0">
-								<position x="-247.3415071646" y="1.7500000000" z="0.0000000000"/>
-							</action>
-							<action index="1">
-								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
-							</action>
-							<action index="2">
-								<route id="route_csv_21"/>
-							</action>
-						</event>
-					</entity>
 					<entity id="divp_Tgt_ManholeCover_1" type="object">
-						<event id="event_52" index="0">
+						<event id="event_67" index="0">
 							<action index="0">
 								<position x="-188.2244597489" y="0.7504136346" z="0.0000000000"/>
 							</action>
@@ -1105,12 +1092,12 @@
 								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_22"/>
+								<route id="route_csv_61"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_2" type="object">
-						<event id="event_53" index="0">
+						<event id="event_68" index="0">
 							<action index="0">
 								<position x="-157.9258186665" y="2.6217929627" z="0.0000000000"/>
 							</action>
@@ -1118,12 +1105,12 @@
 								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_23"/>
+								<route id="route_csv_62"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="fixed_part4_2" type="object">
-						<event id="event_54" index="0">
+						<event id="event_69" index="0">
 							<action index="0">
 								<position x="-97.4414483090" y="0.8748069765" z="-0.2738723895"/>
 							</action>
@@ -1131,12 +1118,12 @@
 								<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_24"/>
+								<route id="route_csv_63"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_3" type="object">
-						<event id="event_55" index="0">
+						<event id="event_70" index="0">
 							<action index="0">
 								<position x="-142.0749032843" y="1.2372865178" z="0.0000000000"/>
 							</action>
@@ -1144,12 +1131,12 @@
 								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_25"/>
+								<route id="route_csv_64"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="fixed_part4_3" type="object">
-						<event id="event_56" index="0">
+						<event id="event_71" index="0">
 							<action index="0">
 								<position x="-81.9281778579" y="2.8006291974" z="-0.2787805863"/>
 							</action>
@@ -1157,12 +1144,12 @@
 								<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_26"/>
+								<route id="route_csv_65"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_DeadAnimal_2" type="object">
-						<event id="event_57" index="0">
+						<event id="event_72" index="0">
 							<action index="0">
 								<position x="-36.6388017864" y="0.7392466744" z="0.0000000000"/>
 							</action>
@@ -1170,12 +1157,12 @@
 								<attitude x="0.0000000000" y="0.0000000000" z="1.5707963268"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_27"/>
+								<route id="route_csv_66"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_LyingMan_1" type="object">
-						<event id="event_58" index="0">
+						<event id="event_73" index="0">
 							<action index="0">
 								<position x="24.2195980949" y="0.0411029322" z="0.0000000000"/>
 							</action>
@@ -1183,12 +1170,12 @@
 								<attitude x="-0.0000000000" y="0.0000000000" z="0.5235987756"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_28"/>
+								<route id="route_csv_67"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_4" type="object">
-						<event id="event_59" index="0">
+						<event id="event_74" index="0">
 							<action index="0">
 								<position x="-97.5518055884" y="2.9479195837" z="0.0000000000"/>
 							</action>
@@ -1196,12 +1183,12 @@
 								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_29"/>
+								<route id="route_csv_68"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_5" type="object">
-						<event id="event_60" index="0">
+						<event id="event_75" index="0">
 							<action index="0">
 								<position x="-79.4000019547" y="2.2065609667" z="0.0000000000"/>
 							</action>
@@ -1209,12 +1196,12 @@
 								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_30"/>
+								<route id="route_csv_69"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_5_1" type="object">
-						<event id="event_61" index="0">
+						<event id="event_76" index="0">
 							<action index="0">
 								<position x="-79.3530328214" y="0.4326523323" z="0.0000000000"/>
 							</action>
@@ -1222,12 +1209,12 @@
 								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_31"/>
+								<route id="route_csv_70"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="fixed_part4_1" type="object">
-						<event id="event_62" index="0">
+						<event id="event_77" index="0">
 							<action index="0">
 								<position x="-126.9717219332" y="3.0740132769" z="-0.2734619794"/>
 							</action>
@@ -1235,12 +1222,12 @@
 								<attitude x="0.0000000000" y="-0.0000000000" z="1.5707963268"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_32"/>
+								<route id="route_csv_71"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_6" type="object">
-						<event id="event_63" index="0">
+						<event id="event_78" index="0">
 							<action index="0">
 								<position x="235.7750171696" y="-0.4699437512" z="0.0000000000"/>
 							</action>
@@ -1248,12 +1235,12 @@
 								<attitude x="0.0000000000" y="-0.0000000000" z="3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_33"/>
+								<route id="route_csv_72"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_7" type="object">
-						<event id="event_64" index="0">
+						<event id="event_79" index="0">
 							<action index="0">
 								<position x="175.3156414326" y="-0.8377079044" z="0.0000000000"/>
 							</action>
@@ -1261,12 +1248,12 @@
 								<attitude x="0.0000000000" y="-0.0000000000" z="3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_34"/>
+								<route id="route_csv_73"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_8" type="object">
-						<event id="event_65" index="0">
+						<event id="event_80" index="0">
 							<action index="0">
 								<position x="114.7566583804" y="-1.7500000000" z="0.0000000000"/>
 							</action>
@@ -1274,12 +1261,12 @@
 								<attitude x="0.0000000000" y="-0.0000000000" z="3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_35"/>
+								<route id="route_csv_74"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_9" type="object">
-						<event id="event_66" index="0">
+						<event id="event_81" index="0">
 							<action index="0">
 								<position x="54.2530074119" y="-2.5960447365" z="0.0000000000"/>
 							</action>
@@ -1287,12 +1274,12 @@
 								<attitude x="0.0000000000" y="-0.0000000000" z="-3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_36"/>
+								<route id="route_csv_75"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_10" type="object">
-						<event id="event_67" index="0">
+						<event id="event_82" index="0">
 							<action index="0">
 								<position x="-36.6092202366" y="-3.0039916848" z="0.0000000000"/>
 							</action>
@@ -1300,12 +1287,12 @@
 								<attitude x="0.0000000000" y="-0.0000000000" z="3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_37"/>
+								<route id="route_csv_76"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="divp_Tgt_ManholeCover_11" type="object">
-						<event id="event_68" index="0">
+						<event id="event_83" index="0">
 							<action index="0">
 								<position x="-97.0691723880" y="-1.2893536358" z="0.0000000000"/>
 							</action>
@@ -1313,12 +1300,12 @@
 								<attitude x="0.0000000000" y="-0.0000000000" z="3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_38"/>
+								<route id="route_csv_77"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="fixed_part4_4" type="object">
-						<event id="event_69" index="0">
+						<event id="event_84" index="0">
 							<action index="0">
 								<position x="-157.7529582745" y="-0.9828332736" z="-0.2761655273"/>
 							</action>
@@ -1326,12 +1313,12 @@
 								<attitude x="0.0000000000" y="0.0000000000" z="3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_39"/>
+								<route id="route_csv_78"/>
 							</action>
 						</event>
 					</entity>
 					<entity id="fixed_part4_5" type="object">
-						<event id="event_70" index="0">
+						<event id="event_85" index="0">
 							<action index="0">
 								<position x="-218.2825758256" y="-2.5450184383" z="-0.2730287311"/>
 							</action>
@@ -1339,7 +1326,20 @@
 								<attitude x="0.0000000000" y="0.0000000000" z="3.1415926536"/>
 							</action>
 							<action index="2">
-								<route id="route_csv_40"/>
+								<route id="route_csv_79"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Veh_NissanXtrail_1" type="object">
+						<event id="event_86" index="0">
+							<action index="0">
+								<position x="-246.9008401632" y="1.7500000000" z="0.0000000000"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_80"/>
 							</action>
 						</event>
 					</entity>
