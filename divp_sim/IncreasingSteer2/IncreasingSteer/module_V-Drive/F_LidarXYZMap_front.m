@@ -1,4 +1,4 @@
-function func_LidarXYZMap_roof(lidar_name,clock,HitPoint,SignalStrength,save_dir)
+function F_LidarXYZMap_front(lidar_name,clock,HitPoint,SignalStrength,save_dir)
     % global out;
 
     % x = HitPoint(1,:);
@@ -19,26 +19,26 @@ function func_LidarXYZMap_roof(lidar_name,clock,HitPoint,SignalStrength,save_dir
     end
     % end
 
-    % persistent graph;
-    % if isempty( graph )
+    % persistent graph_2;
+    % if isempty( graph_2 )
     %     videofilename = lidar_name;
     %     if ispc
     %         filename_mp4 = [videofilename , '.mp4'];
     %         if exist( filename_mp4 ) == 2, delete( filename_mp4 ); end
-    %         graph.video = VideoWriter( videofilename, 'MPEG-4' );
+    %         graph_2.video = VideoWriter( videofilename, 'MPEG-4' );
     %     elseif isunix
     %         filename_avi = [videofilename , '.avi'];
     %         if exist( filename_avi ) == 2, delete( filename_avi ); end
-    %         graph.video = VideoWriter( videofilename );
+    %         graph_2.video = VideoWriter( videofilename );
     %     end
-    %     graph.video.FrameRate = 20;
-    %     open( graph.video );
+    %     graph_2.video.FrameRate = 20;
+    %     open( graph_2.video );
     % 
     %     fsize = 20;
     % 
-    %     graph.figure = figure("position",[400 100 1000 700]);
-    %     graph.plot   = scatter3( x, y, z, s, c, 'filled' );
-    %     graph.title  = title( { ...
+    %     graph_2.figure = figure("position",[400 100 1000 700]);
+    %     graph_2.plot   = scatter3( x, y, z, s, c, 'filled' );
+    %     graph_2.title  = title( { ...
     %         'LiDAR'; ...
     %         'Time=0[sec]' }, 'FontSize', fsize, 'Fontname', 'Arial');
     %     view(-80,20); box on; grid on; daspect( [ 1, 1, 1 ] ); colormap( 'jet' );
@@ -54,16 +54,16 @@ function func_LidarXYZMap_roof(lidar_name,clock,HitPoint,SignalStrength,save_dir
     %     % scatter3(x,y,z,s,c,'filled');
     % 
     %     if numel( x ) > 0
-    %         graph.plot.XData    = x;
-    %         graph.plot.YData    = y;
-    %         graph.plot.ZData    = z;
-    %         graph.plot.CData    = c;
-    %         graph.plot.SizeData = s;
+    %         graph_2.plot.XData    = x;
+    %         graph_2.plot.YData    = y;
+    %         graph_2.plot.ZData    = z;
+    %         graph_2.plot.CData    = c;
+    %         graph_2.plot.SizeData = s;
     %     end
-    %     graph.title.String{ 2 } = sprintf( 'Time=%.3f[sec]', clock );
-    %     xlim(graph.figure.Children,XRange);
-    %     ylim(graph.figure.Children,YRange);
-    %     zlim(graph.figure.Children,ZRange);
+    %     graph_2.title.String{ 2 } = sprintf( 'Time=%.3f[sec]', clock );
+    %     xlim(graph_2.figure.Children,XRange);
+    %     ylim(graph_2.figure.Children,YRange);
+    %     zlim(graph_2.figure.Children,ZRange);
     %     daspect([1 1 1])
     % 
     %     view(-80,20);
@@ -72,12 +72,11 @@ function func_LidarXYZMap_roof(lidar_name,clock,HitPoint,SignalStrength,save_dir
     % drawnow();
     % % out.image = zeros( 420, 560, 3, 'uint8' );
     % % out.image(1:420,1:560,:) = imresize(getframe( figure( graph.figure ) ).cdata,[420,560]);
-    % out.frame = getframe(graph.figure);
-    % writeVideo( graph.video, out.frame );
+    % out.frame2 = getframe(graph_2.figure);
+    % writeVideo( graph_2.video, out.frame2 );
     pcwrite(pointCloud(HitPoint','Intensity',SignalStrength),save_dir+"/"+plyfilename,'Encoding','ascii');
 
     % if clock == 25
-    %     close(graph.video)
+    %     close(graph_2.video)
     % end
-
 end

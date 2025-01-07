@@ -1,4 +1,4 @@
-function func_getGtLabel(clock,label,save_dir)
+function F_getGtLabel(clock,label,save_dir)
 
     label_img_name = "label"+ num2str(clock+1000,'%.3f') + ".png";
 

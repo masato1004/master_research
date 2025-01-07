@@ -1,4 +1,4 @@
-function [depth_for_img,cameraPoints] = func_projectLidarToDepthImage(pcd, tmat_cam2lidar, fl, pp, ims, rd, td)
+function [depth_for_img,cameraPoints] = F_projectLidarToDepthImage(pcd, tmat_cam2lidar, fl, pp, ims, rd, td)
     % % LiDAR点群をホモジニアス座標に変換
     % lidarPoints_h = [lidarPoints, ones(size(lidarPoints, 1), 1)];  % Nx4
     

@@ -1,4 +1,4 @@
-function [modified_data, plane_mesh, tform, outlier_idx] = func_fitPlane(data,downsampled_data,threshold)
+function [modified_data, plane_mesh, tform, outlier_idx] = F_fitPlane(data,downsampled_data,threshold)
     %% PCFITPLANE
     max_distance = threshold;  % [m]
     [model,~,outlier_idx] = pcfitplane(downsampled_data,max_distance,MaxNumTrials=1000);

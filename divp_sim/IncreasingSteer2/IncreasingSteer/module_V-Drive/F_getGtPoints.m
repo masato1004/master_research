@@ -1,4 +1,4 @@
-function func_getGtPoints(points_name,clock,Points,pos,roll,pitch,yaw)
+function F_getGtPoints(points_name,clock,Points,pos,roll,pitch,yaw)
     % global out;
 
     points = reshape(Points,[height(Points)*width(Points), 3]);

@@ -1,6 +1,5 @@
 % clear all;
 warning("off",'all');
-addpath("./module_V-Drive");
 
 % global pcdmap
 % if isempty(pcdmap)
@@ -28,46 +27,6 @@ addpath("./module_V-Drive");
 %     disp("Finish Loading 3D map points.")
 % end
 
-%% Load python function
-python_path = "C:\Users\"+getenv('username')+"\research\divpenv\Scripts\python.exe";
-if pyenv().Executable ~= python_path
-    pe = pyenv(Version=python_path);
-end
-pymod = py.importlib.import_module('F_depthcompletion');
-py.importlib.reload(pymod);
-
-%% camera parameter
-cam_params = struct();
-cam_params.img_w = 3840;
-cam_params.img_h = 2160;
-cam_params.k1 = 1.36648;
-cam_params.k2 = 1.79417;
-cam_params.k3 = 0.1704;
-cam_params.k4 = 1.90693;
-cam_params.k5 = 2.64875;
-cam_params.k6 = 0.97058;
-cam_params.p1 = 0.00014;
-cam_params.p2 = -0.00008;
-cam_params.fx = 2445.66438;
-cam_params.fy = 2444.75377;
-cam_params.cx = 1905.44853;
-cam_params.cy = 1073.60153;
-cam_params.imageSize = [cam_params.img_h, cam_params.img_w];
-cam_params.focalLength      = [cam_params.fx, cam_params.fy];
-cam_params.principalPoint   = [cam_params.cx, cam_params.cy];
-cam_params.RadialDistortion6 = [cam_params.k1, cam_params.k2, cam_params.k3, cam_params.k4, cam_params.k5, cam_params.k6];
-cam_params.TangentialDistortion = [cam_params.p1,cam_params.p2];
-
-%% depth completion parameters
-dc_params = struct();
-dc_params.crop_h = 552;
-dc_params.crop_w = 1496;
-dc_params.start_x = 1172+1;
-dc_params.start_y = 1271+1;
-dc_params.rect_width = 1496-1;
-dc_params.rect_height = 552-1;
-dc_params.crop_info = {start_y:start_y+rect_height;start_x:start_x+rect_width};
-
 %% find initial position
 filename = "scenario/test_manhole/scenario_1_divp_Veh_NissanXtrail_1.csv";
 opts = detectImportOptions(filename);
@@ -91,7 +50,6 @@ simIn = setModelParameter(simIn,"Solver","ode8","StopTime","20",'FixedStep','1e-
 
 mdlwks = get_param('ISReferenceApplication','ModelWorkspace');
 temp = getVariable(mdlwks,'VEH');
-% Vehicle parameters
 temp.InitialLongPosition = initialpos(1);
 temp.InitialLatPosition = -initialpos(2);
 temp.InitialVertPosition = -initialpos(3)-temp.HeightCG;
@@ -110,11 +68,6 @@ temp.DrawFreq = 0.1;
 % temp.T_ref = pcdpos;
 temp.T_ref = new_path;
 % temp.pcdmap = double(pcdmap);
-
-% Sensor parameters
-temp.cam_params = cam_params;
-temp.dc_params = dc_params;
-
 assignin(mdlwks,'temp',temp);
 % global video
 out = sim(simIn);

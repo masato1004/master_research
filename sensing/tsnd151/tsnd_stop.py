@@ -21,8 +21,8 @@ if __name__ == '__main__':
     #                input='masatontoI104\n'.encode(), check=True)
     # Serial port 設定
     ser = serial.Serial()
-    # ser.port = "COM5"  # ポート
-    ser.port = "/dev/ttyACM0"  # ポート
+    ser.port = "COM7"  # ポート
+    # ser.port = "/dev/ttyACM0"  # ポート
     ser.timeout=1.0                                # タイムアウト
     ser.baudrate = 115200                          # ボーレート
 

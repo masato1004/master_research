@@ -1,4 +1,4 @@
-function [depth_info_on_img,cameraPoints] =  func_ptc_transformer(pcd,camIntrinsics,tmat_cam2lidar)
+function [depth_info_on_img,cameraPoints] =  F_ptc_transformer(pcd,camIntrinsics,tmat_cam2lidar)
     % transform into image coordinate
     eulerAngle2 = [0 -pi/2 pi/2];
     R2 = eul2rotm(eulerAngle2);

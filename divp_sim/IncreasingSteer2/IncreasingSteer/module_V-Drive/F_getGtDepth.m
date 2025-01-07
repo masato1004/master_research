@@ -1,4 +1,4 @@
-function func_getGtDepth(clock,depth,scale_factor,save_dir)
+function F_getGtDepth(clock,depth,scale_factor,save_dir)
 
     depth_img_name = "depth"+ num2str(clock+1000,'%.3f') + ".png";
 

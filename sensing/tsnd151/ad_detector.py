@@ -75,7 +75,7 @@ class Tsnd:
         check = check ^ data1
         check = check ^ data2
 
-        print(self.ser)
+        # print(self.ser)
 
         list = bytearray([header,  cmd,  data,  data1, data2 , check])
 
@@ -253,9 +253,9 @@ class Tsnd:
             input_voltage = self.term4_in
         
         # 1.5V以上のアナログ入力でTrue
-        if input_voltage >= 1500 and input_voltage <= 3000:
+        if input_voltage < 1000: #and input_voltage <= 3000:
             return False
-        elif input_voltage >= 0 and input_voltage < 1500:
+        elif input_voltage >= 0 and input_voltage > 1000:
             return True
         else:
             return False
@@ -318,10 +318,10 @@ class Tsnd:
             term4_1 = self.ser.read(1)
             term4_2 = self.ser.read(1)
             
-            print(binascii.b2a_hex(term3_1))
-            print(binascii.b2a_hex(term3_2))
-            print(binascii.b2a_hex(term4_1))
-            print(binascii.b2a_hex(term4_2))
+            # print(binascii.b2a_hex(term3_1))
+            # print(binascii.b2a_hex(term3_2))
+            # print(binascii.b2a_hex(term4_1))
+            # print(binascii.b2a_hex(term4_2))
             
             # エンディアン変換
             self.term3_in = ord(term3_1)
@@ -330,8 +330,8 @@ class Tsnd:
             self.term4_in += ord(term4_2)<<8
 
             # デバッグ出力[mV]
-            print("term3_in = %d [mV]" % (ctypes.c_int(self.term3_in).value*3000/4095))
-            print("term4_in = %d [mV]" % (ctypes.c_int(self.term4_in).value*3000/4095))
+            # print("term3_in = %d [mV]" % (ctypes.c_int(self.term3_in).value*3000/4095))
+            print("\rterm4_in = %d [mV]" % (ctypes.c_int(self.term4_in).value*3000/4095),end="")
             
             # 同期信号検出
             self.sync_check = self.detect_input(self.term4_in)
@@ -404,17 +404,17 @@ class Tsnd:
                 term3 = self.ser.read(1)
                 term4 = self.ser.read(1)
                 
-                print(ord(term1))
-                print(ord(term2))
-                print(ord(term3))
-                print(ord(term4))
+                # print(ord(term1))
+                # print(ord(term2))
+                # print(ord(term3))
+                # print(ord(term4))
                 # print(binascii.b2a_hex(term1))
                 # print(binascii.b2a_hex(term2))
                 # print(binascii.b2a_hex(term3))
                 # print(binascii.b2a_hex(term4))
 
-                print("term3_mode = %d" % (ctypes.c_int(ord(term3)).value))
-                print("term4_mode = %d" % (ctypes.c_int(ord(term4)).value))
+                # print("term3_mode = %d" % (ctypes.c_int(ord(term3)).value))
+                print("\rterm4_mode = %d" % (ctypes.c_int(ord(term4)).value), end="")
                 break
             if k>1000:
                 break
@@ -425,11 +425,12 @@ class Tsnd:
 
 if __name__ == '__main__':
     # tsnd = Tsnd('COM5')
-    tsnd = Tsnd('/dev/ttyACM0')  # sudo chmod 666 /dev/ttyACM0
+    tsnd = Tsnd('COM7')  # sudo chmod 666 /dev/ttyACM0
     tsnd.setup_all()
     tsnd.start()
     for i in range(1000):
         tsnd.get_datas()
         if tsnd.sync_check:
             print("SYNC INPUT DETECTED")
+
     del tsnd
