@@ -1,6 +1,7 @@
 % clear all;
 warning("off",'all');
 addpath("./module_V-Drive");
+addpath("./module_Optimization");
 
 % global pcdmap
 % if isempty(pcdmap)
@@ -38,6 +39,7 @@ py.importlib.reload(pymod);
 
 %% camera parameter
 cam_params = struct();
+cam_params.camera_position = [1.881159, 0.0, 1.554000];
 cam_params.img_w = 3840;
 cam_params.img_h = 2160;
 cam_params.k1 = 1.36648;
@@ -60,13 +62,29 @@ cam_params.TangentialDistortion = [cam_params.p1,cam_params.p2];
 
 %% depth completion parameters
 dc_params = struct();
+dc_params.original_img_w = 3840;
+dc_params.original_img_h = 2160;
 dc_params.crop_h = 552;
 dc_params.crop_w = 1496;
 dc_params.start_x = 1172+1;
 dc_params.start_y = 1271+1;
 dc_params.rect_width = 1496-1;
 dc_params.rect_height = 552-1;
+dc_params.maxCameraDepth = 20;
 dc_params.crop_info = {start_y:start_y+rect_height;start_x:start_x+rect_width};
+
+%% optimization parameters
+opt_params = struct();
+opt_params.tw = 1.485; % Track width
+opt_params.wb = 2.86; % Wheelbase
+opt_params.v = 50/3.6; % Constant velocity
+opt_params.L = 3; % Wheelbase
+opt_params.lane_width = 3.5; % Width of the lane
+opt_params.g = 9.8;
+opt_params.N = 9; % Number of steps
+opt_params.interp_steps = 2;
+opt_params.dt = 0.175;
+opt_params.plane_threshold = 0.002;
 
 %% find initial position
 filename = "scenario/test_manhole/scenario_1_divp_Veh_NissanXtrail_1.csv";
@@ -107,13 +125,14 @@ temp.VehicleWidth = 1.731;
 temp.VehicleLength = 4.769;
 temp.diameter = 0.653;
 temp.DrawFreq = 0.1;
-% temp.T_ref = pcdpos;
-temp.T_ref = new_path;
+temp.T_ref = pcdpos;
+% temp.T_ref = new_path;
 % temp.pcdmap = double(pcdmap);
 
-% Sensor parameters
+% Simulation parameters
 temp.cam_params = cam_params;
 temp.dc_params = dc_params;
+temp.opt_params = opt_params;
 
 assignin(mdlwks,'temp',temp);
 % global video

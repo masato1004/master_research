@@ -1,4 +1,4 @@
-function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImage, fl, pp, rd, td, sf, rgbImg, crop_info)
+function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImage, fl, pp, rd, td, sf, crop_info)
 
     % Get image dimensions
     [img_H, img_W] = size(depthImage);
@@ -11,11 +11,11 @@ function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImag
     y_norm = (y - pp(2)) / fl(2);
     
     % Compute radial and tangential distortions
-    r2 = x_norm.^2 + y_norm.^2; % Squared radius
-    radial_distortion = (1+rd(1)*r2+rd(2)*r2.^2+rd(3)*r2.^3) ./ (1+rd(4)*r2+rd(5)*r2.^2+rd(6)*r2.^3);
+    % r2 = x_norm.^2 + y_norm.^2; % Squared radius
+    % radial_distortion = (1+rd(1)*r2+rd(2)*r2.^2+rd(3)*r2.^3) ./ (1+rd(4)*r2+rd(5)*r2.^2+rd(6)*r2.^3);
     % radial_distortion = 1;
-    x_tangential = 2 * td(1) * x_norm .* y_norm + td(2) * (r2 + 2 * x_norm.^2);
-    y_tangential = td(1) * (r2 + 2 * y_norm.^2) + 2 * td(2) * x_norm .* y_norm;
+    % x_tangential = 2 * td(1) * x_norm .* y_norm + td(2) * (r2 + 2 * x_norm.^2);
+    % y_tangential = td(1) * (r2 + 2 * y_norm.^2) + 2 * td(2) * x_norm .* y_norm;
     
     % Apply distortion correction
     x_undistorted = x_norm ;%./ radial_distortion - x_tangential;
@@ -37,10 +37,10 @@ function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImag
     x3D = x3D(crop_info{1},crop_info{2});
     y3D = y3D(crop_info{1},crop_info{2});
     z = z(crop_info{1},crop_info{2});
-    rgbImg = rgbImg(crop_info{1},crop_info{2},:);
+    % rgbImg = rgbImg(crop_info{1},crop_info{2},:);
 
     pcd = [x3D(:), y3D(:), z(:)];
-    color = double(reshape(rgbImg,[height(rgbImg)*width(rgbImg),3]))./255;
+    % color = double(reshape(rgbImg,[height(rgbImg)*width(rgbImg),3]))./255;
     % [pcd,indeices] = pcdownsample(pointCloud(pcd),'random',0.8);
     % [row,col,c] = ind2sub(size(y3D),indeices);
 
@@ -55,7 +55,7 @@ function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImag
     
     % Remove points with invalid depth (e.g., zero or NaN values)
     validPoints = z(:) > 0; % Adjust threshold as needed
-    pcd = pointCloud(pcd(validPoints,:),Color=color(validPoints,:));
+    pcd = pointCloud(pcd(validPoints,:));
     diffcolor=diffcolor(validPoints)*1000;
     % diffcolor(diffcolor>3.4) = 0;
 

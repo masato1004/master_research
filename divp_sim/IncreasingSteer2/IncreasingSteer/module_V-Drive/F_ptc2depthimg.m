@@ -1,8 +1,7 @@
-function sparse_depth = F_ptc2depthimg(clock, points, img, cam_params)
+function sparse_depth = F_ptc2depthimg(clock, points, img, cam_params, dc_params)
     img_name = num2str(clock+1000,'%.3f') + ".png";
-    persistent max_depth lidar_position lidar_angles camera_position save_dir
-    if isempty(max_depth)
-        max_depth = 20;
+    persistent lidar_position lidar_angles camera_position save_dir
+    if isempty(lidar_position)
         % intrinsics       = cameraIntrinsics(focalLength,principalPoint,imageSize,"RadialDistortion",RadialDistortion,"TangentialDistortion",TangentialDistortion);
 
         %% cam2roof-lidar transformation
@@ -35,7 +34,7 @@ function sparse_depth = F_ptc2depthimg(clock, points, img, cam_params)
     [depth,~] = func_projectLidarToDepthImage(ptCloud, eye(4), cam_params.focalLength, cam_params.principalPoint, cam_params.imageSize, cam_params.RadialDistortion6, cam_params.TangentialDistortion);
 
     ind = sub2ind([height(img),width(img)],round(depth(:,2)),round(depth(:,1)));
-    sparse_depth(ind) = uint16(round(depth(:,3)*(65535/max_depth)));
+    sparse_depth(ind) = uint16(round(depth(:,3)*(65535/dc_params.maxCameraDepth)));
 
     imwrite(sparse_depth, save_dir+"/depth_"+img_name, "BitDepth",16);
 end

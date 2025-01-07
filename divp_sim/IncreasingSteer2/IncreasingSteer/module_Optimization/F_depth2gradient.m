@@ -1,57 +1,19 @@
-function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,groundtruth_read,colorImage_read,rawlidarImage_read,maxCameraDepth)
+function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,cam_params,dc_params,angle)
     %% create original size images for pcfromdepth as new ones
-    img_w = 3840;
-    img_h = 2160;
-    groundtruth_original_size=uint16(zeros(img_h, img_w));
+    img_w = dc_params.original_img_w;
+    img_h = dc_params.original_img_h;
     depthImage_original_size=uint16(zeros(img_h, img_w));
-    raw_depth_original_size=uint16(zeros(img_h, img_w));
-    colorImage_original_size=uint8(ones(img_h, img_w, 3));
 
-    start_x = 1175-1;
-    start_y = 1209-1;
-    rect_width = 1496-1;
-    rect_height = 624-1;
-    crop_info = {start_y:start_y+rect_height-1;start_x+10:start_x+rect_width-10};
-    % start_x = 353-1;
-    % start_y = 449-1;
-    % rect_width = 1216-1;
-    % rect_height = 352-1;
-    % start_x = 503-1;
-    % start_y = 449-1;
-    % rect_width = 1216-1;
-    % rect_height = 150-1;
-    depthImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width) = depthImage_read;
-    groundtruth_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = groundtruth_read;
-    colorImage_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = colorImage_read;
-    raw_depth_original_size(start_y:start_y+rect_height,start_x:start_x+rect_width,:) = rawlidarImage_read;
+    % crop_info = {dc_params.start_y:dc_params.start_y+dc_params.rect_height;dc_params.start_x:dc_params.start_x+dc_params.rect_width};
+    
+    depthImage_original_size(dc_params.start_y:dc_params.start_y+dc_params.rect_height,dc_params.start_x:dc_params.start_x+dc_params.rect_width) = depthImage_read;
     depthImage = depthImage_original_size;
-    groundtruth = groundtruth_original_size;
-    rawlidarImage = raw_depth_original_size;
-    colorImage = colorImage_original_size;
 
     %% camera parameter
-    k1 = 1.36648;
-    k2 = 1.79417;
-    k3 = 0.1704;
-    k4 = 1.90693;
-    k5 = 2.64875;
-    k6 = 0.97058;
-    p1 = 0.00014;
-    p2 = -0.00008;
-    fx = 2445.66438;
-    fy = 2444.75377;
-    cx = 1905.44853;
-    cy = 1073.60153;
-    imageSize = [img_h, img_w];
-    focalLength      = [fx, fy];
-    principalPoint   = [cx, cy];
-    RadialDistortion6 = [k1, k2, k3, k4, k5, k6];
-    TangentialDistortion = [p1,p2];
-    depthScaleFactor = 65535/maxCameraDepth; % Z = 深度画像[u,v]/スケールファクタ
+    depthScaleFactor = 65535/dc_params.maxCameraDepth; % Z = 深度画像[u,v]/スケールファクタ
 
 
     %% translat with position parameter from cad
-    camera_position = [1.881159, 0.0, 1.554000];
     rotate_angle_cam2wheel = [0 0 0];
     f_translation_cam2wheel = [0 1 0]; % from cad
     r_translation_cam2wheel = [-1 0 0]; % from cad
@@ -59,52 +21,22 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     r_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,r_translation_cam2wheel);
 
     % ptCloud = pcfromdepth(depthImage,depthScaleFactor,intrinsics,ColorImage=colorImage);
-    [ptCloud,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
-    [groundtruthptCloud,~,~,~] = F_projectDepthImageToLidar(groundtruth,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
-    [rawptCloud,~,~,~] = F_projectDepthImageToLidar(rawlidarImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
-    tform = rigidtform3d([-90 0 -90],camera_position);
-    ptCloud = pctransform(ptCloud,tform);
+    [ptCloud,~,~,dpcd] = F_projectDepthImageToLidar(depthImage,cam_params.focalLength,cam_params.principalPoint,cam_params.RadialDistortion6,cam_params.TangentialDistortion,depthScaleFactor,dc_params.crop_info);
+    tform = rigidtform3d([-90 0 -90],cam_params.camera_position);
     dpcd = pctransform(dpcd,tform);
-    rawptCloud = pctransform(rawptCloud,tform);
-    groundtruthptCloud = pctransform(groundtruthptCloud,tform);
+    R_pos = eul2rotm(-angle);
+    A_pos = [[R_pos;0,0,0],[0;0;0; 1]];
+    pos_tform = rigidtform3d(A_pos);
+    dpcd = pctransform(dpcd,pos_tform);
     % pcshow(ptCloud);
 
-    pcin=pointCloud(reshape(ptCloud.Location,[],3),Color=reshape(ptCloud.Color,[],3));
-    rawpcin=pointCloud(reshape(rawptCloud.Location,[],3),Color=reshape(rawptCloud.Color,[],3));
-    groundtruthpcin=pointCloud(reshape(groundtruthptCloud.Location,[],3),Color=reshape(groundtruthptCloud.Color,[],3));
-    % downptCloud = pcdownsample(groundtruthptCloud,'gridAverage',0.05);
-    % downptCloud = pcdownsample(rawptCloud,'gridAverage',0.05);
-    % downptCloud = pcdownsample(ptCloud,'gridAverage',0.1);
-    % downptCloud = pointCloud(downptCloud.Location(downptCloud.Location(:,1)<7&downptCloud.Location(:,1)>0&downptCloud.Location(:,2)<3&downptCloud.Location(:,2)>-3,:,:));
-    downpc = pcin;
-    eliminate_idx = downpc.Location(:,1)<9&downpc.Location(:,1)>2.5&downpc.Location(:,2)<2&downpc.Location(:,2)>-2;
-    downptCloud = pointCloud(downpc.Location(eliminate_idx,:,:),Color=downpc.Color(eliminate_idx,:,:));
-    % downptCloud = pcdownsample(downptCloud,'gridAverage',0.001);
-
-    pcin_eliminate_idx = pcin.Location(:,1)>0.5;
-    pcin = pointCloud(pcin.Location(pcin_eliminate_idx,:,:),Color=pcin.Color(pcin_eliminate_idx,:,:));
-    raw_eliminate_idx = rawpcin.Location(:,1)>0.5;
-    rawpcin = pointCloud(rawpcin.Location(raw_eliminate_idx,:,:),Color=rawpcin.Color(raw_eliminate_idx,:,:));
-    gt_eliminate_idx = groundtruthpcin.Location(:,1)>0.5;
-    groundtruthpcin = pointCloud(groundtruthpcin.Location(gt_eliminate_idx,:,:),Color=groundtruthpcin.Color(gt_eliminate_idx,:,:));
-
-    % [ptCloud, plaen_mesh, plane_tform] = fitplane(pcin,downptCloud,0.008);
-    % [rawptCloud, rawplaen_mesh, rawplane_tform] = fitplane(rawpcin,downptCloud,0.005);
-    % [gtptCloud, gtplaen_mesh, gtplane_tform] = fitplane(groundtruthpcin,downptCloud,0.005);
-    % ptCloud = pctransform(ptCloud,r_tform_cam2wheel);
-    % rawptCloud = pctransform(rawptCloud,r_tform_cam2wheel);
-    % gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
-
-    max_x = 30;
-    rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-2&rawptCloud.Location(:,2)<2;
-    rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
-    ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-2&ptCloud.Location(:,2)<2;
-    ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
+    max_x = dc_params.maxCameraDepth;
     dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2;
     dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
     dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
-    [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.002);
-    gradient = dpcd.Location(outlierIndices,:);
+    
+    % [~,~,outlierIndices] = pcfitplane(dpcd,0.002);
+    % gradient = dpcd.Location(outlierIndices,:);
 
     % ptloc=ptCloud.Location;
     % ptloc(ptloc(:,1)<0,1)=2;
