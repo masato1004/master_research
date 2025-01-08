@@ -32,7 +32,7 @@ close all;
 %         flag=false;
 %     end
 % end
-file_num=40;
+file_num=1000;
 
         
 crop_h = 552;
