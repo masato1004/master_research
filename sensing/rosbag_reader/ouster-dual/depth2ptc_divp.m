@@ -75,10 +75,10 @@ depthImage_original_size=uint16(zeros(img_h, img_w));
 raw_depth_original_size=uint16(zeros(img_h, img_w));
 colorImage_original_size=uint8(ones(img_h, img_w, 3));
 
-start_x = 1172+1;
-start_y = 1271+1;
-rect_width = 1496-1;
-rect_height = 552-1;
+start_x = 1164+1;
+start_y = 1282+1;
+rect_width = 1512-1;
+rect_height = 592-1;
 crop_info = {start_y:start_y+rect_height-1;start_x+10:start_x+rect_width-10};
 % start_x = 353-1;
 % start_y = 449-1;
@@ -98,14 +98,22 @@ rawlidarImage = raw_depth_original_size;
 colorImage = colorImage_original_size;
 
 %% camera parameter
-k1 = 1.36648;
-k2 = 1.79417;
-k3 = 0.1704;
-k4 = 1.90693;
-k5 = 2.64875;
-k6 = 0.97058;
-p1 = 0.00014;
-p2 = -0.00008;
+% k1 = 1.36648;
+% k2 = 1.79417;
+% k3 = 0.1704;
+% k4 = 1.90693;
+% k5 = 2.64875;
+% k6 = 0.97058;
+% p1 = 0.00014;
+% p2 = -0.00008;
+k1 = 0;
+k2 = 0;
+k3 = 0;
+k4 = 0;
+k5 = 0;
+k6 = 0;
+p1 = 0;
+p2 = 0;
 fx = 2445.66438;
 fy = 2444.75377;
 cx = 1905.44853;
@@ -163,10 +171,10 @@ groundtruthpcin = pointCloud(groundtruthpcin.Location(gt_eliminate_idx,:,:),Colo
 % rawptCloud = pctransform(rawptCloud,r_tform_cam2wheel);
 % gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
 
-max_x = 30;
+max_x = 20;
 rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-2&rawptCloud.Location(:,2)<2;
 rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
-ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-2&ptCloud.Location(:,2)<2;
+ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-2&ptCloud.Location(:,2)<2&ptCloud.Location(:,3)<0.1;
 ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
 dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2;
 dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));

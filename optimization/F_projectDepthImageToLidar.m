@@ -39,6 +39,17 @@ function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImag
     z = z(crop_info{1},crop_info{2});
     rgbImg = rgbImg(crop_info{1},crop_info{2},:);
 
+    % data_width = width(x3D);
+    % data_height = height(x3D);
+    % extract_height_idx = 1:2:data_height-20;
+    % extract_width_idx = 1:3:data_width;
+    % 
+    % x3D = x3D(extract_height_idx,extract_width_idx);
+    % y3D = y3D(extract_height_idx,extract_width_idx);
+    % z = z(extract_height_idx,extract_width_idx);
+    % rgbImg = rgbImg(extract_height_idx,extract_width_idx,:);
+
+
     pcd = [x3D(:), y3D(:), z(:)];
     color = double(reshape(rgbImg,[height(rgbImg)*width(rgbImg),3]))./255;
     % [pcd,indeices] = pcdownsample(pointCloud(pcd),'random',0.8);
@@ -56,11 +67,11 @@ function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImag
     % Remove points with invalid depth (e.g., zero or NaN values)
     validPoints = z(:) > 0; % Adjust threshold as needed
     pcd = pointCloud(pcd(validPoints,:),Color=color(validPoints,:));
-    diffcolor=diffcolor(validPoints)*1000;
+    diffcolor=diffcolor(validPoints)*10000;
     % diffcolor(diffcolor>3.4) = 0;
 
     dpcd = pointCloud([pcd.Location(:,1),diffcolor+mean(pcd.Location(:,2)),pcd.Location(:,3)]);
-    dpcd = pcdownsample(dpcd,'gridAverage',0.014);
+    dpcd = pcdownsample(dpcd,'gridAverage',0.02);
     percentage = 0.5;
     % dpcd = pcdownsample(dpcd,'random',percentage,PreserveStructure=false);
     % eulerAngle2 = [0 -pi/2 pi/2];

@@ -8,9 +8,9 @@ dataset=uigetdir("../sensing/rosbag_reader/ouster-dual/val_selection/", "DATASET
 % figname="pretrained_fixed_supervision";
 figname="pretrained_fixed_labeled_supervision";
 % figname="conventional_model";
-results=uigetdir("../sensing/rosbag_reader/ouster-dual/results/","RESULTS folder to Open") + "\results\";
+% results=uigetdir("../sensing/rosbag_reader/ouster-dual/results/","RESULTS folder to Open") + "\results\";
 
-list_predicted_imgs = dir(results+"*.png");
+% list_predicted_imgs = dir(results+"*.png");
 list_rawlidar_imgs  = dir(dataset+"velodyne_raw/*.png");
 list_color_imgs     = dir(dataset+"image/*.png");
 groundtruth_imgs    = dir(dataset+"groundtruth_depth/*.png");
@@ -21,32 +21,47 @@ close all;
 file_name = "depth_image_008850.png";
 file_num = 0;
 flag = true;
-while flag
-    file_num = file_num+1;
-    name = list_predicted_imgs(file_num).name;
-    if name==file_name
-        flag=false;
-    end
-    if file_num == length(list_predicted_imgs)-1
-        flag=false;
-    end
-end
-file_num=40;
+% while flag
+%     file_num = file_num+1;
+%     name = list_color_imgs(file_num).name;
+%     if name==file_name
+%         flag=false;
+%     end
+%     if file_num == length(list_color_imgs)-1
+%         flag=false;
+%     end
+% end
+file_num=354;
+
+
+% video_name = "path_planning.mp4";
+% video = VideoWriter(video_name,'MPEG-4');
+% video.FrameRate = 1;
+% open(video);
 
         
 next_state = [0; 0; 0];
-next_input = 0;
-next_du = 0;
+current_input = 0;
+current_du = 0;
 
 
 figure;
-% opti = Opti();
-while file_num < 120
+addpath('./casadi-3.6.7-windows64-matlab2018b')
+% opti = casadi.Opti();
+while file_num < 400
 disp(file_num)
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
-predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
+% predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
 colorImage_read     = imread(dataset+"image/"+list_color_imgs(file_num).name);
 groundtruth_read    = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
+
+% depthcompletion
+crop_h = 592;
+crop_w = 1512;
+colorImage_np = py.numpy.array(colorImage_read);
+rawlidarImage_np = py.numpy.array(rawlidarImage_read,dtype=py.numpy.uint16);
+output = py.F_depthcompletion.depth_completion(colorImage_np, rawlidarImage_np, crop_h, crop_w);
+predictedImage_read = reshape(uint16(output),[crop_h,crop_w]);
 
 images = {rawlidarImage_read;
             predictedImage_read;
@@ -72,7 +87,7 @@ depthImage_check  = double(depthImage_read);
 groundtruth_check = double(groundtruth_read);
 depthImage_check(depthImage_check==0)   = nan;
 groundtruth_check(groundtruth_check==0) = nan;
-maxCameraDepth   = 30;
+maxCameraDepth   = 20;
 rmse_px = rmse(depthImage_check.*maxCameraDepth./65535,groundtruth_check.*maxCameraDepth./65535,"omitnan");
 rmse_px = rmmissing(rmse_px);
 RMSE_on_depthmap = sum(rmse_px,'all')/numel(rmse_px)
@@ -82,7 +97,6 @@ file_num = file_num + 1;
 %  NLMPC code block
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 pause(2)
-addpath('./casadi-3.6.7-windows64-matlab2018b')
 % import casadi.*
 
 % Clear and close all
@@ -120,7 +134,7 @@ max_lat_force_ref = v^2 * gradient(yaw_ref)*g;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Load the road gradient point cloud
 [road_gradient, groundtruthptCloud] = F_depth2gradient(depthImage_read,groundtruth_read,colorImage_read,rawlidarImage_read,maxCameraDepth);
 gt_width_from_center = interp1(x_ref,y_ref,groundtruthptCloud.Location(:,1));
-show_idx = groundtruthptCloud.Location(:,2) < gt_width_from_center+lane_width/2 & groundtruthptCloud.Location(:,2) > gt_width_from_center-lane_width/2;
+show_idx = groundtruthptCloud.Location(:,2) < gt_width_from_center+lane_width/2-0.1 & groundtruthptCloud.Location(:,2) > gt_width_from_center-lane_width/2+0.1;
 road_width_from_center = interp1(x_ref,y_ref,road_gradient(:,1));
 gradient_idx = road_gradient(:,2) < road_width_from_center+lane_width/2 & road_gradient(:,2) > road_width_from_center-lane_width/2;% & road_gradient(:,1) < 14;
 
@@ -201,9 +215,9 @@ mysigmoid = @(x) 1 - 1 ./ (1 + exp(-6*(x-3)));
 x0 = next_state;
 x0(1) = 0;
 % u0 = 0.0;
-u0 = next_input- sign(next_input).*[0.00000001];
+% u0 = next_input- sign(next_input).*[0.00000001];
 % last_du = 0;
-last_du = next_du;
+last_du = current_du;
 
 % Define the maximum allowable lateral force
 max_avoidance_lat_force = 0.2 * g;
@@ -235,6 +249,8 @@ for k = 1:N+1
         opti.subject_to(x(:,k+1) == x(:,k) + dt*dx);
         if k > 1
             opti.subject_to(u(:,k) == u(:,k-1) + du(:,k));
+        else
+            opti.subject_to(u(:,k) == current_input + du(:,k));
         end
         opti.subject_to(-max_yaw_rate <= du(k) <= max_yaw_rate);
 
@@ -348,7 +364,7 @@ end
 opti.minimize(cost);
 
 % Define the initial and terminal constraints
-opti.subject_to(u(1:length(u0)) == u0); % Start at origin
+% opti.subject_to(u(1:length(u0)) == u0); % Start at origin
 % opti.subject_to(du(1) == last_du); % Start at origin
 opti.subject_to(x(:,1) == x0); % Start at origin
 
@@ -376,9 +392,9 @@ wheel_sol = sol.value(u);
 next_state = x_sol(:,2);
 
 % Extract the optimal input
-next_input = wheel_sol(2);
-next_du = u_sol(2);
-disp(['The next input is: ', num2str(next_input)]);
+current_input = wheel_sol(1);
+current_du = u_sol(1);
+disp(['The next input is: ', num2str(current_input)]);
 
 % Max lateral force
 lateral_force = abs(v^2 * tan(wheel_sol) / L)/g;
@@ -488,4 +504,7 @@ hold off;
 
 drawnow;
 clear opti
+% frame = getframe(gcf);
+% writeVideo(video,frame);
 end
+% close(video);

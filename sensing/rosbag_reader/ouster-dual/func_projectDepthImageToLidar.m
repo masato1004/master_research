@@ -33,11 +33,22 @@ function [pcd,validPoints,diffcolor,dpcd] = func_projectDepthImageToLidar(depthI
     y3D = y_undistorted.* z; % Y-coordinate
     
     % Combine into a point cloud
+    % x3D = x3D(crop_info{1},crop_info{2});
+    % y3D = y3D(crop_info{1},crop_info{2});
+    % z = z(crop_info{1},crop_info{2});
+    % rgbImg = rgbImg(crop_info{1},crop_info{2},:);
+
+    data_width = width(x3D);
+    data_height = height(x3D);
+    extract_height_idx = 1:1:data_height;
+    extract_width_idx = 1:5:data_width;
+
+    x3D = x3D(extract_height_idx,extract_width_idx);
+    y3D = y3D(extract_height_idx,extract_width_idx);
+    z = z(extract_height_idx,extract_width_idx);
+    rgbImg = rgbImg(extract_height_idx,extract_width_idx,:);
+
     [diffImage_x,diffImage_y] = gradient(double(y3D));
-    x3D = x3D(crop_info{1},crop_info{2});
-    y3D = y3D(crop_info{1},crop_info{2});
-    z = z(crop_info{1},crop_info{2});
-    rgbImg = rgbImg(crop_info{1},crop_info{2},:);
 
     pcd = [x3D(:), y3D(:), z(:)];
     color = double(reshape(rgbImg,[height(rgbImg)*width(rgbImg),3]))./255;
@@ -45,7 +56,7 @@ function [pcd,validPoints,diffcolor,dpcd] = func_projectDepthImageToLidar(depthI
     % [row,col,c] = ind2sub(size(y3D),indeices);
 
     diffImage = 1000000*(diffImage_x./sf).^2 + (diffImage_y./sf).^2;
-    diffImage = diffImage(crop_info{1},crop_info{2});
+    % diffImage = diffImage(crop_info{1},crop_info{2});
     % diffImage(:,1)=0;
     % diffImage(1,:)=0;
     % diffImage(:,end)=0;
@@ -56,7 +67,7 @@ function [pcd,validPoints,diffcolor,dpcd] = func_projectDepthImageToLidar(depthI
     % Remove points with invalid depth (e.g., zero or NaN values)
     validPoints = z(:) > 0; % Adjust threshold as needed
     pcd = pointCloud(pcd(validPoints,:),Color=color(validPoints,:));
-    diffcolor=diffcolor(validPoints)*1000;
+    diffcolor=diffcolor(validPoints)*10000;
     % diffcolor(diffcolor>3.4) = 0;
 
     dpcd = pointCloud([pcd.Location(:,1),diffcolor+mean(pcd.Location(:,2)),pcd.Location(:,3)]);

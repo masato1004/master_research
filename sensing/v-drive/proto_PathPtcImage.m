@@ -1,7 +1,7 @@
 close all;
 
 %% configuration
-use_path = true;
+use_path = false;
 use_ptc = true;
 use_img = true;
 
@@ -11,7 +11,7 @@ animation = false;
 lidar_name = "roof"
 
 pcd_dir_name = "ply_"+lidar_name+"-lidar";
-img_dir_name = "image";
+img_dir_name = "gt_depth";
 
 pcd_list = dir(pcd_dir_name+"/*.pcd");
 img_list = dir(img_dir_name+"/*.png");

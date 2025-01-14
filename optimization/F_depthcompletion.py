@@ -12,7 +12,7 @@ from Utils.utils import str2bool, AverageMeter, depth_read
 import Models
 import time
 
-best_file_name = glob.glob(os.path.join('./', 'model_best_epoch_145*'))[0]
+best_file_name = glob.glob(os.path.join('./', 'model_best_epoch_*'))[0]
 
 channels_in = 4
 model = Models.define_model('mod', in_channels = channels_in)

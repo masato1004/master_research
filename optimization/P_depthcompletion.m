@@ -1,12 +1,20 @@
 %% define data folders
-dataset=uigetdir("./", "DATASET folder to Open") + "\";
+% dataset=uigetdir("C:\Users\masato\research\master_research\sensing\rosbag_reader\ouster-dual\val_selection", "DATASET folder to Open") + "\";
+dataset=uigetdir("C:\Users\masato\research\master_research\divp_sim", "DATASET folder to Open") + "\";
+
+lidar = 'lidar';
+rgb = 'rgb';
+lidar = 'velodyne_raw';
+rgb = 'image';
 
 % results=uigetdir("../sensing/rosbag_reader/ouster-dual/results/","RESULTS folder to Open") + "\results\";
 
 % list_predicted_imgs = dir(results+"*.png");
-list_rawlidar_imgs  = dir(dataset+"velodyne_raw/*.png");
-list_color_imgs     = dir(dataset+"image/*.png");
-groundtruth_imgs    = dir(dataset+"groundtruth_depth/*.png");
+% list_rawlidar_imgs  = dir(dataset+"velodyne_raw/*.png");
+% list_color_imgs     = dir(dataset+"image/*.png");
+list_rawlidar_imgs  = dir(dataset+lidar+"/*.png");
+list_color_imgs     = dir(dataset+rgb+"/*.png");
+% groundtruth_imgs    = dir(dataset+"groundtruth_depth/*.png");
 
 %% Load python function
 python_path = "C:\Users\"+getenv('username')+"\research\divpenv\Scripts\python.exe";
@@ -32,17 +40,20 @@ close all;
 %         flag=false;
 %     end
 % end
-file_num=1000;
+file_num=33;
+% file_num=148;
 
-        
-crop_h = 552;
-crop_w = 1496;
+
+crop_h = 592;
+crop_w = 1512;
 
 disp(file_num)
-rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
+% rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
+rawlidarImage_read  = imread(dataset+lidar+"/"+list_rawlidar_imgs(file_num).name);
 % predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
-colorImage_read     = imread(dataset+"image/"+list_color_imgs(file_num).name);
-groundtruth_read    = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
+% colorImage_read     = imread(dataset+"image/"+list_color_imgs(file_num).name);
+colorImage_read     = imread(dataset+rgb+"/"+list_color_imgs(file_num).name);
+% groundtruth_read    = imread(dataset+"groundtruth_depth/"+groundtruth_imgs(file_num).name);
 
 colorImage_np = py.numpy.array(colorImage_read);
 rawlidarImage_np = py.numpy.array(rawlidarImage_read,dtype=py.numpy.uint16);

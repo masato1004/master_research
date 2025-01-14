@@ -1,4 +1,4 @@
-function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,cam_params,dc_params,angle)
+function [dpcd] = F_depth2gradient(depthImage_read,cam_params,dc_params,angle)
     %% create original size images for pcfromdepth as new ones
     img_w = dc_params.original_img_w;
     img_h = dc_params.original_img_h;
