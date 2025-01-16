@@ -32,7 +32,7 @@ flag = true;
 %     end
 % end
 % file_num=276;
-file_num=346;
+file_num=336;
 
 
 % video_name = "path_planning.mp4";
@@ -143,7 +143,7 @@ road_gradient = pointCloud(road_gradient(gradient_idx,:));
 % road_gradient = pcdenoise(road_gradient,"Threshold",0.1,"NumNeighbors",3,"PreserveStructure",false);
 minDistance = 0.4;
 minPoints = 15;
-[label, numClusters] = pcsegdist(road_gradient,minDistance,'NumClusterPoints',minPoints,'ParallelNeighborSearch',true);
+[label, numClusters] = pcsegdist(road_gradient,minDistance,'NumClusterPoints',minPoints);%,'ParallelNeighborSearch',true);
 road_gradient = road_gradient.Location(label>0,:); label = label(label>0);
 groundtruthptCloud = select(groundtruthptCloud,show_idx);
 
@@ -212,7 +212,7 @@ obstacle_calculation = ~isempty(obstacle);
 
 % Define the potential field parameters
 obstacle_radius = 0.0025;
-repulsive_gain = 10000;
+repulsive_gain = 0.5;
 obstacle_gain = 0.0001;
 center_gain = 1;
 delta_gain = 0.01;

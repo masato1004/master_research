@@ -84,7 +84,12 @@ opt_params.g = 9.8;
 opt_params.N = 9; % Number of steps
 opt_params.interp_steps = 2;
 opt_params.dt = 0.175;
-opt_params.plane_threshold = 0.002;
+opt_params.plane_threshold = 0.02;
+opt_params.repulsive_gain = 0.5;
+opt_params.center_gain = 1;
+opt_params.delta_gain = 0.01;
+opt_params.lateral_G_gain = 0.08;
+opt_params.max_yaw_rate = 0.02;
 
 %% find initial position
 filename = "scenario/test_manhole/scenario_1_divp_Veh_NissanXtrail_1.csv";
@@ -129,6 +134,7 @@ temp.VehicleLength = 4.769;
 temp.diameter = 0.653;
 temp.DrawFreq = 0.1;
 temp.T_ref = pcdpos;
+temp.SteeringRatio = 18;
 % temp.T_ref = new_path;
 % temp.pcdmap = double(pcdmap);
 
