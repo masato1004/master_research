@@ -1,4 +1,4 @@
-function steer_cmd = F_steering_optmizer(opt_params,unevenness_points,states,x_ref,y_ref,steer)
+function steer_cmd = F_steering_optmizer(opt_params,unevenness_points,states,x_ref,y_ref,yaw_ref,v,steer)
     addpath('./casadi-3.6.7-windows64-matlab2018b')
     % opti = casadi.Opti();
     %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -13,7 +13,7 @@ function steer_cmd = F_steering_optmizer(opt_params,unevenness_points,states,x_r
     % Define the vehicle parameters
     tw = opt_params.tw; % Track width
     wb = opt_params.wb; % Wheelbase
-    v = 50/3.6; % Constant velocity
+    % v = 50/3.6; % Constant velocity
     
     lane_width = 3.5; % Width of the lane
     g = 9.8;
@@ -33,7 +33,7 @@ function steer_cmd = F_steering_optmizer(opt_params,unevenness_points,states,x_r
     % x_ref = 0:dt*v:dt*v*N;
     % y_ref = zeros(size(x_ref));
     % y_ref = -(exp(x_ref*0.02) - 1);
-    yaw_ref = atan2(gradient(y_ref), gradient(x_ref));
+    % yaw_ref = atan2(gradient(y_ref), gradient(x_ref));
     max_lat_force_ref = v^2 * gradient(yaw_ref)*g;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%% Load the road gradient point cloud
