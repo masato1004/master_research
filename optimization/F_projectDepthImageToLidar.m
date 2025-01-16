@@ -55,13 +55,13 @@ function [pcd,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImag
     % [pcd,indeices] = pcdownsample(pointCloud(pcd),'random',0.8);
     % [row,col,c] = ind2sub(size(y3D),indeices);
 
-    diffImage = 1000000*(diffImage_x./sf).^2 + (diffImage_y./sf).^2;
+    diffImage = 10000000*(diffImage_x./sf).^2 + (diffImage_y./sf).^2;
     diffImage = diffImage(crop_info{1},crop_info{2});
     % diffImage(:,1)=0;
     % diffImage(1,:)=0;
     % diffImage(:,end)=0;
     % diffImage(end,:)=0;
-    diffImage = diffImage./(z+x3D);
+    diffImage = diffImage./(z);
     diffcolor = double(reshape(diffImage,[height(diffImage)*width(diffImage),1]));
     
     % Remove points with invalid depth (e.g., zero or NaN values)

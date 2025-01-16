@@ -115,8 +115,12 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2&dpcd.Location(:,3)>-0.5;
     dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
     dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
-    [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.04);
-    gradient = dpcd.Location(outlierIndices,:);
+    % [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.15);
+    % gradient = dpcd.Location(outlierIndices,:);
+
+    road_shape = ptCloud.Location;
+    road_shape(:,3) = road_shape(:,3).^2;
+    gradient = road_shape(road_shape(:,3)<1,:);
     % [model,inlierIndices,outlierIndices] = pcfitplane(ptCloud,0.025,MaxNumTrials=10000);
     % gradient = ptCloud.Location(outlierIndices,:);
 
