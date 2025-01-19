@@ -24,16 +24,22 @@ function [dpcd] = F_depth2gradient(depthImage_read,cam_params,dc_params,angle)
     [ptCloud,~,~,dpcd] = F_projectDepthImageToLidar(depthImage,cam_params.focalLength,cam_params.principalPoint,cam_params.RadialDistortion6,cam_params.TangentialDistortion,depthScaleFactor,dc_params.crop_info);
     tform = rigidtform3d([-90 0 -90],cam_params.camera_position);
     dpcd = pctransform(dpcd,tform);
+    ptCloud = pctransform(ptCloud,tform);
     R_pos = eul2rotm(-angle);
     A_pos = [[R_pos;0,0,0],[0;0;0; 1]];
     pos_tform = rigidtform3d(A_pos);
     dpcd = pctransform(dpcd,pos_tform);
+    ptCloud = pctransform(ptCloud,pos_tform);
     % pcshow(ptCloud);
 
     max_x = dc_params.maxCameraDepth;
+
     dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2;
     dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
     dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
+
+    ptCloud_eliminate_idx = ptCloud.Location(:,1)>1.9&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-2&ptCloud.Location(:,2)<2&ptCloud.Location(:,3)<0.5;
+    dpcd = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
     
     % [~,~,outlierIndices] = pcfitplane(dpcd,0.002);
     % gradient = dpcd.Location(outlierIndices,:);

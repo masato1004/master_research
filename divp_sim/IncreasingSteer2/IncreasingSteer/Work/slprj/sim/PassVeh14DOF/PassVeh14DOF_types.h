@@ -9,23 +9,6 @@ typedef struct { real_T FR ; real_T FL ; } struct_A6Yb21eKNPgaupJlKafAPB ;
 #define DEFINED_TYPEDEF_FOR_struct_NtCe3ohFvXuRZXQoDidoXH_
 typedef struct { real_T RR ; real_T RL ; } struct_NtCe3ohFvXuRZXQoDidoXH ;
 #endif
-#ifndef DEFINED_TYPEDEF_FOR_struct_hJe0ZjsV9YhN85KpfoBkxE_
-#define DEFINED_TYPEDEF_FOR_struct_hJe0ZjsV9YhN85KpfoBkxE_
-typedef struct { real_T Mass ; struct_A6Yb21eKNPgaupJlKafAPB
-StaticNormalFrontLoad ; struct_NtCe3ohFvXuRZXQoDidoXH StaticNormalRearLoad ;
-real_T WheelBase ; real_T FrontAxlePositionfromCG ; real_T
-RearAxlePositionfromCG ; real_T HeightCG ; real_T FrontalArea ; real_T
-DragCoefficient ; real_T NumberOfWheelsPerAxle ; real_T PitchMomentInertia ;
-real_T RollMomentInertia ; real_T YawMomentInertia ; real_T SteeringRatio ;
-real_T TrackWidth ; real_T SprungMass ; real_T InitialLongPosition ; real_T
-InitialLatPosition ; real_T InitialVertPosition ; real_T InitialRollAngle ;
-real_T InitialPitchAngle ; real_T InitialYawAngle ; real_T InitialLongVel ;
-real_T InitialLatVel ; real_T InitialVertVel ; real_T InitialRollRate ;
-real_T InitialPitchRate ; real_T InitialYawRate ; real_T UnsprungMassRearAxle
-; real_T UnsprungMassFrontAxle ; real_T VehicleWidth ; real_T VehicleLength ;
-real_T diameter ; real_T DrawFreq ; real_T T_ref [ 14403 ] ; }
-struct_hJe0ZjsV9YhN85KpfoBkxE ;
-#endif
 #ifndef DEFINED_TYPEDEF_FOR_struct_hFtzkwIyDan9Uw0DEd8s7D_
 #define DEFINED_TYPEDEF_FOR_struct_hFtzkwIyDan9Uw0DEd8s7D_
 typedef struct { real_T Mass ; struct_A6Yb21eKNPgaupJlKafAPB
@@ -42,10 +25,10 @@ real_T InitialPitchRate ; real_T InitialYawRate ; real_T UnsprungMassRearAxle
 ; real_T UnsprungMassFrontAxle ; } struct_hFtzkwIyDan9Uw0DEd8s7D ;
 #endif
 #ifndef SS_UINT64
-#define SS_UINT64 21
+#define SS_UINT64 20
 #endif
 #ifndef SS_INT64
-#define SS_INT64 22
+#define SS_INT64 21
 #endif
 typedef struct b4r3m1sp45_ b4r3m1sp45 ; typedef struct elefnztwqk_ elefnztwqk
 ; typedef struct kacurs2jv1_ kacurs2jv1 ; typedef struct hkp5vxtoev_

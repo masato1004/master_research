@@ -31,7 +31,8 @@ flag = true;
 %         flag=false;
 %     end
 % end
-file_num=354;
+% file_num=276;
+file_num=336;
 
 
 % video_name = "path_planning.mp4";
@@ -142,7 +143,7 @@ road_gradient = pointCloud(road_gradient(gradient_idx,:));
 % road_gradient = pcdenoise(road_gradient,"Threshold",0.1,"NumNeighbors",3,"PreserveStructure",false);
 minDistance = 0.4;
 minPoints = 15;
-[label, numClusters] = pcsegdist(road_gradient,minDistance,'NumClusterPoints',minPoints);
+[label, numClusters] = pcsegdist(road_gradient,minDistance,'NumClusterPoints',minPoints);%,'ParallelNeighborSearch',true);
 road_gradient = road_gradient.Location(label>0,:); label = label(label>0);
 groundtruthptCloud = select(groundtruthptCloud,show_idx);
 
@@ -179,30 +180,39 @@ drawnow;
 
 % Define environment parameters
 % Define the obstacle as the mean position of the points in the gradient point cloud
-obstacle = zeros(numClusters, 2);
+obstacle = zeros(numClusters, 5);
 disp(['The number of clusters is: ', num2str(numClusters)]);
+label_count = double(label);
 for j = 1:numClusters
+    label_count(label==j) = sum(label==j);
     cluster = road_gradient(label==j,:);
 
     % Calculate the center of grabity of the cluster
     weighted_sum = sum(cluster(:, 1:2) .* cluster(:, 3), 1);
     total_weight = sum(cluster(:, 3));
+    mean_height = mean(total_weight);
     center_of_gravity = weighted_sum / total_weight;
+    % center_of_gravity = weighted_sum / height(cluster);
 
-    obstacle(j,:) = center_of_gravity;
+    % Calculate mean and standard deviation for x and y axis
+    % mean_x = mean(cluster(:, 1));
+    % mean_y = mean(cluster(:, 2));
+    std_x = std(cluster(:, 1));
+    std_y = std(cluster(:, 2));
+
+    obstacle(j,:) = [center_of_gravity,mean_height,std_x,std_y];
+    
+    % disp(['Cluster ', num2str(j), ' - Mean X: ', num2str(mean_x), ', Std X: ', num2str(std_x)]);
+    % disp(['Cluster ', num2str(j), ' - Mean Y: ', num2str(mean_y), ', Std Y: ', num2str(std_y)]);
 end
 obstacle_calculation = ~isempty(obstacle);
-label_count = double(label);
-for j = 1:numClusters
-    label_count(label==j) = sum(label==j);
-end
 % obstacle = mean(road_gradient, 1)';
 % obstacle = obstacle(1:2);
 % disp(['The obstacle position is: ', num2str(obstacle')]);
 
 % Define the potential field parameters
 obstacle_radius = 0.0025;
-repulsive_gain = 10000;
+repulsive_gain = 0.5;
 obstacle_gain = 0.0001;
 center_gain = 1;
 delta_gain = 0.01;
@@ -306,6 +316,7 @@ for k = 1:N+1
         for i = 1:width(left_wheel_itpl)
             % Repulsive potential for each wheel position
             if obstacle_calculation
+
                 for j = 1:numClusters
                     % dist_to_obstacle_left_wheel_itpl = sum((obstacle(j,:) - repmat(left_wheel_itpl(:,i)',[height(obstacle),1])).^2,2);
                     % cost = cost + repulsive_gain * obstacle_gain * sum(1./(((dist_to_obstacle_left_wheel_itpl/3).^2) + 1e-3));
@@ -317,22 +328,30 @@ for k = 1:N+1
                     % cost = cost + repulsive_gain * obstacle_gain * k^2 * road_gradient(:,3)' * (1./(dist_to_obstacle_left_wheel_itpl + 1e-3)); % 1/d^2
                     % cost = cost + repulsive_gain * obstacle_gain * road_gradient(:,3)' * F_pdf(dist_to_obstacle_left_wheel_itpl, 0, pdf_sigma, false); % Gaussian
 
-                    repulsive_left_x = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(left_wheel_itpl(1,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,1), v*pdf_sigma, true); % Gaussian
-                    repulsive_left_y = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(left_wheel_itpl(2,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,2), pdf_sigma, false); % Gaussian
+                    % repulsive_left_x = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(left_wheel_itpl(1,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,1), v*pdf_sigma, true); % Gaussian
+                    % repulsive_left_y = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(left_wheel_itpl(2,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,2), pdf_sigma, false); % Gaussian
+                    % cost = cost + repulsive_left_x * repulsive_left_y;
+
+                    repulsive_left_x = repulsive_gain * obstacle(j,3) * F_pdf(left_wheel_itpl(1,i)', obstacle(j,1), v*obstacle(j,4), true); % Gaussian
+                    repulsive_left_y = repulsive_gain * obstacle(j,3) * F_pdf(left_wheel_itpl(2,i)', obstacle(j,2), obstacle(j,5), false); % Gaussian
                     cost = cost + repulsive_left_x * repulsive_left_y;
 
                     % dist_to_obstacle_right_wheel_itpl = sum((road_gradient(:,1:2) - repmat(right_wheel_itpl(:,i)',[height(road_gradient),1])).^2,2);
                     % cost = cost + repulsive_gain * obstacle_gain * road_gradient(:,3)'./label_count' * (1./(dist_to_obstacle_right_wheel_itpl + 1e-3)); % 1/d^2
                     % cost = cost + repulsive_gain * obstacle_gain * road_gradient(:,3)' * F_pdf(dist_to_obstacle_right_wheel_itpl, 0, pdf_sigma, false); % Gaussian
 
-                    reuplsive_right_x = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(right_wheel_itpl(1,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,1), v*pdf_sigma, true); % Gaussian
-                    reuplsive_right_y = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(right_wheel_itpl(2,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,2), pdf_sigma, false); % Gaussian
-                    cost = cost + reuplsive_right_x * reuplsive_right_y;
+                    % reuplsive_right_x = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(right_wheel_itpl(1,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,1), v*pdf_sigma, true); % Gaussian
+                    % reuplsive_right_y = repulsive_gain * road_gradient(label==j,3)'./(label_count(label==j).^2)' * F_pdf(repmat(right_wheel_itpl(2,i)',[height(road_gradient(label==j,3)),1]), road_gradient(label==j,2), pdf_sigma, false); % Gaussian
+                    % cost = cost + reuplsive_right_x * reuplsive_right_y;
+
+                    repulsive_left_x = repulsive_gain * obstacle(j,3) * F_pdf(right_wheel_itpl(1,i)', obstacle(j,1), v*obstacle(j,4), true); % Gaussian
+                    repulsive_left_y = repulsive_gain * obstacle(j,3) * F_pdf(right_wheel_itpl(2,i)', obstacle(j,2), obstacle(j,5), false); % Gaussian
+                    cost = cost + repulsive_left_x * repulsive_left_y;
                 end
-                dist_to_obstacle_left_wheel_itpl = sum((obstacle - repmat(left_wheel_itpl(:,i)',[height(obstacle),1])).^2,2);
-                cost = cost + repulsive_gain * obstacle_gain * sum(1./(((dist_to_obstacle_left_wheel_itpl/3).^2) + 1e-3));
-                dist_to_obstacle_right_wheel_itpl = sum((obstacle - repmat(right_wheel_itpl(:,i)',[height(obstacle),1])).^2,2);
-                cost = cost + repulsive_gain * obstacle_gain * sum(1./(((dist_to_obstacle_right_wheel_itpl/3).^2) + 1e-3));
+                % dist_to_obstacle_left_wheel_itpl = sum((obstacle - repmat(left_wheel_itpl(:,i)',[height(obstacle),1])).^2,2);
+                % cost = cost + repulsive_gain * obstacle_gain * sum(1./(((dist_to_obstacle_left_wheel_itpl/3).^2) + 1e-3));
+                % dist_to_obstacle_right_wheel_itpl = sum((obstacle - repmat(right_wheel_itpl(:,i)',[height(obstacle),1])).^2,2);
+                % cost = cost + repulsive_gain * obstacle_gain * sum(1./(((dist_to_obstacle_right_wheel_itpl/3).^2) + 1e-3));
 
                 % % Repulsive potential for each gradient point
                 % % dist_to_obstacle_left_wheel_itpl = sum((road_gradient(:,1:2) - repmat(left_wheel_itpl(:,i)',[height(road_gradient),1])).^2,2);
@@ -414,15 +433,20 @@ for i = 1:size(X, 1)
         pos = [X(i, j); Y(i, j)];
         % Calculate the repulsive potential
         if obstacle_calculation
-            dist_to_obstacle = sum((obstacle - pos').^2, 2);
-            point_repulsive = repulsive_gain  * obstacle_gain * sum(1./(((dist_to_obstacle/3).^2) + 1e-3));
+            % dist_to_obstacle = sum((obstacle - pos').^2, 2);
+            % point_repulsive = repulsive_gain  * obstacle_gain * sum(1./(((dist_to_obstacle/3).^2) + 1e-3));
+            % total_potential(i, j) = total_potential(i, j) + point_repulsive;
+            for k = 1:numClusters
+                % dist_to_obstacle = sum((road_gradient(:,1:2) - repmat(pos', [height(road_gradient), 1])).^2, 2);
+                % repulsive_potential = repulsive_gain * obstacle_gain * k^2 * road_gradient(:,3)' * (1 ./ (dist_to_obstacle + 1e-3)); % 1/d^2
+                % repulsive_potential = repulsive_gain * obstacle_gain * road_gradient(:,3)' * F_pdf(dist_to_obstacle, 0, pdf_sigma, false); % Gaussian
+                % repulsive_potential_x = repulsive_gain *  (road_gradient(label==k,3)'./(label_count(label==k).^2)') * F_pdf(repmat(pos(1), [height(road_gradient(label==k,3)), 1]), road_gradient(label==k,1), v*pdf_sigma, true); % Gaussian
+                % repulsive_potential_y = repulsive_gain * (road_gradient(label==k,3)'./(label_count(label==k).^2)') * F_pdf(repmat(pos(2), [height(road_gradient(label==k,3)), 1]), road_gradient(label==k,2), pdf_sigma, false); % Gaussian
+                repulsive_potential_x = repulsive_gain * obstacle(k,3) * F_pdf(pos(1), obstacle(k,1), v*obstacle(k,4), true);
+                repulsive_potential_y = repulsive_gain * obstacle(k,3) * F_pdf(pos(2), obstacle(k,2), obstacle(k,5), false);
 
-            % dist_to_obstacle = sum((road_gradient(:,1:2) - repmat(pos', [height(road_gradient), 1])).^2, 2);
-            % repulsive_potential = repulsive_gain * obstacle_gain * k^2 * road_gradient(:,3)' * (1 ./ (dist_to_obstacle + 1e-3)); % 1/d^2
-            % repulsive_potential = repulsive_gain * obstacle_gain * road_gradient(:,3)' * F_pdf(dist_to_obstacle, 0, pdf_sigma, false); % Gaussian
-            repulsive_potential_x = repulsive_gain *  (road_gradient(:,3)'./label_count') * F_pdf(repmat(pos(1), [height(road_gradient), 1]), road_gradient(:,1), v*pdf_sigma, true); % Gaussian
-            repulsive_potential_y = repulsive_gain * (road_gradient(:,3)'./label_count') * F_pdf(repmat(pos(2), [height(road_gradient), 1]), road_gradient(:,2), pdf_sigma, false); % Gaussian
-            total_potential(i, j) = total_potential(i, j) + repulsive_potential_x * repulsive_potential_y + point_repulsive;
+                total_potential(i, j) = total_potential(i, j) + repulsive_potential_x * repulsive_potential_y;
+            end
         end
 
         centering_potential = center_gain * sum((pos - [X(i, j); 0]).^2);

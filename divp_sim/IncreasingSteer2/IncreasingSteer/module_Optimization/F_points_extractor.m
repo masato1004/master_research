@@ -5,6 +5,7 @@ function unevenness_points = F_points_extractor(gradient_points,x_ref,y_ref,opt_
 
     road_gradient = pointCloud(gradient_points(gradient_idx,:));
 
-    [~,~,outlierIndices] = pcfitplane(road_gradient,opt_params.plane_threshold);
-    unevenness_points = road_gradient.Location(outlierIndices,:);
+    [~,~,outlierIndices] = pcfitplane(road_gradient,opt_params.plane_threshold,30000);
+    unevenness_points = select(road_gradient,outlierIndices);
+    % unevenness_points = road_gradient.Location(outlierIndices,:);
 end

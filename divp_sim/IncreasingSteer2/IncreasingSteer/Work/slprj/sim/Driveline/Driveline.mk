@@ -2,7 +2,7 @@
 ## Makefile generated for component 'Driveline'. 
 ## 
 ## Makefile     : Driveline.mk
-## Generated on : Sat Dec 21 03:10:03 2024
+## Generated on : Thu Jan 16 22:40:17 2025
 ## Final product: ./Drivelinelib.lib
 ## Product type : static library
 ## 
@@ -139,7 +139,8 @@ CFLAGS               = -c $(MINGW_C_STANDARD_OPTS) -m64 \
 CPPFLAGS             = -c $(CPP_STANDARD_OPTS) -m64 \
                        -O0
 CPP_LDFLAGS          =  -static -m64
-CPP_SHAREDLIB_LDFLAGS  = -shared -Wl,--no-undefined
+CPP_SHAREDLIB_LDFLAGS  = -shared -Wl,--no-undefined \
+                         -Wl,--out-implib,$(basename $(PRODUCT)).lib
 DOWNLOAD_FLAGS       =
 EXECUTE_FLAGS        =
 LDFLAGS              =  -static -m64
@@ -148,7 +149,8 @@ MEX_CPPLDFLAGS       =
 MEX_CFLAGS           =
 MEX_LDFLAGS          =
 MAKE_FLAGS           = -j $(MAX_MAKE_JOBS) -l $(MAX_MAKE_LOAD_AVG) -Oline -f $(MAKEFILE)
-SHAREDLIB_LDFLAGS    = -shared -Wl,--no-undefined
+SHAREDLIB_LDFLAGS    = -shared -Wl,--no-undefined \
+                       -Wl,--out-implib,$(basename $(PRODUCT)).lib
 
 
 

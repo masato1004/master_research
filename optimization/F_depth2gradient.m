@@ -81,24 +81,24 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     groundtruthptCloud = pctransform(groundtruthptCloud,tform);
     % pcshow(ptCloud);
 
-    pcin=pointCloud(reshape(ptCloud.Location,[],3),Color=reshape(ptCloud.Color,[],3));
-    rawpcin=pointCloud(reshape(rawptCloud.Location,[],3),Color=reshape(rawptCloud.Color,[],3));
-    groundtruthpcin=pointCloud(reshape(groundtruthptCloud.Location,[],3),Color=reshape(groundtruthptCloud.Color,[],3));
-    % downptCloud = pcdownsample(groundtruthptCloud,'gridAverage',0.05);
-    % downptCloud = pcdownsample(rawptCloud,'gridAverage',0.05);
-    % downptCloud = pcdownsample(ptCloud,'gridAverage',0.1);
-    % downptCloud = pointCloud(downptCloud.Location(downptCloud.Location(:,1)<7&downptCloud.Location(:,1)>0&downptCloud.Location(:,2)<3&downptCloud.Location(:,2)>-3,:,:));
-    downpc = pcin;
-    eliminate_idx = downpc.Location(:,1)<9&downpc.Location(:,1)>2.5&downpc.Location(:,2)<2&downpc.Location(:,2)>-2;
-    downptCloud = pointCloud(downpc.Location(eliminate_idx,:,:),Color=downpc.Color(eliminate_idx,:,:));
-    % downptCloud = pcdownsample(downptCloud,'gridAverage',0.001);
+    % pcin=pointCloud(reshape(ptCloud.Location,[],3),Color=reshape(ptCloud.Color,[],3));
+    % rawpcin=pointCloud(reshape(rawptCloud.Location,[],3),Color=reshape(rawptCloud.Color,[],3));
+    % groundtruthpcin=pointCloud(reshape(groundtruthptCloud.Location,[],3),Color=reshape(groundtruthptCloud.Color,[],3));
+    % % downptCloud = pcdownsample(groundtruthptCloud,'gridAverage',0.05);
+    % % downptCloud = pcdownsample(rawptCloud,'gridAverage',0.05);
+    % % downptCloud = pcdownsample(ptCloud,'gridAverage',0.1);
+    % % downptCloud = pointCloud(downptCloud.Location(downptCloud.Location(:,1)<7&downptCloud.Location(:,1)>0&downptCloud.Location(:,2)<3&downptCloud.Location(:,2)>-3,:,:));
+    % downpc = pcin;
+    % eliminate_idx = downpc.Location(:,1)<9&downpc.Location(:,1)>2.5&downpc.Location(:,2)<2&downpc.Location(:,2)>-2;
+    % downptCloud = pointCloud(downpc.Location(eliminate_idx,:,:),Color=downpc.Color(eliminate_idx,:,:));
+    % % downptCloud = pcdownsample(downptCloud,'gridAverage',0.001);
 
-    pcin_eliminate_idx = pcin.Location(:,1)>0.5;
-    pcin = pointCloud(pcin.Location(pcin_eliminate_idx,:,:),Color=pcin.Color(pcin_eliminate_idx,:,:));
-    raw_eliminate_idx = rawpcin.Location(:,1)>0.5;
-    rawpcin = pointCloud(rawpcin.Location(raw_eliminate_idx,:,:),Color=rawpcin.Color(raw_eliminate_idx,:,:));
-    gt_eliminate_idx = groundtruthpcin.Location(:,1)>0.5;
-    groundtruthpcin = pointCloud(groundtruthpcin.Location(gt_eliminate_idx,:,:),Color=groundtruthpcin.Color(gt_eliminate_idx,:,:));
+    % pcin_eliminate_idx = pcin.Location(:,1)>0.5;
+    % pcin = pointCloud(pcin.Location(pcin_eliminate_idx,:,:),Color=pcin.Color(pcin_eliminate_idx,:,:));
+    % raw_eliminate_idx = rawpcin.Location(:,1)>0.5;
+    % rawpcin = pointCloud(rawpcin.Location(raw_eliminate_idx,:,:),Color=rawpcin.Color(raw_eliminate_idx,:,:));
+    % gt_eliminate_idx = groundtruthpcin.Location(:,1)>0.5;
+    % groundtruthpcin = pointCloud(groundtruthpcin.Location(gt_eliminate_idx,:,:),Color=groundtruthpcin.Color(gt_eliminate_idx,:,:));
 
     % [ptCloud, plaen_mesh, plane_tform] = fitplane(pcin,downptCloud,0.008);
     % [rawptCloud, rawplaen_mesh, rawplane_tform] = fitplane(rawpcin,downptCloud,0.005);
@@ -108,17 +108,22 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     % gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
 
     max_x = 20;
-    rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-2&rawptCloud.Location(:,2)<2;
-    rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
-    ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-2&ptCloud.Location(:,2)<2&ptCloud.Location(:,3)<0.5;
+    % rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-2&rawptCloud.Location(:,2)<2;
+    % rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
+    ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-1.7&ptCloud.Location(:,2)<1.7&ptCloud.Location(:,3)<0.5;
     ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
     dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2&dpcd.Location(:,3)>-0.5;
     dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
     dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
-    [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.04);
-    gradient = dpcd.Location(outlierIndices,:);
-    % [model,inlierIndices,outlierIndices] = pcfitplane(ptCloud,0.025,MaxNumTrials=10000);
-    % gradient = ptCloud.Location(outlierIndices,:);
+    % [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.15);
+    % gradient = dpcd.Location(outlierIndices,:);
+
+    % road_shape = ptCloud.Location;
+    % size(road_shape)
+    % road_shape(:,3) = road_shape(:,3).^2;
+    % gradient = road_shape(abs(road_shape(:,3))>mean(road_shape(:,3))+0.025,:);
+    [model,inlierIndices,outlierIndices] = pcfitplane(ptCloud,0.02,MaxNumTrials=10000);
+    gradient = ptCloud.Location(outlierIndices,:);
 
     % ptloc=ptCloud.Location;
     % ptloc(ptloc(:,1)<0,1)=2;
