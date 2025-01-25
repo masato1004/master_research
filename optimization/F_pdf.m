@@ -19,5 +19,5 @@ function y = F_pdf(x, mu, sigma, sigmoid_bool)
 end
 
 function mysigmoid = mysigmoid(x)
-    mysigmoid = 1 - 1 ./ (1 + exp(-6*(x-3)));
+    mysigmoid = 1 - 1 ./ (1 + exp(-30*(x)));
 end

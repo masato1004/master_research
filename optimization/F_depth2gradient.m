@@ -108,8 +108,8 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     % gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
 
     max_x = 20;
-    % rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-2&rawptCloud.Location(:,2)<2;
-    % rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
+    rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-1.7&rawptCloud.Location(:,2)<1.7;
+    rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
     ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-1.7&ptCloud.Location(:,2)<1.7&ptCloud.Location(:,3)<0.5;
     ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
     dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2&dpcd.Location(:,3)>-0.5;
@@ -118,12 +118,12 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     % [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.15);
     % gradient = dpcd.Location(outlierIndices,:);
 
-    % road_shape = ptCloud.Location;
+    road_shape = ptCloud.Location;
     % size(road_shape)
     % road_shape(:,3) = road_shape(:,3).^2;
-    % gradient = road_shape(abs(road_shape(:,3))>mean(road_shape(:,3))+0.025,:);
-    [model,inlierIndices,outlierIndices] = pcfitplane(ptCloud,0.02,MaxNumTrials=10000);
-    gradient = ptCloud.Location(outlierIndices,:);
+    gradient = road_shape(abs(road_shape(:,3))>median(road_shape(:,3))+0.02,:);
+    % [model,inlierIndices,outlierIndices] = pcfitplane(ptCloud,0.02,MaxNumTrials=10000);
+    % gradient = ptCloud.Location(outlierIndices,:);
 
     % ptloc=ptCloud.Location;
     % ptloc(ptloc(:,1)<0,1)=2;
