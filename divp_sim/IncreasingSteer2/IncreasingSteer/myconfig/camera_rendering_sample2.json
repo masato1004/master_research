@@ -1,0 +1,73 @@
+{   "$comment": "sample configuration file for camera rendering",
+
+    "rendering": {
+	    "image_format": "Spectrum",
+        "pathtrace_count": 100,
+        "max_depth": 3,
+        "camera": {
+            "image_size": { "width": 3840, "height": 2160 },
+            "fps": 30.0,
+            "focal_length": 5.09,
+            "f_number": 1.6,
+            "cmos_width": 8.064,
+            "cmos_height": 4.536,
+            "distortion": {
+                "type": 8,
+                "fov": 2.0943951023931953,
+                "rational_function_model" :{
+                    "k1": 1.36648,
+                    "k2": 1.79417,
+                    "k3": 0.1704,
+                    "k4": 1.90693,
+                    "k5": 2.64875,
+                    "k6": 0.97058,
+                    "p1": 0.00014,
+                    "p2": -0.00008,
+                    "fx": 2445.66438,
+                    "fy": 2444.75377,
+                    "cx": 1905.44853,
+                    "cy": 1073.60153
+                },
+                "file": "Lens/lens_distortion_i49.csv"
+            },
+            "vignetting": "Lens/lens_vignetting_i49.csv",
+            "ir_filter": "Lens/IR_cut_filter_i49.csv",
+            "roi": {
+                "enable": false,
+                "vmax": 2000,
+                "dlt_t": 11.0,
+                "l_em": 1,
+                "t_ip": 0.0
+            }
+        },
+        "ground_truth": {
+            "node_label_file": "GroundTruth/Node.csv",
+            "material_label_file": "GroundTruth/Material.csv"
+        },
+        "precipitation": {
+            "psd_type": 101,
+            "random_seed": -1,
+            "rain": {
+                "min_drop_size": 0.5
+            },
+            "snow": {
+                "min_particle_size": 0.5,
+                "diameter_factor": 5.0,
+                "brownian_factor": 1.0
+            }
+        },
+        "post_effect": {
+            "denoise": {
+                "enable": true
+            }
+        },
+        "background": {
+            "type": "SkyLib",
+            "is_observation_spot_jp": true,
+            "horizontal_illuminance":20.0,
+            "color_temperature":5000.0
+        },
+        "rotation_order":"XYZ",
+        "animation_activated": true
+    }
+}

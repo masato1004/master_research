@@ -64,14 +64,14 @@ cam_params.TangentialDistortion = [cam_params.p1,cam_params.p2];
 dc_params = struct();
 dc_params.original_img_w = 3840;
 dc_params.original_img_h = 2160;
-dc_params.crop_h = 552;
-dc_params.crop_w = 1496;
-dc_params.start_x = 1172+1;
-dc_params.start_y = 1271+1;
+dc_params.crop_h = 592;
+dc_params.crop_w = 1512;
+dc_params.start_x = 1164+1;
+dc_params.start_y = 1282+1;
 dc_params.rect_width = 1496-1;
 dc_params.rect_height = 552-1;
 dc_params.maxCameraDepth = 20;
-dc_params.crop_info = {start_y:start_y+rect_height;start_x:start_x+rect_width};
+dc_params.crop_info = {dc_params.start_y+10:dc_params.start_y+dc_params.rect_height-10;dc_params.start_x+10:dc_params.start_x+dc_params.rect_width-10};
 
 %% optimization parameters
 opt_params = struct();
@@ -104,7 +104,7 @@ R1 = eul2rotm(-initagl);
 A1 = [[R1;0,0,0],[0; 0; 0;1]];
 pcdpos = pctransform(pointCloud([pcdpos.Location(:,1)-initpos(1),pcdpos.Location(:,2)-initpos(2),pcdpos.Location(:,3)-initpos(3)]),rigidtform3d(A1));
 pcdpos = pcdpos.Location;
-[k,~] = dsearchn(pcdpos(:,1),590);
+[k,~] = dsearchn(pcdpos(:,1),-246.9008402);
 initialpos = pcdpos(k(1),:);
 
 mdl = "System/ISReferenceApplication";
