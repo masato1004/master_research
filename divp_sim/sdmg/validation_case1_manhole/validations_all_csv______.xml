@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spaceDesignModel>
+	<header name="validations_all_csv" version="0.14.0.0"/>
+	<definitions>
+		<filePaths>
+			<filePath path=".\" target="" type="output"/>
+			<filePath path="..\validation_making_SemgProj\" target="asset" type="input"/>
+			<filePath path="..\dataset_making2_SemgProj\" target="asset" type="input"/>
+			<filePath path="..\..\..\..\..\..\..\SDMG_0.14.0.0\asset\" target="asset" type="input"/>
+			<filePath path="..\validation_making_SemgProj\Exports\" target="roadNetwork" type="input"/>
+			<filePath path=".\" target="route" type="input"/>
+		</filePaths>
+		<simulation>
+			<hat state="on"/>
+		</simulation>
+	</definitions>
+	<space>
+		<environments>
+			<environment id="environment_1">
+				<timeOfDay>
+					<time hour="12" min="0"/>
+					<date day="25" month="11" year="2020"/>
+				</timeOfDay>
+				<weather cloudState="sunny">
+					<precipitation intensity="0.0000000000"/>
+					<wind direction="0.0000000000" speed="0.0000000000"/>
+				</weather>
+				<weatherLocation elevation="0.0000000000" latitude="0.62168627956038" longitude="2.43944669551247" region="japan" standardTimeMeridian="2.3561944902"/>
+			</environment>
+		</environments>
+		<views>
+			<view id="view_1">
+				<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+				<clippingDistance left="1.0000000000" rigth="10000.0000000000"/>
+				<asymmetricFov bottom="-0.6632251158" left="-0.7853981634" rigth="0.7853981634" top="0.6632251158"/>
+				<linker entityId="divp_Veh_NissanXtrail_1" entityType="object" id="linkerid_1">
+					<coordinate type="relative">
+						<position x="0.0000000000" y="0.0000000000" z="2.0000000000"/>
+						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</coordinate>
+				</linker>
+			</view>
+		</views>
+		<objects>
+			<object id="divp_Veh_NissanXtrail_1" role="" subtype="car" type="vehicle">
+				<modelFile file="divp_Veh_NissanXtrail.fbx"/>
+				<camera id="camera_1">
+					<product name="Camera"/>
+					<coordinate type="relative">
+						<position x="1.8811590000" y="0.0000000000" z="1.5540000000"/>
+						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+				</camera>
+				<camera id="camera_2">
+					<product name="Camera"/>
+					<coordinate type="relative">
+						<position x="-1.5134446142" y="-2.3833745560" z="1.8830535919"/>
+						<attitude x="0.0000000000" y="0.4363323130" z="0.6981317008"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+				</camera>
+				<camera id="camera_3">
+					<product name="Camera"/>
+					<coordinate type="relative">
+						<position x="-1.5801984661" y="2.2840826135" z="1.8995573027"/>
+						<attitude x="0.0000000000" y="0.4363323130" z="-0.6981317008"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+				</camera>
+				<camera id="camera_4">
+					<product name="Camera"/>
+					<coordinate type="relative">
+						<position x="1.3000000000" y="0.0000000000" z="6.0000000000"/>
+						<attitude x="0.0000000000" y="1.5707963268" z="0.0000000000"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="100.0000000000"/>
+					<asymmetricFov bottom="-0.6370451770" left="-1.0471975512" rigth="1.0471975512" top="0.6370451770"/>
+				</camera>
+				<lidar id="lidar_1">
+					<product name="Lidar"/>
+					<coordinate type="relative">
+						<position x="1.1109430000" y="0.0000000000" z="1.9988770000"/>
+						<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+					<asymmetricFov bottom="-0.4363323130" left="-3.1415926536" rigth="3.1415926536" top="0.2617993878"/>
+				</lidar>
+				<lidar id="lidar_2">
+					<product name="os1-128"/>
+					<coordinate type="relative">
+						<position x="3.6394917532" y="0.0000000000" z="0.6625940927"/>
+						<attitude x="0.0000000000" y="0.3926990817" z="0.0000000000"/>
+					</coordinate>
+					<clippingDistance left="0.1000000000" rigth="250.0000000000"/>
+					<asymmetricFov bottom="-0.3926990817" left="-3.1415926536" rigth="3.1415926536" top="0.3926990817"/>
+				</lidar>
+				<boundingBox>
+					<center x="1.3190000000" y="0.0000000000" z="0.8740000000"/>
+					<dimensions height="1.7480000000" length="4.6420000000" width="1.7930000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_ManholeCover_1" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-187.9361123409" y="2.6584752606" z="-0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_ManholeCover_2" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="-127.3871678249" y="1.7378704733" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_ManholeCover_3" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<position x="84.3485565343" y="2.9351997762" z="-0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+			</object>
+			<object id="divp_Tgt_ManholeCover_4" role="" subtype="" type="undefined">
+				<modelFile file="divp_Tgt_ManholeCover.fbx"/>
+				<boundingBox>
+					<center x="0.0000000000" y="0.0000000000" z="0.0100000000"/>
+					<dimensions height="0.0200000000" length="0.6500000000" width="0.6500000000"/>
+				</boundingBox>
+			</object>
+			<object id="fixed_part4_3" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-66.7092017826" y="1.0610962848" z="-0.2771298571"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="1.5707963268"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_4" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-4.4025429083" y="1.7500000000" z="0.0000000000"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+			</object>
+			<object id="fixed_part4_5" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="-6.1483855344" y="0.5213562920" z="-0.2758092218"/>
+				<attitude x="0.0000000000" y="0.0100000000" z="0.0000000000"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_6" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="24.0466529931" y="1.0610960000" z="-0.2765731527"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="-1.5707963268"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_7" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="27.0469407554" y="0.5179597943" z="-0.2765296765"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="1.5707963268"/>
+				<property id="hat" value="off"/>
+			</object>
+			<object id="fixed_part4_8" role="" subtype="" type="undefined">
+				<modelFile file="fixed_part4.fbx"/>
+				<position x="84.4027670745" y="0.5184459279" z="-0.2751853355"/>
+				<attitude x="0.0000000000" y="-0.0000000000" z="-1.5707963268"/>
+				<property id="hat" value="off"/>
+			</object>
+		</objects>
+		<maps>
+			<map id="map_1">
+				<routes>
+					<route id="route_csv_1" laneType="" type="csvFile">
+						<csvFile file="scenario_1_divp_Veh_NissanXtrail_1.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_2" laneType="" type="csvFile">
+						<csvFile file="scenario_1_divp_Tgt_ManholeCover_1.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_3" laneType="" type="csvFile">
+						<csvFile file="scenario_1_divp_Tgt_ManholeCover_2.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_4" laneType="" type="csvFile">
+						<csvFile file="scenario_1_fixed_part4_3.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_5" laneType="" type="csvFile">
+						<csvFile file="scenario_1_fixed_part4_5.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_6" laneType="" type="csvFile">
+						<csvFile file="scenario_1_fixed_part4_6.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_7" laneType="" type="csvFile">
+						<csvFile file="scenario_1_fixed_part4_7.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_8" laneType="" type="csvFile">
+						<csvFile file="scenario_1_fixed_part4_8.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+					<route id="route_csv_9" laneType="" type="csvFile">
+						<csvFile file="scenario_1_divp_Tgt_ManholeCover_3.csv">
+							<column dataType="double" headerName="timestamp" result="simulationTime"/>
+							<column dataType="double" headerName="pos_x" result="positionX"/>
+							<column dataType="double" headerName="pos_y" result="positionY"/>
+							<column dataType="double" headerName="pos_z" result="positionZ"/>
+							<column dataType="double" headerName="yaw_rad" result="attitudeZ"/>
+							<column dataType="double" headerName="pitch_rad" result="attitudeY"/>
+							<column dataType="double" headerName="roll_rad" result="attitudeX"/>
+							<column dataType="double" headerName="vel_x" result="velocityX"/>
+							<column dataType="double" headerName="vel_y" result="velocityY"/>
+							<column dataType="double" headerName="vel_z" result="velocityZ"/>
+							<column dataType="double" headerName="a_vel_yaw_rad" result="angularVelocityZ"/>
+							<column dataType="double" headerName="a_vel_pitch_rad" result="angularVelocityY"/>
+							<column dataType="double" headerName="a_vel_roll_rad" result="angularVelocityX"/>
+							<column dataType="double" headerName="acc_x" result="accelerationX"/>
+							<column dataType="double" headerName="acc_y" result="accelerationY"/>
+							<column dataType="double" headerName="acc_z" result="accelerationZ"/>
+							<column dataType="double" headerName="a_acc_yaw_rad" result="angularAccelerationZ"/>
+							<column dataType="double" headerName="a_acc_pitch_rad" result="angularAccelerationY"/>
+							<column dataType="double" headerName="a_acc_roll_rad" result="angularAccelerationX"/>
+							<column dataType="uint64_t" headerName="head_light" result="head_light"/>
+							<column dataType="uint64_t" headerName="fog_light" result="fog_light"/>
+							<column dataType="uint64_t" headerName="turn_signal" result="turn_signal"/>
+							<column dataType="uint64_t" headerName="brake_light" result="brake_light"/>
+							<column dataType="uint64_t" headerName="back_light" result="back_light"/>
+							<column dataType="uint64_t" headerName="other_light" result="other_light"/>
+							<column dataType="uint64_t" headerName="custom_light_a" result="custom_light_a"/>
+							<column dataType="uint64_t" headerName="custom_light_b" result="custom_light_b"/>
+							<column dataType="uint64_t" headerName="custom_light_c" result="custom_light_c"/>
+							<column dataType="uint64_t" headerName="custom_light_d" result="custom_light_d"/>
+							<column dataType="uint64_t" headerName="custom_light_e" result="custom_light_e"/>
+							<column dataType="uint64_t" headerName="custom_light_f" result="custom_light_f"/>
+							<column dataType="uint64_t" headerName="custom_light_g" result="custom_light_g"/>
+							<column dataType="uint64_t" headerName="custom_light_h" result="custom_light_h"/>
+							<column dataType="uint64_t" headerName="front_wiper" result="front_wiper"/>
+							<column dataType="uint64_t" headerName="rear_wiper" result="rear_wiper"/>
+						</csvFile>
+					</route>
+				</routes>
+				<objects>
+					<object id="validation1_1" type="town">
+						<modelFile file="validation1.fbx"/>
+						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</object>
+					<object id="validation1_2" type="town">
+						<modelFile file="validation1.fbx"/>
+						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</object>
+					<object id="validation1_3" type="town">
+						<modelFile file="validation1.fbx"/>
+						<position x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+					</object>
+				</objects>
+				<roadNetwork>
+					<roadNetworkFile file="validation1.xodr" path="..\validation_making_SemgProj\Exports\"/>
+					<trafficSignals/>
+				</roadNetwork>
+			</map>
+		</maps>
+		<points/>
+		<lines/>
+		<angles/>
+	</space>
+	<scenarios>
+		<concreteScenarios>
+			<concreteScenario id="scenario_1">
+				<initialization>
+					<entity id="environment_1" type="environment">
+						<event id="event_1" index="0"/>
+					</entity>
+					<entity id="view_1" type="view">
+						<event id="event_2" index="0"/>
+					</entity>
+					<entity id="divp_Veh_NissanXtrail_1" type="object">
+						<event id="event_21" index="0">
+							<action index="0">
+								<position x="-256.6724161543" y="1.7314915446" z="-0.0000000000"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_1"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_1" type="object">
+						<event id="event_22" index="0">
+							<action index="0">
+								<position x="-187.9361123409" y="2.6584752606" z="0.0000000000"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_2"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_2" type="object">
+						<event id="event_23" index="0">
+							<action index="0">
+								<position x="-127.3871678249" y="1.7378704733" z="0.0000000000"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_3"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_3" type="object">
+						<event id="event_24" index="0">
+							<action index="0">
+								<position x="-66.7092017826" y="1.0610962848" z="-0.2771298571"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="-0.0000000000" z="1.5707963268"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_4"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_5" type="object">
+						<event id="event_25" index="0">
+							<action index="0">
+								<position x="-6.1483855344" y="0.5213562920" z="-0.2758092218"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="0.0100000000" z="0.0000000000"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_5"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="fixed_part4_8" type="object">
+						<event id="event_28" index="0">
+							<action index="0">
+								<position x="84.4027670745" y="0.5184459279" z="-0.2751853355"/>
+							</action>
+							<action index="1">
+								<attitude x="0.0000000000" y="0.0000000000" z="-1.5707963268"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_8"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="divp_Tgt_ManholeCover_3" type="object">
+						<event id="event_29" index="0">
+							<action index="0">
+								<position x="84.3485565343" y="2.9351997762" z="0.0000000000"/>
+							</action>
+							<action index="1">
+								<attitude x="-0.0000000000" y="-0.0000000000" z="0.0000000000"/>
+							</action>
+							<action index="2">
+								<route id="route_csv_9"/>
+							</action>
+						</event>
+					</entity>
+					<entity id="map_1" type="map">
+						<event id="event_3" index="0"/>
+					</entity>
+				</initialization>
+				<execution/>
+			</concreteScenario>
+		</concreteScenarios>
+	</scenarios>
+	<outputs/>
+</spaceDesignModel>
