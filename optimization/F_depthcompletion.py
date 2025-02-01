@@ -23,6 +23,7 @@ model = model.cuda()
 to_pil = transforms.ToPILImage()
 to_tensor = transforms.ToTensor()
 model.eval()
+print(sum(tensor.numel() for tensor in model.parameters()),"Model Parameters")
 
 # def depth_completion():
 def depth_completion(rgb, lidar, crop_h, crop_w):

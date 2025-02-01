@@ -7,11 +7,11 @@ zlim([-0.06 0.06])
 
 %% figure size 2d
 p = get(gcf,'Position');
-set(gcf,'Position',[p(1) p(2) 150 130])
+set(gcf,'Position',[p(1) p(2) 800 250])
 
 %% figure size 3d
 p = get(gcf,'Position');
-set(gcf,'Position',[p(1) p(2) 320 280])
+set(gcf,'Position',[p(1) p(2) 320 260])
 
 %% ptc figure back ground
 set(gcf,'color','w');

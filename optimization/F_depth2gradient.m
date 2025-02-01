@@ -71,12 +71,12 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     r_tform_cam2wheel = rigidtform3d(rotate_angle_cam2wheel,r_translation_cam2wheel);
 
     % ptCloud = pcfromdepth(depthImage,depthScaleFactor,intrinsics,ColorImage=colorImage);
-    [ptCloud,validPoints,diffcolor,dpcd] = F_projectDepthImageToLidar(depthImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
-    [groundtruthptCloud,~,~,~] = F_projectDepthImageToLidar(groundtruth,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
-    [rawptCloud,~,~,~] = F_projectDepthImageToLidar(rawlidarImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
+    [ptCloud,validPoints,diffcolor] = F_projectDepthImageToLidar(depthImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
+    [groundtruthptCloud,~,~] = F_projectDepthImageToLidar(groundtruth,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
+    [rawptCloud,~,~] = F_projectDepthImageToLidar(rawlidarImage,focalLength,principalPoint,RadialDistortion6,TangentialDistortion,depthScaleFactor,colorImage,crop_info);
     tform = rigidtform3d([-90 0 -90],camera_position);
     ptCloud = pctransform(ptCloud,tform);
-    dpcd = pctransform(dpcd,tform);
+    % dpcd = pctransform(dpcd,tform);
     rawptCloud = pctransform(rawptCloud,tform);
     groundtruthptCloud = pctransform(groundtruthptCloud,tform);
     % pcshow(ptCloud);
@@ -112,16 +112,16 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
     ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-1.7&ptCloud.Location(:,2)<1.7&ptCloud.Location(:,3)<0.5;
     ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
-    dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2&dpcd.Location(:,3)>-0.5;
-    dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
-    dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
+    % dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2&dpcd.Location(:,3)>-0.5;
+    % dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
+    % dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
     % [model,inlierIndices,outlierIndices] = pcfitplane(dpcd,0.15);
     % gradient = dpcd.Location(outlierIndices,:);
 
     road_shape = ptCloud.Location;
     % size(road_shape)
     % road_shape(:,3) = road_shape(:,3).^2;
-    gradient = road_shape(abs(road_shape(:,3))>median(road_shape(:,3))+0.02,:);
+    gradient = road_shape(road_shape(:,3)>median(road_shape(:,3))+0.02,:);
     % [model,inlierIndices,outlierIndices] = pcfitplane(ptCloud,0.02,MaxNumTrials=10000);
     % gradient = ptCloud.Location(outlierIndices,:);
 

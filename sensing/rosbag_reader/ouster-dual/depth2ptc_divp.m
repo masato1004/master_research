@@ -8,8 +8,10 @@ dataset=uigetdir("./val_selection/", "DATASET folder to Open") + "\";
 % figname="pretrained_fixed_supervision";
 figname="pretrained_fixed_labeled_supervision";
 % figname="conventional_model";
-results=uigetdir("./results/","RESULTS folder to Open") + "\results\";
+% results=uigetdir("./results/","RESULTS folder to Open") + "\results\";
+results=uigetdir("./results/","RESULTS folder to Open")+ "\dense_map\";
 
+% list_predicted_imgs = dir(results+"*.png");
 list_predicted_imgs = dir(results+"*.png");
 list_rawlidar_imgs  = dir(dataset+"velodyne_raw/*.png");
 list_color_imgs     = dir(dataset+"image/*.png");
@@ -18,20 +20,25 @@ groundtruth_imgs    = dir(dataset+"groundtruth_depth/*.png");
 %% read datas
 close all;
 
-file_name = "depth_image_008850.png";
+file_name0 = "loop1";
+file_name1 = "14150";
+file_name2 = "03.125";
+
 file_num = 0;
 flag = true;
 while flag
     file_num = file_num+1;
     name = list_predicted_imgs(file_num).name;
-    if name==file_name
+    % if name==file_name
+    if (contains(name,file_name1) && contains(name,file_name0)) || (contains(name,file_name2) && contains(name,file_name0))
         flag=false;
+        disp(file_num)
     end
     if file_num == length(list_predicted_imgs)-1
         flag=false;
     end
 end
-file_num=20;
+% file_num=358;
 
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
@@ -176,6 +183,8 @@ rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)
 rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
 ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-2&ptCloud.Location(:,2)<2&ptCloud.Location(:,3)<0.1;
 ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
+groundtruthptCloud_eliminate_idx = groundtruthptCloud.Location(:,1)>0.5&groundtruthptCloud.Location(:,1)<max_x&groundtruthptCloud.Location(:,2)>-2&groundtruthptCloud.Location(:,2)<2;
+groundtruthptCloud = pointCloud(groundtruthptCloud.Location(groundtruthptCloud_eliminate_idx,:,:),Color=groundtruthptCloud.Color(groundtruthptCloud_eliminate_idx,:,:));
 dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2;
 dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));
 dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + mean(dpcd.Location(:,3))]);
@@ -188,59 +197,94 @@ dpcd = pointCloud([dpcd.Location(:,1),dpcd.Location(:,2),-dpcd.Location(:,3) + m
 % ptCloud=pointCloud(ptloc);
 % colorImage_new = reshape(colorImage,[],3);
 
-figure();
-pcshow(ptCloud);
-axis equal;
-fontname(gcf,"Arial");
-fontsize(gca,8,"points");
-set(gcf,'color','w');
-set(gca,'color','w');
-set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
-figure();
-pcshow(ptCloud.Location);
-fontname(gcf,"Arial");
-fontsize(gca,8,"points");
-set(gcf,'color','w');
-set(gca,'color','w');
-set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
-clim([-0.1 0.1])
-% temp_fig = figure("Position",[100,100,150,120]);
-temp_fig = figure();
-diffcolor = diffcolor(ptCloud_eliminate_idx);
-% diffcolor(diffcolor>0.003)=0;
-% pcshow(pointCloud(ptCloud.Location,Color=repmat(diffImage(ptCloud_eliminate_idx),[1,3])./max(diffImage(ptCloud_eliminate_idx))));
-scatter(ptCloud.Location(:,1),ptCloud.Location(:,2),3,diffcolor,"filled");
-colormap("jet")
-% clim([-0.01 0.01])
-% clim([-0.0000001 0.0000001])
-% pcshow(reshape(ptCloud.Location,[],3),reshape(colorImage,[],3));
-% pcshow(ptCloud.Location);
-% ptCloud=ptCloud_new;
-xlabel("\itX \rm[m]");
-ylabel("\itY \rm[m]");
-% zlabel("\itZ \rm[m]");
-clim([-0.002 0.002])
-xlim([min(ptCloud.Location(:,1)),max(ptCloud.Location(:,1))]);
-ylim([min(ptCloud.Location(:,2)),max(ptCloud.Location(:,2))]);
-axis equal;
-fontname(gcf,"Arial");
-fontsize(gca,8,"points");
-set(gcf,'color','w');
-set(gca,'color','w');
-set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
 
-figure();
-pcshow(dpcd.Location(outlierIndices,:),MarkerSize=40)
+groundtruthptCloud = pcdownsample(groundtruthptCloud,'gridAverage',0.05);
+ptCloud = pcdownsample(ptCloud,'gridAverage',0.05);
+% rawptCloud = pcdownsample(rawptCloud,'gridAverage',0.05);
+
+figure('Position',[100 100 800 170]);
+clim_val = [-0.04 0.04];
+
+
+subplot(1,3,3)
+pcshow(groundtruthptCloud.Location);
+colormap(jet)
+axis equal;
 xlabel("\itX \rm[m]");
 ylabel("\itY \rm[m]");
 zlabel("\itZ \rm[m]");
-xlim([min(ptCloud.Location(:,1)),max(ptCloud.Location(:,1))]);
-ylim([min(ptCloud.Location(:,2)),max(ptCloud.Location(:,2))]);
-fontname(gcf,"Arial");
-fontsize(gca,8,"points");
+fontname(gcf,"Times New Roman");
+fontsize(gca,11,"points");
 set(gcf,'color','w');
 set(gca,'color','w');
 set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
+clim(clim_val)
+% figure('Position',[100 400 300 200]);
+subplot(1,3,2)
+pcshow(ptCloud.Location);
+colormap(jet)
+xlabel("\itX \rm[m]");
+ylabel("\itY \rm[m]");
+zlabel("\itZ \rm[m]");
+fontname(gcf,"Times New Roman");
+fontsize(gca,11,"points");
+set(gcf,'color','w');
+set(gca,'color','w');
+set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
+clim(clim_val)
+% figure('Position',[100 700 300 200]);
+subplot(1,3,1)
+pcshow(rawptCloud.Location,'MarkerSize',15);
+colormap(jet)
+xlabel("\itX \rm[m]");
+ylabel("\itY \rm[m]");
+zlabel("\itZ \rm[m]");
+fontname(gcf,"Times New Roman");
+fontsize(gca,11,"points");
+set(gcf,'color','w');
+set(gca,'color','w');
+set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
+clim(clim_val)
+drawnow;
+set(gcf, 'Renderer', 'painters');
+print(gcf,'-clipboard','-dmeta');
+% temp_fig = figure("Position",[100,100,150,120]);
+% temp_fig = figure();
+% diffcolor = diffcolor(ptCloud_eliminate_idx);
+% % diffcolor(diffcolor>0.003)=0;
+% % pcshow(pointCloud(ptCloud.Location,Color=repmat(diffImage(ptCloud_eliminate_idx),[1,3])./max(diffImage(ptCloud_eliminate_idx))));
+% scatter(ptCloud.Location(:,1),ptCloud.Location(:,2),3,diffcolor,"filled");
+% colormap("jet")
+% % clim([-0.01 0.01])
+% % clim([-0.0000001 0.0000001])
+% % pcshow(reshape(ptCloud.Location,[],3),reshape(colorImage,[],3));
+% % pcshow(ptCloud.Location);
+% % ptCloud=ptCloud_new;
+% xlabel("\itX \rm[m]");
+% ylabel("\itY \rm[m]");
+% % zlabel("\itZ \rm[m]");
+% clim([-0.002 0.002])
+% xlim([min(ptCloud.Location(:,1)),max(ptCloud.Location(:,1))]);
+% ylim([min(ptCloud.Location(:,2)),max(ptCloud.Location(:,2))]);
+% axis equal;
+% fontname(gcf,"Arial");
+% fontsize(gca,8,"points");
+% set(gcf,'color','w');
+% set(gca,'color','w');
+% set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
+
+% figure();
+% pcshow(dpcd.Location(outlierIndices,:),MarkerSize=40)
+% xlabel("\itX \rm[m]");
+% ylabel("\itY \rm[m]");
+% zlabel("\itZ \rm[m]");
+% xlim([min(ptCloud.Location(:,1)),max(ptCloud.Location(:,1))]);
+% ylim([min(ptCloud.Location(:,2)),max(ptCloud.Location(:,2))]);
+% fontname(gcf,"Arial");
+% fontsize(gca,8,"points");
+% set(gcf,'color','w');
+% set(gca,'color','w');
+% set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
 % saveas(temp_fig, "test.png")
 % saveas(temp_fig,"C:\Users\INOUE MASATO\OneDrive - keio.jp\高橋研究室\journal\AutomotiveInnovation\figs\ptc_"+figname+"_"+RMSE_on_2dRPF+"_"+RMSE_on_bump+".fig")
 

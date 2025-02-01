@@ -1,5 +1,6 @@
 %% read datas
-% close all;
+close all;
+addpath('./casadi-3.6.7-windows64-matlab2018b')
 % figure(Position=[680,458,560,420*2/3])
 figure()
 
@@ -10,14 +11,17 @@ last_obs = [];
 numClusters = 1;
 obstacle_radius = 0.25;
 height_obs = 0.02;
-vel_list = [40, 50, 60];
+vel_list = [60];
 
 % Define the results list
 max_lateral_force_list = [];
 distance_to_obstacle_list = [];
+times = zeros(1,length(vel_list));
 
 animation = false;
 plot_sol = false;
+disp_input = false;
+print_opts = false;
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  NLMPC code block
@@ -37,7 +41,12 @@ for lp = 1:length(vel_list)
     v = vkm/3.6; % Constant velocity
     L = wb; % Wheelbase
     mass = 1500;
-    Iz = 2066;
+    Iz = 3000;
+    Cf = 110e3;
+    Cr = 105e3;
+    Cf = 310e3;
+    Cr = 305e3;
+    
     next_state = [0; 0; 0; v; 0; 0];
     
     % obstacle = [13.6512; 0.482284];
@@ -45,8 +54,10 @@ for lp = 1:length(vel_list)
     g = 9.8;
     
     % Define the obstacle parameters
-    x_obs_list = 6:2*obstacle_radius:20;
-    y_obs_list = -lane_width/2+obstacle_radius/2:0.1:lane_width/2-obstacle_radius/2;
+    % x_obs_list = 6:2*obstacle_radius:20;
+    % y_obs_list = -lane_width/2+obstacle_radius/2:0.1:lane_width/2-obstacle_radius/2;
+    x_obs_list = [13];
+    y_obs_list = [tw/2];
     
     % Define the loop number by the number of obstacles
     loop_num = length(x_obs_list)*length(y_obs_list);
@@ -126,7 +137,7 @@ for lp = 1:length(vel_list)
             % Define environment parameters
             % Define the obstacle as the mean position of the points in the gradient point cloud
             % obstacle = zeros(numClusters, 5);
-            disp(['The number of clusters is: ', num2str(numClusters)]);
+            % disp(['The number of clusters is: ', num2str(numClusters)]);
             % label_count = double(label);
             % for j = 1:numClusters
             %     label_count(label==j) = sum(label==j);
@@ -164,9 +175,9 @@ for lp = 1:length(vel_list)
         
             % Define the potential field parameters
             repulsive_gain = 100;
-            center_gain = 0.1;
-            delta_gain = 0.01;
-            lateral_G_gain = 0.08;
+            center_gain = 0.05;
+            delta_gain = 0.5;
+            lateral_G_gain = 0.0005;
             pdf_sigma = 0.3;
         
             % Initial conditions
@@ -209,10 +220,10 @@ for lp = 1:length(vel_list)
                 if k <= N
                     % Internal model
                     % dx = F_KinematicBicycleModel(v, x(:,k), u(:,k), wb);
-                    [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz);
+                    [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz,Cf,Cr);
                     opti.subject_to(x(:,k+1) == x(:,k) + dt*dx);
                     if k < N
-                        [~, Fy1] = F_DynamicBicycleModel(v, x(:,k+1), u(:,k+1), wb, dt, mass, Iz);
+                        [~, Fy1] = F_DynamicBicycleModel(v, x(:,k+1), u(:,k+1), wb, dt, mass, Iz,Cf,Cr);
                         % opti.subject_to(-0.5 < (Fy1-Fy)/dt < 0.5);
                     end
                     if k > 1
@@ -251,7 +262,7 @@ for lp = 1:length(vel_list)
         
                 % Attractive potential
                 if k <= N
-                    [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz);
+                    [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz,Cf,Cr);
                     cost = cost + delta_gain * (du(k)^2);
                     cost = cost + delta_gain * (x(6,k)^2);
         
@@ -296,10 +307,13 @@ for lp = 1:length(vel_list)
                         end
         
                     end
+                    % Centering potential
+                    cost = cost + center_gain * sum((ref_interpolated(1:2,i) - x_interpolated(1:2,i)).^2);
+                    cost = cost + center_gain * sum((ref_interpolated(3,i) - x_interpolated(3,i)).^2);
+                else
+                    cost = cost + center_gain * sum((ref_interpolated(3,i) - x_interpolated(3,i)).^2);
+                    cost = cost + center_gain * (x(6,k)^2);
                 end
-                % Centering potential
-                cost = cost + center_gain * sum((ref_interpolated(1:2,i) - x_interpolated(1:2,i)).^2);
-                cost = cost + center_gain * sum((ref_interpolated(3,i) - x_interpolated(3,i)).^2);
         
                 % Centering potential
                 % ref = [x_ref(k); y_ref(k)];
@@ -311,7 +325,7 @@ for lp = 1:length(vel_list)
             % opti.subject_to(u(1:length(u0)) == u0); % Start at origin
             % opti.subject_to(du(1) == last_du); % Start at origin
             opti.subject_to(x(:,1) == x0); % Start at origin
-            opti.subject_to(x(3,end) == yaw_ref(end)); % Start at origin
+            % opti.subject_to(x(3,end) == yaw_ref(end)); % Start at origin
         
             % Set initial guess
             opti.set_initial(x, [x_ref; y_ref; zeros(1, N+1); v*ones(1, N+1); zeros(1, N+1); zeros(1, N+1)]);
@@ -322,11 +336,12 @@ for lp = 1:length(vel_list)
             % Solve the optimization problem
             opts = struct;
             opts.ipopt.print_level = 0;
-            opts.print_time = true;
+            opts.print_time = print_opts;
             opti.solver('ipopt', opts);
-            tic
+            tic;
             sol = opti.solve();
-            toc
+            cal_time = toc;
+            times(lp) = times(lp)+cal_time;
         
             % Extract the solution
             x_sol = sol.value(x);
@@ -353,16 +368,18 @@ for lp = 1:length(vel_list)
             % Extract the optimal input
             current_input = wheel_sol(1);
             current_du = u_sol(1);
-            disp(['The next input is: ', num2str(current_input)]);
+            if disp_input
+                disp(['The next input is: ', num2str(current_input)]);
+            end
         
             % Max lateral force
             beta = atan(0.5*tan(wheel_sol));
             vx = x_sol(4,1:end-1);
             vy = x_sol(5,1:end-1); % 車両横方向速度
             omega = x_sol(6,1:end-1); % ヨーレート
-            Fyf = -100e3 * ((vy + L/2 * omega)./vx - wheel_sol); % 前輪横力
+            Fyf = -Cf * ((vy + L/2 * omega)./vx - wheel_sol); % 前輪横力
             % Fyf = -300e3 * ((beta + (L/2) * omega)./vx - wheel_sol); % 前輪横力
-            Fyr = -100e3 * (vy - L/2 * omega)./vx;             % 後輪横力
+            Fyr = -Cr * (vy - L/2 * omega)./vx;             % 後輪横力
             % Fyr = -300e3 * (beta-((L/2) * omega)./vx);             % 後輪横力
             dot_beta = (L/2 * Fyf - L/2 * Fyr) / Iz;  % 横滑り角の変化率
             % ay = (vx / mass) .* (dot_beta + (L/2 ./ vx).* Fyf - (L/2 ./ vx).* Fyr);  % 横加速度
@@ -375,7 +392,7 @@ for lp = 1:length(vel_list)
             % max_lateral_G = max((abs(Fyf.*sin(wheel_sol)+Fyr)/mass)/g);
             % idx = find(lateral_force > max_lateral_G-0.00001);
             idx = find(abs(ay) > max_avoidance_lat_force-0.00001);
-            disp(['The max lateral G is: ', num2str(max_lateral_G)]);
+            % disp(['The max lateral G is: ', num2str(max_lateral_G)]);
         
             % subplot(2,1,1);
             if x_obs < max(x_sol(1,:))
@@ -391,6 +408,8 @@ for lp = 1:length(vel_list)
             else
                 clr = 'r';
             end
+
+            subplot(3,1,lp)
             % viscircles([x_obs, y_obs], obstacle_radius, 'EdgeColor', clr);
             scatter(x_obs, y_obs, 40, clr, 'filled','MarkerFaceAlpha',0.1);
             grid on; axis equal;
@@ -454,7 +473,7 @@ for lp = 1:length(vel_list)
                 h.FaceAlpha = 0.5; hold on;
                 % colorbar; hold on;
             
-                plot(x_ref, y_ref, 'g--', 'LineWidth', 2); hold on;
+                ref_p = plot(x_ref, y_ref, 'g--', 'LineWidth', 2); hold on;
             
                 % Calculate the lane boundaries considering yaw angle derived from reference position
                 yaw_ref = atan2(diff(y_ref), diff(x_ref));
@@ -469,12 +488,12 @@ for lp = 1:length(vel_list)
                 end
             
                 % Plot the lane boundaries
-                plot(boundary_l(1,:), boundary_l(2,:), 'Color', '#FFA500', 'LineWidth', 2);
+                bound_p = plot(boundary_l(1,:), boundary_l(2,:), 'Color', '#FFA500', 'LineWidth', 2);
                 plot(boundary_r(1,:), boundary_r(2,:), 'Color', '#FFA500', 'LineWidth', 2);
             
                 % Plot the solution path
                 z = 0.0 * ones(1, N+1);
-                plot(x_sol(1,:), x_sol(2,:), 'r-o');
+                body_p = plot(x_sol(1,:), x_sol(2,:), 'r-o');
             
                 % Calculate and plot wheel positions considering yaw angle
                 rl_wheel_pos = zeros(2, N+1);
@@ -489,13 +508,13 @@ for lp = 1:length(vel_list)
                     fr_wheel_pos(:,k) = x_sol(1:2,k) + [cos(yaw_angle), -sin(yaw_angle); sin(yaw_angle), cos(yaw_angle)] * [wb/2; -tw/2];
                 end
             
-                plot(rl_wheel_pos(1,:), rl_wheel_pos(2,:), '-blue*');
+                rear_p = plot(rl_wheel_pos(1,:), rl_wheel_pos(2,:), '-blue*');
                 plot(rr_wheel_pos(1,:), rr_wheel_pos(2,:), '-blue*');
-                plot(fl_wheel_pos(1,:), fl_wheel_pos(2,:), '-cyan*');
+                frnt_p = plot(fl_wheel_pos(1,:), fl_wheel_pos(2,:), '-cyan*');
                 plot(fr_wheel_pos(1,:), fr_wheel_pos(2,:), '-cyan*');
             
                 % Point of max lateral force
-                scatter(x_sol(1, idx), x_sol(2, idx), 60, 'magenta', 'filled');
+                maxa_p = scatter(x_sol(1, idx), x_sol(2, idx), 60, 'magenta', 'filled');
             
                 % Plot the obstacle
                 % viscircles(obstacle', obstacle_radius, 'EdgeColor', 'r');
@@ -513,10 +532,11 @@ for lp = 1:length(vel_list)
                 % set(gca,'color','w');
                 % set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15 0.15 0.15]);
                 hold off;
+                legend([h, ref_p, bound_p, body_p, rear_p, frnt_p, maxa_p],{'Potential', 'Ref. Path', 'Lane Boundary', 'Body Center of Gravity', 'Rear Wheels', 'Front Wheels', 'Got Lateral Force Constraint'})
                 xlabel('\itX \rm[m]');
                 ylabel('\itY \rm[m]');
                 fontname(gcf,"Times New Roman");
-                fontsize(gca,10,"points");
+                fontsize(gca,11,"points");
             end
         
             drawnow;
@@ -533,4 +553,5 @@ for lp = 1:length(vel_list)
     xline(over_x+obstacle_radius/2,"-k","Border"+newline+round(over_x,2)+" m",'LabelHorizontalAlignment','right','LabelVerticalAlignment','bottom','LabelOrientation','aligned')
     fontname(gcf,"Times New Roman");
     fontsize(gca,10,"points");
+    disp("Calculation Time Average: "+times(lp)/loop_num)
 end

@@ -1,4 +1,4 @@
-function [dxdt, ay]= F_DynamicBicycleModel(v, x, u, L, dt, mass, Iz)
+function [dxdt, ay]= F_DynamicBicycleModel(v, x, u, L, dt, mass, Iz,Cf,Cr)
     % 離散時間動的二輪車モデル
     %
     % 入力:
@@ -27,8 +27,8 @@ function [dxdt, ay]= F_DynamicBicycleModel(v, x, u, L, dt, mass, Iz)
     ax    = 0; % 前方加速度
 
     % パラメータの展開
-    Cf = 100e3; % 前輪コーナリング剛性
-    Cr = 100e3; % 後輪コーナリング剛性
+    % Cf = 9e3; % 前輪コーナリング剛性
+    % Cr = 10e3; % 後輪コーナリング剛性
     Lf = L/2; % 前輪から重心までの距離
     Lr = L/2; % 後輪から重心までの距離
     m  = mass;  % 質量

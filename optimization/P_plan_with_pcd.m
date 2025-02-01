@@ -32,7 +32,7 @@ flag = true;
 %     end
 % end
 % file_num=276;
-file_num=355;
+file_num=555;
 
 
 % video_name = "path_planning.mp4";
@@ -49,7 +49,7 @@ last_obs = [];
 figure;
 addpath('./casadi-3.6.7-windows64-matlab2018b')
 % opti = casadi.Opti();
-while file_num < 400
+while file_num < 556
 disp(file_num)
 rawlidarImage_read  = imread(dataset+"velodyne_raw/"+list_rawlidar_imgs(file_num).name);
 % predictedImage_read = imread(results+list_predicted_imgs(file_num).name);
@@ -137,7 +137,8 @@ max_lat_force_ref = v^2 * gradient(yaw_ref)*g;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Load the road gradient point cloud
 [road_gradient, groundtruthptCloud] = F_depth2gradient(depthImage_read,groundtruth_read,colorImage_read,rawlidarImage_read,maxCameraDepth);
 gt_width_from_center = interp1(x_ref,y_ref,groundtruthptCloud.Location(:,1));
-show_idx = groundtruthptCloud.Location(:,2) < gt_width_from_center+lane_width/2-0.1 & groundtruthptCloud.Location(:,2) > gt_width_from_center-lane_width/2+0.1;
+% show_idx = groundtruthptCloud.Location(:,2) < gt_width_from_center+lane_width/2-0.1 & groundtruthptCloud.Location(:,2) > gt_width_from_center-lane_width/2+0.1;
+show_idx = groundtruthptCloud.Location(:,2) < lane_width/2 & groundtruthptCloud.Location(:,2) > -lane_width/2+0.1;
 road_width_from_center = interp1(x_ref,y_ref,road_gradient(:,1));
 gradient_idx = road_gradient(:,2) < road_width_from_center+lane_width/2 & road_gradient(:,2) > road_width_from_center-lane_width/2;% & road_gradient(:,1) < 14;
 
@@ -217,9 +218,9 @@ obstacle_calculation = ~isempty(obstacle);
 % Define the potential field parameters
 obstacle_radius = 0.0025;
 repulsive_gain = 100;
-center_gain = 0.1;
-delta_gain = 0.01;
-lateral_G_gain = 0.08;
+center_gain = 0.05;
+delta_gain = 0.5;
+lateral_G_gain = 0.0005;
 pdf_sigma = 0.3;
 
 % Initial conditions
@@ -249,6 +250,8 @@ max_lateral_position = lane_width/2 - tw/2 - 0.3;
 % Define the goal position
 goal = [v*dt*N; 0; 0];
 
+Cf = 110e3;
+Cr = 105e3;
 for k = 1:N+1
     yaw_ref_angle = yaw_ref(k);
     R_ref = [cos(yaw_ref_angle), -sin(yaw_ref_angle); sin(yaw_ref_angle), cos(yaw_ref_angle)];
@@ -262,11 +265,11 @@ for k = 1:N+1
     if k <= N
         % Internal model
         % dx = F_KinematicBicycleModel(v, x(:,k), u(:,k), wb);
-        [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz);
+        [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz,Cf,Cr);
         opti.subject_to(x(:,k+1) == x(:,k) + dt*dx);
         if k < N
-            [~, Fy1] = F_DynamicBicycleModel(v, x(:,k+1), u(:,k+1), wb, dt, mass, Iz);
-            opti.subject_to(-0.5 < (Fy1-Fy)/dt < 0.5);
+            [~, Fy1] = F_DynamicBicycleModel(v, x(:,k+1), u(:,k+1), wb, dt, mass, Iz,Cf,Cr);
+            % opti.subject_to(-0.5 < (Fy1-Fy)/dt < 0.5);
         end
         if k > 1
             opti.subject_to(u(:,k) == u(:,k-1) + du(:,k));
@@ -304,8 +307,9 @@ for k = 1:N+1
 
     % Attractive potential
     if k <= N
-        [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz);
-        cost = cost + 100*delta_gain * (du(k)^2);
+        [dx, Fy] = F_DynamicBicycleModel(v, x(:,k), u(:,k), wb, dt, mass, Iz,Cf,Cr);
+        cost = cost + delta_gain * (du(k)^2);
+        cost = cost + delta_gain * (x(6,k)^2);
 
         % Lateral force constraint
         cost = cost + lateral_G_gain * Fy^2;
@@ -321,7 +325,7 @@ for k = 1:N+1
 
         % interpolate the wheel positions
         left_wheel_itpl = [linspace(left_wheel_pos(1), left_wheel_pos_next(1), interp_steps)'; ...
-                           linspace(left_wheel_pos(2), left_wheel_pos_next(2), interp_steps)'];
+                        linspace(left_wheel_pos(2), left_wheel_pos_next(2), interp_steps)'];
         right_wheel_itpl = [linspace(right_wheel_pos(1), right_wheel_pos_next(1), interp_steps)'; ...
                             linspace(right_wheel_pos(2), right_wheel_pos_next(2), interp_steps)'];
         left_wheel_itpl = left_wheel_itpl(:,1:end-1);
@@ -347,10 +351,13 @@ for k = 1:N+1
                 end
             end
 
-            % Centering potential
-            cost = cost + center_gain * sum((ref_interpolated(1:2,i) - x_interpolated(1:2,i)).^2);
-            cost = cost + 1000*center_gain * sum((ref_interpolated(3,i) - x_interpolated(3,i)).^2);
         end
+        % Centering potential
+        cost = cost + center_gain * sum((ref_interpolated(1:2,i) - x_interpolated(1:2,i)).^2);
+        cost = cost + center_gain * sum((ref_interpolated(3,i) - x_interpolated(3,i)).^2);
+    else
+        cost = cost + center_gain * sum((ref_interpolated(3,i) - x_interpolated(3,i)).^2);
+        cost = cost + center_gain * (x(6,k)^2);
     end
 
     % Centering potential
@@ -422,6 +429,7 @@ subplot(3,1,3);
 [X, Y] = meshgrid(0:0.1:30, -lane_width/2:0.1:lane_width/2);
 total_potential = zeros(size(X));
 
+
 for i = 1:size(X, 1)
     for j = 1:size(X, 2)
         pos = [X(i, j); Y(i, j)];
@@ -436,14 +444,14 @@ for i = 1:size(X, 1)
                 % repulsive_potential = repulsive_gain * obstacle_gain * road_gradient(:,3)' * F_pdf(dist_to_obstacle, 0, pdf_sigma, false); % Gaussian
                 % repulsive_potential_x = repulsive_gain *  (road_gradient(label==k,3)'./(label_count(label==k).^2)') * F_pdf(repmat(pos(1), [height(road_gradient(label==k,3)), 1]), road_gradient(label==k,1), v*pdf_sigma, true); % Gaussian
                 % repulsive_potential_y = repulsive_gain * (road_gradient(label==k,3)'./(label_count(label==k).^2)') * F_pdf(repmat(pos(2), [height(road_gradient(label==k,3)), 1]), road_gradient(label==k,2), pdf_sigma, false); % Gaussian
-                repulsive_potential_x = repulsive_gain * obstacle(k,3) * F_pdf(pos(1), obstacle(k,1), (v*3)*obstacle(k,4), true);
+                repulsive_potential_x = repulsive_gain * obstacle(k,3) * F_pdf(pos(1), obstacle(k,1), (v)*obstacle(k,4), true);
                 repulsive_potential_y = repulsive_gain * obstacle(k,3) * F_pdf(pos(2), obstacle(k,2), obstacle(k,5), false);
 
                 total_potential(i, j) = total_potential(i, j) + repulsive_potential_x * repulsive_potential_y;
             end
         end
 
-        centering_potential = center_gain * sum((pos - [X(i, j); 0]).^2);
+        centering_potential = 10*center_gain * sum((pos - [X(i, j); 0]).^2);
         total_potential(i, j) = total_potential(i, j) + centering_potential;
     end
 end
@@ -457,7 +465,8 @@ pcshow(lower_gtpoint); hold on; % Plot the ground truth
 % Plot the total potential field
 [c,h] = contourf(X, Y, total_potential, 20);
 colormap(parula);
-h.FaceAlpha = 0.1;
+clim([0 10])
+h.FaceAlpha = 0.5;
 % colorbar; hold on;
 
 plot(x_ref, y_ref, 'g--', 'LineWidth', 2); hold on;
