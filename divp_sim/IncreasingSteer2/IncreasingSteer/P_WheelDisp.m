@@ -30,10 +30,10 @@ set(gca,'FontName','Arial','FontSize',11);
 
 
 figure;
-plot(wfl_x,[gfl_z],'Color','red','DisplayName','Ground FL'); hold on; grid on;
-plot(wfr_x,[gfr_z],'Color','red','DisplayName','Ground FR','LineStyle','--');
-plot(wrl_x,[grl_z],'Color','blue','DisplayName','Ground RL');
-plot(wrr_x,[grr_z],'Color','blue','DisplayName','Ground RR','LineStyle','--'); legend;
+plot(time,[gfl_z],'Color','red','DisplayName','Ground FL'); hold on; grid on;
+plot(time,[gfr_z],'Color','red','DisplayName','Ground FR','LineStyle','--');
+plot(time,[grl_z],'Color','blue','DisplayName','Ground RL');
+plot(time,[grr_z],'Color','blue','DisplayName','Ground RR','LineStyle','--'); legend;
 xlabel('Time [s]'); ylabel('Z [m]');
 set(gca,'FontName','Arial','FontSize',11);
 

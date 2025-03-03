@@ -22,3 +22,9 @@ set(gca, 'XColor', [0.15 0.15 0.15], 'YColor', [0.15 0.15 0.15], 'ZColor', [0.15
 xlabel('\itX \rm[m]')
 ylabel('\itY \rm[m]')
 zlabel('\itZ \rm[m]')
+
+%% delete axis
+ax = gca;
+ax.XTickLabel = [];
+ax.YTickLabel = [];
+ax.ZTickLabel = [];

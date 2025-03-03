@@ -108,9 +108,9 @@ function [gradient,groundtruthptCloud] = F_depth2gradient(depthImage_read,ground
     % gtptCloud = pctransform(gtptCloud,r_tform_cam2wheel);
 
     max_x = 20;
-    rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.5&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-1.7&rawptCloud.Location(:,2)<1.7;
+    rawptCloud_eliminate_idx = rawptCloud.Location(:,1)>0.6&rawptCloud.Location(:,1)<max_x&rawptCloud.Location(:,2)>-1.7&rawptCloud.Location(:,2)<1.7;
     rawptCloud = pointCloud(rawptCloud.Location(rawptCloud_eliminate_idx,:,:),Color=rawptCloud.Color(rawptCloud_eliminate_idx,:,:));
-    ptCloud_eliminate_idx = ptCloud.Location(:,1)>0.5&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-1.7&ptCloud.Location(:,2)<1.7&ptCloud.Location(:,3)<0.5;
+    ptCloud_eliminate_idx = ptCloud.Location(:,1)>6.61&ptCloud.Location(:,1)<max_x&ptCloud.Location(:,2)>-1.7&ptCloud.Location(:,2)<1.7&ptCloud.Location(:,3)<0.05;
     ptCloud = pointCloud(ptCloud.Location(ptCloud_eliminate_idx,:,:),Color=ptCloud.Color(ptCloud_eliminate_idx,:,:));
     % dpcd_eliminate_idx = dpcd.Location(:,1)>1.9&dpcd.Location(:,1)<max_x&dpcd.Location(:,2)>-2&dpcd.Location(:,2)<2&dpcd.Location(:,3)>-0.5;
     % dpcd = pointCloud(dpcd.Location(dpcd_eliminate_idx,:,:));

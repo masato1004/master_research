@@ -426,7 +426,7 @@ disp(['The max lateral G is: ', num2str(max_lateral_G)]);
 % figure;
 subplot(3,1,3);
 % Calculate the total potential field
-[X, Y] = meshgrid(0:0.1:30, -lane_width/2:0.1:lane_width/2);
+[X, Y] = meshgrid(0:0.5:30, -lane_width/2:0.1:lane_width/2);
 total_potential = zeros(size(X));
 
 
@@ -444,6 +444,7 @@ for i = 1:size(X, 1)
                 % repulsive_potential = repulsive_gain * obstacle_gain * road_gradient(:,3)' * F_pdf(dist_to_obstacle, 0, pdf_sigma, false); % Gaussian
                 % repulsive_potential_x = repulsive_gain *  (road_gradient(label==k,3)'./(label_count(label==k).^2)') * F_pdf(repmat(pos(1), [height(road_gradient(label==k,3)), 1]), road_gradient(label==k,1), v*pdf_sigma, true); % Gaussian
                 % repulsive_potential_y = repulsive_gain * (road_gradient(label==k,3)'./(label_count(label==k).^2)') * F_pdf(repmat(pos(2), [height(road_gradient(label==k,3)), 1]), road_gradient(label==k,2), pdf_sigma, false); % Gaussian
+                
                 repulsive_potential_x = repulsive_gain * obstacle(k,3) * F_pdf(pos(1), obstacle(k,1), (v)*obstacle(k,4), true);
                 repulsive_potential_y = repulsive_gain * obstacle(k,3) * F_pdf(pos(2), obstacle(k,2), obstacle(k,5), false);
 

@@ -11,7 +11,7 @@ last_obs = [];
 numClusters = 1;
 obstacle_radius = 0.25;
 height_obs = 0.02;
-vel_list = [60];
+vel_list = [40];
 
 % Define the results list
 max_lateral_force_list = [];

@@ -54,8 +54,9 @@ for i = 1:imax
     mae_all_list(i) = mae_all;
 
     if sum(label(:)) ~=0
-        rmse_label = rmse(double(gt(label)), double(dense_map(label)),'all')*sf;
-        mae_label = mean(abs(gt(label)-dense_map(label)),'all')*sf;
+        sum(label(:))
+        rmse_label = rmse(double(gt(label)), double(dense_map(label)),'all')*sf
+        mae_label = mean(abs(gt(label)-dense_map(label)),'all')*sf
         
         rmse_label_list = [rmse_label_list, rmse_label];
         mae_label_list = [mae_label_list, mae_label];
